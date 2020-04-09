@@ -84,13 +84,14 @@ Jared, 18 years old, just had his car bought as a present from his parents. He g
 
 ## Non Functional Requirements
 
-\<Describe constraints on functional requirements>
-
-| ID        | Type (efficiency, reliability, ..)           | Description  | Refers to |
+| ID        | Type        | Description  | Refers to |
 | ------------- |:-------------:| :-----:| -----:|
-|  NFR1     |   |  | |
-|  NFR2     | |  | |
-|  NFR3     | | | |
+|  NFR1     |  Portability | Application should run in a web browser, both mobile and desktop | All FR |
+|  NFR2     | Performance | All functions should take less than 5 seconds when using 4G or 5G | All FR |
+|  NFR3     | Performance | All functions should take less than 10 seconds when using 3G | All FR |
+|  NFR4     | Performance | All functions should take less than 30 seconds when using 2G | All FR |
+|  NFR5     | Localisation | Application should support EN and IT locales | All FR |
+|  NFR6     | Usability | Application should be used with no previous training  | All FR |
 
 
 # Use case diagram and use cases
