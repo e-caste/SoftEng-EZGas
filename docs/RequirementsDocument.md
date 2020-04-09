@@ -75,7 +75,7 @@ Jared, 18 years old, just had his car bought as a present from his parents. He g
 |  FR1      | Show nearby world map |  
 |  FR2      | Search for a place on the map |
 |  FR2.1    | Filter search based on distance from user |
-|  FR2.2    | Filter search based on lowest price first |
+|  FR2.2    | Filter search based on lowest price |
 |  FR2.3    | Filter search based on type of fuel |
 |  FR3      | Show recently visited gas stations |
 |  FR4      | Record updated gas station price to database |
@@ -146,15 +146,136 @@ FR5 -> DB
 FR6 -> DB
 FR7 -> DB
 FR7.1 -> DB
-FR7.2 -> DB
+FR7 -> DB
 ```
-### Use case 1, UC1
-| Actors Involved        |  |
-| ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the UC can start> |  
-|  Post condition     | \<Boolean expression, must evaluate to true after UC is finished> |
-|  Nominal Scenario     | \<Textual description of actions executed by the UC> |
-|  Variants     | \<other executions, ex in case of errors> |
+### Use case 1, UC1 - FR1 Show nearby world map
+| Actors Involved        | User, Maps |
+| ------------- |-------------| 
+|  Precondition  | User U has installed EZGas app, Maps M are available on the Internet |  
+|  Post condition | M displayed on U's screen |
+|  Nominal Scenario | User opens application and sees Maps |
+|  Variants | Maps not available, issue error |
+| | Internet connection not available, issue warning |
+
+### Use case 2, UC2 - FR2 Search for a place on the map
+| Actors Involved        | User, Maps, Location |
+| ------------- |-------------| 
+|  Precondition  | User U has installed EZGas app, Maps M are available on the Internet, Location L exists |  
+|  Post condition | Location searched is displayed on U's screen |
+|  Nominal Scenario | U searches for L and L is displayed on M |
+|  Variants | Maps not available, issue error |
+| | Internet connection not available, issue warning |
+| | Location does not exist, issue warning |
+
+### Use case 3, UC3 - FR2.1 Filter search based on distance from user
+| Actors Involved        | User, Maps, User Location |
+| ------------- |-------------| 
+|  Precondition  | User U has installed EZGas app, Maps M are available on the Internet, User Location UL exists |  
+|  Post condition | The nearest gas stations to UL are displayed on U's screen |
+|  Nominal Scenario | U searches for nearest gas stations |
+|  Variants | Maps not available, issue error |
+| | Internet connection not available, issue warning |
+
+### Use case 4, UC4 - FR2.2 Filter search based on lowest price
+| Actors Involved        | User, Maps, User Location |
+| ------------- |-------------| 
+|  Precondition  | User U has installed EZGas app, Maps M are available on the Internet, User Location UL exists |  
+|  Post condition | The gas stations with the lowest price in a default or user-selected range are displayed on U's screen |
+|  Nominal Scenario | U searches for gas stations with lowest price |
+|  Variants | Maps not available, issue error |
+| | Internet connection not available, issue warning |
+
+### Use case 5, UC5 - FR2.3 Filter search based on type of fuel
+| Actors Involved        | User, Maps, User Location, Type of fuel |
+| ------------- |-------------| 
+|  Precondition  | User U has installed EZGas app, Maps M are available on the Internet, User Location UL exists, Type of Fuel TF is an acceptable value |  
+|  Post condition | The nearest gas stations to UL which offer TF are displayed on U's screen |
+|  Nominal Scenario | U searches for nearest gas stations which offer TF |
+|  Variants | Maps not available, issue error |
+| | Internet connection not available, issue warning |
+
+### Use case 6, UC3 - FR3 Show recently visited gas stations
+| Actors Involved        | User, Database |
+| ------------- |-------------| 
+|  Precondition  | User U has installed EZGas app, Database DB is available on the Internet |  
+|  Post condition | Database entries are pulled and displayed |
+|  Nominal Scenario | U taps searchbar on screen, a brief list of the most recently visited gas stations appears |
+|  Variants | Internet connection not available, issue warning |
+| | Database not available, issue error |
+
+### Use case 4, UC4 - FR4 Record updated gas station price to database
+| Actors Involved        | User, Maps, Gas Station, Database |
+| ------------- |-------------| 
+|  Precondition  | User U has installed EZGas app, Maps M are available on the Internet, Database DB is available on the Internet |  
+|  Post condition | Database entry is updated |
+|  Nominal Scenario | U taps GS on M and inputs data, uploaded to DB |
+|  Variants | Maps not available, issue error |
+| | Internet connection not available, issue warning |
+| | Database not available, issue error |
+| | Price validation error, issue error |
+
+### Use case 5, UC5 - FR4.1 Perform trust-based check before updating price
+| Actors Involved        | New Price as NP, Database as DB |
+| ------------- |-------------| 
+|  Precondition  | NP is received at DB |  
+|  Post condition | NP is saved to DB |
+|  Nominal Scenario | The prices older than N days are removed. If NP is within a margin of error (e.g. 0.1€) from the last X user-submitted prices, then the price for that gas station and that type of fuel is updated to the average of the last X prices and is displayed in-app to the users; the last X prices are removed from the database. X is calculated based on how many NPs are received per day at each gas station, and is a gas station property. |
+| | Else, save NP to DB. |
+
+### Use case 6, UC6 - FR4.2 Add new gas station to database if not present
+| Actors Involved        | New Price as NP, Gas Station as GS, Database as DB |
+| ------------- |-------------| 
+|  Precondition  | NP for GS is received at DB |  
+|  Post condition | GS is saved to DB |
+|  Nominal Scenario | If GS is not already present in DB, it gets added, along with NP. |
+| | Else, save NP to DB. |
+
+### Use case 7, UC7 - FR5 Produce a graph of price fluctuations for a given station
+| Actors Involved        | Application as A, Gas Station as GS, Database as DB |
+| ------------- |-------------| 
+|  Precondition  | Price history of GS is pulled to A from DB |  
+|  Post condition | A shows the corresponding graph on the screen |
+|  Nominal Scenario | Price history of GS is shown graphically on A |
+|  Variants | GS is not in DB, issue error |
+| | GS does not have a price history, issue warning |
+
+### Use case 8, UC8 - FR6 Record gas station status
+| Actors Involved        | User as U, Gas Station as GS, Database as DB |
+| ------------- |-------------| 
+|  Precondition  | U is logged in, U sees in real life that GS is either temporarily closed or under maintenance, or has re-opened after being temporarily closed or under maintenance |  
+|  Post condition | The status of GS is updated in DB |
+|  Nominal Scenario | U sees GS is closed, U logs into the app, U updates the status of GS, the status of GS is updated in DB |
+|  Variants | U sees GS has re-opened, U logs into the app, U updates the status of GS, the status of GS is updated in DB |
+| | The status of GS is the same as the new one set by U, issue warning |
+
+### Use case 9, UC9 - FR7 Create account
+| Actors Involved | User as U, e-mail address as A, password as P, Database as DB |
+| ------------- |-------------| 
+|  Precondition  | U is using EZGas, U sends A and P to DB |  
+|  Post condition | A new locked user account is created in DB, a confirmation e-mail is sent to A |
+|  Nominal Scenario | U registers on EZGas, U receives a confirmation e-mail at A |
+|  Variants | P does not respect security standards, issue error |
+| | A is not a valid e-mail address, issue error |
+
+### Use case 10, UC10 - FR7.1 Login
+| Actors Involved | User as U, e-mail address as A, password as P, Database as DB |
+| ------------- |-------------| 
+|  Precondition  | U is using EZGas, U sends A and P to DB |  
+|  Post condition | U is logged in |
+|  Nominal Scenario | U logs into EZGas with A, P |
+| | A is not a valid e-mail address, issue error |
+| | A is not in DB, issue error |
+| | No A,P correspondance in DB, issue error |
+
+### Use case 11, UC11 - FR7.2 Logout
+| Actors Involved | User as U, e-mail address as A, password as P, Database as DB |
+| ------------- |-------------| 
+|  Precondition  | U is using EZGas, U sends A and P to DB |  
+|  Post condition | U is logged in |
+|  Nominal Scenario | U logs into EZGas with A, P |
+| | A is not a valid e-mail address, issue error |
+| | A is not in DB, issue error |
+| | No A,P correspondance in DB, issue error |
 
 ##### Scenario 1.1 
 
