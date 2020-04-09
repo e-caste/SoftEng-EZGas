@@ -50,13 +50,11 @@ M -- (EZGas)
 ```
 
 ## Interfaces
-\<describe here each interface in the context diagram>
-
-\<GUIs will be described graphically in a separate document>
-
 | Actor | Logical Interface | Physical Interface  |
 | ------------- |:-------------:| -----:|
-|       |  |  |
+| User  | GUI               | Touchscreen / screen, mouse and keyboard |
+| Database | Internet Access | Server network cable |
+| Maps | Internet Access | Server network cable |
 
 # Stories and personas
 
