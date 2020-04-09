@@ -198,11 +198,12 @@ FR7.2 ---> DB
 ### Use case 6, UC3 - FR3 Show recently visited gas stations
 | Actors Involved        | User, Database |
 | ------------- |-------------| 
-|  Precondition  | User U has installed EZGas app, Database DB is available on the Internet |  
+|  Precondition  | User U is logged in, Database DB is available on the Internet |  
 |  Post condition | Database entries are pulled and displayed |
 |  Nominal Scenario | U taps searchbar on screen, a brief list of the most recently visited gas stations appears |
 |  Variants | Internet connection not available, issue warning |
 | | Database not available, issue error |
+| | U is not logged in, issue error|
 
 ### Use case 7, UC7 - FR4 Record updated gas station price to database
 | Actors Involved        | User, Maps, Database |
@@ -252,7 +253,7 @@ FR7.2 ---> DB
 ### Use case 12, UC12 - FR7 Create account
 | Actors Involved | User as U, Database as DB |
 | ------------- |-------------| 
-|  Precondition  | U is using EZGas, U sends e-mail address A and password P to DB |  
+|  Precondition  | U is using EZGas, U sends username UN, e-mail address A and password P to DB |  
 |  Post condition | A new locked user account is created in DB, a confirmation e-mail is sent to A |
 |  Nominal Scenario | U registers on EZGas, U receives a confirmation e-mail at A |
 |  Variants | P does not respect security standards, issue error |
@@ -306,10 +307,61 @@ FR7.2 ---> DB
 
 
 # Glossary
+```plantuml
+class EZGas
 
-\<use UML class diagram to define important concepts in the domain of the system, and their relationships> 
+class GuestUser {
++ ID
++ location
+}
 
-\<concepts are used consistently all over the document, ex in use cases, requirements etc>
+class LoggedUser {
++ username
++ email
++ password
++ preference
++ visitedGasStations
+}
+
+class Preference {
++ fuelType
++ gasStationRange
++ gasStationBrand
+}
+
+class GasStation {
++ ID
++ location
++ brand
++ fuels
++ isOpen {y/n}
++ updatesPerDay
+}
+
+class Fuel {
++ name
++ prices
+}
+
+class Price {
++ value
+}
+
+class PriceUpdate {
++ ID
++ datetime
++ user
++ fuel
++ gasStation
+}
+
+class Location {
++ latitude
++ longitude
+}
+
+```
+
 
 # System Design
 \<describe here system design>
