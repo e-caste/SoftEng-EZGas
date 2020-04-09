@@ -109,44 +109,45 @@ actor User as U
 actor Database as DB
 actor Maps as M
 rectangle EZGas {
-	usecase "Show Map" as FR1
-	usecase "Search place" as FR2
-	usecase "Distance filter" as FR2.1
-	usecase "Price filter" as FR2.2
-	usecase "Fuel type filter" as FR2.3
-	usecase "Show recently visited" as FR3
-	usecase "Update price" as FR4
-	usecase "Trust-based check" as FR4.1
-	usecase "Add new gas station to DB" as FR4.2
-	usecase "Show price graph" as FR5
-	usecase "Update gas station status" as FR6
-	usecase "Create account" as FR7
-	usecase "Login" as FR7.1
-	usecase "Logout" as FR7.2
+    usecase "Show Map" as FR1
+    usecase "Search place" as FR2
+    usecase "Distance filter" as FR2.1
+    usecase "Price filter" as FR2.2
+    usecase "Fuel type filter" as FR2.3
+    usecase "Show recently visited" as FR3
+    usecase "Update price" as FR4
+    usecase "Trust-based check" as FR4.1
+    usecase "Add new gas station to DB" as FR4.2
+    usecase "Show price graph" as FR5
+    usecase "Update gas station status" as FR6
+    usecase "Create account" as FR7
+    usecase "Login" as FR7.1
+    usecase "Logout" as FR7.2
 }
-U -> FR1
-U -> FR2
-U -> FR3
-U -> FR4
-U -> FR5
-U -> FR6
-U -> FR7
-U -> FR7.1
-U -> FR7.2
-FR1 -> M
-FR2 -> M
-FR2.1 .> FR2 : extends
-FR2.2 .> FR2 : extends
-FR2.3 .> FR2 : extends
-FR3 -> DB
-FR4 -> DB
-FR4.1 .> FR4 : includes
-FR4.2 .> FR4 : includes
-FR5 -> DB
-FR6 -> DB
-FR7 -> DB
-FR7.1 -> DB
-FR7 -> DB
+
+U ----> FR1
+U --> FR2
+U --> FR3
+U --> FR4
+U --> FR5
+U --> FR6
+U --> FR7
+U --> FR7.1
+U --> FR7.2
+FR1 ---> M
+FR2 ----> M
+FR2 <-. FR2.1 : extends
+FR2 <-. FR2.2 : extends
+FR2 <-. FR2.2 : extends
+FR3 ---> DB
+FR4 ---> DB
+FR4 <-. FR4.1  : includes
+FR4 <-. FR4.2 : includes
+FR5 ----> DB
+FR6 ---> DB
+FR7 ---> DB
+FR7.1 ---> DB
+FR7.2 ---> DB
 ```
 ### Use case 1, UC1 - FR1 Show nearby world map
 | Actors Involved        | User, Maps |
