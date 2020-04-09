@@ -30,15 +30,27 @@ Version: 1
 
 
 | Stakeholder name  | Description | 
-| ----------------- |:-----------:|
-|                   |             | 
+| ----- |:-----------:|
+| Users | Use EZGas either actively, by updating gas prices, or passively, by checking gas prices other users have set up | 
+| Developers | Add features to EZGas, fix bugs of EZGas, release the app, deploy and update any server-side software |
+| Database | Contains all the prices that users upload to EZGas | 
+| Maps | Provide an API to access gas station locations |
 
 # Context Diagram and interfaces
 
 ## Context Diagram
-\<Define here Context diagram using UML use case diagram>
 
-\<actors are a subset of stakeholders>
+```plantuml
+actor User as U
+actor Database as DB
+actor Maps as M
+U -- (EZGas)
+DB -- (EZGas)
+M -- (EZGas)
+```
+<p align="center">
+	<img src="https://imgur.com/Yayk187.png">
+</p>
 
 ## Interfaces
 \<describe here each interface in the context diagram>
