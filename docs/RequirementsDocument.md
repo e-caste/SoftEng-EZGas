@@ -1,10 +1,10 @@
 # Requirements Document 
 
-Authors:
+Authors: Enrico Castelli s280124, Augusto Maria Guerriero s278018, Francesca Ponzetta s276535, Monica Rungi s2769
 
-Date:
+Date: 09/04/2020
 
-Version:
+Version: 1
 
 # Contents
 
