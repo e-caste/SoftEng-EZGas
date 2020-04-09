@@ -70,14 +70,17 @@ Jared, 18 years old, just had his car bought as a present from his parents. He g
 
 ## Functional Requirements
 
-\<In the form DO SOMETHING, or VERB NOUN, describe high level capabilities of the system>
-
-\<will match to high level use cases>
-
 | ID        | Description  |
-| ------------- |:-------------:| 
-|  FR1     |  |
-|  FR2     |   |
+|:---------:|:------------:| 
+|  FR1      | Show nearby world map |  
+|  FR2      | Search for a place on the map |
+|  FR2.1    | Filter search based on distance from user |
+|  FR2.2    | Filter search based on lowest price first |
+|  FR2.3    | Filter search based on type of fuel |
+|  FR3      | Show recently visited gas stations |
+|  FR4      | Record updated gas station price to database |
+|  FR4.1    | Perform trust-based check before updating price |
+|  FR4.2    | Add new gas station to database if not present |
 
 ## Non Functional Requirements
 
