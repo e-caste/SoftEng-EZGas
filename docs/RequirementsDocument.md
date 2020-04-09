@@ -48,9 +48,6 @@ U -- (EZGas)
 DB -- (EZGas)
 M -- (EZGas)
 ```
-<p align="center">
-	<img src="https://imgur.com/Yayk187.png">
-</p>
 
 ## Interfaces
 \<describe here each interface in the context diagram>
