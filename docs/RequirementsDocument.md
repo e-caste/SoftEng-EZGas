@@ -81,6 +81,8 @@ Jared, 18 years old, just had his car bought as a present from his parents. He g
 |  FR4      | Record updated gas station price to database |
 |  FR4.1    | Perform trust-based check before updating price |
 |  FR4.2    | Add new gas station to database if not present |
+|  FR5      | Produce a graph of price fluctuations for a given station |
+|  FR6      | Record that a gas station is closed or under maintenance |
 
 ## Non Functional Requirements
 
