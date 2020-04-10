@@ -115,6 +115,7 @@ rectangle EZGas {
     usecase "Distance filter" as FR2.1
     usecase "Price filter" as FR2.2
     usecase "Fuel type filter" as FR2.3
+    usecase "Brand filter" as FR2.4
     usecase "Show recently visited" as FR3
     usecase "Update price" as FR4
     usecase "Trust-based check" as FR4.1
