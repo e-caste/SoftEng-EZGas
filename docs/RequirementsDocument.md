@@ -77,6 +77,7 @@ Jared, 18 years old, just had his car bought as a present from his parents. He g
 |  FR2.1    | Filter search based on distance from user |
 |  FR2.2    | Filter search based on lowest price |
 |  FR2.3    | Filter search based on type of fuel |
+|  FR2.4    | Filter search based on gas station brand |
 |  FR3      | Show recently visited gas stations |
 |  FR4      | Record updated gas station price to database |
 |  FR4.1    | Perform trust-based check before updating price |
