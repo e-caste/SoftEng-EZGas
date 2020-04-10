@@ -140,6 +140,7 @@ FR2 ----> M
 FR2 <-. FR2.1 : extends
 FR2 <-. FR2.2 : extends
 FR2 <-. FR2.3 : extends
+FR2 <-. FR2.4 : extends
 FR3 ---> DB
 FR4 ---> DB
 FR4 <-. FR4.1  : includes
