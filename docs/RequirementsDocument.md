@@ -197,7 +197,7 @@ FR7.2 ---> DB
 |  Variants | Maps not available, issue error |
 | | Internet connection not available, issue warning |
 
-### Use case 6, UC3 - FR3 Show recently visited gas stations
+### Use case 6, UC6 - FR3 Show recently visited gas stations
 | Actors Involved        | User, Database |
 | ------------- |-------------| 
 |  Precondition  | User U is logged in, Database DB is available on the Internet |  
