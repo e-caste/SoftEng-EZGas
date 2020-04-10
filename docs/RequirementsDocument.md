@@ -235,7 +235,7 @@ FR7.2 ---> DB
 ### Use case 9, UC9 - FR4.1 Perform trust-based check before updating price
 | Actors Involved        | Database as DB |
 | ------------- |-------------| 
-|  Precondition  | New price NP is received at DB |  
+|  Precondition  |  New price NP is received at DB |  
 |  Post condition | NP is saved to DB |
 |  Nominal Scenario | The prices older than N days are removed. If NP is within a margin of error (e.g. 0.1€) from the last X user-submitted prices, then the price for that gas station and that type of fuel is updated to the average of the last X prices and is displayed in-app to the users; the last X prices are removed from the database. X is calculated based on how many NPs are received per day at each gas station, and is a gas station property. |
 | | Else, save NP to DB. |
@@ -243,7 +243,7 @@ FR7.2 ---> DB
 ### Use case 10, UC10 - FR4.2 Add new gas station to database if not present
 | Actors Involved        | Database as DB |
 | ------------- |-------------| 
-|  Precondition  | New price NP for gas station GS is received at DB |  
+|  Precondition  | User U has installed EZGas app and he is logged in, Maps M are available on the Internet, Database DB is available on the Internet, new price NP for the fuel of a new gas station GS is received at DB |  
 |  Post condition | GS is saved to DB |
 |  Nominal Scenario | If GS is not already present in DB, it gets added, along with NP. |
 | | Else, save NP to DB. |
