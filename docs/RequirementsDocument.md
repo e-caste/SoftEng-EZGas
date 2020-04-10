@@ -197,6 +197,15 @@ FR7.2 ---> DB
 |  Variants | Maps not available, issue error |
 | | Internet connection not available, issue warning |
 
+### Use case 6, UC6 - FR2.4 Filter search based on gas station brand
+| Actors Involved        | User, Maps |
+| ------------- |-------------| 
+|  Precondition  | User U has installed EZGas app, Maps M are available on the Internet, User Location UL exists, Brand B is an acceptable value |  
+|  Post condition | The nearest gas stations to UL which are of brand B are displayed on U's screen |
+|  Nominal Scenario | U searches for nearest gas stations of brand B |
+|  Variants | Maps not available, issue error |
+| | Internet connection not available, issue warning |
+
 ### Use case 6, UC6 - FR3 Show recently visited gas stations
 | Actors Involved        | User, Database |
 | ------------- |-------------| 
