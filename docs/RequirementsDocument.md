@@ -205,7 +205,7 @@ FR7.2 ---> DB
 ### Use case 6, UC6 - FR2.4 Filter search based on gas station brand
 | Actors Involved        | User, Maps |
 | ------------- |-------------| 
-|  Precondition  | User U has installed EZGas app, Maps M are available on the Internet, User Location UL exists, Brand B is an acceptable value |  
+|  Precondition  | User U has installed EZGas, Maps M are available on the Internet, User Location UL exists, Brand B is an acceptable value |  
 |  Post condition | The nearest gas stations to UL which are of brand B are displayed on U's screen |
 |  Nominal Scenario | U searches for nearest gas stations of brand B |
 |  Variants | Maps not available, issue error |
@@ -303,22 +303,58 @@ FR7.2 ---> DB
 
 \<only relevant scenarios should be described>
 
-| Scenario 1.1 | |
+| Scenario ID: SC1 |  Corresponds to UC2-UC6 |
 | ------------- |:-------------:| 
-|  Precondition     | \<Boolean expression, must evaluate to true before the scenario can start> |
-|  Post condition     | \<Boolean expression, must evaluate to true after scenario is finished> |
+|  Precondition     | User U has installed EZGas app, Maps M are available on the Internet, Location L exists |
+|  Post condition     | One or more gas stations are displayed on U's screen |
 | Step#        | Description  |
-|  1     |  |  
-|  2     |  |
-|  ...     |  |
+|  1     | U sets the distance filter in order to search for the nearest Gas station (optional)  |  
+|  2     | U sets the type of fuel filter in order to search a gas station according to the type of fuel he needs (optional) |
+|  3     | U sets the price filter in order to search for the gas station with the lower prices of fuels (optional) |
+|  4     | U sets the brand filte in order to search for the gas station belonging to a particular branch (optional) |
+|  5     | U searches for a gas station and the gas station is displayed on the screen  |
+|  6     | There are no gas stations corresponding to the U's needs, the application returns an error  |
 
-##### Scenario 1.2
 
-### Use case 2, UC2
-..
 
-### Use case
-..
+| Scenario ID: SC2 |  Corresponds to UC8-UC10 |
+| ------------- |:-------------:| 
+|  Precondition     | User U has installed EZGas app, Maps M are available on the Internet,  Database DB is available on the Internet,U has an account on EZGas and he is logged in|
+|  Post condition     | Database entry is updated |
+| Step#        | Description  |
+|  1     | U notices that a gas station is not present in EZGas, so he adds the new Gas station together with at least a fuel with its price |
+|  2     | U notices that the price of a fuel has changed compared to the price showed by EZGAs, so he update the price  |
+|  3     | Before adding the new price, the DB checks if the price is coherent with the last N prices of that fuel in that gas station, the change is not saved in the DB |
+
+
+| Scenario ID: SC3 |  Corresponds to UC13-UC15 |
+| ------------- |:-------------:| 
+|  Precondition     | U is using EZGas|
+|  Post condition     | U has an account on EZGas |
+| Step#        | Description  |
+|  1     | U sends his username, e-mail address and password to the DB and a new account is created and a confirmation mail is sent to the e-mail address |
+|  2     | U sends his e-mail address and password to DB, the DB checks if there's an account associated to that e-mail and if the password is correct. If so, the user logs in  |
+|  3     | U is logged in, he presses the log out button in order to log out |
+
+
+
+| Scenario ID: SC4 |  Corresponds to UC7 |
+| ------------- |:-------------:| 
+|  Precondition     | User U is logged in, Database DB is available on the Internet|
+|  Post condition     | Database entries are pulled and displayed |
+| Step#        | Description  |
+|  1     | The application keep track of the most recently visited gas station, so when the user taps the searchbar a brief list of the most recently visited gas stations appears |
+|  2    | The list of the most recently visited gas stations is not available if: U is not logged, DB is not available, Internet connection is not available |
+
+
+
+| Scenario ID: SC5 |  Corresponds to UC12 |
+| ------------- |:-------------:| 
+|  Precondition     | U is logged in, U sees in real life that gas station GS is either temporarily closed or under maintenance, or has re-opened after being temporarily closed or under maintenance|
+|  Post condition     | The status of GS is updated in DB |
+| Step#        | Description  |
+|  1     | U sees that a GS is closed, he checks the status of that GS in EZGas and if the status is 'open' it updates the status to 'close' |
+|  2     | U sees that a GS is opened, he checks the status of that GS in EZGas and if the status is 'close' it updates the status to 'open' |
 
 
 
