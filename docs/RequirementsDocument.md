@@ -219,12 +219,12 @@ FR7.2 ---> DB
 |  Nominal Scenario | U taps searchbar on screen, a brief list of the most recently visited gas stations appears |
 |  Variants | Internet connection not available, issue warning |
 | | Database not available, issue error |
-| | U is not logged in, issue error|
+| | U is not logged in, no list of recent visited gas stations displayed |
 
 ### Use case 8, UC8 - FR4 Record updated gas station price to database
 | Actors Involved        | User, Maps, Database |
 | ------------- |-------------| 
-|  Precondition  | User U has installed EZGas app, Maps M are available on the Internet, Database DB is available on the Internet, type of fuel TF is offered by gas station GS |  
+|  Precondition  | User U has installed EZGas app and he is logged in, Maps M are available on the Internet, Database DB is available on the Internet, type of fuel TF is offered by gas station GS |  
 |  Post condition | Database entry is updated |
 |  Nominal Scenario | U taps GS on M and inputs new price NP and TF, uploaded to DB |
 |  Variants | Maps not available, issue error |
