@@ -206,7 +206,7 @@ FR7.2 ---> DB
 |  Variants | Maps not available, issue error |
 | | Internet connection not available, issue warning |
 
-### Use case 6, UC6 - FR3 Show recently visited gas stations
+### Use case 7, UC7 - FR3 Show recently visited gas stations
 | Actors Involved        | User, Database |
 | ------------- |-------------| 
 |  Precondition  | User U is logged in, Database DB is available on the Internet |  
@@ -216,7 +216,7 @@ FR7.2 ---> DB
 | | Database not available, issue error |
 | | U is not logged in, issue error|
 
-### Use case 7, UC7 - FR4 Record updated gas station price to database
+### Use case 8, UC8 - FR4 Record updated gas station price to database
 | Actors Involved        | User, Maps, Database |
 | ------------- |-------------| 
 |  Precondition  | User U has installed EZGas app, Maps M are available on the Internet, Database DB is available on the Internet, type of fuel TF is offered by gas station GS |  
@@ -227,7 +227,7 @@ FR7.2 ---> DB
 | | Database not available, issue error |
 | | Price validation error, issue error |
 
-### Use case 8, UC8 - FR4.1 Perform trust-based check before updating price
+### Use case 9, UC9 - FR4.1 Perform trust-based check before updating price
 | Actors Involved        | Database as DB |
 | ------------- |-------------| 
 |  Precondition  | New price NP is received at DB |  
@@ -235,7 +235,7 @@ FR7.2 ---> DB
 |  Nominal Scenario | The prices older than N days are removed. If NP is within a margin of error (e.g. 0.1€) from the last X user-submitted prices, then the price for that gas station and that type of fuel is updated to the average of the last X prices and is displayed in-app to the users; the last X prices are removed from the database. X is calculated based on how many NPs are received per day at each gas station, and is a gas station property. |
 | | Else, save NP to DB. |
 
-### Use case 9, UC9 - FR4.2 Add new gas station to database if not present
+### Use case 10, UC10 - FR4.2 Add new gas station to database if not present
 | Actors Involved        | Database as DB |
 | ------------- |-------------| 
 |  Precondition  | New price NP for gas station GS is received at DB |  
@@ -243,7 +243,7 @@ FR7.2 ---> DB
 |  Nominal Scenario | If GS is not already present in DB, it gets added, along with NP. |
 | | Else, save NP to DB. |
 
-### Use case 10, UC10 - FR5 Produce a graph of price fluctuations for a given station
+### Use case 11, UC11 - FR5 Produce a graph of price fluctuations for a given station
 | Actors Involved        | Database as DB |
 | ------------- |-------------| 
 |  Precondition  | Price history of gas station GS is pulled to application from DB |  
@@ -252,7 +252,7 @@ FR7.2 ---> DB
 |  Variants | GS is not in DB, issue error |
 | | GS does not have a price history, issue warning |
 
-### Use case 11, UC11 - FR6 Record gas station status
+### Use case 12, UC12 - FR6 Record gas station status
 | Actors Involved        | User as U, Database as DB |
 | ------------- |-------------| 
 |  Precondition  | U is logged in, U sees in real life that gas station GS is either temporarily closed or under maintenance, or has re-opened after being temporarily closed or under maintenance |  
@@ -261,7 +261,7 @@ FR7.2 ---> DB
 |  Variants | U sees GS has re-opened, U logs into the app, U updates the status of GS, the status of GS is updated in DB |
 | | The status of GS is the same as the new one set by U, issue warning |
 
-### Use case 12, UC12 - FR7 Create account
+### Use case 13, UC13 - FR7 Create account
 | Actors Involved | User as U, Database as DB |
 | ------------- |-------------| 
 |  Precondition  | U is using EZGas, U sends username UN, e-mail address A and password P to DB |  
@@ -270,7 +270,7 @@ FR7.2 ---> DB
 |  Variants | P does not respect security standards, issue error |
 | | A is not a valid e-mail address, issue error |
 
-### Use case 13, UC13 - FR7.1 Login
+### Use case 14, UC14 - FR7.1 Login
 | Actors Involved | User as U, Database as DB |
 | ------------- |-------------| 
 |  Precondition  | U is using EZGas, U sends e-mail address A and password P to DB |  
@@ -280,7 +280,7 @@ FR7.2 ---> DB
 | | A is not in DB, issue error |
 | | No A,P correspondance in DB, issue error |
 
-### Use case 14, UC14 - FR7.2 Logout
+### Use case 15, UC15 - FR7.2 Logout
 | Actors Involved | User as U, Database as DB |
 | ------------- |-------------| 
 |  Precondition  | U is using EZGas, U is logged in |  
