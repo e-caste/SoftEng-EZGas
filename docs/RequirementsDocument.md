@@ -105,6 +105,8 @@ Jared, 18 years old, just had his car bought as a present from his parents. He g
 
 ## Use case diagram
 ```plantuml
+@startuml
+
 left to right direction
 actor User as U
 actor Database as DB
@@ -151,6 +153,8 @@ FR6 ---> DB
 FR7 ---> DB
 FR7.1 ---> DB
 FR7.2 ---> DB
+
+@enduml
 ```
 ### Use case 1, UC1 - FR1 Show nearby world map
 | Actors Involved        | User, Maps |
@@ -320,6 +324,8 @@ FR7.2 ---> DB
 
 # Glossary
 ```plantuml
+@startuml
+
 class EZGas
 
 class GuestUser {
@@ -346,7 +352,7 @@ class GasStation {
 + location
 + brand
 + fuels
-+ isOpen {y/n}
++ status
 + updatesPerDay
 }
 
@@ -359,12 +365,23 @@ class Price {
 + value
 }
 
-class PriceUpdate {
+class Update {
 + ID
 + datetime
 + user
-+ fuel
 + gasStation
+}
+
+class PriceUpdate {
++ fuel
+}
+
+class StatusUpdate {
++ status
+}
+
+class Status {
++ isOpen {y/n}
 }
 
 class Location {
@@ -372,6 +389,43 @@ class Location {
 + longitude
 }
 
+note as N1
+Can update <b>prices</b> and his 
+<b>preferences</b> are saved to 
+EZGas's database
+end note
+
+note as N2
+For each fuel, 
+we keep track 
+of its <b>price history</b>
+end note
+
+EZGas --- "*" GuestUser
+EZGas --- "*" GasStation
+
+GuestUser "*" -- "1" Location : is at >
+GasStation "*" -- "1" Location : is at >
+
+N1 .. LoggedUser
+LoggedUser -up|> GuestUser
+LoggedUser "1" -- "1" Preference : has >
+
+LoggedUser "1" -- "*" Update : is made by <
+GasStation "1" -- "*" Update : references <
+
+PriceUpdate -|> Update
+StatusUpdate -left|> Update
+
+Fuel "1" -- "*" PriceUpdate : references <
+Status "1" -up- "*" StatusUpdate : references <
+
+Fuel "*" -up- "*" GasStation : offers <
+Price "*" -- "*" Fuel : costs <
+N2 .. Fuel
+N2 .. Price
+
+@enduml
 ```
 
 
