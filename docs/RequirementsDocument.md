@@ -293,15 +293,7 @@ FR7.2 ---> DB
 |  Nominal Scenario | U logs out of EZGas by pressing a logout button |
 |  Variants | U is not logged in, issue warning |
 
-##### Scenario 1.1 
-
-\<describe here scenarios instances of UC1>
-
-\<a scenario is a sequence of steps that corresponds to a particular execution of one use case>
-
-\<a scenario is a more formal description of a story>
-
-\<only relevant scenarios should be described>
+## Relevant Scenarios
 
 | Scenario ID: SC1 |  Corresponds to UC2-UC6 |
 | ------------- |:-------------:| 
