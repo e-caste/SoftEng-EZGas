@@ -157,75 +157,75 @@ FR7.2 ---> DB
 @enduml
 ```
 ### Use case 1, UC1 - FR1 Show nearby world map
-| Actors Involved        | User, Maps |
+| Actors Involved        | User as U, Maps as M |
 | ------------- |-------------| 
-|  Precondition  | User U has installed EZGas app, Maps M are available on the Internet |  
+|  Precondition  | U has installed EZGas app, M are available on the Internet |  
 |  Post condition | M displayed on U's screen |
 |  Nominal Scenario | User opens application and sees Maps |
 |  Variants | Maps not available, issue error |
 | | Internet connection not available, issue warning |
 
 ### Use case 2, UC2 - FR2 Search for a place on the map
-| Actors Involved        | User, Maps |
+| Actors Involved        | User as U, Maps as M |
 | ------------- |-------------| 
-|  Precondition  | User U has installed EZGas app, Maps M are available on the Internet, Location L exists |  
+|  Precondition  | U has installed EZGas app, M are available on the Internet, Location L exists |  
 |  Post condition | Location searched is displayed on U's screen |
 |  Nominal Scenario | U searches for L and L is displayed on M |
-|  Variants | Maps not available, issue error |
+|  Variants | M not available, issue error |
 | | Internet connection not available, issue warning |
 | | Location does not exist, issue warning |
 
 ### Use case 3, UC3 - FR2.1 Filter search based on distance from user
-| Actors Involved        | User, Maps |
+| Actors Involved        | User as U, Maps as M |
 | ------------- |-------------| 
-|  Precondition  | User U has installed EZGas app, Maps M are available on the Internet, User Location UL exists |  
+|  Precondition  | U has installed EZGas app, M are available on the Internet, User Location UL exists |  
 |  Post condition | The nearest gas stations to UL are displayed on U's screen |
 |  Nominal Scenario | U searches for nearest gas stations |
-|  Variants | Maps not available, issue error |
+|  Variants | M not available, issue error |
 | | Internet connection not available, issue warning |
 
 ### Use case 4, UC4 - FR2.2 Filter search based on lowest price
-| Actors Involved        | User, Maps |
+| Actors Involved        | User as U, Maps as M |
 | ------------- |-------------| 
-|  Precondition  | User U has installed EZGas app, Maps M are available on the Internet, User Location UL exists |  
+|  Precondition  | U has installed EZGas app, M are available on the Internet, User Location UL exists |  
 |  Post condition | The gas stations with the lowest price in a default or user-selected range are displayed on U's screen |
 |  Nominal Scenario | U searches for gas stations with lowest price |
-|  Variants | Maps not available, issue error |
+|  Variants | M not available, issue error |
 | | Internet connection not available, issue warning |
 
 ### Use case 5, UC5 - FR2.3 Filter search based on type of fuel
-| Actors Involved        | User, Maps |
+| Actors Involved        | User as U, Maps as M |
 | ------------- |-------------| 
-|  Precondition  | User U has installed EZGas app, Maps M are available on the Internet, User Location UL exists, Type of Fuel TF is an acceptable value |  
+|  Precondition  | U has installed EZGas app, M are available on the Internet, User Location UL exists, Type of Fuel TF is an acceptable value |  
 |  Post condition | The nearest gas stations to UL which offer TF are displayed on U's screen |
 |  Nominal Scenario | U searches for nearest gas stations which offer TF |
-|  Variants | Maps not available, issue error |
+|  Variants | M not available, issue error |
 | | Internet connection not available, issue warning |
 
 ### Use case 6, UC6 - FR2.4 Filter search based on gas station brand
-| Actors Involved        | User, Maps |
+| Actors Involved        | User as U, Maps as M |
 | ------------- |-------------| 
-|  Precondition  | User U has installed EZGas, Maps M are available on the Internet, User Location UL exists, Brand B is an acceptable value |  
+|  Precondition  | U has installed EZGas, M are available on the Internet, User Location UL exists, Brand B is an acceptable value |  
 |  Post condition | The nearest gas stations to UL which are of brand B are displayed on U's screen |
 |  Nominal Scenario | U searches for nearest gas stations of brand B |
 |  Variants | Maps not available, issue error |
 | | Internet connection not available, issue warning |
 
 ### Use case 7, UC7 - FR3 Show recently visited gas stations
-| Actors Involved        | User, Database |
+| Actors Involved        | User as U, Database as DB |
 | ------------- |-------------| 
-|  Precondition  | User U is logged in, Database DB is available on the Internet |  
-|  Post condition | Database entries are pulled and displayed |
+|  Precondition  | U is logged in, DB is available on the Internet |  
+|  Post condition | DB entries are pulled and displayed |
 |  Nominal Scenario | U taps searchbar on screen, a brief list of the most recently visited gas stations appears |
 |  Variants | Internet connection not available, issue warning |
 | | Database not available, issue error |
 | | U is not logged in, no list of recent visited gas stations displayed |
 
 ### Use case 8, UC8 - FR4 Record updated gas station price to database
-| Actors Involved        | User, Maps, Database |
+| Actors Involved        | User as U, Maps as M, Database as DB |
 | ------------- |-------------| 
-|  Precondition  | User U has installed EZGas app and he is logged in, Maps M are available on the Internet, Database DB is available on the Internet, type of fuel TF is offered by gas station GS |  
-|  Post condition | Database entry is updated |
+|  Precondition  | U has installed EZGas app and is logged in, M are available on the Internet, Database DB is available on the Internet, type of fuel TF is offered by gas station GS |  
+|  Post condition | DB entry is updated |
 |  Nominal Scenario | U taps GS on M and inputs new price NP and TF, uploaded to DB |
 |  Variants | Maps not available, issue error |
 | | Internet connection not available, issue warning |
