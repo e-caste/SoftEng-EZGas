@@ -124,10 +124,11 @@ rectangle EZGas {
     usecase "Trust-based check" as FR4.1
     usecase "Add new gas station to DB" as FR4.2
     usecase "Show price graph" as FR5
-    usecase "Update gas station status" as FR6
-    usecase "Create account" as FR7
-    usecase "Login" as FR7.1
-    usecase "Logout" as FR7.2
+    usecase "Open link to Google Maps app or website" as FR6
+    usecase "Update gas station status" as FR7
+    usecase "Create account" as FR8
+    usecase "Login" as FR8.1
+    usecase "Logout" as FR8.2
 }
 
 U ----> FR1
@@ -137,8 +138,10 @@ U --> FR4
 U --> FR5
 U --> FR6
 U --> FR7
-U --> FR7.1
-U --> FR7.2
+U --> FR8
+U --> FR8.1
+U --> FR8.2
+
 FR1 ---> M
 FR2 ----> M
 FR2 <-. FR2.1 : extends
@@ -152,8 +155,9 @@ FR4 <-. FR4.2 : includes
 FR5 ----> DB
 FR6 ---> DB
 FR7 ---> DB
-FR7.1 ---> DB
-FR7.2 ---> DB
+FR8 ---> DB
+FR8.1 ---> DB
+FR8.2 ---> DB
 
 @enduml
 ```
@@ -258,7 +262,18 @@ FR7.2 ---> DB
 |  Variants | GS is not in DB, issue error |
 | | GS does not have a price history, issue warning |
 
-### Use case 12, UC12 - FR6 Record gas station status
+### Use case 12, UC12 - FR6 Open link to Google Maps with directions to a given station
+| Actors Involved        | User as U, Database as DB |
+| ------------- |-------------| 
+|  Precondition  | U has installed EZGas app, Google Maps link exists in DB |  
+|  Post condition | Application opens external link to Google Maps |
+|  Nominal Scenario | U selects GS, U clicks on "Directions",  EZGas app opens link |
+|  Variants | Google Maps link is not in DB, issue message |
+| | EZGas is accessed from smartphone and has Google Maps app installed, link is opened inside Google Maps app |
+| EZGas is accessed from smartphone and Google Maps app is not installed, link is opened inside browser |
+| EZGas is accessed from PC, link is opened in new tab in browser |
+
+### Use case 13, UC13 - FR7 Record gas station status
 | Actors Involved        | User as U, Database as DB |
 | ------------- |-------------| 
 |  Precondition  | U is logged in, U sees in real life that gas station GS is either temporarily closed or under maintenance, or has re-opened after being temporarily closed or under maintenance |  
@@ -267,7 +282,7 @@ FR7.2 ---> DB
 |  Variants | U sees GS has re-opened, U logs into the app, U updates the status of GS, the status of GS is updated in DB |
 | | The status of GS is the same as the new one set by U, issue warning |
 
-### Use case 13, UC13 - FR7 Create account
+### Use case 14, UC14 - FR8 Create account
 | Actors Involved | User as U, Database as DB |
 | ------------- |-------------| 
 |  Precondition  | U is using EZGas, U sends username UN, e-mail address A and password P to DB |  
@@ -276,7 +291,7 @@ FR7.2 ---> DB
 |  Variants | P does not respect security standards, issue error |
 | | A is not a valid e-mail address, issue error |
 
-### Use case 14, UC14 - FR7.1 Login
+### Use case 15, UC15 - FR8.1 Login
 | Actors Involved | User as U, Database as DB |
 | ------------- |-------------| 
 |  Precondition  | U is using EZGas, U sends e-mail address A and password P to DB |  
@@ -286,7 +301,7 @@ FR7.2 ---> DB
 | | A is not in DB, issue error |
 | | No A,P correspondance in DB, issue error |
 
-### Use case 15, UC15 - FR7.2 Logout
+### Use case 16, UC16 - FR8.2 Logout
 | Actors Involved | User as U, Database as DB |
 | ------------- |-------------| 
 |  Precondition  | U is using EZGas, U is logged in |  
