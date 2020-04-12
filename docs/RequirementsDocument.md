@@ -83,10 +83,11 @@ Jared, 18 years old, just had his car bought as a present from his parents. He g
 |  FR4.1    | Perform trust-based check before updating price |
 |  FR4.2    | Add new gas station to database if not present |
 |  FR5      | Produce a graph of price fluctuations for a given station |
-|  FR6      | Record gas station status |
-|  FR7      | Create account |
-|  FR7.1    | Login |
-|  FR7.2    | Logout |
+|  FR6      | Open link to Google Maps with directions to a given station |
+|  FR7      | Record gas station status |
+|  FR8      | Create account |
+|  FR8.1    | Login |
+|  FR8.2    | Logout |
 
 ## Non Functional Requirements
 
