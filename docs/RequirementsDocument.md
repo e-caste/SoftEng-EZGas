@@ -270,8 +270,8 @@ FR8.2 ---> DB
 |  Nominal Scenario | U selects GS, U clicks on "Directions",  EZGas app opens link |
 |  Variants | Google Maps link is not in DB, issue message |
 | | EZGas is accessed from smartphone and has Google Maps app installed, link is opened inside Google Maps app |
-| EZGas is accessed from smartphone and Google Maps app is not installed, link is opened inside browser |
-| EZGas is accessed from PC, link is opened in new tab in browser |
+| | EZGas is accessed from smartphone and Google Maps app is not installed, link is opened inside browser |
+| | EZGas is accessed from PC, link is opened in new tab in browser |
 
 ### Use case 13, UC13 - FR7 Record gas station status
 | Actors Involved        | User as U, Database as DB |
@@ -335,7 +335,7 @@ FR8.2 ---> DB
 |  3     | Before adding the new price, the DB checks if the price is coherent with the last N prices of that fuel in that gas station, the change is not saved in the DB |
 
 
-| Scenario ID: SC3 |  Corresponds to UC13-UC15 |
+| Scenario ID: SC3 |  Corresponds to UC14-UC16 |
 | ------------- |:-------------:| 
 |  Precondition     | U is using EZGas|
 |  Post condition     | U has an account on EZGas |
@@ -356,7 +356,7 @@ FR8.2 ---> DB
 
 
 
-| Scenario ID: SC5 |  Corresponds to UC12 |
+| Scenario ID: SC5 |  Corresponds to UC13 |
 | ------------- |:-------------:| 
 |  Precondition     | U is logged in, U sees in real life that gas station GS is either temporarily closed or under maintenance, or has re-opened after being temporarily closed or under maintenance|
 |  Post condition     | The status of GS is updated in DB |
@@ -364,6 +364,13 @@ FR8.2 ---> DB
 |  1     | U sees that a GS is closed, he checks the status of that GS in EZGas and if the status is 'open' it updates the status to 'close' |
 |  2     | U sees that a GS is opened, he checks the status of that GS in EZGas and if the status is 'close' it updates the status to 'open' |
 
+| Scenario ID: SC6 |  Corresponds to UC11-UC12 |
+| ------------- |:-------------:| 
+|  Precondition     | U is logged in, U sees in real life that gas station GS is either temporarily closed or under maintenance, or has re-opened after being temporarily closed or under maintenance|
+|  Post condition     | The status of GS is updated in DB |
+| Step#        | Description  |
+|  1     | U sees that a GS is closed, he checks the status of that GS in EZGas and if the status is 'open' it updates the status to 'close' |
+|  2     | U sees that a GS is opened, he checks the status of that GS in EZGas and if the status is 'close' it updates the status to 'open' |
 
 
 # Glossary
