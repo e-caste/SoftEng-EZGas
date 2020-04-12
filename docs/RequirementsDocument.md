@@ -230,7 +230,7 @@ FR8.2 ---> DB
 | Actors Involved        | User as U, Maps as M, Database as DB |
 | ------------- |-------------| 
 |  Precondition  | U has installed EZGas app and is logged in, M are available on the Internet, Database DB is available on the Internet, type of fuel TF is offered by gas station GS |  
-|  Post condition | DB entry is updated |
+|  Post condition | DB entry is updated,  GS is saved in recently visited GSs |
 |  Nominal Scenario | U taps GS on M and inputs new price NP and TF, uploaded to DB |
 |  Variants | Maps not available, issue error |
 | | Internet connection not available, issue warning |
@@ -266,9 +266,11 @@ FR8.2 ---> DB
 | Actors Involved        | User as U, Database as DB |
 | ------------- |-------------| 
 |  Precondition  | U has installed EZGas app, Google Maps link exists in DB |  
-|  Post condition | Application opens external link to Google Maps |
-|  Nominal Scenario | U selects GS, U clicks on "Directions",  EZGas app opens link |
+|  Post condition | Application opens external link to Google Maps, GS is saved in recently visited GSs |
+|  Nominal Scenario | U selects GS, U clicks on "Directions" for said GS,  EZGas app opens external link |
 |  Variants | Google Maps link is not in DB, issue message |
+| | Internet connection not available, issue warning |
+| | Database not available, issue error |
 | | EZGas is accessed from smartphone and has Google Maps app installed, link is opened inside Google Maps app |
 | | EZGas is accessed from smartphone and Google Maps app is not installed, link is opened inside browser |
 | | EZGas is accessed from PC, link is opened in new tab in browser |
@@ -356,7 +358,18 @@ FR8.2 ---> DB
 
 
 
-| Scenario ID: SC5 |  Corresponds to UC13 |
+| Scenario ID: SC5 |  Corresponds to UC12 |
+| ------------- |:-------------:| 
+|  Precondition     | U is logged in, Database DB is available on the Internet|
+|  Post condition     | External link to Google Maps is opened, GS is saved in recently visited GSs |
+| Step#        | Description  |
+|  1     | U selects a GS |
+|  2     | U taps on "Directions" link in app |
+|  3     | App opens external link to Google maps |
+|  4     | App saves GS to recently visited GSs |
+
+
+| Scenario ID: SC6 |  Corresponds to UC13 |
 | ------------- |:-------------:| 
 |  Precondition     | U is logged in, U sees in real life that gas station GS is either temporarily closed or under maintenance, or has re-opened after being temporarily closed or under maintenance|
 |  Post condition     | The status of GS is updated in DB |
@@ -364,13 +377,6 @@ FR8.2 ---> DB
 |  1     | U sees that a GS is closed, he checks the status of that GS in EZGas and if the status is 'open' it updates the status to 'close' |
 |  2     | U sees that a GS is opened, he checks the status of that GS in EZGas and if the status is 'close' it updates the status to 'open' |
 
-| Scenario ID: SC6 |  Corresponds to UC11-UC12 |
-| ------------- |:-------------:| 
-|  Precondition     | U is logged in, U sees in real life that gas station GS is either temporarily closed or under maintenance, or has re-opened after being temporarily closed or under maintenance|
-|  Post condition     | The status of GS is updated in DB |
-| Step#        | Description  |
-|  1     | U sees that a GS is closed, he checks the status of that GS in EZGas and if the status is 'open' it updates the status to 'close' |
-|  2     | U sees that a GS is opened, he checks the status of that GS in EZGas and if the status is 'close' it updates the status to 'open' |
 
 
 # Glossary
@@ -405,6 +411,7 @@ class GasStation {
 + fuels
 + status
 + updatesPerDay
++ googleMapsDirectionsLink
 }
 
 class Fuel {
