@@ -265,14 +265,14 @@ FR8.2 ---> DB
 ### Use case 12, UC12 - FR6 Open link to Google Maps with directions to a given station
 | Actors Involved        | User as U, Database as DB |
 | ------------- |-------------|
-|  Precondition  | U is using EZGas, Google Maps link exists in DB |  
+|  Precondition  | U is using EZGas, GS's location exists in DB |
 |  Post condition | Application opens external link to Google Maps, GS is saved in recently visited GSs |
-|  Nominal Scenario | U selects GS, U clicks on "Directions" for said GS,  EZGas app opens external link |
+|  Nominal Scenario | U selects GS, U clicks on "Directions" for said GS,  EZGas app opens external link to Google Maps with direction to GS: link is based on stored coordinates |
 |  Variants | Google Maps link is not in DB, issue message |
 | | Internet connection not available, issue warning |
 | | Database not available, issue error |
 | | EZGas is accessed from smartphone and has Google Maps app installed, link is opened inside Google Maps app |
-| | EZGas is accessed from smartphone and Google Maps app is not installed, link is opened inside browser |
+| | EZGas is accessed from smartphone and Google Maps app is not installed, link is opened in phone's default app |
 | | EZGas is accessed from PC, link is opened in new tab in browser |
 
 ### Use case 13, UC13 - FR7 Record gas station status
