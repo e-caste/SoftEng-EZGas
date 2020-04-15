@@ -1,4 +1,4 @@
-# Requirements Document 
+# Requirements Document
 
 Authors: Enrico Castelli s280124, Augusto Maria Guerriero s278018, Francesca Ponzetta s276535, Monica Rungi s276979
 
@@ -11,8 +11,8 @@ Version: 1
 - [Stakeholders](#stakeholders)
 - [Context Diagram and interfaces](#context-diagram-and-interfaces)
 	+ [Context Diagram](#context-diagram)
-	+ [Interfaces](#interfaces) 
-	
+	+ [Interfaces](#interfaces)
+
 - [Stories and personas](#stories-and-personas)
 - [Functional and non functional requirements](#functional-and-non-functional-requirements)
 	+ [Functional Requirements](#functional-requirements)
@@ -29,11 +29,11 @@ Version: 1
 # Stakeholders
 
 
-| Stakeholder name  | Description | 
+| Stakeholder name  | Description |
 | ----- |:-----------:|
-| Users | Use EZGas either actively, by updating gas prices, or passively, by checking gas prices other users have set up | 
+| Users | Use EZGas either actively, by updating gas prices, or passively, by checking gas prices other users have set up |
 | Developers | Add features to EZGas, fix bugs of EZGas, release the app, deploy and update any server-side software |
-| Database | Contains all the prices that users upload to EZGas | 
+| Database | Contains all the prices that users upload to EZGas |
 | Maps | Provide an API to access gas station locations |
 
 # Context Diagram and interfaces
@@ -71,7 +71,7 @@ Jared, 18 years old, just had his car bought as a present from his parents. He g
 ## Functional Requirements
 
 | ID        | Description  |
-|:---------:|:------------:| 
+|:---------:|:------------:|
 |  FR1      | Show nearby world map |  
 |  FR2      | Search for a place on the map |
 |  FR2.1    | Filter search based on distance from user |
@@ -163,17 +163,17 @@ FR8.2 ---> DB
 ```
 ### Use case 1, UC1 - FR1 Show nearby world map
 | Actors Involved        | User as U, Maps as M |
-| ------------- |-------------| 
-|  Precondition  | U has installed EZGas app, M are available on the Internet |  
+| ------------- |-------------|
+|  Precondition  | U is using EZGas, M are available on the Internet |  
 |  Post condition | M displayed on U's screen |
-|  Nominal Scenario | User opens application and sees Maps |
+|  Nominal Scenario | User opens EZGas and sees Maps |
 |  Variants | Maps not available, issue error |
 | | Internet connection not available, issue warning |
 
 ### Use case 2, UC2 - FR2 Search for a place on the map
 | Actors Involved        | User as U, Maps as M |
-| ------------- |-------------| 
-|  Precondition  | U has installed EZGas app, M are available on the Internet, Location L exists |  
+| ------------- |-------------|
+|  Precondition  | U is using EZGas, M are available on the Internet, Location L exists |  
 |  Post condition | Location searched is displayed on U's screen |
 |  Nominal Scenario | U searches for L and L is displayed on M |
 |  Variants | M not available, issue error |
@@ -182,8 +182,8 @@ FR8.2 ---> DB
 
 ### Use case 3, UC3 - FR2.1 Filter search based on distance from user
 | Actors Involved        | User as U, Maps as M |
-| ------------- |-------------| 
-|  Precondition  | U has installed EZGas app, M are available on the Internet, User Location UL exists |  
+| ------------- |-------------|
+|  Precondition  | U is using EZGas, M are available on the Internet, User Location UL exists |  
 |  Post condition | The nearest gas stations to UL are displayed on U's screen |
 |  Nominal Scenario | U searches for nearest gas stations |
 |  Variants | M not available, issue error |
@@ -191,8 +191,8 @@ FR8.2 ---> DB
 
 ### Use case 4, UC4 - FR2.2 Filter search based on lowest price
 | Actors Involved        | User as U, Maps as M |
-| ------------- |-------------| 
-|  Precondition  | U has installed EZGas app, M are available on the Internet, User Location UL exists |  
+| ------------- |-------------|
+|  Precondition  | U is using EZGas, M are available on the Internet, User Location UL exists |  
 |  Post condition | The gas stations with the lowest price in a default or user-selected range are displayed on U's screen |
 |  Nominal Scenario | U searches for gas stations with lowest price |
 |  Variants | M not available, issue error |
@@ -200,8 +200,8 @@ FR8.2 ---> DB
 
 ### Use case 5, UC5 - FR2.3 Filter search based on type of fuel
 | Actors Involved        | User as U, Maps as M |
-| ------------- |-------------| 
-|  Precondition  | U has installed EZGas app, M are available on the Internet, User Location UL exists, Type of Fuel TF is an acceptable value |  
+| ------------- |-------------|
+|  Precondition  | U is using EZGas, M are available on the Internet, User Location UL exists, Type of Fuel TF is an acceptable value |  
 |  Post condition | The nearest gas stations to UL which offer TF are displayed on U's screen |
 |  Nominal Scenario | U searches for nearest gas stations which offer TF |
 |  Variants | M not available, issue error |
@@ -209,8 +209,8 @@ FR8.2 ---> DB
 
 ### Use case 6, UC6 - FR2.4 Filter search based on gas station brand
 | Actors Involved        | User as U, Maps as M |
-| ------------- |-------------| 
-|  Precondition  | U has installed EZGas, M are available on the Internet, User Location UL exists, Brand B is an acceptable value |  
+| ------------- |-------------|
+|  Precondition  | U is using EZGas, M are available on the Internet, User Location UL exists, Brand B is an acceptable value |  
 |  Post condition | The nearest gas stations to UL which are of brand B are displayed on U's screen |
 |  Nominal Scenario | U searches for nearest gas stations of brand B |
 |  Variants | Maps not available, issue error |
@@ -218,7 +218,7 @@ FR8.2 ---> DB
 
 ### Use case 7, UC7 - FR3 Show recently visited gas stations
 | Actors Involved        | User as U, Database as DB |
-| ------------- |-------------| 
+| ------------- |-------------|
 |  Precondition  | U is logged in, DB is available on the Internet |  
 |  Post condition | DB entries are pulled and displayed |
 |  Nominal Scenario | U taps searchbar on screen, a brief list of the most recently visited gas stations appears |
@@ -228,8 +228,8 @@ FR8.2 ---> DB
 
 ### Use case 8, UC8 - FR4 Record updated gas station price to database
 | Actors Involved        | User as U, Maps as M, Database as DB |
-| ------------- |-------------| 
-|  Precondition  | U has installed EZGas app and is logged in, M are available on the Internet, Database DB is available on the Internet, type of fuel TF is offered by gas station GS |  
+| ------------- |-------------|
+|  Precondition  | U is using EZGas and is logged in, M are available on the Internet, Database DB is available on the Internet, type of fuel TF is offered by gas station GS |  
 |  Post condition | DB entry is updated,  GS is saved in recently visited GSs |
 |  Nominal Scenario | U taps GS on M and inputs new price NP and TF, uploaded to DB |
 |  Variants | Maps not available, issue error |
@@ -239,7 +239,7 @@ FR8.2 ---> DB
 
 ### Use case 9, UC9 - FR4.1 Perform trust-based check before updating price
 | Actors Involved        | Database as DB |
-| ------------- |-------------| 
+| ------------- |-------------|
 |  Precondition  |  New price NP is received at DB |  
 |  Post condition | NP is saved to DB |
 |  Nominal Scenario | The prices older than N days are removed. If NP is within a margin of error (e.g. 0.1€) from the last X user-submitted prices, then the price for that gas station and that type of fuel is updated to the average of the last X prices and is displayed in-app to the users; the last X prices are removed from the database. X is calculated based on how many NPs are received per day at each gas station, and is a gas station property. |
@@ -247,15 +247,15 @@ FR8.2 ---> DB
 
 ### Use case 10, UC10 - FR4.2 Add new gas station to database if not present
 | Actors Involved        | Database as DB |
-| ------------- |-------------| 
-|  Precondition  | User U has installed EZGas app and he is logged in, Maps M are available on the Internet, Database DB is available on the Internet, new price NP for the fuel of a new gas station GS is received at DB |  
+| ------------- |-------------|
+|  Precondition  | U is using EZGas and he is logged in, Maps M are available on the Internet, Database DB is available on the Internet, new price NP for the fuel of a new gas station GS is received at DB |  
 |  Post condition | GS is saved to DB |
 |  Nominal Scenario | If GS is not already present in DB, it gets added, along with NP. |
 | | Else, save NP to DB. |
 
 ### Use case 11, UC11 - FR5 Produce a graph of price fluctuations for a given station
 | Actors Involved        | Database as DB |
-| ------------- |-------------| 
+| ------------- |-------------|
 |  Precondition  | Price history of gas station GS is pulled to application from DB |  
 |  Post condition | Application shows the corresponding graph on the screen |
 |  Nominal Scenario | Price history of GS is shown graphically in application |
@@ -264,8 +264,8 @@ FR8.2 ---> DB
 
 ### Use case 12, UC12 - FR6 Open link to Google Maps with directions to a given station
 | Actors Involved        | User as U, Database as DB |
-| ------------- |-------------| 
-|  Precondition  | U has installed EZGas app, Google Maps link exists in DB |  
+| ------------- |-------------|
+|  Precondition  | U is using EZGas, Google Maps link exists in DB |  
 |  Post condition | Application opens external link to Google Maps, GS is saved in recently visited GSs |
 |  Nominal Scenario | U selects GS, U clicks on "Directions" for said GS,  EZGas app opens external link |
 |  Variants | Google Maps link is not in DB, issue message |
@@ -277,7 +277,7 @@ FR8.2 ---> DB
 
 ### Use case 13, UC13 - FR7 Record gas station status
 | Actors Involved        | User as U, Database as DB |
-| ------------- |-------------| 
+| ------------- |-------------|
 |  Precondition  | U is logged in, U sees in real life that gas station GS is either temporarily closed or under maintenance, or has re-opened after being temporarily closed or under maintenance |  
 |  Post condition | The status of GS is updated in DB |
 |  Nominal Scenario | U sees GS is closed, U logs into the app, U updates the status of GS, the status of GS is updated in DB |
@@ -286,7 +286,7 @@ FR8.2 ---> DB
 
 ### Use case 14, UC14 - FR8 Create account
 | Actors Involved | User as U, Database as DB |
-| ------------- |-------------| 
+| ------------- |-------------|
 |  Precondition  | U is using EZGas, U sends username UN, e-mail address A and password P to DB |  
 |  Post condition | A new locked user account is created in DB, a confirmation e-mail is sent to A |
 |  Nominal Scenario | U registers on EZGas, U receives a confirmation e-mail at A |
@@ -295,7 +295,7 @@ FR8.2 ---> DB
 
 ### Use case 15, UC15 - FR8.1 Login
 | Actors Involved | User as U, Database as DB |
-| ------------- |-------------| 
+| ------------- |-------------|
 |  Precondition  | U is using EZGas, U sends e-mail address A and password P to DB |  
 |  Post condition | U is logged in |
 |  Nominal Scenario | U logs into EZGas with A, P |
@@ -305,7 +305,7 @@ FR8.2 ---> DB
 
 ### Use case 16, UC16 - FR8.2 Logout
 | Actors Involved | User as U, Database as DB |
-| ------------- |-------------| 
+| ------------- |-------------|
 |  Precondition  | U is using EZGas, U is logged in |  
 |  Post condition | U is logged out |
 |  Nominal Scenario | U logs out of EZGas by pressing a logout button |
@@ -314,8 +314,8 @@ FR8.2 ---> DB
 ## Relevant Scenarios
 
 | Scenario ID: SC1 |  Corresponds to UC2-UC6 |
-| ------------- |:-------------:| 
-|  Precondition     | User U has installed EZGas app, Maps M are available on the Internet, Location L exists |
+| ------------- |:-------------:|
+|  Precondition     | U is using EZGas, Maps M are available on the Internet, Location L exists |
 |  Post condition     | One or more gas stations are displayed on U's screen |
 | Step#        | Description  |
 |  1     | U sets the distance filter in order to search for the nearest Gas station (optional)  |  
@@ -328,8 +328,8 @@ FR8.2 ---> DB
 
 
 | Scenario ID: SC2 |  Corresponds to UC8-UC10 |
-| ------------- |:-------------:| 
-|  Precondition     | User U has installed EZGas app, Maps M are available on the Internet,  Database DB is available on the Internet,U has an account on EZGas and he is logged in|
+| ------------- |:-------------:|
+|  Precondition     | U is using EZGas, Maps M are available on the Internet,  Database DB is available on the Internet,U has an account on EZGas and he is logged in|
 |  Post condition     | Database entry is updated |
 | Step#        | Description  |
 |  1     | U notices that a gas station is not present in EZGas, so he adds the new Gas station together with at least a fuel with its price |
@@ -338,7 +338,7 @@ FR8.2 ---> DB
 
 
 | Scenario ID: SC3 |  Corresponds to UC14-UC16 |
-| ------------- |:-------------:| 
+| ------------- |:-------------:|
 |  Precondition     | U is using EZGas|
 |  Post condition     | U has an account on EZGas |
 | Step#        | Description  |
@@ -349,7 +349,7 @@ FR8.2 ---> DB
 
 
 | Scenario ID: SC4 |  Corresponds to UC7 |
-| ------------- |:-------------:| 
+| ------------- |:-------------:|
 |  Precondition     | User U is logged in, Database DB is available on the Internet|
 |  Post condition     | Database entries are pulled and displayed |
 | Step#        | Description  |
@@ -359,7 +359,7 @@ FR8.2 ---> DB
 
 
 | Scenario ID: SC5 |  Corresponds to UC12 |
-| ------------- |:-------------:| 
+| ------------- |:-------------:|
 |  Precondition     | U is logged in, Database DB is available on the Internet|
 |  Post condition     | External link to Google Maps is opened, GS is saved in recently visited GSs |
 | Step#        | Description  |
@@ -370,7 +370,7 @@ FR8.2 ---> DB
 
 
 | Scenario ID: SC6 |  Corresponds to UC13 |
-| ------------- |:-------------:| 
+| ------------- |:-------------:|
 |  Precondition     | U is logged in, U sees in real life that gas station GS is either temporarily closed or under maintenance, or has re-opened after being temporarily closed or under maintenance|
 |  Post condition     | The status of GS is updated in DB |
 | Step#        | Description  |
@@ -448,14 +448,14 @@ class Location {
 }
 
 note as N1
-Can update <b>prices</b> and his 
-<b>preferences</b> are saved to 
+Can update <b>prices</b> and his
+<b>preferences</b> are saved to
 EZGas's database
 end note
 
 note as N2
-For each fuel, 
-we keep track 
+For each fuel,
+we keep track
 of its <b>price history</b>
 end note
 
@@ -492,6 +492,6 @@ N2 .. Price
 
 \<must be consistent with Context diagram>
 
-# Deployment Diagram 
+# Deployment Diagram
 
 \<describe here deployment diagram >
