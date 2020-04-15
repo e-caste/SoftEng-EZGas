@@ -436,4 +436,17 @@ N2 .. Price
 
 # Deployment Diagram 
 
-\<describe here deployment diagram >
+```plantuml
+@startuml
+
+node "Application Server" as as {
+    artifact "Application Software" as a
+}
+node "Database Server" as dbs {
+    database "Database" as db
+}
+
+as -- dbs
+
+@enduml
+```
