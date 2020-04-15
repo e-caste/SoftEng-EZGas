@@ -8,20 +8,19 @@ Version:
 
 \<Report here the GUI that you propose. You are free to organize it as you prefer. A suggested presentation matches the Use cases and scenarios defined in the Requirement document. The GUI can be shown as a sequence of graphical files (jpg, png)  >
 
-# GUI
 ## Mobile App
-![](/images/Login.png)
+![Login screen](/images/Login.png)
 
-![](/images/SignUp.png)
+![SignUp screen](/images/SignUp.png)
 
-![](/images/Homepage.png)
+![Homepage screen](/images/Homepage.png)
 
-![](/images/RecentGSs.png)
+![RecentsGSs screen](/images/RecentGSs.png)
 
-![](/images/GSlist.png)
+![GSlist screen](/images/GSlist.png)
 
-![](/images/GSprofile.png)
+![GSprofile screen](/images/GSprofile.png)
 
-![](/images/GSpriceGraph.png)
+![GSpriceGraph screen](/images/GSpriceGraph.png)
 
-![](/images/GSupdatePricesStatus.png)
+![GSupdatePricesStatus screen](/images/GSupdatePricesStatus.png)
