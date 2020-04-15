@@ -430,9 +430,7 @@ N2 .. Price
 
 
 # System Design
-\<describe here system design>
-
-\<must be consistent with Context diagram>
+No system design, the application is an only software product.
 
 # Deployment Diagram 
 
