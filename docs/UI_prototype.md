@@ -10,7 +10,7 @@ Version: 1
 ## Mobile App
 
 #### Login page
-<p align="center">
+<p class="text-center">
     <img src="/images/GUI/mobile/Login.png">
 </p>
 
