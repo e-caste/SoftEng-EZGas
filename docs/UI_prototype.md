@@ -85,7 +85,7 @@ Version: 1
 
 ##### Status update
 <p align="center">
-    <img src="/images/GUI/desktop/selected_gas_station_price_update.png">
+    <img src="/images/GUI/desktop/selected_gas_station_status_update.png">
 </p>
 
 ##### Price graph
