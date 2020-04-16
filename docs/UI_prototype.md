@@ -48,3 +48,63 @@ Version: 1
 <p align="center">
     <img src="/images/GUI/mobile/GSupdatePricesStatus.png">
 </p>
+
+
+## Desktop website
+
+#### Homepage
+<p align="center">
+    <img src="/images/GUI/desktop/homepage.png">
+</p>
+
+#### Search location
+<p align="center">
+    <img src="/images/GUI/desktop/search_location.png">
+</p>
+
+#### Search filters
+<p align="center">
+    <img src="/images/GUI/desktop/search_filters.png">
+</p>
+
+#### Recently visited gas stations
+<p align="center">
+    <img src="/images/GUI/desktop/recently_visited.png">
+</p>
+
+#### Selected gas station
+##### Buttons
+<p align="center">
+    <img src="/images/GUI/desktop/selected_gas_station.png">
+</p>
+
+##### Price update
+<p align="center">
+    <img src="/images/GUI/desktop/selected_gas_station_price_update.png">
+</p>
+
+##### Status update
+<p align="center">
+    <img src="/images/GUI/desktop/selected_gas_station_price_update.png">
+</p>
+
+##### Price graph
+<p align="center">
+    <img src="/images/GUI/desktop/selected_gas_station_price_graph.png">
+</p>
+
+#### Account
+##### Help
+<p align="center">
+    <img src="/images/GUI/desktop/account_help.png">
+</p>
+
+##### Creation
+<p align="center">
+    <img src="/images/GUI/desktop/account_create.png">
+</p>
+
+##### Login
+<p align="center">
+    <img src="/images/GUI/desktop/account_login.png">
+</p>
