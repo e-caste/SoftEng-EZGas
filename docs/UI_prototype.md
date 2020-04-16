@@ -8,42 +8,43 @@ Version: 1
 
 
 ## Mobile App
+
+#### Login page
 <p align="center">
-    <span>Login page</span>
     <img src="/images/GUI/mobile/Login.png">
 </p>
 
+#### Sign up page
 <p align="center">
-    <span>Sign up page</span>
     <img src="/images/GUI/mobile/SignUp.png">
 </p>
 
+####  Homepage
 <p align="center">
-    <span>Homepage</span>
     <img src="/images/GUI/mobile/Homepage.png">
 </p>
 
+#### Recently visited gas stations view
 <p align="center">
-    <span>Recently visited gas stations view</span>
     <img src="/images/GUI/mobile/RecentGSs.png">
 </p>
 
+#### List of found gas stations view
 <p align="center">
-    <span>List of found gas stations view</span>
     <img src="/images/GUI/mobile/GSlist.png">
 </p>
 
+#### Selected gas station view
 <p align="center">
-    <span>Selected gas station view</span>
     <img src="/images/GUI/mobile/GSprofile.png">
 </p>
 
+#### Gas station price graph view
 <p align="center">
-    <span>Gas station price graph view</span>
     <img src="/images/GUI/mobile/GSpriceGraph.png">
 </p>
 
+#### Update price and status view
 <p align="center">
-    <span>Update price and status view</span>
     <img src="/images/GUI/mobile/GSupdatePricesStatus.png">
 </p>
