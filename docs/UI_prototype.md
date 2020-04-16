@@ -9,18 +9,42 @@ Version:
 \<Report here the GUI that you propose. You are free to organize it as you prefer. A suggested presentation matches the Use cases and scenarios defined in the Requirement document. The GUI can be shown as a sequence of graphical files (jpg, png)  >
 
 ## Mobile App
-![Login screen](/images/Login.png)
+<p align="center">
+    <span>Login page</span>
+    <img src="/images/GUI/mobile/Login.png">
+</p>
 
-![SignUp screen](/images/SignUp.png)
+<p align="center">
+    <span>Sign up page</span>
+    <img src="/images/GUI/mobile/SignUp.png">
+</p>
 
-![Homepage screen](/images/Homepage.png)
+<p align="center">
+    <span>Homepage</span>
+    <img src="/images/GUI/mobile/Homepage.png">
+</p>
 
-![RecentsGSs screen](/images/RecentGSs.png)
+<p align="center">
+    <span>Recently visited gas stations view</span>
+    <img src="/images/GUI/mobile/RecentGSs.png">
+</p>
 
-![GSlist screen](/images/GSlist.png)
+<p align="center">
+    <span>List of found gas stations view</span>
+    <img src="/images/GUI/mobile/GSlist.png">
+</p>
 
-![GSprofile screen](/images/GSprofile.png)
+<p align="center">
+    <span>Selected gas station view</span>
+    <img src="/images/GUI/mobile/GSprofile.png">
+</p>
 
-![GSpriceGraph screen](/images/GSpriceGraph.png)
+<p align="center">
+    <span>Gas station price graph view</span>
+    <img src="/images/GUI/mobile/GSpriceGraph.png">
+</p>
 
-![GSupdatePricesStatus screen](/images/GSupdatePricesStatus.png)
+<p align="center">
+    <span>Update price and status view</span>
+    <img src="/images/GUI/mobile/GSupdatePricesStatus.png">
+</p>
