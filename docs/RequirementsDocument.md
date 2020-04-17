@@ -497,7 +497,7 @@ N2 .. Price
 
 
 # System Design
-No system design, the application is an only software product.
+No system design, the application is a software-only product.
 
 # Deployment Diagram
 
