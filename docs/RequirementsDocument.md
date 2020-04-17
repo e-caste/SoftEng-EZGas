@@ -317,6 +317,7 @@ FR8.2 --> DB
 
 | Scenario ID: SC1 |  Corresponds to UC2-UC6 |
 | ------------- |:-------------:|
+|  Description  | User searches for a gas station in EZGas using the available filters |
 |  Precondition     | U is using EZGas, Maps M are available on the Internet, Location L exists |
 |  Post condition     | One or more gas stations are displayed on U's screen |
 | Step #        | Description  |
@@ -331,16 +332,18 @@ FR8.2 --> DB
 
 | Scenario ID: SC2 |  Corresponds to UC8-UC10 |
 | ------------- |:-------------:|
+|  Description  | User records the current fuel price for the gas station they are at |
 |  Precondition     | U is using EZGas, Maps M are available on the Internet,  Database DB is available on the Internet,U has an account on EZGas and he is logged in|
 |  Post condition     | Database entry is updated |
 | Step #        | Description  |
-|  1     | U notices that a gas station is not present in EZGas, so he adds the new Gas station together with at least a fuel with its price |
+|  1     | U notices that a gas station has no previous prices registered to EZGas, so he adds the new Gas station together with at least a fuel with its price |
 |  2     | U notices that the price of a fuel has changed compared to the price showed by EZGAs, so he update the price  |
 |  3     | Before adding the new price, the DB checks if the price is coherent with the last N prices of that fuel in that gas station, the change is not saved in the DB |
 
 
 | Scenario ID: SC3 |  Corresponds to UC14-UC16 |
 | ------------- |:-------------:|
+|  Description  | User manages their account by creating it, logging in, and logging out |
 |  Precondition     | U is using EZGas|
 |  Post condition     | U has an account on EZGas |
 | Step #        | Description  |
@@ -352,6 +355,7 @@ FR8.2 --> DB
 
 | Scenario ID: SC4 |  Corresponds to UC7 |
 | ------------- |:-------------:|
+|  Description  | User checks which are the gas stations they have most recently visited |
 |  Precondition     | User U is logged in, Database DB is available on the Internet|
 |  Post condition     | Database entries are pulled and displayed |
 | Step #        | Description  |
@@ -362,6 +366,7 @@ FR8.2 --> DB
 
 | Scenario ID: SC5 |  Corresponds to UC12 |
 | ------------- |:-------------:|
+|  Description  | User navigates to a gas station found via EZGas |
 |  Precondition     | U is logged in, Database DB is available on the Internet|
 |  Post condition     | External link to Google Maps is opened, GS is saved in recently visited GSs |
 | Step #        | Description  |
@@ -373,6 +378,7 @@ FR8.2 --> DB
 
 | Scenario ID: SC6 |  Corresponds to UC13 |
 | ------------- |:-------------:|
+|  Description  | User updates the status of a gas station |
 |  Precondition     | U is logged in, U sees in real life that gas station GS is either temporarily closed or under maintenance, or has re-opened after being temporarily closed or under maintenance|
 |  Post condition     | The status of GS is updated in DB |
 | Step #        | Description  |
