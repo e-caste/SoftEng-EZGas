@@ -319,7 +319,7 @@ FR8.2 ---> DB
 | ------------- |:-------------:|
 |  Precondition     | U is using EZGas, Maps M are available on the Internet, Location L exists |
 |  Post condition     | One or more gas stations are displayed on U's screen |
-| Step#        | Description  |
+| Step #        | Description  |
 |  1     | U sets the distance filter in order to search for the nearest Gas station (optional)  |  
 |  2     | U sets the type of fuel filter in order to search a gas station according to the type of fuel he needs (optional) |
 |  3     | U sets the price filter in order to search for the gas station with the lower prices of fuels (optional) |
@@ -333,7 +333,7 @@ FR8.2 ---> DB
 | ------------- |:-------------:|
 |  Precondition     | U is using EZGas, Maps M are available on the Internet,  Database DB is available on the Internet,U has an account on EZGas and he is logged in|
 |  Post condition     | Database entry is updated |
-| Step#        | Description  |
+| Step #        | Description  |
 |  1     | U notices that a gas station is not present in EZGas, so he adds the new Gas station together with at least a fuel with its price |
 |  2     | U notices that the price of a fuel has changed compared to the price showed by EZGAs, so he update the price  |
 |  3     | Before adding the new price, the DB checks if the price is coherent with the last N prices of that fuel in that gas station, the change is not saved in the DB |
@@ -343,7 +343,7 @@ FR8.2 ---> DB
 | ------------- |:-------------:|
 |  Precondition     | U is using EZGas|
 |  Post condition     | U has an account on EZGas |
-| Step#        | Description  |
+| Step #        | Description  |
 |  1     | U sends his username, e-mail address and password to the DB and a new account is created and a confirmation mail is sent to the e-mail address |
 |  2     | U sends his e-mail address and password to DB, the DB checks if there's an account associated to that e-mail and if the password is correct. If so, the user logs in  |
 |  3     | U is logged in, he presses the log out button in order to log out |
@@ -354,7 +354,7 @@ FR8.2 ---> DB
 | ------------- |:-------------:|
 |  Precondition     | User U is logged in, Database DB is available on the Internet|
 |  Post condition     | Database entries are pulled and displayed |
-| Step#        | Description  |
+| Step #        | Description  |
 |  1     | The application keep track of the most recently visited gas station, so when the user taps the searchbar a brief list of the most recently visited gas stations appears |
 |  2    | The list of the most recently visited gas stations is not available if: U is not logged, DB is not available, Internet connection is not available |
 
@@ -364,7 +364,7 @@ FR8.2 ---> DB
 | ------------- |:-------------:|
 |  Precondition     | U is logged in, Database DB is available on the Internet|
 |  Post condition     | External link to Google Maps is opened, GS is saved in recently visited GSs |
-| Step#        | Description  |
+| Step #        | Description  |
 |  1     | U selects a GS |
 |  2     | U taps on "Directions" link in app |
 |  3     | App opens external link to Google maps |
@@ -375,7 +375,7 @@ FR8.2 ---> DB
 | ------------- |:-------------:|
 |  Precondition     | U is logged in, U sees in real life that gas station GS is either temporarily closed or under maintenance, or has re-opened after being temporarily closed or under maintenance|
 |  Post condition     | The status of GS is updated in DB |
-| Step#        | Description  |
+| Step #        | Description  |
 |  1     | U sees that a GS is closed, he checks the status of that GS in EZGas and if the status is 'open' it updates the status to 'close' |
 |  2     | U sees that a GS is opened, he checks the status of that GS in EZGas and if the status is 'close' it updates the status to 'open' |
 
