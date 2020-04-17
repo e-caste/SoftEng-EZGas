@@ -1,4 +1,3 @@
-{::options parse_block_html="true" /}
 # Graphical User Interface Prototype  
 
 Authors: Enrico Castelli s280124, Augusto Maria Guerriero s278018, Francesca Ponzetta s276535, Monica Rungi s276979
