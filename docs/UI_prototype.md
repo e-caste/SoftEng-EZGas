@@ -1,3 +1,4 @@
+{::options parse_block_html="true" /}
 # Graphical User Interface Prototype  
 
 Authors: Enrico Castelli s280124, Augusto Maria Guerriero s278018, Francesca Ponzetta s276535, Monica Rungi s276979
@@ -10,11 +11,7 @@ Version: 1
 ## Mobile App
 
 #### Login page
-{::options parse_block_html="true" /}
-<p align="center">
-    <img src="/images/GUI/mobile/Login.png">
-</p>
-{::options parse_block_html="false" /}
+<center> <img src="/images/GUI/mobile/Login.png"> </center>
 
 #### Sign up page
 <p align="center">
