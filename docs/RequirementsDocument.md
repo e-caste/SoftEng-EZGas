@@ -85,7 +85,7 @@ Jared, 18 years old, just had his car bought as a present from his parents. He g
 |  FR4.1    | Perform trust-based check before updating price |
 |  FR4.2    | Add new gas station to database if not present |
 |  FR5      | Produce a graph of price fluctuations for a given station |
-|  FR6      | Open link to Google Maps with directions to a given station |
+|  FR6      | Open link to maps with directions to a given station |
 |  FR7      | Record gas station status |
 |  FR8      | Create account |
 |  FR8.1    | Login |
@@ -231,13 +231,14 @@ FR8.2 --> DB
 ### Use case 8, UC8 - FR4 Record updated gas station price to database
 | Actors Involved        | User as U, Maps as M, Database as DB |
 | ------------- |-------------|
-|  Precondition  | U is using EZGas and is logged in, M are available on the Internet, Database DB is available on the Internet, type of fuel TF is offered by gas station GS |  
+|  Precondition  | U is using EZGas and is logged in, M are available on the Internet, Database DB is available on the Internet, type of fuel TF is offered by gas station GS. The user is at a predefined distance from the gas station. |  
 |  Post condition | DB entry is updated,  GS is saved in recently visited GSs |
 |  Nominal Scenario | U taps GS on M and inputs new price NP and TF, uploaded to DB |
 |  Variants | Maps not available, issue error |
 | | Internet connection not available, issue warning |
 | | Database not available, issue error |
 | | Price validation error, issue error |
+| | The user is not in the predefined distance from the gas station, the DB is not updated |
 
 ### Use case 9, UC9 - FR4.1 Perform trust-based check before updating price
 | Actors Involved        | Database as DB |
@@ -250,7 +251,7 @@ FR8.2 --> DB
 ### Use case 10, UC10 - FR4.2 Add new gas station to database if not present
 | Actors Involved        | Database as DB |
 | ------------- |-------------|
-|  Precondition  | U is using EZGas and he is logged in, Maps M are available on the Internet, Database DB is available on the Internet, new price NP for the fuel of a new gas station GS is received at DB |  
+|  Precondition  | U is using EZGas he is logged in and he is at a predefined distance from the gas station. Maps M are available on the Internet, Database DB is available on the Internet, new price NP for the fuel of a new gas station GS is received at DB |  
 |  Post condition | GS is saved to DB |
 |  Nominal Scenario | If GS is not already present in DB, it gets added, along with NP. |
 | | Else, save NP to DB. |
@@ -264,17 +265,17 @@ FR8.2 --> DB
 |  Variants | GS is not in DB, issue error |
 | | GS does not have a price history, issue warning |
 
-### Use case 12, UC12 - FR6 Open link to Google Maps with directions to a given station
+### Use case 12, UC12 - FR6 Open link to maps with directions to a given station
 | Actors Involved        | User as U, Database as DB |
 | ------------- |-------------|
 |  Precondition  | U is using EZGas, GS's location exists in DB |
-|  Post condition | Application opens external link to Google Maps, GS is saved in recently visited GSs |
-|  Nominal Scenario | U selects GS, U clicks on "Directions" for said GS, EZGas app opens external link to Google Maps with direction to GS: link is based on stored coordinates |
-|  Variants | Google Maps link is not in DB, issue message |
+|  Post condition | Application opens external link to maps, GS is saved in recently visited GSs |
+|  Nominal Scenario | U selects GS, U clicks on "Directions" for said GS, EZGas app opens external link to maps with direction to GS: link is based on stored coordinates |
+|  Variants | The maps link is not in DB, issue message |
 | | Internet connection not available, issue warning |
 | | Database not available, issue error |
-| | EZGas is accessed from smartphone and has Google Maps app installed, link is opened inside Google Maps app |
-| | EZGas is accessed from smartphone and Google Maps app is not installed, link is opened in phone's default app |
+| | EZGas is accessed from smartphone and has a maps app installed, link is opened inside the maps app |
+| | EZGas is accessed from smartphone and maps app is not installed, link is opened in phone's default app |
 | | EZGas is accessed from PC, link is opened in new tab in browser |
 
 ### Use case 13, UC13 - FR7 Record gas station status
@@ -303,7 +304,7 @@ FR8.2 --> DB
 |  Nominal Scenario | U logs into EZGas with A, P |
 | | A is not a valid e-mail address, issue error |
 | | A is not in DB, issue error |
-| | No A,P correspondance in DB, issue error |
+| | No A,P correspondence in DB, issue error |
 
 ### Use case 16, UC16 - FR8.2 Logout
 | Actors Involved | User as U, Database as DB |
@@ -324,7 +325,7 @@ FR8.2 --> DB
 |  1     | U sets the distance filter in order to search for the nearest Gas station (optional)  |  
 |  2     | U sets the type of fuel filter in order to search a gas station according to the type of fuel he needs (optional) |
 |  3     | U sets the price filter in order to search for the gas station with the lower prices of fuels (optional) |
-|  4     | U sets the brand filte in order to search for the gas station belonging to a particular branch (optional) |
+|  4     | U sets the brand filter in order to search for the gas station belonging to a particular branch (optional) |
 |  5     | U searches for a gas station and the gas station is displayed on the screen  |
 |  6     | There are no gas stations corresponding to the U's needs, the application returns an error  |
 
@@ -368,11 +369,11 @@ FR8.2 --> DB
 | ------------- |:-------------:|
 |  Description  | User navigates to a gas station found via EZGas |
 |  Precondition     | U is logged in, Database DB is available on the Internet|
-|  Post condition     | External link to Google Maps is opened, GS is saved in recently visited GSs |
+|  Post condition     | External link to maps is opened, GS is saved in recently visited GSs |
 | Step #        | Description  |
 |  1     | U selects a GS |
 |  2     | U taps on "Directions" link in app |
-|  3     | App opens external link to Google maps |
+|  3     | App opens external link to maps |
 |  4     | App saves GS to recently visited GSs |
 
 
