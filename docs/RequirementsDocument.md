@@ -144,22 +144,22 @@ U --> FR8
 U --> FR8.1
 U --> FR8.2
 
-FR1 ---> M
-FR2 ----> M
+FR1 -up-> M
+FR2 ---up-> M
 FR2 <-. FR2.1 : extends
 FR2 <-. FR2.2 : extends
 FR2 <-. FR2.3 : extends
 FR2 <-. FR2.4 : extends
-FR3 ---> DB
-FR4 ---> DB
+FR3 --> DB
+FR4 --> DB
 FR4 <-. FR4.1  : includes
 FR4 <-. FR4.2 : includes
-FR5 ----> DB
-FR6 ---> DB
-FR7 ---> DB
-FR8 ---> DB
-FR8.1 ---> DB
-FR8.2 ---> DB
+FR5 --> DB
+FR6 --> DB
+FR7 --> DB
+FR8 --> DB
+FR8.1 --> DB
+FR8.2 --> DB
 
 @enduml
 ```
