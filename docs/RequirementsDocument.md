@@ -168,7 +168,7 @@ FR8.2 ---> DB
 | ------------- |-------------|
 |  Precondition  | U is using EZGas, M are available on the Internet |  
 |  Post condition | M displayed on U's screen |
-|  Nominal Scenario | User opens EZGas and sees Maps |
+|  Nominal Scenario | User opens EZGas and sees Maps around him |
 |  Variants | Maps not available, issue error |
 | | Internet connection not available, issue warning |
 
