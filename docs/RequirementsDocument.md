@@ -41,12 +41,14 @@ Version: 1
 ## Context Diagram
 
 ```plantuml
+@startuml
 actor User as U
 actor Database as DB
 actor Maps as M
 U -- (EZGas)
 DB -- (EZGas)
 M -- (EZGas)
+@enduml
 ```
 
 ## Interfaces
