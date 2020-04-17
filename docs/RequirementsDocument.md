@@ -126,7 +126,7 @@ rectangle EZGas {
     usecase "Trust-based check" as FR4.1
     usecase "Add new gas station to DB" as FR4.2
     usecase "Show price graph" as FR5
-    usecase "Open link to Google Maps app or website" as FR6
+    usecase "Navigate Here" as FR6
     usecase "Update gas station status" as FR7
     usecase "Create account" as FR8
     usecase "Login" as FR8.1
