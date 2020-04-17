@@ -269,7 +269,7 @@ FR8.2 ---> DB
 | ------------- |-------------|
 |  Precondition  | U is using EZGas, GS's location exists in DB |
 |  Post condition | Application opens external link to Google Maps, GS is saved in recently visited GSs |
-|  Nominal Scenario | U selects GS, U clicks on "Directions" for said GS,  EZGas app opens external link to Google Maps with direction to GS: link is based on stored coordinates |
+|  Nominal Scenario | U selects GS, U clicks on "Directions" for said GS, EZGas app opens external link to Google Maps with direction to GS: link is based on stored coordinates |
 |  Variants | Google Maps link is not in DB, issue message |
 | | Internet connection not available, issue warning |
 | | Database not available, issue error |
