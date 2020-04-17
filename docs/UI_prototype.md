@@ -10,9 +10,11 @@ Version: 1
 ## Mobile App
 
 #### Login page
+{::options parse_block_html="true" /}
 <p align="center">
     <img src="/images/GUI/mobile/Login.png">
 </p>
+{::options parse_block_html="false" /}
 
 #### Sign up page
 <p align="center">
