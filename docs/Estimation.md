@@ -24,15 +24,15 @@ We have estimated the EZGas, GasStation, GuestUser and Update classes to be long
 
 
 
-### 
+###
 
 |             | Estimate                        |             
 | ----------- | ------------------------------- |  
 | NC =  Estimated number of classes to be developed   | 10 |             
-|  A = Estimated average size per class, in LOC       | 400 | 
+|  A = Estimated average size per class, in LOC       | 400 |
 | S = Estimated size of project, in LOC (= NC * A) | 4000 |
 | E = Estimated effort, in person hours (here use productivity 10 LOC per person hour)  | 400 |   
-| C = Estimated cost, in euro (here use 1 person hour cost = 30 euro) | 12000€ | 
+| C = Estimated cost, in euro (here use 1 person hour cost = 30 euro) | 12000€ |
 | Estimated calendar time, in calendar weeks (Assume team of 4 people, 8 hours per day, 5 days per week ) | 3 |               
 
 
@@ -40,11 +40,19 @@ We have estimated the EZGas, GasStation, GuestUser and Update classes to be long
 
 
 
-### 
+###
 
 |         Activity name    | Estimated effort (person hours)   |             
-| ----------- | ------------------------------- | 
-| | |
+| ----------- | ------------------------------- |
+|Requirement Engineering |11 |
+|Design |1,25 |
+|Coding |27,5 |
+|Unit Testing |24 |
+|Integration Testing |4 |
+|Acceptance Testing |4 |
+|Management |12,5 |
+|Git Maven | |
+
 
 
 ###
@@ -59,17 +67,17 @@ sunday are closed
 [Requirement Engineering] starts the 2020/04/13
 [Requirement Engineering] ends the 2020/04/17
 [Requirement Engineering] is colored in red
-    
+
     [Requiremets Document] starts the 2020/04/13
     [Requiremets Document] ends the 2020/04/17
-    
+
     [GUI] starts the 2020/04/15
     [GUI] ends the 2020/04/17
 
 [Design] starts the 2020/04/25
 [Design] lasts 5 days
 [Design] is colored in red
-    
+
     [Time Sheet] starts the 2020/04/25
     [Time Sheet] lasts 5 days
     [Estimation] starts the 2020/04/25
@@ -130,4 +138,3 @@ sunday are closed
 
 @enduml
 ```
-
