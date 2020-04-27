@@ -320,7 +320,28 @@ Package Backend {
 
 # Verification traceability matrix
 
-
+| FR | EZGas | User  | Administrator | GeoPoint | GasStation | CarSharingCompany | PriceList | 
+| :-------------: | :-------------: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: |
+| FR1 |  | X | X |  |  |  |  | 
+| FR1.1 |  | X | X |  |  |  |  |
+| FR1.2 |  | X | X |  |  |  |  |
+| FR1.3 |  |  | X |  |  |  |  |
+| FR1.4 |  |  | X |  |  |  |  |
+| FR2 | X |  |  |  |  |  |  |
+| FR3 |  |  |  | X |  |  |  |
+| FR3.1 |  |  | X |  |  |  |  |
+| FR3.2 |  |  | X |  |  |  |  |
+| FR3.3 |  |  | X |  |  |  |  |
+| FR4 |  | X | X |  |  |  |  |
+| FR4.1 | X |  |  |  |  |  |  |
+| FR4.2 | X |  |  |  |  |  |  |
+| FR4.3 | X |  |  |  |  |  |  |
+| FR4.4 | X |  |  |  |  |  |  |
+| FR4.5 | X |  |  |  |  |  |  |
+| FR5 |  | X |  |  |  |  |  |
+| FR5.1 |  | X |  |  |  |  |  |
+| FR5.2 | X |  |  |  |  |  |  |
+| FR5.3 |  | X |  |  |  |  |  |
 
 
 
