@@ -221,9 +221,93 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 
 # Low level design
 
-<Based on the official requirements and on the Spring Boot design guidelines, define the required classes (UML class diagram) of the back-end in the proper packages described in the high-level design section.>
+```plantuml
+@startuml
 
+Package Backend {
+    package "it.polito.ezgas.service" {
+       interface "GasStationService"
+       interface "UserService"
+    }
+    
+    package "it.polito.ezgas.controller" {
+    
+    }
+    
+    package "it.polito.ezgas.converter" {
+    
+    }
+    
+    package "it.polito.ezgas.dto" {
+    
+    }
+    
+    package "it.polito.ezgas.entity" {
+        class EZGas {
+        
+        }
+        
+        class User {
+         + account_name
+         + account_pwd
+         + email
+         + trust_level
+        }
+        
+        class Administrator {
+        
+        }
+        
+        class GasStation {
+         + ID
+         + name
+         + address
+         + brand
+         + hasDiesel
+         + hasGasoline
+         + hasPremiumDiesel
+         + hasPremiumGasoline
+         + hasLPG
+         + hasMethane
+        }
+        
+        class GeoPoint {
+         + latitude
+         + longitude
+        }
+        
+        class CarSharingCompany {
+         + name
+        }
+        
+        class PriceList {
+         + time_tag
+         + dieselPrice
+         + gasolinePrice
+         + premiumDieselPrice
+         + premiumGasolinePrice
+         + LPGPrice
+         + methanePrice
+         + trust_level
+        }
 
+        Administrator -up-|> User
+        EZGas -- "*" User
+        EZGas -- "*" GasStation
+        GasStation "*" -- "0..1" CarSharingCompany
+        GasStation  -- "0..1" PriceList
+        User -- "*" PriceList
+        User "*" -- GeoPoint
+        GeoPoint -- GasStation
+    }
+    
+    package "it.polito.ezgas.repository" {
+    
+    }
+}
+
+@enduml
+```
 
 
 
@@ -236,7 +320,6 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 
 # Verification traceability matrix
 
-\<for each functional requirement from the requirement document, list which classes concur to implement it>
 
 
 
