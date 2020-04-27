@@ -48,5 +48,86 @@ We have estimated the EZGas, GasStation, GuestUser and Update classes to be long
 
 
 ###
-Insert here Gantt chart with above activities
+
+Gantt chart
+```plantuml
+@startuml
+
+Project starts the 13th of april 2020
+sunday are closed
+
+[Requirement Engineering] starts the 2020/04/13
+[Requirement Engineering] ends the 2020/04/17
+[Requirement Engineering] is colored in red
+    
+    [Requiremets Document] starts the 2020/04/13
+    [Requiremets Document] ends the 2020/04/17
+    
+    [GUI] starts the 2020/04/15
+    [GUI] ends the 2020/04/17
+
+[Design] starts the 2020/04/25
+[Design] lasts 5 days
+[Design] is colored in red
+    
+    [Time Sheet] starts the 2020/04/25
+    [Time Sheet] lasts 5 days
+    [Estimation] starts the 2020/04/25
+    [Estimation] lasts 1 day
+    [Design Document] starts the 2020/04/27
+    [Design Document] lasts 3 day
+
+[Development] starts the 2020/05/05
+[Development] ends the 2020/05/26
+[Development] is colored in red
+
+    [Coding] starts the 2020/05/05
+    [Coding] ends the 2020/05/26
+
+
+    [Unit Testing] starts the 2020/05/11
+    [Unit Testing] ends the 2020/05/24
+    [Unit Testing] is colored in blue
+        [EZGas Test] starts the 2020/05/11
+        [EZGas Test] ends the 2020/05/24
+        [Gas Station Test]  starts the 2020/05/11
+        [Gas Station Test] ends the 2020/05/24
+        [User Test] starts the 2020/05/11
+        [User Test] ends the 2020/05/24
+        [Logged User Test] starts the 2020/05/11
+        [Logged User Test] ends the 2020/05/16
+        [Location Test] starts the 2020/05/11
+        [Location Test] ends the 2020/05/14
+        [Fuel Test] starts the 2020/05/15
+        [Fuel Test] ends the 2020/05/16
+        [Update Test] starts the 2020/05/13
+        [Update Test]  ends the 2020/05/18
+        [Price Update Test] starts the 2020/05/13
+        [Price Update Test] ends the 2020/05/24
+        [Status Update Test] starts the 2020/05/18
+        [Status Update Test] ends the 2020/05/19
+        [Preferences Test] starts the 2020/05/20
+        [Preferences Test] ends the 2020/05/24
+
+[Integration Testing] starts the 2020/06/01
+[Integration Testing] ends the 2020/06/07
+[Integration Testing] is colored in red
+
+[Acceptance Testing] starts the 2020/06/15
+[Acceptance Testing] ends the 2020/06/21
+[Acceptance Testing] is colored in red
+
+[Management] starts the 2020/06/24
+[Management] ends the 2020/07/01
+[Management] is colored in red
+
+
+[Requirement Engineering] -> [Design]
+[Design] -> [Development]
+[Development] -> [Integration Testing]
+[Integration Testing] -> [Acceptance Testing]
+[Acceptance Testing] -> [Management]
+
+@enduml
+```
 
