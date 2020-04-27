@@ -138,6 +138,7 @@ package "it.polito.ezgas.repository" {
 }
 note "see folder ServicePackage" as n
 n -- ps
+@enduml
 ```
 
 
