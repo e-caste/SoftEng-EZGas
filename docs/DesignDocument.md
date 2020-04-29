@@ -278,7 +278,16 @@ Package Backend {
             + setReport()
         }
         
-        
+        class UserController {
+         - userService
+            + getUserById()
+            + saveUser()
+            + getAllUsers()
+            + deleteUserById()
+            + login()
+            + increaseUserReputation()
+            + decreaseUserReputation()
+        }
     }
     
     package "it.polito.ezgas.converter" {
