@@ -340,6 +340,32 @@ Package Backend {
          + longitude
         }
         
+        class PriceReport {
+         - priceReportId
+         - user
+         
+         - dieselPrice
+         - superPrice
+         - superPlusPrice
+         - gasPrice
+         - methanePrice
+            + getPriceReportId()
+            + setPriceReportId()
+            + getUser()
+            + setUser()
+
+            + getDieselPrice()
+            + setDieselPrice()
+            + getSuperPrice()
+            + setSuperPrice()
+            + getSuperPlusPrice()
+            + setSuperPlusPrice()
+            + getGasPrice()
+            + setGasPrice()
+            + getMethanePrice()
+            + setMethanePrice()
+        }
+
         class PriceList {
          + time_tag
          + dieselPrice
@@ -354,7 +380,8 @@ Package Backend {
         GasStation  -- "0..1" PriceList
         User -- "*" PriceList
         User "*" -- GeoPoint
-        GeoPoint -- GasStation
+        GasStation "*" -- GeoPoint
+        User "*" -- PriceReport
     }
     
     package "it.polito.ezgas.repository" {
