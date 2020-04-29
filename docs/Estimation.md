@@ -44,13 +44,13 @@ We have estimated the EZGas, GasStation, GuestUser and Update classes to be long
 
 |         Activity name    | Estimated effort (person hours)   |             
 | ----------- | ------------------------------- |
-|Requirement Engineering |11 |
-|Design |1,25 |
-|Coding |27,5 |
-|Unit Testing |24 |
-|Integration Testing |4 |
-|Acceptance Testing |4 |
-|Management |12,5 |
+|Requirement Engineering |44 |
+|Design |5 |
+|Coding |110 |
+|Unit Testing |96 |
+|Integration Testing |16 |
+|Acceptance Testing |16 |
+|Management |50 |
 |Git Maven | |
 
 
