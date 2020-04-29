@@ -243,15 +243,23 @@ Package Backend {
     }
     
     package "it.polito.ezgas.entity" {
-        class EZGas {
-        
-        }
-        
         class User {
-         + account_name
-         + account_pwd
+         + userId
+         + userName
+         + password
          + email
-         + trust_level
+         + reputation
+         + isAdmin {y/n}
+            + getUserId()
+            + setUserId()
+            + getUserName()
+            + setUserName()
+            + getPassword()
+            + setPassword()
+            + getEmail()
+            + setEmail()
+            + getAdmin()
+            + setAdmin()
         }
         
         class Administrator {
