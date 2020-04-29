@@ -356,6 +356,7 @@ Package Backend {
         class PriceReport {
          - priceReportId
          - user
+         - priceReportDependability
          
          - dieselPrice
          - superPrice
@@ -366,6 +367,8 @@ Package Backend {
             + setPriceReportId()
             + getUser()
             + setUser()
+            + getPriceReportDependability()
+            + setPriceReportDependability()
 
             + getDieselPrice()
             + setDieselPrice()
