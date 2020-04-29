@@ -225,6 +225,11 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 @startuml
 
 Package Backend {
+    class BootEZGasApplication {
+        + main()
+        + setupWithData()
+    }
+    
     package "it.polito.ezgas.service" {
        interface "GasStationService" as GSS
        interface "UserService" as US
