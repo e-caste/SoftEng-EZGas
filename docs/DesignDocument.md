@@ -226,8 +226,23 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 
 Package Backend {
     package "it.polito.ezgas.service" {
-       interface "GasStationService"
-       interface "UserService"
+       interface "GasStationService" as GSS
+       interface "UserService" as US
+
+        package "it.polito.ezgas.service.impl" {
+            class GasStationServiceImpl implements GSS {
+                + getGasStationById()
+                + saveGasStation()
+                + getAllGasStations()
+                + deleteGasStationById()
+                + getGasStationsByGasolineType()
+                + getGasStationsByProximity()
+                + getGasStationsByCarSharing()
+                + getGasStationsWithCoordinates()
+                + getGasStationsWithoutCoordinates()
+                + setReport()
+            }
+        }
     }
     
     package "it.polito.ezgas.controller" {
