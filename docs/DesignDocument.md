@@ -255,7 +255,19 @@ Package Backend {
     }
     
     package "it.polito.ezgas.controller" {
-    
+        class GasStationController {
+         - gasStationService
+            + getGasStationById()
+            + saveGasStation()
+            + getAllGasStations()
+            + deleteGasStationById()
+            + getGasStationsByGasolineType()
+            + getGasStationsByProximity()
+            + getGasStationsByCarSharing()
+            + getGasStationsWithCoordinates()
+            + getGasStationsWithoutCoordinates()
+            + setReport()
+        }
     }
     
     package "it.polito.ezgas.converter" {
