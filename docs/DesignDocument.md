@@ -259,6 +259,28 @@ Package Backend {
         }
     }
     
+    package "it.polito.ezgas.utils" {
+        interface Constants {
+         + GET_USER_BY_ID
+         + GET_ALL_USERS
+         + SAVE_USER
+         + DELETE_USER
+         + INCREASE_REPUTATION
+         + DECREASE_REPUTATION
+         + LOGIN
+         + GET_GASSTATION_BY_ID
+         + GET_ALL_GASSTATIONS
+         + SAVE_GASSTATION
+         + DELETE_GASSTATION
+         + GET_GASSTATIONS_BY_NEIGHBORHOOD
+         + GET_GASSTATIONS_BY_GASOLINETYPE
+         + GET_GASSTATIONS_BY_PROXIMITY
+         + GET_GASSTATIONS_WITH_COORDINATES
+         + GET_GASSTATIONS_WITHOUT_COORDINATES
+         + SET_GASSTATION_REPORT
+        }
+    }
+
     package "it.polito.ezgas.controller" {
         class HomeController {
             + admin()
