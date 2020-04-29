@@ -244,12 +244,13 @@ Package Backend {
     
     package "it.polito.ezgas.entity" {
         class User {
-         + userId
-         + userName
-         + password
-         + email
-         + reputation
-         + isAdmin {y/n}
+         - userId
+         - userName
+         - password
+         - email
+         - reputation
+         - isAdmin {y/n}
+         - geoPoint
             + getUserId()
             + setUserId()
             + getUserName()
@@ -258,8 +259,10 @@ Package Backend {
             + setPassword()
             + getEmail()
             + setEmail()
-            + getAdmin()
-            + setAdmin()
+            + getIsAdmin()
+            + setIsAdmin()
+            + getGeoPoint()
+            + setGeoPoint()
         }
         
         class GasStation {
