@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Main Page</title>
+    <link rel="stylesheet"
+	href="css/app/jquery-ui.css" />
+<style type="text/css">
+.ui-helper-hidden-accessible {
+	position: absolute;
+	left: -9999px;
+}
+</style>
+<script src="js/app/jquery-1.9.1.js"></script>
+<script src="js/app/jquery-ui.js"></script>
+<script src="js/app/map.js"></script>
+<script src="js/app/session.js"></script>
+
+<script>
+$(function() {
+	var getData2 = function(request, response) {
+		$.getJSON("https://photon.komoot.de/api/?q=" + request.term + '&lat='
+				+ geolocation.lat + '&lon=' + geolocation.lng
+				+ '&limit=4&lang=en', function(data) {
+			var i;
+			var addrArray = "";
+			for (i = 0; i < data['features'].length; i++) {
+				if (i == 0) {
+					addrArray += "[";
+				}
+				if (i != 0 && i != data['features'].length) {
+					addrArray += " , ";
+				}
+				addrArray += "\"" + getAddressFromData(data, i) + "\"";
+				if (i == data['features'].length - 1) {
+					addrArray += "]";
+				}
+
+			}
+
+			response($.parseJSON(addrArray));
+		});
+	};
+
+	var selectItem2 = function(event, ui) {
+		$("#autocomplete2").val(ui.item.value);
+		$("#autocomplete2").val(ui.item.value);
+		addData('add2', ui.item.value);
+		addData('add2', ui.item.value);
+		reverseLocation2(ui.item.value, geolocation.lat, geolocation.lng);
+		return true;
+	}
+
+	$("#autocomplete2").autocomplete({
+		source : getData2,
+		select : selectItem2,
+		minLength : 3,
+	});
+});
+
+function reverseLocation2(streetName, lat, lon) {
+
+	$.get('https://photon.komoot.de/api/?q=' + streetName + '&lat=' + lat
+			+ '&lon=' + lon + '&limit=2&lang=en', function(data, status) {
+
+		 addData('myLat', data['features'][0]['geometry']['coordinates'][1]);
+		 addData('myLon', data['features'][0]['geometry']['coordinates'][0]);
+		 addData('myLat', data['features'][0]['geometry']['coordinates'][1]);
+		 addData('myLon', data['features'][0]['geometry']['coordinates'][0]);
+	});
+}
+
+</script>
+</head>
+<body ng-app="demo">
+
+<script>
+	if (sessionStorage.getItem('admin') != 'true') {
+		window.location.href = '/';
+	}
+</script>
+
+<img src="img/ezgas.png" alt="ezgas" class="center" />
+	<div class="head">
+		<h4 id="name" class="centered-element"></h4>
+	</div>
+	<button id="login" class="topright" onclick="window.location='/';">Home</button>
+
+<div class="container" ng-controller="HomeController as ctrl">
+	<div class="panel panel-default">
+    	<div class="panel-heading"><span class="lead">User Registration Form </span></div>
+    	<div class="formcontainer">
+    		<form ng-submit="saveUser()" name="myForm" class="form-horizontal" ng-init="initUserList()">
+    		 <input type="hidden" ng-model="userDto.userId" />
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="col-md-2 control-lable" for="uname">Name</label>
+                              <div class="col-md-7">
+                                  <input type="text" ng-model="userDto.userName" id="uname" class="username form-control input-sm" placeholder="Enter user's name" required ng-minlength="3"/>
+                                  <div class="has-error" ng-show="myForm.$dirty">
+                                      <span ng-show="myForm.uname.$error.required">This is a required field</span>
+                                      <span ng-show="myForm.uname.$error.minlength">Minimum length required is 3</span>
+                                      <span ng-show="myForm.uname.$invalid">This field is invalid </span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                         
+                       
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="col-md-2 control-lable" for="address">Password</label>
+                              <div class="col-md-7">
+                                  <input type="text" ng-model="userDto.password" id="address" class="form-control input-sm" placeholder="Enter user's password" required ng-minlength="3"/>
+                                                                    <div class="has-error" ng-show="myForm.$dirty">
+                                      <span ng-show="myForm.uname.$error.required">This is a required field</span>
+                                      <span ng-show="myForm.uname.$error.minlength">Minimum length required is 8</span>
+                                      <span ng-show="myForm.uname.$invalid">This field is invalid </span>
+                                  </div>
+                                  
+                              </div>
+                          </div>
+                      </div>
+ 
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="col-md-2 control-lable" for="email">Email</label>
+                              <div class="col-md-7">
+                                  <input type="email" ng-model="userDto.email" id="email" class="email form-control input-sm" placeholder="Enter user's email" required/>
+                                  <div class="has-error" ng-show="myForm.$dirty">
+                                      <span ng-show="myForm.email.$error.required">This is a required field</span>
+                                      <span ng-show="myForm.email.$invalid">This field is invalid </span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+ 
+                      <div class="row">
+                          <div class="form-actions floatRight">
+                              <input type="submit"  value="{{!editinguser ? 'Add' : 'Update'}}" class="btn btn-primary btn-sm" ng-disabled="myForm.$invalid">
+                              <button type="button" ng-click="reset()" class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">Reset Form</button>
+                          </div>
+                      </div>
+    	
+    		</form>
+    	</div>
+    </div>
+    <div class="panel panel-default">
+                <!-- Default panel contents -->
+              <div class="panel-heading"><span class="lead">List of Users </span></div>
+              <div class="tablecontainer">
+                  <table class="table table-hover">
+                      <thead>
+                          <tr>
+                              <th>ID.</th>
+                              <th>Username</th>
+                              <th>Password</th>
+                              <th>Email</th>
+                              <th>Reputation</th>
+                              <th width="20%"></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr ng-repeat="u in allUsers">
+                              <td><span ng-bind="u.userId"></span></td>
+                              <td><span ng-bind="u.userName"></span></td>
+                              <td><span ng-bind="u.password"></span></td>
+                              <td><span ng-bind="u.email"></span></td>
+                              <td><span ng-bind="u.reputation"></span></td>
+                              <td>
+                              <button type="button" ng-click="editUser(u.userId)" class="btn btn-success custom-width">Edit</button>  <button type="button" ng-click="deleteUser(u.userId)" class="btn btn-danger custom-width">Remove</button>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>	
+    	
+    	
+    	
+    	
+
+
+
+    <hr/>
+    <hr/>
+    <hr/>
+    
+    	<div class="panel panel-default">
+    	<div class="panel-heading"><span class="lead">Gas Station Registration Form</span></div>
+    	<div class="formcontainer">
+    		<form ng-submit="saveGasStation()" name="formGasStations" class="form-horizontal" ng-init="initGasStationList()">
+    		 <input type="hidden" ng-model="gasStationDto.gasStationId" />
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="col-md-2 control-lable" for="uname">Name</label>
+                              <div class="col-md-7">
+                                  <input type="text" ng-model="gasStationDto.gasStationName" id="gname" class="username form-control input-sm" placeholder="Enter gas station name" required ng-minlength="2"/>
+                                  <div class="has-error" ng-show="myForm.$dirty">
+                                      <span ng-show="myForm.uname.$error.required">This is a required field</span>
+                                      <span ng-show="myForm.uname.$error.minlength">Minimum length required is 3</span>
+                                      <span ng-show="myForm.uname.$invalid">This field is invalid </span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                         
+                       
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="col-md-2 control-lable" for="address">Address</label>
+                              <div class="col-md-7">
+                                  <input id="autocomplete" onFocus="geolocate()" type="text" ng-model="gasStationDto.gasStationAddress" id="address" class="form-control input-sm" placeholder="Enter gas station address" required ng-minlength="3"/>
+                                                                    <div class="has-error" ng-show="myForm.$dirty">
+                                      <span ng-show="myForm.uname.$error.required">This is a required field</span>
+                                      <span ng-show="myForm.uname.$error.minlength">Minimum length required is 8</span>
+                                      <span ng-show="myForm.uname.$invalid">This field is invalid </span>
+                                  </div>
+                                  
+                              </div>
+                          </div>
+                      </div>
+                      
+                      <div hidden class="row">
+						<div class="form-group col-md-12">
+
+
+							<label class="col-md-2 control-lable" for="lat">addr</label>
+							<div class="col-md-7">
+								<input type="text"
+									id="add1" class="form-control input-sm"
+									placeholder="Enter latitude" required ng-minlength="3" />
+								<div class="has-error" ng-show="myForm.$dirty">
+									<span ng-show="myForm.uname.$error.required">This is a
+										required field</span> <span ng-show="myForm.uname.$error.minlength">Minimum
+										length required is 8</span> <span ng-show="myForm.uname.$invalid">This
+										field is invalid </span>
+								</div>
+							</div>
+
+						</div>
+					</div>
+                      
+                      
+                      <div class="row">
+                      	<div class="form-group col-md-12">
+                      
+                     
+                      		<label class="col-md-2 control-lable" for="lat">Latitude</label>
+                      		<div class="col-md-7">
+                                  <input type="text" ng-model="gasStationDto.lat" id="lat" class="form-control input-sm" placeholder="Enter latitude" required ng-minlength="3"/>
+                                      <div class="has-error" ng-show="myForm.$dirty">
+                                      	<span ng-show="myForm.uname.$error.required">This is a required field</span>
+                                      	<span ng-show="myForm.uname.$error.minlength">Minimum length required is 8</span>
+                                      	<span ng-show="myForm.uname.$invalid">This field is invalid </span>
+                                  	   </div>  
+                            </div>
+                      
+                      	</div>
+                      </div>
+                      
+                      <div class="row">
+                      	<div class="form-group col-md-12">
+                      
+                     
+                      		<label class="col-md-2 control-lable" for="lon">Longitude</label>
+                      		<div class="col-md-7">
+                                  <input type="text" ng-model="gasStationDto.lon" id="lng" class="form-control input-sm" placeholder="Enter longitude" required ng-minlength="3"/>
+                                      <div class="has-error" ng-show="myForm.$dirty">
+                                      	<span ng-show="myForm.uname.$error.required">This is a required field</span>
+                                      	<span ng-show="myForm.uname.$error.minlength">Minimum length required is 8</span>
+                                      	<span ng-show="myForm.uname.$invalid">This field is invalid </span>
+                                  	   </div>  
+                            </div>
+                      
+                      	</div>
+                      </div>
+                      
+                        <div class="row">
+	                      <div class="form-group col-md-12">
+	                              <label class="col-md-2 control-lable" for="uname">Car Sharing Type</label>
+	                              <div class="col-md-7">
+										<select class="browser-default custom-select" ng-model="gasStationDto.carSharing">
+	  										<option selected value="null">Select car sharing feature</option>
+	  										<option value="Enjoy">Enjoy</option>
+	  										<option value="Car2Go">Car2Go</option>
+	  									</select>
+	  								</div>
+	  								
+	                      </div>
+                       
+                      <div class="row">
+                      <div class="form-group col-md-12">
+                      <div class="col-md-7">
+                      
+                      <div class="checkbox">
+						<label>
+						
+						
+						
+    						<input type="checkbox" ng-model="gasStationDto.hasDiesel">Has Diesel
+						</label>
+					   </div>
+					   
+					   </div>
+                      </div>
+					   </div>
+					   
+					   
+					  <div class="row">
+                      <div class="form-group col-md-12">
+					     <div class="col-md-7">
+					   
+					    <div class="checkbox">
+						<label>
+    						<input type="checkbox" ng-model="gasStationDto.hasSuper">Has Gasoline
+						</label>
+					   </div>
+					   </div>
+					   </div>
+                      </div>
+					   
+					   
+					  <div class="row">
+                      <div class="form-group col-md-12">
+					     <div class="col-md-7">
+					    <div class="checkbox">
+						<label>
+    						<input type="checkbox" ng-model="gasStationDto.hasSuperPlus">Has Premium Gasoline
+						</label>
+					   </div>
+					   
+					   </div>
+					   </div>
+                      </div>
+					   
+					   <div class="row">
+                      <div class="form-group col-md-12">
+					     <div class="col-md-7">
+					   
+					    <div class="checkbox">
+						<label>
+    						<input type="checkbox" ng-model="gasStationDto.hasGas">Has LPG
+						</label>
+					   </div>
+					   
+					   </div>
+					   </div>
+                      </div>
+                      
+                      <div class="row">
+                      <div class="form-group col-md-12">
+					     <div class="col-md-7">
+					   
+					    <div class="checkbox">
+						<label>
+    						<input type="checkbox" ng-model="gasStationDto.hasMethane">Has Methane
+						</label>
+					   </div>
+					   
+					   </div>
+					   </div>
+                      </div>
+					   
+					
+                    
+                      </div>
+ 
+ 
+                      <div class="row">
+                          <div class="form-actions floatRight">
+                              <input type="submit"  value="{{!editinggasstation ? 'Add' : 'Update'}}" class="btn btn-primary btn-sm" ng-disabled="formGasStations.$invalid">
+                              <button type="button" ng-click="resetGasStationForm()" class="btn btn-warning btn-sm" ng-disabled="formGasStations.$pristine">Reset Form</button>
+                          </div>
+                      </div>
+    	
+    		</form>
+    	</div>
+    </div>
+    
+    
+    
+    
+    <div class="panel panel-default">
+                <!-- Default panel contents -->
+              <div class="panel-heading"><span class="lead">List of Gas Stations</span></div>
+              <div class="tablecontainer">
+                  <table class="table table-hover">
+                      <thead>
+                          <tr>
+                              <th>ID.</th>
+                              <th>Name</th>
+                              <th>Address</th>
+                              <th>Latitude</th>
+                              <th>Longitude</th>
+                              <th>Diesel</th>
+                              <th>Gasoline</th>
+                              <th>Premium Gasoline</th>
+                              <th>LPG</th>
+                              <th>Methane</th>
+                              <th>Car Sharing</th>
+                              <th>Reporter</th>
+                              <th>Timestamp</th>
+                              <th>Trust</th>
+                              <th width="20%"></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr ng-repeat="g in allGasStations">
+                              <td><span ng-bind="g.gasStationId"></span></td>
+                              <td><span ng-bind="g.gasStationName"></span></td>
+                              <td><span ng-bind="g.gasStationAddress"></span></td>
+                              <td><span ng-bind="g.lat"></span></td>
+                              <td><span ng-bind="g.lon"></span></td>
+                              <td><span ng-bind="g.dieselPrice"></span></td>
+                              <td><span ng-bind="g.superPrice"></span></td>
+                              <td><span ng-bind="g.superPlusPrice"></span></td>
+                              <td><span ng-bind="g.gasPrice"></span></td>
+                              <td><span ng-bind="g.methanePrice"></span></td>
+                              <td><span ng-bind="g.carSharing"></span></td>
+                              <td><span ng-bind="g.reportUser"></span></td>
+                              <td><span ng-bind="g.reportTimestamp"></span></td>
+                              <td><span ng-bind="g.reportDependability"></span></td>
+                              <td>
+                              <button type="button" ng-click="editGasStation(g.gasStationId)" class="btn btn-success custom-width">Edit</button>  <button type="button" ng-click="deleteGasStation(g.gasStationId)" class="btn btn-danger custom-width">Remove</button> 
+                              
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>	
+    
+    
+    
+            <hr/>
+            <hr/>
+            <hr/>
+    
+    
+            <div class="panel panel-default">
+        		<div class="panel-heading"><span class="lead">Add price report form</span></div>
+        
+        
+        
+            	<div class="formcontainer">
+        
+            		<form ng-submit="addPriceReport()" name="formAddPriceReport" class="form-horizontal">
+<!--     		 <input type="hidden" ng-model="userDto.userId" /> -->
+                      
+                      
+                      
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="col-md-2 control-lable" for="uname">User Id</label>
+                              <div class="col-md-7">
+                                  <input type="text" ng-model="tmppricereport.userId" id="tmppricereport-uid"/>
+                                  
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="col-md-2 control-lable" for="uname">Gas Station Id</label>
+                              <div class="col-md-7">
+                                  <input type="text" ng-model="tmppricereport.reportingStation" id="tmppricereport-gid" ng-disabled="gasstationreportdisabled"/>
+                                  
+                              </div>
+                          </div>
+                      </div>
+                      
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="col-md-2 control-lable" for="uname">Diesel Price</label>
+                              <div class="col-md-7">
+                                  <input type="text" ng-model="tmppricereport.dieselPrice" id="tmppricereport-diesel" ng-disabled="dieselreportdisabled"/>
+                                  
+                              </div>
+                          </div>
+                      </div>
+                      
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="col-md-2 control-lable" for="uname">Gasoline Price</label>
+                              <div class="col-md-7">
+                                  <input type="text" ng-model="tmppricereport.superPrice" id="tmppricereport-super" ng-disabled="superreportdisabled"/>
+                                  
+                              </div>
+                          </div>
+                      </div>
+                      
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="col-md-2 control-lable" for="uname">Premium Gasoline Price</label>
+                              <div class="col-md-7">
+                                  <input type="text" ng-model="tmppricereport.superPlusPrice" id="tmppricereport-superplus" ng-disabled="superplusreportdisabled"/>
+                                  
+                              </div>
+                          </div>
+                      </div>
+                      
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="col-md-2 control-lable" for="uname">LPG Price</label>
+                              <div class="col-md-7">
+                                  <input type="text" ng-model="tmppricereport.gasPrice" id="tmppricereport-gas" ng-disabled="gasreportdisabled"/>
+                                  
+                              </div>
+                          </div>
+                      </div>   
+                      
+                      
+                      <div class="row">
+                          <div class="form-group col-md-12">
+                              <label class="col-md-2 control-lable" for="uname">Methane Price</label>
+                              <div class="col-md-7">
+                                  <input type="text" ng-model="tmppricereport.methanePrice" id="tmppricereport-methane" ng-disabled="methanereportdisabled"/>
+                                  
+                              </div>
+                          </div>
+                      </div>   
+                       
+                     
+ 
+                      <div class="row">
+                          <div class="form-actions floatRight">
+                              <input type="submit"  value="Add Price Report" class="btn btn-primary btn-sm" ng-disabled="formAddPriceReport.$pristine">
+                              <button type="button" ng-click="resetAddPriceReportForm()" class="btn btn-warning btn-sm" ng-disabled="gasstationreportdisabled">Reset Form</button>
+                          </div>
+                      </div>
+    	
+    		</form>
+        
+        </div>         
+    	</div>
+    	
+    	<div id="reportAdded"></div>
+    
+    
+        <div class="panel panel-default">
+        <div class="panel-heading"><span class="lead">Search gas stations</span></div>
+        
+        
+        
+            	<div class="formcontainer">
+        
+            		<form ng-submit="searchGasStations()" name="formSearchGasStations" class="form-horizontal">
+<!--     		 <input type="hidden" ng-model="userDto.userId" /> -->
+                      <div class="row">
+                          <div class="form-group col-md-12" hidden>
+                              <label class="col-md-2 control-lable" for="uname">Proximity (< 1km) </label>
+                              <div class="col-md-7">
+                              	<input type="text" id="myLat" ng-model="searchParameters.myLat"></input>
+                              	<input type="text" id="myLon" ng-model="searchParameters.myLon"></input>
+							   </div>
+						  </div>
+						  
+						  <div class="form-group col-md-12" >
+                              <label class="col-md-2 control-lable" for="uname">Proximity (< 1km) </label>
+                              <div class="col-md-7">
+                              	<input id="autocomplete2" onFocus="geolocate()" type="text"  class="username form-control input-sm" placeholder="Enter your address" ng-minlength="2"/>
+                              	
+							   </div>
+						  </div>
+                      </div>
+                      
+                      <div hidden class="row">
+						<div class="form-group col-md-12">
+
+
+							<label class="col-md-2 control-lable" for="lat">addr</label>
+							<div class="col-md-7">
+								<input type="text" ng-model="searchParameters.myAddress"
+									id="add2" class="form-control input-sm"
+									placeholder="Enter latitude" required ng-minlength="3" />
+								<div class="has-error" ng-show="myForm.$dirty">
+									<span ng-show="myForm.uname.$error.required">This is a
+										required field</span> <span ng-show="myForm.uname.$error.minlength">Minimum
+										length required is 8</span> <span ng-show="myForm.uname.$invalid">This
+										field is invalid </span>
+								</div>
+							</div>
+
+						</div>
+					</div>
+                         
+                       
+                      <div class="row">
+							 <div class="form-group col-md-12">
+                            	 <label class="col-md-2 control-lable" for="uname">Type of gasoline</label>
+                           		 <div class="col-md-7">
+									<select class="browser-default custom-select" ng-model="searchParameters.gasolineType">
+										<option selected>Select gasoline type</option>
+									
+										<option value="Diesel">Diesel</option>
+										<option value="Super">Gasoline</option>
+										<option value="SuperPlus">Premium Gasoline</option>
+										<option value="Gas">LPG</option>
+										<option value="Methane">Methane</option>
+  									</select>
+                      			</div>
+                      		</div>
+                      </div>
+ 
+                     
+                      
+                      <div class="row">
+							 <div class="form-group col-md-12">
+                            	 <label class="col-md-2 control-lable" for="uname">Car Sharing Type</label>
+                           		 <div class="col-md-7">
+									<select class="browser-default custom-select" ng-model="searchParameters.carSharing">
+	  										<option selected value="null">Select car sharing feature</option>
+	  										<option value="Enjoy">Enjoy</option>
+	  										<option value="Car2Go">Car2Go</option>
+  									</select>
+                      			</div>
+                      		</div>
+                      </div>
+ 
+                      <div class="row">
+                          <div class="form-actions floatRight">
+                              <input type="submit"  value="Search" class="btn btn-primary btn-sm" ng-disabled="formSearchGasStations.$pristine">
+                              <button type="button" ng-click="resetGasStationSearchForm()" class="btn btn-warning btn-sm" ng-disabled="formSearchGasStations.$pristine">Reset Form</button>
+                          </div>
+                      </div>
+    	
+    		</form>
+        
+        </div>         
+    	</div>
+    	    <div class="panel panel-default">
+                <!-- Default panel contents -->
+              <div class="panel-heading"><span class="lead">List of Gas Stations</span></div>
+              <div class="tablecontainer">
+                  <table class="table table-hover">
+                      <thead>
+                          <tr>
+                              <th>ID.</th>
+                              <th>Name</th>
+                              <th>Address</th>
+                              <th>Latitude</th>
+                              <th>Longitude</th>
+                              <th>Diesel</th>
+                              <th>Gasoline</th>
+                              <th>Premium Gasoline</th>
+                              <th>LPG</th>
+                              <th>Methane</th>
+                              <th>Car Sharing</th>
+                              <th width="20%"></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr ng-repeat="g in searchGasStationResults">
+                              <td><span ng-bind="g.gasStationId"></span></td>
+                              <td><span ng-bind="g.gasStationName"></span></td>
+                              <td><span ng-bind="g.gasStationAddress"></span></td>
+                              <td><span ng-bind="g.lat"></span></td>
+                              <td><span ng-bind="g.lon"></span></td>
+                              <td><span ng-bind="g.dieselPrice"></span></td>
+                              <td><span ng-bind="g.superPrice"></span></td>
+                              <td><span ng-bind="g.superPlusPrice"></span></td>
+                              <td><span ng-bind="g.gasPrice"></span></td>
+                              <td><span ng-bind="g.methanePrice"></span></td>
+                              <td><span ng-bind="g.carSharing"></span></td>
+                              
+                              <td><button type="button" ng-click="selectGasStationForReport(g.gasStationId)" class="btn btn-danger custom-width">New Report</button></td>
+                              <td><button type="button" ng-click="signalRightPrice(g.gasStationId)"  class="equalButton"><img src="http://softeng.polito.it/coppola/thumbup_ezgas2.png" /></button></td>
+                              <td><button type="button" ng-click="signalWrongPrice(g.gasStationId)"  class="equalButton"><img src="http://softeng.polito.it/coppola/thumbdown_ezgas2.png" /></button></td>
+                          </tr>
+                      </tbody>
+                  </table>
+                  <table id="address" hidden>
+      <tr>
+        <td class="label">Street address</td>
+        <td class="slimField"><input class="field" id="street_number" disabled="true"/></td>
+        <td class="wideField" colspan="2"><input class="field" id="route" disabled="true"/></td>
+      </tr>
+      <tr>
+        <td class="label">City</td>
+        <td class="wideField" colspan="3"><input class="field" id="locality" disabled="true"/></td>
+      </tr>
+      <tr>
+        <td class="label">State</td>
+        <td class="slimField"><input class="field" id="administrative_area_level_1" disabled="true"/></td>
+        <td class="label">Zip code</td>
+        <td class="wideField"><input class="field" id="postal_code" disabled="true"/></td>
+      </tr>
+      <tr>
+        <td class="label">Country</td>
+        <td class="wideField" colspan="3"><input class="field" id="country" disabled="true"/></td>
+      </tr>
+      </table>
+              </div>
+          </div>	
+</div>
+
+
+<script>
+
+
+	
+
+	</script>
+	
+
+	</body>
+
+	<script src="js/lib/angular.min.js"></script>
+	<script src="js/lib/ui-bootstrap-tpls-2.5.0.min.js"></script>
+	<script src="js/app/app.js"></script>
+	<script src="js/app/GasStationController.js"></script>
+	<script src="js/app/HomeController.js"></script>
+	<script src="js/app/HomeService.js"></script>
+	<link rel="stylesheet" href="css/lib/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/app/app.css"/>
+</html>

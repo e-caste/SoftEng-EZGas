@@ -1,0 +1,327 @@
+body{
+    background-color: #ffffff;
+}
+span.spacing{
+    margin-right: 10px;
+}
+input.custom-width{
+    width: 200px;
+}
+input.spacing{
+    margin-right: 5px;
+}
+
+body, .form-control{
+	font-size:12px!important;
+}
+
+.floatRight{
+	float:right;
+	margin-right: 18px;
+}
+
+.has-error{
+	color:red;
+}
+
+.formcontainer{
+	background-color: #ffffff;
+	padding: 20px;
+}
+
+.equalButton{
+    padding:5px;
+}
+
+.tablecontainer{
+	width:100%;
+	
+}
+
+.generic-container {
+  width:80%;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #EAE7E7;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 0 30px black;
+}
+
+/*
+.topright {
+  position: absolute;
+  top: 0.9cm;
+  right: 16px;
+  font-size: 12px;
+}
+
+#addpoi {
+  position: absolute;
+  top: 0.9cm;
+  right: 130px ;
+  font-size: 12px;
+}
+
+#updateprofile {
+  position: absolute;
+  top: 0.9cm;
+  right: 300px ;
+  font-size: 12px;
+}*/
+
+/*.head {
+  position: absolute;
+  top: 1px;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+}*/
+
+/*
+.centered-element {
+  height: 50%;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  margin-top: -45px;
+  text-align:center;
+  text-weight: bold;
+}*/
+
+
+#map {
+  margin: 20px;
+  height: 600px;  
+}
+
+.split {
+  height: 100%;
+  width: 50%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Control the left side */
+.left {
+  left: 0;
+  background-color: #111;
+}
+
+/* Control the right side */
+.right {
+  right: 0;
+  background-color: red;
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* Style the image inside the centered container, if needed */
+.centered img {
+  width: 150px;
+  border-radius: 50%;
+}
+
+button {
+	color: black; 
+	border: 1px solid #a0a0a0;
+	background-color: white;
+	padding: 16px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: float;
+	font-size: 12px;
+	margin: 4px 2px;
+	transition-duration: 0.4s;
+	cursor: pointer;
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	border-radius: 8px;
+	width:auto;
+	height:auto;
+}
+
+button:hover {
+  background-color: #fe9620;
+  color: white;
+}
+
+.btn.btn-danger.custom-width.edited{
+	color: black !important; 
+	border: 1px solid #a0a0a0 !important;
+	background-color: white !important;
+	font-size: 12px !important;
+	transition-duration: 0.4s;
+	cursor: pointer;
+}
+.btn.btn-danger.custom-width.edited:hover{
+	background-color: #fe9620 !important;
+  	color: white;
+}
+
+.container{
+	width:80%;
+}
+
+th {
+	text-align:center;
+	widht:auto;
+}
+
+td{
+	text-align:center;
+	height:auto;
+}
+
+.btn.btn-primary.btn-sm{
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	border-radius: 8px;
+	margin-top:3px;
+}
+.btn.btn-warning.btn-sm{
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	border-radius: 8px;
+}
+
+.panel > .panel-heading {
+	background-image:none;
+	background-color: #ffffff;
+	color: #000000;
+	
+}
+
+
+.browser-default.custom-select.ng-pristine.ng-untouched.ng-valid.ng-not-empty{
+	width: 150px;
+}
+
+.form-group.col-md-12{
+	
+}
+
+.col-md-2.control-lable{
+	width:150px;
+	height:100%;
+	text-align:center;
+}
+
+.table.table-hover{
+   width:100%;
+}
+
+/* 
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { border: 1px solid #ccc; }
+	
+	th {
+		text-align:left;
+		height: 50px;;
+	}
+	
+	td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+		text-align:right;
+		height: 50px;
+		background-image:none;
+		background-color:#ffffff;
+		
+	}
+	
+	td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+		text-align:left;
+		height: 50px;
+	}
+	
+	.btn.btn-danger.custom-width{
+		text-align:center;
+	}
+	
+	#btr, #btu, #btd{
+		text-align: center;
+		margin-bottom: 20px;
+		background-image:none;
+		background-color:#ffffff;
+		color: #ffffff
+	}
+
+	
+	/*
+	Label the data
+	*/
+	td:nth-of-type(1):before { content: "Name"; }
+	td:nth-of-type(2):before { content: "Address"; }
+	td:nth-of-type(3):before { content: "Diesel"; }
+	td:nth-of-type(4):before { content: "Super"; }
+	td:nth-of-type(5):before { content: "Super Plus"; }
+	td:nth-of-type(6):before { content: "Gas"; }
+	td:nth-of-type(7):before { content: "Car Sharing"; }
+	td:nth-of-type(8):before { content: "Timestamp"; }
+	td:nth-of-type(9):before { content: "Trust"; }
+	td:nth-of-type(10):before { content: ""; }
+}
+
+.center{
+	display:inline-block;
+	height:53px;
+}
+#name, #loginResult{
+	display:inline-block;
+	text-align:center;
+	
+}
+
+#addpoi,#login,#logout,#updateprofile,#home{
+	display:inline-block;
+	float:right;
+	width:auto;
+}
+
+.head {
+	display:inline-block;
+	width:auto;
+	margin-left: 20px;
+	
+}

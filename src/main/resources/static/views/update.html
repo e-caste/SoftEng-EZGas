@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<link rel="stylesheet" href="css/lib/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/app/app.css"/>
+    <title> Login </title>
+  </head>
+
+  <body id="ezgas" ng-app="demo">
+  <script src="js/app/session.js"></script>
+
+    <a href="/"><img src="img/ezgas.png" alt="ezgas" class="center"/></a>
+    <div class="head"><h4 id="loginResult" class="centered-element"></h4></div>
+    <button id="logout" class="topright" onclick="logout()">Logout</button>
+	<button id="addpoi" onclick="window.location='/';">Home</button>
+	<div style="clear:both;"></div>
+	<script>
+		window.userid = sessionStorage.getItem('userid');
+	</script>
+	
+    <div class="container" ng-controller="HomeController as ctrl">
+		<div ng-init="getUserById()"></div>
+		<div  class="panel panel-default">
+			<div class="panel-heading"><span class="lead">Update</span></div>
+			<div class="formcontainer">
+				<form ng-submit="saveUser()" name="myForm" class="form-horizontal">
+	    			<input id="userid" type="hidden" ng-model="userDto.userId" />
+					<input id="reputation" type="hidden" ng-model="userDto.reputation" />
+	 				<div class="row">
+						<div class="form-group col-md-12">
+							<label class="col-md-2 control-lable" for="uname">Name</label>
+							<div class="col-md-7">
+								<input id="username" type="text" ng-model="userDto.userName" class="username form-control input-sm" placeholder="Enter your name" required ng-minlength="3"/>
+ 								<div class="has-error" ng-show="myForm.$dirty">
+									<span ng-show="myForm.uname.$error.required">This is a required field</span>
+									<span ng-show="myForm.uname.$error.minlength">Minimum length required is 3</span>
+									<span ng-show="myForm.uname.$invalid">This field is invalid </span>
+								</div>
+							</div>
+ 						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-group col-md-12">
+ 							<label class="col-md-2 control-lable" for="uname">Email</label>
+							<div class="col-md-7">
+								<input id="email" type="text" ng-model="userDto.email" class="username form-control input-sm" placeholder="Enter your email" required ng-minlength="3"/>
+								<div class="has-error" ng-show="myForm.$dirty">
+									<span ng-show="myForm.uname.$error.required">This is a required field</span>
+									<span ng-show="myForm.uname.$error.minlength">Minimum length required is 3</span>
+									<span ng-show="myForm.uname.$invalid">This field is invalid </span>
+								</div>
+                    	    </div>
+                	     </div>
+ 					</div>
+
+ 					<div class="row">
+						<div class="form-group col-md-12">
+							<label class="col-md-2 control-lable" for="address">Password</label>
+							<div class="col-md-7">
+								<input id="password" type="password" ng-model="userDto.password" class="form-control input-sm" placeholder="Enter your password" required ng-minlength="3"/>
+								<div class="has-error" ng-show="myForm.$dirty">
+									<span ng-show="myForm.uname.$error.required">This is a required field</span>
+									<span ng-show="myForm.uname.$error.minlength">Minimum length required is 8</span>
+									<span ng-show="myForm.uname.$invalid">This field is invalid </span>
+								</div>                                  
+							</div>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="form-actions floatRight">
+							<input type="submit"  onclick="window.location='/';" value="Update User Data" class="btn btn-primary btn-sm" ng-disabled="myForm.$invalid">
+							<button type="button" onclick="window.location='/signup';" class="btn btn-warning btn-sm">Signup</button>
+						</div>
+					</div>
+    			</form>
+    		</div>
+    	</div>
+    </div>
+    <script src="js/lib/angular.min.js"></script>
+	<script src="js/lib/ui-bootstrap-tpls-2.5.0.min.js"></script>
+	<script src="js/app/app.js"></script>
+	<script src="js/app/GasStationController.js"></script>
+	<script src="js/app/HomeController.js"></script>
+	<script src="js/app/HomeService.js"></script>
+  </body>
+</html>

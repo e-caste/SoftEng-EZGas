@@ -11,7 +11,7 @@ import it.polito.ezgas.dto.GasStationDto;
 
 /** 
  *
- * Created by ashish on 13/5/17.
+ * Created by softeng on 27/4/2020.
  */
 public interface GasStationService {
 	
