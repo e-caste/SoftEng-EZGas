@@ -340,10 +340,6 @@ Package Backend {
          + longitude
         }
         
-        class CarSharingCompany {
-         + name
-        }
-        
         class PriceList {
          + time_tag
          + dieselPrice
@@ -355,7 +351,6 @@ Package Backend {
          + trust_level
         }
 
-        GasStation "*" -- "0..1" CarSharingCompany
         GasStation  -- "0..1" PriceList
         User -- "*" PriceList
         User "*" -- GeoPoint
