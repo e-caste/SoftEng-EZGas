@@ -4,12 +4,11 @@ import java.util.List;
 
 import exception.InvalidLoginDataException;
 import exception.InvalidUserException;
+import it.polito.ezgas.dto.IdPw;
 import it.polito.ezgas.dto.LoginDto;
 import it.polito.ezgas.dto.UserDto;
-import it.polito.ezgas.entity.IdPw;
 
-/** 
- *
+/**
  * Created by softeng on 27/4/2020.
  */
 public interface UserService {
