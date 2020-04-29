@@ -262,10 +262,6 @@ Package Backend {
             + setAdmin()
         }
         
-        class Administrator {
-        
-        }
-        
         class GasStation {
          + ID
          + name
@@ -299,9 +295,6 @@ Package Backend {
          + trust_level
         }
 
-        Administrator -up-|> User
-        EZGas -- "*" User
-        EZGas -- "*" GasStation
         GasStation "*" -- "0..1" CarSharingCompany
         GasStation  -- "0..1" PriceList
         User -- "*" PriceList
