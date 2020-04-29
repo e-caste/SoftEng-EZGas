@@ -271,9 +271,7 @@ Package Backend {
          - gasStationAddress
          - geoPoint
 
-         - reportUserId
-         - reportTimeStamp
-         - reportDependability
+         - priceReport
 
          - carSharing
          - user
@@ -300,12 +298,8 @@ Package Backend {
             + getGeoPoint()
             + setGeoPoint()
 
-            + getReportDependability()
-            + setReportDependability()
-            + getReportUser()
-            + setReportUser()
-            + getReportTimestamp()
-            + setReportTimestamp()
+            + getPriceReport()
+            + setPriceReport()
 
             + getCarSharing()
             + setCarSharing()
@@ -366,19 +360,7 @@ Package Backend {
             + setMethanePrice()
         }
 
-        class PriceList {
-         + time_tag
-         + dieselPrice
-         + gasolinePrice
-         + premiumDieselPrice
-         + premiumGasolinePrice
-         + LPGPrice
-         + methanePrice
-         + trust_level
-        }
-
-        GasStation  -- "0..1" PriceList
-        User -- "*" PriceList
+        GasStation  -- "0..1" PriceReport
         User "*" -- GeoPoint
         GasStation "*" -- GeoPoint
         User "*" -- PriceReport
