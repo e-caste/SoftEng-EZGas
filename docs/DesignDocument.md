@@ -242,6 +242,15 @@ Package Backend {
                 + getGasStationsWithoutCoordinates()
                 + setReport()
             }
+            class UserServiceImpl implements US {
+                + getUserById()
+                + saveUser()
+                + getAllUsers()
+                + deleteUserById()
+                + login()
+                + increaseUserReputation()
+                + decreaseUserReputation()
+            }
         }
     }
     
