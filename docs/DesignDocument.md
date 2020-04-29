@@ -373,6 +373,15 @@ Package Backend {
             + getIsAdmin()
             + setIsAdmin()
         }
+
+        class IdPw {
+         - user
+         - pw
+            + getUser()
+            + setUser()
+            + getPw()
+            + setPw()
+        }
     }
     
     package "it.polito.ezgas.entity" {
