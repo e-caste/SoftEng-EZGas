@@ -239,7 +239,26 @@ Package Backend {
     }
     
     package "it.polito.ezgas.dto" {
-    
+        class UserDto {
+         - userId
+         - userName
+         - password
+         - email
+         - reputation
+         - isAdmin {y/n}
+            + getUserId()
+            + setUserId()
+            + getUserName()
+            + setUserName()
+            + getPassword()
+            + setPassword()
+            + getEmail()
+            + setEmail()
+            + getReputation()
+            + setReputation()
+            + getIsAdmin()
+            + setIsAdmin()
+        }
     }
     
     package "it.polito.ezgas.entity" {
