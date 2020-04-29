@@ -352,6 +352,27 @@ Package Backend {
             + getMethanePrice()
             + setMethanePrice()
         }
+
+        class LoginDto {
+         ~ userId
+         ~ userName
+         ~ token
+         ~ email
+         ~ reputation
+         ~ isAdmin {y/n}
+            + getUserId()
+            + setUserId()
+            + getUserName()
+            + setUserName()
+            + getToken()
+            + setToken()
+            + getEmail()
+            + setEmail()
+            + getReputation()
+            + setReputation()
+            + getIsAdmin()
+            + setIsAdmin()
+        }
     }
     
     package "it.polito.ezgas.entity" {
