@@ -324,7 +324,34 @@ Package Backend {
             + setMethanePrice()
         }
         
-        
+        class PriceReportDto {
+         ~ priceReportId
+         ~ user
+         ~ priceReportDependability
+         
+         ~ dieselPrice
+         ~ superPrice
+         ~ superPlusPrice
+         ~ gasPrice
+         ~ methanePrice
+            + getPriceReportId()
+            + setPriceReportId()
+            + getUser()
+            + setUser()
+            + getPriceReportDependability()
+            + setPriceReportDependability()
+
+            + getDieselPrice()
+            + setDieselPrice()
+            + getSuperPrice()
+            + setSuperPrice()
+            + getSuperPlusPrice()
+            + setSuperPlusPrice()
+            + getGasPrice()
+            + setGasPrice()
+            + getMethanePrice()
+            + setMethanePrice()
+        }
     }
     
     package "it.polito.ezgas.entity" {
