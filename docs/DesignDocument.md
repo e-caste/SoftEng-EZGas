@@ -263,16 +263,73 @@ Package Backend {
         }
         
         class GasStation {
-         + ID
-         + name
-         + address
-         + brand
-         + hasDiesel
-         + hasGasoline
-         + hasPremiumDiesel
-         + hasPremiumGasoline
-         + hasLPG
-         + hasMethane
+         - gasStationId
+         - gasStationName
+         - gasStationAddress
+         - geoPoint
+
+         - reportUserId
+         - reportTimeStamp
+         - reportDependability
+
+         - carSharing
+         - user
+
+         - hasDiesel
+         - hasGasoline
+         - hasPremiumDiesel
+         - hasPremiumGasoline
+         - hasLPG
+         - hasMethane
+
+         - dieselPrice
+         - superPrice
+         - superPlusPrice
+         - gasPrice
+         - methanePrice
+         
+            + getGasStationId()
+            + setGasStationId()
+            + getGasStationName()
+            + setGasStationName()
+            + getGasStationAddress()
+            + setGasStationAddress()
+            + getGeoPoint()
+            + setGeoPoint()
+
+            + getReportDependability()
+            + setReportDependability()
+            + getReportUser()
+            + setReportUser()
+            + getReportTimestamp()
+            + setReportTimestamp()
+
+            + getCarSharing()
+            + setCarSharing()
+            + getUser()
+            + setUser()
+
+            + getHasDiesel()
+            + setHasDiesel()
+            + getHasSuper()
+            + setHasSuper()
+            + getHasSuperPlus()
+            + setHasSuperPlus()
+            + getHasGas()
+            + setHasGas()
+            + getHasMethane()
+            + setHasMethane()
+
+            + getDieselPrice()
+            + setDieselPrice()
+            + getSuperPrice()
+            + setSuperPrice()
+            + getSuperPlusPrice()
+            + setSuperPlusPrice()
+            + getGasPrice()
+            + setGasPrice()
+            + getMethanePrice()
+            + setMethanePrice()
         }
         
         class GeoPoint {
