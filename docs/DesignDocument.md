@@ -255,6 +255,15 @@ Package Backend {
     }
     
     package "it.polito.ezgas.controller" {
+        class HomeController {
+            + admin()
+            + index()
+            + map()
+            + login()
+            + update()
+            + signup()
+        }
+
         class GasStationController {
          - gasStationService
             + getGasStationById()
@@ -268,6 +277,8 @@ Package Backend {
             + getGasStationsWithoutCoordinates()
             + setReport()
         }
+        
+        
     }
     
     package "it.polito.ezgas.converter" {
