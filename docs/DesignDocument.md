@@ -259,6 +259,72 @@ Package Backend {
             + getIsAdmin()
             + setIsAdmin()
         }
+
+        class GasStationDto {
+         ~ gasStationId
+         ~ gasStationName
+         ~ gasStationAddress
+         ~ geoPoint
+
+         ~ priceReport
+
+         - carSharing
+         ~ user
+
+         ~ hasDiesel
+         ~ hasGasoline
+         ~ hasPremiumDiesel
+         ~ hasPremiumGasoline
+         ~ hasLPG
+         ~ hasMethane
+
+         ~ dieselPrice
+         ~ superPrice
+         ~ superPlusPrice
+         ~ gasPrice
+         ~ methanePrice
+         
+            + getGasStationId()
+            + setGasStationId()
+            + getGasStationName()
+            + setGasStationName()
+            + getGasStationAddress()
+            + setGasStationAddress()
+            + getGeoPoint()
+            + setGeoPoint()
+
+            + getPriceReport()
+            + setPriceReport()
+
+            + getCarSharing()
+            + setCarSharing()
+            + getUser()
+            + setUser()
+
+            + getHasDiesel()
+            + setHasDiesel()
+            + getHasSuper()
+            + setHasSuper()
+            + getHasSuperPlus()
+            + setHasSuperPlus()
+            + getHasGas()
+            + setHasGas()
+            + getHasMethane()
+            + setHasMethane()
+
+            + getDieselPrice()
+            + setDieselPrice()
+            + getSuperPrice()
+            + setSuperPrice()
+            + getSuperPlusPrice()
+            + setSuperPlusPrice()
+            + getGasPrice()
+            + setGasPrice()
+            + getMethanePrice()
+            + setMethanePrice()
+        }
+        
+        
     }
     
     package "it.polito.ezgas.entity" {
