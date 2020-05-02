@@ -224,7 +224,6 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 ```plantuml
 @startuml
 
-Package Backend {
     class BootEZGasApplication {
         + main()
         + setupWithData()
@@ -631,7 +630,7 @@ Package Backend {
         class UserRepository {
         }
     }
-}
+
 
 @enduml
 ```
