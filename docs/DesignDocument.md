@@ -484,7 +484,7 @@ Contains Service classes that implement the Service Interfaces in the Service pa
             + setPw()
         }
 
-        class AnonymousUser {
+        class AnonymousUserDto {
          - userId
          - geoPoint
             + getUserId()
@@ -493,7 +493,7 @@ Contains Service classes that implement the Service Interfaces in the Service pa
             + setGeoPoint()
         }
         
-        class Administrator {
+        class AdministratorDto {
             + addGasStation()
             + editGasStation()
             + removeGasStation()
@@ -693,4 +693,3 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
-
