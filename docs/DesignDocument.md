@@ -479,16 +479,21 @@ Package Backend {
     }
     
     package "it.polito.ezgas.entity" {
-        class User {
+        class AnonymousUser {
          - userId
+         - geoPoint
+            + getUserId()
+            + setUserId()
+            + getGeoPoint()
+            + setGeoPoint()
+        }
+        
+        class User {
          - userName
          - password
          - email
          - reputation
          - isAdmin {y/n}
-         - geoPoint
-            + getUserId()
-            + setUserId()
             + getUserName()
             + setUserName()
             + getPassword()
@@ -497,8 +502,18 @@ Package Backend {
             + setEmail()
             + getIsAdmin()
             + setIsAdmin()
-            + getGeoPoint()
-            + setGeoPoint()
+
+            + removeUser()
+        }
+        
+        class Administrator {
+            + addGasStation()
+            + editGasStation()
+            + removeGasStation()
+            + addUser()
+            + editUser()
+            + removeUser(UserDto)
+            + banUser()
         }
         
         class GasStation {
@@ -603,6 +618,9 @@ Package Backend {
         User "*" -- GeoPoint
         GasStation "*" -- GeoPoint
         User "*" -- PriceReport
+
+        User -|> AnonymousUser : extends
+        Administrator -|> User : extends
     }
     
     package "it.polito.ezgas.repository" {
