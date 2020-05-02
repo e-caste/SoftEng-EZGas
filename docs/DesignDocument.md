@@ -318,7 +318,12 @@ Package Backend {
     }
     
     package "it.polito.ezgas.converter" {
-    
+        class GasStationConverter {
+        }
+        class PriceReportConverter {
+        }
+        class UserConverter {
+        }
     }
     
     package "it.polito.ezgas.dto" {
