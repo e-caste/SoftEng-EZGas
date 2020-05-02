@@ -319,10 +319,16 @@ Package Backend {
     
     package "it.polito.ezgas.converter" {
         class GasStationConverter {
+            + convertEntityToDto()
+            + convertDtoToEntity()
         }
         class PriceReportConverter {
+            + convertEntityToDto()
+            + convertDtoToEntity()
         }
         class UserConverter {
+            + convertEntityToDto()
+            + convertDtoToEntity()
         }
     }
     
