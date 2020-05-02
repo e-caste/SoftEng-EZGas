@@ -600,7 +600,12 @@ Package Backend {
     }
     
     package "it.polito.ezgas.repository" {
-    
+        class GasStationRepository {
+        }
+        class PriceReportRepository {
+        }
+        class UserRepository {
+        }
     }
 }
 
