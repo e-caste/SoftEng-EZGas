@@ -325,7 +325,15 @@ Contains Service classes that implement the Service Interfaces in the Service pa
             + convertEntityToDto()
             + convertDtoToEntity()
         }
+        class AnonymousUserConverter {
+            + convertEntityToDto()
+            + convertDtoToEntity()
+        }
         class UserConverter {
+            + convertEntityToDto()
+            + convertDtoToEntity()
+        }
+        class AdministratorConverter {
             + convertEntityToDto()
             + convertDtoToEntity()
         }
@@ -474,6 +482,25 @@ Contains Service classes that implement the Service Interfaces in the Service pa
             + setUser()
             + getPw()
             + setPw()
+        }
+
+        class AnonymousUser {
+         - userId
+         - geoPoint
+            + getUserId()
+            + setUserId()
+            + getGeoPoint()
+            + setGeoPoint()
+        }
+        
+        class Administrator {
+            + addGasStation()
+            + editGasStation()
+            + removeGasStation()
+            + addUser()
+            + editUser()
+            + removeUser(UserDto)
+            + banUser()
         }
     }
     
@@ -627,7 +654,11 @@ Contains Service classes that implement the Service Interfaces in the Service pa
         }
         class PriceReportRepository {
         }
+        class AnonymousUserRepository {
+        }
         class UserRepository {
+        }
+        class AdministratorRepository {
         }
     }
 
