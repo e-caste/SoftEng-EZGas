@@ -715,3 +715,22 @@ UserService --> UserController: UserDto
 @enduml
 ```
 
+## UC2 - Modify User Account
+```plantuml
+@startuml
+
+UserController <-- UserDto: UserDto
+UserController -> UserService: updateUser(UserDto)
+UserService -> UserRepository: findByEmail(String)
+UserRepository --> UserService: User
+UserService -> UserRepository: updateUser(UserDto)
+UserRepository -> UserConverter: convertDtoToEntity(UserDto)
+UserConverter --> UserRepository: User
+UserRepository -> DB: update(User)
+
+DB --> UserRepository: Boolean
+UserRepository --> UserService: Boolean
+UserService --> UserController: UserDto
+
+@enduml
+```
