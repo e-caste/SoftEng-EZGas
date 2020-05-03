@@ -118,6 +118,7 @@ public class GasStationController {
 	
 	@RequestMapping(value = Constants.SET_GASSTATION_REPORT, method = RequestMethod.POST)
 	public void setGasStationReport(@PathVariable Integer gasStationId, @PathVariable double dieselPrice, @PathVariable double superPrice, @PathVariable double superPlusPrice, @PathVariable double gasPrice, @PathVariable double methanePrice, @PathVariable Integer userId) {
+//	public void setGasStationReport(@RequestBody PriceReportDto priceReportDto) {
 
 		try {
 			gasStationService.setReport(gasStationId, dieselPrice, superPrice, superPlusPrice, gasPrice, methanePrice, userId);

@@ -745,3 +745,22 @@ GasStationRepository -> DB: delete(Integer)
 
 @enduml
 ```
+
+## UC7 - Report fuel price for a gas station
+
+```plantuml
+@startuml
+
+' TODO: PriceReportDto does not exist at this time, but is used to represent the list of parameters
+
+GasStationController <-- PriceReportDto: PriceReportDto
+GasStationController -> GasStationService: setReport(PriceReportDto)
+GasStationService -> PriceReportRepository: setReport(PriceReportDto)
+PriceReportRepository -> PriceReportConverter: convertDtoToEntity(PriceReportDto)
+PriceReportConverter --> PriceReportRepository: PriceReport
+PriceReportRepository -> DB: save(PriceReport)
+
+DB --> GasStationController
+
+@enduml
+```
