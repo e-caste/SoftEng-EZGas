@@ -734,3 +734,14 @@ UserService --> UserController: UserDto
 
 @enduml
 ```
+
+## UC6 - Delete Gas Station
+```plantuml
+@startuml
+
+GasStationController -> GasStationService: deleteGasStation(Integer)
+GasStationService -> GasStationRepository: deleteGasStation(Integer)
+GasStationRepository -> DB: delete(Integer)
+
+@enduml
+```
