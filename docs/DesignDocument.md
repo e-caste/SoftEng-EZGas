@@ -697,8 +697,6 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 ```plantuml
 @startuml
 
-'database DB TODO: show DB with database icon
-
 UserController <-- UserDto: UserDto
 UserController -> UserService: saveUser(UserDto)
 UserService -> UserRepository: findByEmail(String)
@@ -706,6 +704,7 @@ UserRepository --> UserService: User
 UserService -> UserRepository: saveUser(UserDto)
 UserRepository -> UserConverter: convertDtoToEntity(UserDto)
 UserConverter --> UserRepository: User
+database DB
 UserRepository -> DB: save(User)
 
 DB --> UserRepository: Boolean
@@ -726,6 +725,7 @@ UserRepository --> UserService: User
 UserService -> UserRepository: updateUser(UserDto)
 UserRepository -> UserConverter: convertDtoToEntity(UserDto)
 UserConverter --> UserRepository: User
+database DB
 UserRepository -> DB: update(User)
 
 DB --> UserRepository: Boolean
@@ -741,6 +741,7 @@ UserService --> UserController: UserDto
 
 GasStationController -> GasStationService: deleteGasStation(Integer)
 GasStationService -> GasStationRepository: deleteGasStation(Integer)
+database DB
 GasStationRepository -> DB: delete(Integer)
 
 DB --> GasStationController
@@ -759,6 +760,7 @@ GasStationController -> GasStationService: setReport(PriceReportDto)
 GasStationService -> PriceReportRepository: setReport(PriceReportDto)
 PriceReportRepository -> PriceReportConverter: convertDtoToEntity(PriceReportDto)
 PriceReportConverter --> PriceReportRepository: PriceReport
+database DB
 PriceReportRepository -> DB: save(PriceReport)
 
 DB --> GasStationController
