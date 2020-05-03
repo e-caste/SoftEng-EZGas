@@ -692,7 +692,6 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 | FR5.3 |  | X |  |  |  |  |  |
 
 # Verification sequence diagrams 
-\<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
 
 ## UC1 - Create User Account
 ```plantuml
