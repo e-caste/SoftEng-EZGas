@@ -693,3 +693,26 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 
 # Verification sequence diagrams 
 \<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
+
+## UC1 - Create User Account
+```plantuml
+@startuml
+
+'database DB TODO: show DB with database icon
+
+UserController <-- UserDto: UserDto
+UserController -> UserService: saveUser(UserDto)
+UserService -> UserRepository: findByEmail(String)
+UserRepository --> UserService: User
+UserService -> UserRepository: saveUser(UserDto)
+UserRepository -> UserConverter: convertDtoToEntity(UserDto)
+UserConverter --> UserRepository: User
+UserRepository -> DB: save(User)
+
+DB --> UserRepository: Boolean
+UserRepository --> UserService: Boolean
+UserService --> UserController: UserDto
+
+@enduml
+```
+
