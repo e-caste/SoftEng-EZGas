@@ -768,10 +768,38 @@ DB --> GasStationController
 
 ## UC8 - Obtain price of fuel for gas stations in a certain geographic area
 
+- (get user coordinates) - no method
+- get gas station dtos by proximity
+- for each gas station dto:
+        getPriceReportDtos
+
 ```plantuml
 @startuml
 
+' TODO: use GeoPoint instead of 2 doubles for coordinates
 
+== Get Gas Stations from DB ==
+GasStationController <-- GeoPointDto: GeoPointDto
+GasStationController -> GasStationService: getGasStationsByProximity(GeoPointDto)
+GasStationService -> GasStationRepository: getGasStationsByProximity(GeoPointDto)
+GasStationRepository -> GeoPointConverter: convertDtoToEntity(GeoPointDto)
+GeoPointConverter --> GasStationRepository: GeoPoint
+database DB
+GasStationRepository -> DB: getByProximity(GeoPoint)
+DB --> GasStationRepository: List<GasStationDto>
+GasStationRepository --> GasStationService: List<GasStationDto>
+GasStationService --> GasStationController: List<GasStationDto>
+
+' TODO: understand if we can stop here, or we need another specialized method to get the Map
+== Get Price Reports ==
+loop for each gas station dto
+    GasStationService -> GasStationDto: getPriceReportDtos()
+    GasStationDto --> GasStationService: List<PriceReportDto>
+    GasStationService -> GasStationService: addLastPriceReportDtoToMap()
+end
+GasStationService --> GasStationController: Map<GasStationDto, PriceReportDto>
 
 @enduml
 ```
+
+
