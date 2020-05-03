@@ -747,7 +747,6 @@ GasStationRepository -> DB: delete(Integer)
 ```
 
 ## UC7 - Report fuel price for a gas station
-
 ```plantuml
 @startuml
 
@@ -761,6 +760,16 @@ PriceReportConverter --> PriceReportRepository: PriceReport
 PriceReportRepository -> DB: save(PriceReport)
 
 DB --> GasStationController
+
+@enduml
+```
+
+## UC8 - Obtain price of fuel for gas stations in a certain geographic area
+
+```plantuml
+@startuml
+
+
 
 @enduml
 ```
