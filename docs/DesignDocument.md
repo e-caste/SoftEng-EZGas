@@ -743,6 +743,8 @@ GasStationController -> GasStationService: deleteGasStation(Integer)
 GasStationService -> GasStationRepository: deleteGasStation(Integer)
 GasStationRepository -> DB: delete(Integer)
 
+DB --> GasStationController
+
 @enduml
 ```
 
