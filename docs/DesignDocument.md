@@ -250,7 +250,6 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 
 ```plantuml
 @startuml
-scale 0.5
 skinparam backgroundcolor #FAEBDA
 skinparam package {
 BackgroundColor #FAEBDA-FFA563
