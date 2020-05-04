@@ -991,4 +991,45 @@ GasStationService --> GasStationController: Map<GasStationDto, PriceReportDto>
 @enduml
 ```
 
+## UC10 - Evaluate price
+
+```plantuml
+@startuml
+skinparam backgroundcolor #FFFFEE
+skinparam database {
+    BackgroundColor #FAEBDA-619196
+    ArrowColor #26424F
+    BorderColor #26424F
+}
+skinparam sequence{
+    LifeLineBorderColor #619196
+    ParticipantBorderColor #619196
+    ParticipantBackgroundColor #B2D9EA-FFFFEE
+    ArrowColor #619196
+}
+skinparam sequenceGroupBorderColor #26424F
+
+' TODO: use GeoPoint instead of 2 doubles for coordinates
+
+== Get Gas Station from DB ==
+
+GasStationController -> GasStationService: getGasStationById(gasStationId)
+GasStationService -> GasStationRepository: getGasStationById(gasStationId)
+database DB
+GasStationRepository -> DB: getGasStationById(gasStationId)
+GasStationRepository <-- DB: GasStationDto
+GasStationService  <-- GasStationRepository: GasStationDto
+GasStationController <-- GasStationService: GasStationDto
+== Update User reputation ==
+UserController --> UserService: increaseUserReputation(userId)
+UserService --> UserRepository: increaseUserReputation(userId)
+database DB
+UserRepository -> DB: increaseUserReputation(userId)
+UserRepository <-- DB: integer
+UserService <-- UserRepository: integer
+UserController <-- UserService: integer
+
+@enduml
+```
+
 
