@@ -250,6 +250,7 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 
 ```plantuml
 @startuml
+scale 0.5
 skinparam backgroundcolor #FAEBDA
 skinparam package {
 BackgroundColor #FAEBDA-FFA563
@@ -271,6 +272,8 @@ BorderColor #26424F
             class AnonymousUser {
              - userId
              - geoPoint
+            __
+            == Getter and Setter ==
                 + getUserId()
                 + setUserId()
                 + getGeoPoint()
@@ -283,6 +286,8 @@ BorderColor #26424F
              - email
              - reputation
              - isAdmin {y/n}
+            __
+            == Getter and Setter ==
                 + getUserName()
                 + setUserName()
                 + getPassword()
@@ -291,14 +296,17 @@ BorderColor #26424F
                 + setEmail()
                 + getIsAdmin()
                 + setIsAdmin()
-    
+            ==Remove==
                 + removeUser(): Boolean
             }
             
             class Administrator {
+            __
+            ==Gas Station Managing==
                 + addGasStation(): Boolean
                 + editGasStation(): Boolean
                 + removeGasStation(): Boolean
+            ==User Managing==
                 + addUser(): Boolean
                 + editUser(): Boolean
                 + removeUser(UserDto): Boolean
@@ -306,29 +314,31 @@ BorderColor #26424F
             }
             
             class GasStation {
+            ..GS info..
              - gasStationId
              - gasStationName
              - gasStationAddress
              - geoPoint
-    
+            ..
              - priceReport
-    
+            ..
              - carSharing
              - user
-    
+            ..Boolean info..
              - hasDiesel
              - hasGasoline
              - hasPremiumDiesel
              - hasPremiumGasoline
              - hasLPG
              - hasMethane
-    
+            ..Price info..
              - dieselPrice
              - superPrice
              - superPlusPrice
              - gasPrice
              - methanePrice
-             
+            __
+            ==Getter and Setter==
                 + getGasStationId()
                 + setGasStationId()
                 + getGasStationName()
@@ -337,15 +347,15 @@ BorderColor #26424F
                 + setGasStationAddress()
                 + getGeoPoint()
                 + setGeoPoint()
-    
+            ..
                 + getPriceReport()
                 + setPriceReport()
-    
+            ..
                 + getCarSharing()
                 + setCarSharing()
                 + getUser()
                 + setUser()
-    
+            ..
                 + getHasDiesel()
                 + setHasDiesel()
                 + getHasSuper()
@@ -356,7 +366,7 @@ BorderColor #26424F
                 + setHasGas()
                 + getHasMethane()
                 + setHasMethane()
-    
+            ..
                 + getDieselPrice()
                 + setDieselPrice()
                 + getSuperPrice()
@@ -378,27 +388,33 @@ BorderColor #26424F
              - priceReportId
              - user
              - priceReportDependability
-             
+            ..Type of Fuel..
              - dieselPrice
              - superPrice
              - superPlusPrice
              - gasPrice
              - methanePrice
+            __
+            ==Getter and Setter==
                 + getPriceReportId()
                 + setPriceReportId()
                 + getUser()
                 + setUser()
                 + getPriceReportDependability()
                 + setPriceReportDependability()
-    
+            ..Diesel..
                 + getDieselPrice()
                 + setDieselPrice()
+            ..Super..
                 + getSuperPrice()
                 + setSuperPrice()
+            ..Super Plus..
                 + getSuperPlusPrice()
                 + setSuperPlusPrice()
+            ..Gas..
                 + getGasPrice()
                 + setGasPrice()
+            ..Methane..
                 + getMethanePrice()
                 + setMethanePrice()
             }
@@ -418,23 +434,33 @@ BorderColor #26424F
 
         package "it.polito.ezgas.service.impl" {
             class GasStationServiceImpl implements GSS {
+            __
+            ==Getter and Setter==
                 + getGasStationById(): GasStationDto
-                + saveGasStation(): GasStationDto
                 + getAllGasStations(): List<GasStationDto>
-                + deleteGasStationById(): Boolean
                 + getGasStationsByGasolineType(): List<GasStationDto>
                 + getGasStationsByProximity(): List<GasStationDto>
                 + getGasStationsByCarSharing(): List<GasStationDto>
                 + getGasStationsWithCoordinates(): List<GasStationDto>
-                + getGasStationsWithoutCoordinates(): List<GasStationDto>
+                + getGasStationsWithoutCoordinates(): List<GasStationDto>          
+                
                 + setReport(): void
+            ==Save==
+                + saveGasStation(): GasStationDto
+            ==Delete==
+                + deleteGasStationById(): Boolean
             }
             class UserServiceImpl implements US {
+            __
+            ==Getter==
                 + getUserById(): UserDto
-                + saveUser(): UserDto
                 + getAllUsers(): List<UserDto>
+            ==Save==
+                + saveUser(): UserDto
+            ==Delete==
                 + deleteUserById(): Boolean 
                 + login(): LoginDto
+            ==Reputation==
                 + increaseUserReputation(): Integer
                 + decreaseUserReputation(): Integer
             }
@@ -475,8 +501,9 @@ BorderColor #26424F
 
         class GasStationController {
          - gasStationService
+        __
+        ==Getter==
             + getGasStationById(): GasStationDto
-            + saveGasStation(): void
             + getAllGasStations(): List<GasStationDto>
             + deleteGasStationById(): Boolean
             + getGasStationsByGasolineType(): List<GasStationDto>
@@ -484,16 +511,24 @@ BorderColor #26424F
             + getGasStationsByCarSharing(): List<GasStationDto>
             + getGasStationsWithCoordinates(): List<GasStationDto>
             + getGasStationsWithoutCoordinates(): List<GasStationDto>
+        ==Setter==
             + setReport(): void
+        ==Save==
+            + saveGasStation(): void
         }
         
         class UserController {
          - userService
+        __
+        ==Getter==
             + getUserById(): UserDto
             + saveUser(): UserDto
             + getAllUsers(): List<UserDto>
+        ==Delete==
             + deleteUserById(): Boolean
+        ==Login==
             + login(): LoginDto
+        ==Reputation==
             + increaseUserReputation(): Integer
             + decreaseUserReputation(): Integer
         }
@@ -530,6 +565,8 @@ BorderColor #26424F
          - email
          - reputation
          - isAdmin {y/n}
+        __
+        ==Getter and Setter==
             + getUserId()
             + setUserId()
             + getUserName():
@@ -545,29 +582,31 @@ BorderColor #26424F
         }
 
         class GasStationDto {
+        ..GS info..
          ~ gasStationId
          ~ gasStationName
          ~ gasStationAddress
          ~ geoPoint
-
+        ..
          ~ priceReport
-
+        ..
          - carSharing
          ~ user
-
+        ..boolean info..
          ~ hasDiesel
          ~ hasGasoline
          ~ hasPremiumDiesel
          ~ hasPremiumGasoline
          ~ hasLPG
          ~ hasMethane
-
+        ..
          ~ dieselPrice
          ~ superPrice
          ~ superPlusPrice
          ~ gasPrice
          ~ methanePrice
-         
+        __
+        ==Getter and Setter==
             + getGasStationId()
             + setGasStationId()
             + getGasStationName()
@@ -576,15 +615,15 @@ BorderColor #26424F
             + setGasStationAddress()
             + getGeoPoint()
             + setGeoPoint()
-
+        ..
             + getPriceReport()
             + setPriceReport()
-
+        ..
             + getCarSharing()
             + setCarSharing()
             + getUser()
             + setUser()
-
+        ..
             + getHasDiesel()
             + setHasDiesel()
             + getHasSuper()
@@ -595,7 +634,7 @@ BorderColor #26424F
             + setHasGas()
             + getHasMethane()
             + setHasMethane()
-
+        ..
             + getDieselPrice()
             + setDieselPrice()
             + getSuperPrice()
@@ -612,27 +651,33 @@ BorderColor #26424F
          ~ priceReportId
          ~ user
          ~ priceReportDependability
-         
+         ..Type of Fuel..
          ~ dieselPrice
          ~ superPrice
          ~ superPlusPrice
          ~ gasPrice
          ~ methanePrice
+        __
+        ==Getter and Setter==
             + getPriceReportId()
             + setPriceReportId()
             + getUser()
             + setUser()
             + getPriceReportDependability()
             + setPriceReportDependability()
-
+        ..Diesel..
             + getDieselPrice()
             + setDieselPrice()
+        ..Super..
             + getSuperPrice()
             + setSuperPrice()
+        ..Super Plus..
             + getSuperPlusPrice()
             + setSuperPlusPrice()
+        ..Gas..
             + getGasPrice()
             + setGasPrice()
+        ..Methane..
             + getMethanePrice()
             + setMethanePrice()
         }
@@ -644,6 +689,8 @@ BorderColor #26424F
          ~ email
          ~ reputation
          ~ isAdmin {y/n}
+        __
+        ==Getter and Setter==
             + getUserId()
             + setUserId()
             + getUserName()
@@ -661,6 +708,8 @@ BorderColor #26424F
         class IdPw {
          - user
          - pw
+        __
+        ==Getter and Setter==
             + getUser()
             + setUser()
             + getPw()
@@ -670,6 +719,8 @@ BorderColor #26424F
         class AnonymousUserDto {
          - userId
          - geoPoint
+        __
+        ==Getter and Setter==
             + getUserId()
             + setUserId()
             + getGeoPoint()
@@ -677,9 +728,12 @@ BorderColor #26424F
         }
         
         class AdministratorDto {
+        __
+        ==Gas Station Managing==
             + addGasStation(): Boolean
             + editGasStation(): Boolean
             + removeGasStation(): Boolean
+        ==User Managing==
             + addUser(): Boolean
             + editUser(): Boolean
             + removeUser(UserDto): Boolean
