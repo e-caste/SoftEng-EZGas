@@ -34,11 +34,16 @@ Together, they implement also an MVC pattern, with the V on the front end and th
 
 ```plantuml
 @startuml
-package "Backend" {
+skinparam backgroundcolor #FAEBDA
+skinparam package {
+BackgroundColor #FAEBDA/FFA563
+BorderColor #26424F
+}
+package "Backend"{
 
 }
 
-package "Frontend" {
+package "Frontend"{
 
 }
 
@@ -63,19 +68,25 @@ Controller: the package contains the JavaScript files that catch the user's inpu
 
 ```plantuml
 @startuml
-package "Frontend" {
+skinparam backgroundcolor #FAEBDA
+skinparam package {
+BackgroundColor #FAEBDA/FFA563
+BorderColor #26424F
+}
 
-    package "it.polito.ezgas.resources.views" {
+package "Frontend" #FAEBDA/FFA563{
+
+    package "it.polito.ezgas.resources.views" #FAEBDA/FFA563{
 
     }
 
 
-package "it.polito.ezgas.resources.controller" {
+package "it.polito.ezgas.resources.controller" #FAEBDA/FFA563{
 
     }
 
 
-package "it.polito.ezgas.resources.styles" {
+package "it.polito.ezgas.resources.styles" #FAEBDA/FFA563{
 
     }
 
@@ -106,31 +117,47 @@ For more information about the Spring design guidelines and naming conventions: 
 
 ```plantuml
 @startuml
-package "Backend" {
+skinparam backgroundcolor #FAEBDA
+skinparam package {
+BackgroundColor #FAEBDA/FFA563
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam class {
+BackgroundColor #FAEBDA
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam note {
+BackgroundColor #FAEBDA
+ArrowColor #26424F
+BorderColor #26424F
+}
+package "Backend" #FAEBDA-FFA563{
 
-package "it.polito.ezgas.service"  as ps {
+package "it.polito.ezgas.service"  as ps{
    interface "GasStationService"
    interface "UserService"
 } 
 
 
-package "it.polito.ezgas.controller" {
+package "it.polito.ezgas.controller"{
 
 }
 
-package "it.polito.ezgas.converter" {
+package "it.polito.ezgas.converter"{
 
 }
 
-package "it.polito.ezgas.dto" {
+package "it.polito.ezgas.dto"{
 
 }
 
-package "it.polito.ezgas.entity" {
+package "it.polito.ezgas.entity"{
 
 }
 
-package "it.polito.ezgas.repository" {
+package "it.polito.ezgas.repository"{
 
 }
 
@@ -223,11 +250,167 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 
 ```plantuml
 @startuml
+skinparam backgroundcolor #FAEBDA
+skinparam package {
+BackgroundColor #FAEBDA-FFA563
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam class {
+BackgroundColor #FAEBDA/FFA563
+ArrowColor #26424F
+BorderColor #26424F
+}
 
     class BootEZGasApplication {
         + main()
         + setupWithData()
     }
+
+    package "it.polito.ezgas.entity" {
+            class AnonymousUser {
+             - userId
+             - geoPoint
+                + getUserId()
+                + setUserId()
+                + getGeoPoint()
+                + setGeoPoint()
+            }
+            
+            class User {
+             - userName
+             - password
+             - email
+             - reputation
+             - isAdmin {y/n}
+                + getUserName()
+                + setUserName()
+                + getPassword()
+                + setPassword()
+                + getEmail()
+                + setEmail()
+                + getIsAdmin()
+                + setIsAdmin()
+    
+                + removeUser(): Boolean
+            }
+            
+            class Administrator {
+                + addGasStation(): Boolean
+                + editGasStation(): Boolean
+                + removeGasStation(): Boolean
+                + addUser(): Boolean
+                + editUser(): Boolean
+                + removeUser(UserDto): Boolean
+                + banUser(): Boolean
+            }
+            
+            class GasStation {
+             - gasStationId
+             - gasStationName
+             - gasStationAddress
+             - geoPoint
+    
+             - priceReport
+    
+             - carSharing
+             - user
+    
+             - hasDiesel
+             - hasGasoline
+             - hasPremiumDiesel
+             - hasPremiumGasoline
+             - hasLPG
+             - hasMethane
+    
+             - dieselPrice
+             - superPrice
+             - superPlusPrice
+             - gasPrice
+             - methanePrice
+             
+                + getGasStationId()
+                + setGasStationId()
+                + getGasStationName()
+                + setGasStationName()
+                + getGasStationAddress()
+                + setGasStationAddress()
+                + getGeoPoint()
+                + setGeoPoint()
+    
+                + getPriceReport()
+                + setPriceReport()
+    
+                + getCarSharing()
+                + setCarSharing()
+                + getUser()
+                + setUser()
+    
+                + getHasDiesel()
+                + setHasDiesel()
+                + getHasSuper()
+                + setHasSuper()
+                + getHasSuperPlus()
+                + setHasSuperPlus()
+                + getHasGas()
+                + setHasGas()
+                + getHasMethane()
+                + setHasMethane()
+    
+                + getDieselPrice()
+                + setDieselPrice()
+                + getSuperPrice()
+                + setSuperPrice()
+                + getSuperPlusPrice()
+                + setSuperPlusPrice()
+                + getGasPrice()
+                + setGasPrice()
+                + getMethanePrice()
+                + setMethanePrice()
+            }
+            
+            class GeoPoint {
+             + latitude
+             + longitude
+            }
+            
+            class PriceReport {
+             - priceReportId
+             - user
+             - priceReportDependability
+             
+             - dieselPrice
+             - superPrice
+             - superPlusPrice
+             - gasPrice
+             - methanePrice
+                + getPriceReportId()
+                + setPriceReportId()
+                + getUser()
+                + setUser()
+                + getPriceReportDependability()
+                + setPriceReportDependability()
+    
+                + getDieselPrice()
+                + setDieselPrice()
+                + getSuperPrice()
+                + setSuperPrice()
+                + getSuperPlusPrice()
+                + setSuperPlusPrice()
+                + getGasPrice()
+                + setGasPrice()
+                + getMethanePrice()
+                + setMethanePrice()
+            }
+    
+            GasStation  -- "0..1" PriceReport
+            User "*" -- GeoPoint
+            GasStation "*" -- GeoPoint
+            User "*" -- PriceReport
+    
+            User -|> AnonymousUser : extends
+            Administrator -|> User : extends
+        }
     
     package "it.polito.ezgas.service" {
        interface "GasStationService" as GSS
@@ -235,25 +418,25 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 
         package "it.polito.ezgas.service.impl" {
             class GasStationServiceImpl implements GSS {
-                + getGasStationById()
-                + saveGasStation()
-                + getAllGasStations()
-                + deleteGasStationById()
-                + getGasStationsByGasolineType()
-                + getGasStationsByProximity()
-                + getGasStationsByCarSharing()
-                + getGasStationsWithCoordinates()
-                + getGasStationsWithoutCoordinates()
-                + setReport()
+                + getGasStationById(): GasStationDto
+                + saveGasStation(): GasStationDto
+                + getAllGasStations(): List<GasStationDto>
+                + deleteGasStationById(): Boolean
+                + getGasStationsByGasolineType(): List<GasStationDto>
+                + getGasStationsByProximity(): List<GasStationDto>
+                + getGasStationsByCarSharing(): List<GasStationDto>
+                + getGasStationsWithCoordinates(): List<GasStationDto>
+                + getGasStationsWithoutCoordinates(): List<GasStationDto>
+                + setReport(): void
             }
             class UserServiceImpl implements US {
-                + getUserById()
-                + saveUser()
-                + getAllUsers()
-                + deleteUserById()
-                + login()
-                + increaseUserReputation()
-                + decreaseUserReputation()
+                + getUserById(): UserDto
+                + saveUser(): UserDto
+                + getAllUsers(): List<UserDto>
+                + deleteUserById(): Boolean 
+                + login(): LoginDto
+                + increaseUserReputation(): Integer
+                + decreaseUserReputation(): Integer
             }
         }
     }
@@ -282,60 +465,60 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 
     package "it.polito.ezgas.controller" {
         class HomeController {
-            + admin()
-            + index()
-            + map()
-            + login()
-            + update()
-            + signup()
+            + admin(): String
+            + index(): String
+            + map(): String
+            + login(): String
+            + update(): String
+            + signup(): String
         }
 
         class GasStationController {
          - gasStationService
-            + getGasStationById()
-            + saveGasStation()
-            + getAllGasStations()
-            + deleteGasStationById()
-            + getGasStationsByGasolineType()
-            + getGasStationsByProximity()
-            + getGasStationsByCarSharing()
-            + getGasStationsWithCoordinates()
-            + getGasStationsWithoutCoordinates()
-            + setReport()
+            + getGasStationById(): GasStationDto
+            + saveGasStation(): void
+            + getAllGasStations(): List<GasStationDto>
+            + deleteGasStationById(): Boolean
+            + getGasStationsByGasolineType(): List<GasStationDto>
+            + getGasStationsByProximity(): List<GasStationDto>
+            + getGasStationsByCarSharing(): List<GasStationDto>
+            + getGasStationsWithCoordinates(): List<GasStationDto>
+            + getGasStationsWithoutCoordinates(): List<GasStationDto>
+            + setReport(): void
         }
         
         class UserController {
          - userService
-            + getUserById()
-            + saveUser()
-            + getAllUsers()
-            + deleteUserById()
-            + login()
-            + increaseUserReputation()
-            + decreaseUserReputation()
+            + getUserById(): UserDto
+            + saveUser(): UserDto
+            + getAllUsers(): List<UserDto>
+            + deleteUserById(): Boolean
+            + login(): LoginDto
+            + increaseUserReputation(): Integer
+            + decreaseUserReputation(): Integer
         }
     }
     
     package "it.polito.ezgas.converter" {
         class GasStationConverter {
-            + convertEntityToDto()
-            + convertDtoToEntity()
+            + convertEntityToDto(): GasStationDto
+            + convertDtoToEntity(): GasStation
         }
         class PriceReportConverter {
-            + convertEntityToDto()
-            + convertDtoToEntity()
+            + convertEntityToDto(): PriceReportDto
+            + convertDtoToEntity(): PriceReport
         }
         class AnonymousUserConverter {
-            + convertEntityToDto()
-            + convertDtoToEntity()
+            + convertEntityToDto(): AnonymousUserDto
+            + convertDtoToEntity(): AnonymousUser
         }
         class UserConverter {
-            + convertEntityToDto()
-            + convertDtoToEntity()
+            + convertEntityToDto(): UserDto
+            + convertDtoToEntity(): User
         }
         class AdministratorConverter {
-            + convertEntityToDto()
-            + convertDtoToEntity()
+            + convertEntityToDto(): AdministratorDto
+            + convertDtoToEntity(): Administrator
         }
     }
     
@@ -349,7 +532,7 @@ Contains Service classes that implement the Service Interfaces in the Service pa
          - isAdmin {y/n}
             + getUserId()
             + setUserId()
-            + getUserName()
+            + getUserName():
             + setUserName()
             + getPassword()
             + setPassword()
@@ -494,159 +677,14 @@ Contains Service classes that implement the Service Interfaces in the Service pa
         }
         
         class AdministratorDto {
-            + addGasStation()
-            + editGasStation()
-            + removeGasStation()
-            + addUser()
-            + editUser()
-            + removeUser(UserDto)
-            + banUser()
+            + addGasStation(): Boolean
+            + editGasStation(): Boolean
+            + removeGasStation(): Boolean
+            + addUser(): Boolean
+            + editUser(): Boolean
+            + removeUser(UserDto): Boolean
+            + banUser(): Boolean
         }
-    }
-    
-    package "it.polito.ezgas.entity" {
-        class AnonymousUser {
-         - userId
-         - geoPoint
-            + getUserId()
-            + setUserId()
-            + getGeoPoint()
-            + setGeoPoint()
-        }
-        
-        class User {
-         - userName
-         - password
-         - email
-         - reputation
-         - isAdmin {y/n}
-            + getUserName()
-            + setUserName()
-            + getPassword()
-            + setPassword()
-            + getEmail()
-            + setEmail()
-            + getIsAdmin()
-            + setIsAdmin()
-
-            + removeUser()
-        }
-        
-        class Administrator {
-            + addGasStation()
-            + editGasStation()
-            + removeGasStation()
-            + addUser()
-            + editUser()
-            + removeUser(UserDto)
-            + banUser()
-        }
-        
-        class GasStation {
-         - gasStationId
-         - gasStationName
-         - gasStationAddress
-         - geoPoint
-
-         - priceReport
-
-         - carSharing
-         - user
-
-         - hasDiesel
-         - hasGasoline
-         - hasPremiumDiesel
-         - hasPremiumGasoline
-         - hasLPG
-         - hasMethane
-
-         - dieselPrice
-         - superPrice
-         - superPlusPrice
-         - gasPrice
-         - methanePrice
-         
-            + getGasStationId()
-            + setGasStationId()
-            + getGasStationName()
-            + setGasStationName()
-            + getGasStationAddress()
-            + setGasStationAddress()
-            + getGeoPoint()
-            + setGeoPoint()
-
-            + getPriceReport()
-            + setPriceReport()
-
-            + getCarSharing()
-            + setCarSharing()
-            + getUser()
-            + setUser()
-
-            + getHasDiesel()
-            + setHasDiesel()
-            + getHasSuper()
-            + setHasSuper()
-            + getHasSuperPlus()
-            + setHasSuperPlus()
-            + getHasGas()
-            + setHasGas()
-            + getHasMethane()
-            + setHasMethane()
-
-            + getDieselPrice()
-            + setDieselPrice()
-            + getSuperPrice()
-            + setSuperPrice()
-            + getSuperPlusPrice()
-            + setSuperPlusPrice()
-            + getGasPrice()
-            + setGasPrice()
-            + getMethanePrice()
-            + setMethanePrice()
-        }
-        
-        class GeoPoint {
-         + latitude
-         + longitude
-        }
-        
-        class PriceReport {
-         - priceReportId
-         - user
-         - priceReportDependability
-         
-         - dieselPrice
-         - superPrice
-         - superPlusPrice
-         - gasPrice
-         - methanePrice
-            + getPriceReportId()
-            + setPriceReportId()
-            + getUser()
-            + setUser()
-            + getPriceReportDependability()
-            + setPriceReportDependability()
-
-            + getDieselPrice()
-            + setDieselPrice()
-            + getSuperPrice()
-            + setSuperPrice()
-            + getSuperPlusPrice()
-            + setSuperPlusPrice()
-            + getGasPrice()
-            + setGasPrice()
-            + getMethanePrice()
-            + setMethanePrice()
-        }
-
-        GasStation  -- "0..1" PriceReport
-        User "*" -- GeoPoint
-        GasStation "*" -- GeoPoint
-        User "*" -- PriceReport
-
-        User -|> AnonymousUser : extends
-        Administrator -|> User : extends
     }
     
     package "it.polito.ezgas.repository" {
@@ -660,6 +698,45 @@ Contains Service classes that implement the Service Interfaces in the Service pa
         }
         class AdministratorRepository {
         }
+        
+        GasStation o-- GasStationRepository
+        GasStation - GeoPoint
+        GasStationController o-- GasStationService
+        GasStationServiceImpl o-- GasStationRepository
+        GasStationServiceImpl o-- PriceReportRepository
+        GasStationServiceImpl o-- GasStationDto
+        GasStationServiceImpl o-- GasStation
+        GasStationConverter o-- GasStationDto
+        GasStationConverter o-- GasStation
+        GasStationService o-- GasStationDto
+        GasStationRepository o-- GasStation 
+
+        UserController o-- UserService
+        UserServiceImpl o-- UserRepository
+        UserServiceImpl o-- PriceReportRepository
+        UserServiceImpl o-- UserDto
+        UserServiceImpl o-- LoginDto
+        UserServiceImpl o-- User
+        UserServiceImpl o-- IdPw
+        UserRepository o-- User
+        UserConverter o-- UserDto
+        UserConverter o-- User
+        UserService o-- UserDto
+        UserService o-- LoginDto
+        UserService o-- IdPw
+
+        PriceReportRepository o-- PriceReport
+        PriceReportConverter o-- PriceReportDto
+        PriceReportConverter o-- PriceReport
+
+        AdministratorConverter o-- Administrator
+        AdministratorConverter o-- AdministratorDto
+        AdministratorRepository o-- Administrator
+
+        AnonymousUserConverter o-- AnonymousUser
+        AnonymousUserConverter o-- AnonymousUserDto
+        AnonymousUserRepository o-- AnonymousUser
+        
     }
 
 
@@ -696,7 +773,18 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 ## UC1 - Create User Account
 ```plantuml
 @startuml
-
+skinparam backgroundcolor #FFFFEE
+skinparam database {
+BackgroundColor #FAEBDA-619196
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam sequence{
+    LifeLineBorderColor #619196
+    ParticipantBorderColor #619196
+    ParticipantBackgroundColor #B2D9EA-FFFFEE
+    ArrowColor #619196
+}
 UserController <-- UserDto: UserDto
 UserController -> UserService: saveUser(UserDto)
 UserService -> UserRepository: findByEmail(String)
@@ -717,7 +805,18 @@ UserService --> UserController: UserDto
 ## UC2 - Modify User Account
 ```plantuml
 @startuml
-
+skinparam backgroundcolor #FFFFEE
+skinparam database {
+BackgroundColor #FAEBDA-619196
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam sequence{
+    LifeLineBorderColor #619196
+    ParticipantBorderColor #619196
+    ParticipantBackgroundColor #B2D9EA-FFFFEE
+    ArrowColor #619196
+}
 UserController <-- UserDto: UserDto
 UserController -> UserService: updateUser(UserDto)
 UserService -> UserRepository: findByEmail(String)
@@ -738,7 +837,18 @@ UserService --> UserController: UserDto
 ## UC6 - Delete Gas Station
 ```plantuml
 @startuml
-
+skinparam backgroundcolor #FFFFEE
+skinparam database {
+BackgroundColor #FAEBDA-619196
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam sequence{
+    LifeLineBorderColor #619196
+    ParticipantBorderColor #619196
+    ParticipantBackgroundColor #B2D9EA-FFFFEE
+    ArrowColor #619196
+}
 GasStationController -> GasStationService: deleteGasStation(Integer)
 GasStationService -> GasStationRepository: deleteGasStation(Integer)
 database DB
@@ -752,7 +862,18 @@ DB --> GasStationController
 ## UC7 - Report fuel price for a gas station
 ```plantuml
 @startuml
-
+skinparam backgroundcolor #FFFFEE
+skinparam database {
+BackgroundColor #FAEBDA-619196
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam sequence{
+    LifeLineBorderColor #619196
+    ParticipantBorderColor #619196
+    ParticipantBackgroundColor #B2D9EA-FFFFEE
+    ArrowColor #619196
+}
 ' TODO: PriceReportDto does not exist at this time, but is used to represent the list of parameters
 
 GasStationController <-- PriceReportDto: PriceReportDto
@@ -777,6 +898,19 @@ DB --> GasStationController
 
 ```plantuml
 @startuml
+skinparam backgroundcolor #FFFFEE
+skinparam database {
+    BackgroundColor #FAEBDA-619196
+    ArrowColor #26424F
+    BorderColor #26424F
+}
+skinparam sequence{
+    LifeLineBorderColor #619196
+    ParticipantBorderColor #619196
+    ParticipantBackgroundColor #B2D9EA-FFFFEE
+    ArrowColor #619196
+}
+skinparam sequenceGroupBorderColor #26424F
 
 ' TODO: use GeoPoint instead of 2 doubles for coordinates
 
