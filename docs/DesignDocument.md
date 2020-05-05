@@ -1,11 +1,11 @@
 # Design Document 
 
 
-Authors: 
+Authors: Enrico Castelli s280124, Augusto Maria Guerriero s278018, Francesca Ponzetta s276535, Monica Rungi s276979
 
-Date:
+Date: 04/05/2020
 
-Version:
+Version: 1
 
 
 # Contents
@@ -34,11 +34,16 @@ Together, they implement also an MVC pattern, with the V on the front end and th
 
 ```plantuml
 @startuml
-package "Backend" {
+skinparam backgroundcolor #FAEBDA
+skinparam package {
+BackgroundColor #FAEBDA/FFA563
+BorderColor #26424F
+}
+package "Backend"{
 
 }
 
-package "Frontend" {
+package "Frontend"{
 
 }
 
@@ -63,19 +68,25 @@ Controller: the package contains the JavaScript files that catch the user's inpu
 
 ```plantuml
 @startuml
-package "Frontend" {
+skinparam backgroundcolor #FAEBDA
+skinparam package {
+BackgroundColor #FAEBDA/FFA563
+BorderColor #26424F
+}
 
-    package "it.polito.ezgas.resources.views" {
+package "Frontend" #FAEBDA/FFA563{
+
+    package "it.polito.ezgas.resources.views" #FAEBDA/FFA563{
 
     }
 
 
-package "it.polito.ezgas.resources.controller" {
+package "it.polito.ezgas.resources.controller" #FAEBDA/FFA563{
 
     }
 
 
-package "it.polito.ezgas.resources.styles" {
+package "it.polito.ezgas.resources.styles" #FAEBDA/FFA563{
 
     }
 
@@ -106,31 +117,47 @@ For more information about the Spring design guidelines and naming conventions: 
 
 ```plantuml
 @startuml
-package "Backend" {
+skinparam backgroundcolor #FAEBDA
+skinparam package {
+BackgroundColor #FAEBDA/FFA563
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam class {
+BackgroundColor #FAEBDA
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam note {
+BackgroundColor #FAEBDA
+ArrowColor #26424F
+BorderColor #26424F
+}
+package "Backend" #FAEBDA-FFA563{
 
-package "it.polito.ezgas.service"  as ps {
+package "it.polito.ezgas.service"  as ps{
    interface "GasStationService"
    interface "UserService"
 } 
 
 
-package "it.polito.ezgas.controller" {
+package "it.polito.ezgas.controller"{
 
 }
 
-package "it.polito.ezgas.converter" {
+package "it.polito.ezgas.converter"{
 
 }
 
-package "it.polito.ezgas.dto" {
+package "it.polito.ezgas.dto"{
 
 }
 
-package "it.polito.ezgas.entity" {
+package "it.polito.ezgas.entity"{
 
 }
 
-package "it.polito.ezgas.repository" {
+package "it.polito.ezgas.repository"{
 
 }
 
@@ -138,6 +165,7 @@ package "it.polito.ezgas.repository" {
 }
 note "see folder ServicePackage" as n
 n -- ps
+@enduml
 ```
 
 
@@ -220,39 +248,788 @@ Contains Service classes that implement the Service Interfaces in the Service pa
 
 # Low level design
 
-<Based on the official requirements and on the Spring Boot design guidelines, define the required classes (UML class diagram) of the back-end in the proper packages described in the high-level design section.>
+```plantuml
+@startuml
+skinparam backgroundcolor #FAEBDA
+skinparam package {
+BackgroundColor #FAEBDA-FFA563
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam class {
+BackgroundColor #FAEBDA/FFA563
+ArrowColor #26424F
+BorderColor #26424F
+}
+
+    class BootEZGasApplication {
+        + main()
+        + setupWithData()
+    }
+
+    package "it.polito.ezgas.entity" {
+            class AnonymousUser {
+             - userId
+             - geoPoint
+            __
+            == Getter and Setter ==
+                + getUserId()
+                + setUserId()
+                + getGeoPoint()
+                + setGeoPoint()
+            }
+            
+            class User {
+             - userName
+             - password
+             - email
+             - reputation
+             - isAdmin {y/n}
+            __
+            == Getter and Setter ==
+                + getUserName()
+                + setUserName()
+                + getPassword()
+                + setPassword()
+                + getEmail()
+                + setEmail()
+                + getIsAdmin()
+                + setIsAdmin()
+            ==Remove==
+                + removeUser(): Boolean
+            }
+            
+            class Administrator {
+            __
+            ==Gas Station Managing==
+                + addGasStation(): Boolean
+                + editGasStation(): Boolean
+                + removeGasStation(): Boolean
+            ==User Managing==
+                + addUser(): Boolean
+                + editUser(): Boolean
+                + removeUser(UserDto): Boolean
+                + banUser(): Boolean
+            }
+            
+            class GasStation {
+            ..GS info..
+             - gasStationId
+             - gasStationName
+             - gasStationAddress
+             - geoPoint
+            ..
+             - priceReport
+            ..
+             - carSharing
+             - user
+            ..Boolean info..
+             - hasDiesel
+             - hasGasoline
+             - hasPremiumDiesel
+             - hasPremiumGasoline
+             - hasLPG
+             - hasMethane
+            ..Price info..
+             - dieselPrice
+             - superPrice
+             - superPlusPrice
+             - gasPrice
+             - methanePrice
+            __
+            ==Getter and Setter==
+                + getGasStationId()
+                + setGasStationId()
+                + getGasStationName()
+                + setGasStationName()
+                + getGasStationAddress()
+                + setGasStationAddress()
+                + getGeoPoint()
+                + setGeoPoint()
+            ..
+                + getPriceReport()
+                + setPriceReport()
+            ..
+                + getCarSharing()
+                + setCarSharing()
+                + getUser()
+                + setUser()
+            ..
+                + getHasDiesel()
+                + setHasDiesel()
+                + getHasSuper()
+                + setHasSuper()
+                + getHasSuperPlus()
+                + setHasSuperPlus()
+                + getHasGas()
+                + setHasGas()
+                + getHasMethane()
+                + setHasMethane()
+            ..
+                + getDieselPrice()
+                + setDieselPrice()
+                + getSuperPrice()
+                + setSuperPrice()
+                + getSuperPlusPrice()
+                + setSuperPlusPrice()
+                + getGasPrice()
+                + setGasPrice()
+                + getMethanePrice()
+                + setMethanePrice()
+            }
+            
+            class GeoPoint {
+             + latitude
+             + longitude
+            }
+            
+            class PriceReport {
+             - priceReportId
+             - user
+             - priceReportDependability
+            ..Type of Fuel..
+             - dieselPrice
+             - superPrice
+             - superPlusPrice
+             - gasPrice
+             - methanePrice
+            __
+            ==Getter and Setter==
+                + getPriceReportId()
+                + setPriceReportId()
+                + getUser()
+                + setUser()
+                + getPriceReportDependability()
+                + setPriceReportDependability()
+            ..Diesel..
+                + getDieselPrice()
+                + setDieselPrice()
+            ..Super..
+                + getSuperPrice()
+                + setSuperPrice()
+            ..Super Plus..
+                + getSuperPlusPrice()
+                + setSuperPlusPrice()
+            ..Gas..
+                + getGasPrice()
+                + setGasPrice()
+            ..Methane..
+                + getMethanePrice()
+                + setMethanePrice()
+            }
+    
+            GasStation  -- "0..1" PriceReport
+            User "*" -- GeoPoint
+            GasStation "*" -- GeoPoint
+            User "*" -- PriceReport
+    
+            User -|> AnonymousUser : extends
+            Administrator -|> User : extends
+        }
+    
+    package "it.polito.ezgas.service" {
+       interface "GasStationService" as GSS
+       interface "UserService" as US
+
+        package "it.polito.ezgas.service.impl" {
+            class GasStationServiceImpl implements GSS {
+            __
+            ==Getter and Setter==
+                + getGasStationById(): GasStationDto
+                + getAllGasStations(): List<GasStationDto>
+                + getGasStationsByGasolineType(): List<GasStationDto>
+                + getGasStationsByProximity(): List<GasStationDto>
+                + getGasStationsByCarSharing(): List<GasStationDto>
+                + getGasStationsWithCoordinates(): List<GasStationDto>
+                + getGasStationsWithoutCoordinates(): List<GasStationDto>          
+                
+                + setReport(): void
+            ==Save==
+                + saveGasStation(): GasStationDto
+            ==Delete==
+                + deleteGasStationById(): Boolean
+            }
+            class UserServiceImpl implements US {
+            __
+            ==Getter==
+                + getUserById(): UserDto
+                + getAllUsers(): List<UserDto>
+            ==Save==
+                + saveUser(): UserDto
+            ==Delete==
+                + deleteUserById(): Boolean 
+                + login(): LoginDto
+            ==Reputation==
+                + increaseUserReputation(): Integer
+                + decreaseUserReputation(): Integer
+            }
+        }
+    }
+    
+    package "it.polito.ezgas.utils" {
+        interface Constants {
+         + GET_USER_BY_ID
+         + GET_ALL_USERS
+         + SAVE_USER
+         + DELETE_USER
+         + INCREASE_REPUTATION
+         + DECREASE_REPUTATION
+         + LOGIN
+         + GET_GASSTATION_BY_ID
+         + GET_ALL_GASSTATIONS
+         + SAVE_GASSTATION
+         + DELETE_GASSTATION
+         + GET_GASSTATIONS_BY_NEIGHBORHOOD
+         + GET_GASSTATIONS_BY_GASOLINETYPE
+         + GET_GASSTATIONS_BY_PROXIMITY
+         + GET_GASSTATIONS_WITH_COORDINATES
+         + GET_GASSTATIONS_WITHOUT_COORDINATES
+         + SET_GASSTATION_REPORT
+        }
+    }
+
+    package "it.polito.ezgas.controller" {
+        class HomeController {
+            + admin(): String
+            + index(): String
+            + map(): String
+            + login(): String
+            + update(): String
+            + signup(): String
+        }
+
+        class GasStationController {
+         - gasStationService
+        __
+        ==Getter==
+            + getGasStationById(): GasStationDto
+            + getAllGasStations(): List<GasStationDto>
+            + deleteGasStationById(): Boolean
+            + getGasStationsByGasolineType(): List<GasStationDto>
+            + getGasStationsByProximity(): List<GasStationDto>
+            + getGasStationsByCarSharing(): List<GasStationDto>
+            + getGasStationsWithCoordinates(): List<GasStationDto>
+            + getGasStationsWithoutCoordinates(): List<GasStationDto>
+        ==Setter==
+            + setReport(): void
+        ==Save==
+            + saveGasStation(): void
+        }
+        
+        class UserController {
+         - userService
+        __
+        ==Getter==
+            + getUserById(): UserDto
+            + saveUser(): UserDto
+            + getAllUsers(): List<UserDto>
+        ==Delete==
+            + deleteUserById(): Boolean
+        ==Login==
+            + login(): LoginDto
+        ==Reputation==
+            + increaseUserReputation(): Integer
+            + decreaseUserReputation(): Integer
+        }
+    }
+    
+    package "it.polito.ezgas.converter" {
+        class GasStationConverter {
+            + convertEntityToDto(): GasStationDto
+            + convertDtoToEntity(): GasStation
+        }
+        class PriceReportConverter {
+            + convertEntityToDto(): PriceReportDto
+            + convertDtoToEntity(): PriceReport
+        }
+        class AnonymousUserConverter {
+            + convertEntityToDto(): AnonymousUserDto
+            + convertDtoToEntity(): AnonymousUser
+        }
+        class UserConverter {
+            + convertEntityToDto(): UserDto
+            + convertDtoToEntity(): User
+        }
+        class AdministratorConverter {
+            + convertEntityToDto(): AdministratorDto
+            + convertDtoToEntity(): Administrator
+        }
+    }
+    
+    package "it.polito.ezgas.dto" {
+        class UserDto {
+         - userId
+         - userName
+         - password
+         - email
+         - reputation
+         - isAdmin {y/n}
+        __
+        ==Getter and Setter==
+            + getUserId()
+            + setUserId()
+            + getUserName():
+            + setUserName()
+            + getPassword()
+            + setPassword()
+            + getEmail()
+            + setEmail()
+            + getReputation()
+            + setReputation()
+            + getIsAdmin()
+            + setIsAdmin()
+        }
+
+        class GasStationDto {
+        ..GS info..
+         ~ gasStationId
+         ~ gasStationName
+         ~ gasStationAddress
+         ~ geoPoint
+        ..
+         ~ priceReport
+        ..
+         - carSharing
+         ~ user
+        ..boolean info..
+         ~ hasDiesel
+         ~ hasGasoline
+         ~ hasPremiumDiesel
+         ~ hasPremiumGasoline
+         ~ hasLPG
+         ~ hasMethane
+        ..
+         ~ dieselPrice
+         ~ superPrice
+         ~ superPlusPrice
+         ~ gasPrice
+         ~ methanePrice
+        __
+        ==Getter and Setter==
+            + getGasStationId()
+            + setGasStationId()
+            + getGasStationName()
+            + setGasStationName()
+            + getGasStationAddress()
+            + setGasStationAddress()
+            + getGeoPoint()
+            + setGeoPoint()
+        ..
+            + getPriceReport()
+            + setPriceReport()
+        ..
+            + getCarSharing()
+            + setCarSharing()
+            + getUser()
+            + setUser()
+        ..
+            + getHasDiesel()
+            + setHasDiesel()
+            + getHasSuper()
+            + setHasSuper()
+            + getHasSuperPlus()
+            + setHasSuperPlus()
+            + getHasGas()
+            + setHasGas()
+            + getHasMethane()
+            + setHasMethane()
+        ..
+            + getDieselPrice()
+            + setDieselPrice()
+            + getSuperPrice()
+            + setSuperPrice()
+            + getSuperPlusPrice()
+            + setSuperPlusPrice()
+            + getGasPrice()
+            + setGasPrice()
+            + getMethanePrice()
+            + setMethanePrice()
+        }
+        
+        class PriceReportDto {
+         ~ priceReportId
+         ~ user
+         ~ priceReportDependability
+         ..Type of Fuel..
+         ~ dieselPrice
+         ~ superPrice
+         ~ superPlusPrice
+         ~ gasPrice
+         ~ methanePrice
+        __
+        ==Getter and Setter==
+            + getPriceReportId()
+            + setPriceReportId()
+            + getUser()
+            + setUser()
+            + getPriceReportDependability()
+            + setPriceReportDependability()
+        ..Diesel..
+            + getDieselPrice()
+            + setDieselPrice()
+        ..Super..
+            + getSuperPrice()
+            + setSuperPrice()
+        ..Super Plus..
+            + getSuperPlusPrice()
+            + setSuperPlusPrice()
+        ..Gas..
+            + getGasPrice()
+            + setGasPrice()
+        ..Methane..
+            + getMethanePrice()
+            + setMethanePrice()
+        }
+
+        class LoginDto {
+         ~ userId
+         ~ userName
+         ~ token
+         ~ email
+         ~ reputation
+         ~ isAdmin {y/n}
+        __
+        ==Getter and Setter==
+            + getUserId()
+            + setUserId()
+            + getUserName()
+            + setUserName()
+            + getToken()
+            + setToken()
+            + getEmail()
+            + setEmail()
+            + getReputation()
+            + setReputation()
+            + getIsAdmin()
+            + setIsAdmin()
+        }
+
+        class IdPw {
+         - user
+         - pw
+        __
+        ==Getter and Setter==
+            + getUser()
+            + setUser()
+            + getPw()
+            + setPw()
+        }
+
+        class AnonymousUserDto {
+         - userId
+         - geoPoint
+        __
+        ==Getter and Setter==
+            + getUserId()
+            + setUserId()
+            + getGeoPoint()
+            + setGeoPoint()
+        }
+        
+        class AdministratorDto {
+        __
+        ==Gas Station Managing==
+            + addGasStation(): Boolean
+            + editGasStation(): Boolean
+            + removeGasStation(): Boolean
+        ==User Managing==
+            + addUser(): Boolean
+            + editUser(): Boolean
+            + removeUser(UserDto): Boolean
+            + banUser(): Boolean
+        }
+    }
+    
+    package "it.polito.ezgas.repository" {
+        class GasStationRepository {
+        }
+        class PriceReportRepository {
+        }
+        class AnonymousUserRepository {
+        }
+        class UserRepository {
+        }
+        class AdministratorRepository {
+        }
+        
+        GasStation o-- GasStationRepository
+        GasStation - GeoPoint
+        GasStationController o-- GasStationService
+        GasStationServiceImpl o-- GasStationRepository
+        GasStationServiceImpl o-- PriceReportRepository
+        GasStationServiceImpl o-- GasStationDto
+        GasStationServiceImpl o-- GasStation
+        GasStationConverter o-- GasStationDto
+        GasStationConverter o-- GasStation
+        GasStationService o-- GasStationDto
+        GasStationRepository o-- GasStation 
+
+        UserController o-- UserService
+        UserServiceImpl o-- UserRepository
+        UserServiceImpl o-- PriceReportRepository
+        UserServiceImpl o-- UserDto
+        UserServiceImpl o-- LoginDto
+        UserServiceImpl o-- User
+        UserServiceImpl o-- IdPw
+        UserRepository o-- User
+        UserConverter o-- UserDto
+        UserConverter o-- User
+        UserService o-- UserDto
+        UserService o-- LoginDto
+        UserService o-- IdPw
+
+        PriceReportRepository o-- PriceReport
+        PriceReportConverter o-- PriceReportDto
+        PriceReportConverter o-- PriceReport
+
+        AdministratorConverter o-- Administrator
+        AdministratorConverter o-- AdministratorDto
+        AdministratorRepository o-- Administrator
+
+        AnonymousUserConverter o-- AnonymousUser
+        AnonymousUserConverter o-- AnonymousUserDto
+        AnonymousUserRepository o-- AnonymousUser
+        
+    }
 
 
-
-
-
-
-
-
-
-
-
+@enduml
+```
 
 # Verification traceability matrix
 
-\<for each functional requirement from the requirement document, list which classes concur to implement it>
-
-
-
-
-
-
-
-
-
-
+| FR | EZGas | User  | Administrator | GeoPoint | GasStation | CarSharingCompany | PriceList | 
+| :-------------: | :-------------: | :-----: | :-----: | :-----: | :-----: | :-----: | :-----: |
+| FR1 |  | X | X |  |  |  |  | 
+| FR1.1 |  | X | X |  |  |  |  |
+| FR1.2 |  | X | X |  |  |  |  |
+| FR1.3 |  |  | X |  |  |  |  |
+| FR1.4 |  |  | X |  |  |  |  |
+| FR2 | X |  |  |  |  |  |  |
+| FR3 |  |  |  | X |  |  |  |
+| FR3.1 |  |  | X |  |  |  |  |
+| FR3.2 |  |  | X |  |  |  |  |
+| FR3.3 |  |  | X |  |  |  |  |
+| FR4 |  | X | X |  |  |  |  |
+| FR4.1 | X |  |  |  |  |  |  |
+| FR4.2 | X |  |  |  |  |  |  |
+| FR4.3 | X |  |  |  |  |  |  |
+| FR4.4 | X |  |  |  |  |  |  |
+| FR4.5 | X |  |  |  |  |  |  |
+| FR5 |  | X |  |  |  |  |  |
+| FR5.1 |  | X |  |  |  |  |  |
+| FR5.2 | X |  |  |  |  |  |  |
+| FR5.3 |  | X |  |  |  |  |  |
 
 # Verification sequence diagrams 
-\<select key scenarios from the requirement document. For each of them define a sequence diagram showing that the scenario can be implemented by the classes and methods in the design>
 
+## UC1 - Create User Account
+```plantuml
+@startuml
+skinparam backgroundcolor #FFFFEE
+skinparam database {
+BackgroundColor #FAEBDA-619196
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam sequence{
+    LifeLineBorderColor #619196
+    ParticipantBorderColor #619196
+    ParticipantBackgroundColor #B2D9EA-FFFFEE
+    ArrowColor #619196
+}
+UserController <-- UserDto: UserDto
+UserController -> UserService: saveUser(UserDto)
+UserService -> UserRepository: findByEmail(String)
+UserRepository --> UserService: User
+UserService -> UserRepository: saveUser(UserDto)
+UserRepository -> UserConverter: convertDtoToEntity(UserDto)
+UserConverter --> UserRepository: User
+database DB
+UserRepository -> DB: save(User)
 
+DB --> UserRepository: Boolean
+UserRepository --> UserService: Boolean
+UserService --> UserController: UserDto
 
+@enduml
+```
 
+## UC2 - Modify User Account
+```plantuml
+@startuml
+skinparam backgroundcolor #FFFFEE
+skinparam database {
+BackgroundColor #FAEBDA-619196
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam sequence{
+    LifeLineBorderColor #619196
+    ParticipantBorderColor #619196
+    ParticipantBackgroundColor #B2D9EA-FFFFEE
+    ArrowColor #619196
+}
+UserController <-- UserDto: UserDto
+UserController -> UserService: updateUser(UserDto)
+UserService -> UserRepository: findByEmail(String)
+UserRepository --> UserService: User
+UserService -> UserRepository: updateUser(UserDto)
+UserRepository -> UserConverter: convertDtoToEntity(UserDto)
+UserConverter --> UserRepository: User
+database DB
+UserRepository -> DB: update(User)
 
+DB --> UserRepository: Boolean
+UserRepository --> UserService: Boolean
+UserService --> UserController: UserDto
+
+@enduml
+```
+
+## UC6 - Delete Gas Station
+```plantuml
+@startuml
+skinparam backgroundcolor #FFFFEE
+skinparam database {
+BackgroundColor #FAEBDA-619196
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam sequence{
+    LifeLineBorderColor #619196
+    ParticipantBorderColor #619196
+    ParticipantBackgroundColor #B2D9EA-FFFFEE
+    ArrowColor #619196
+}
+GasStationController -> GasStationService: deleteGasStation(Integer)
+GasStationService -> GasStationRepository: deleteGasStation(Integer)
+database DB
+GasStationRepository -> DB: delete(Integer)
+
+DB --> GasStationController
+
+@enduml
+```
+
+## UC7 - Report fuel price for a gas station
+```plantuml
+@startuml
+skinparam backgroundcolor #FFFFEE
+skinparam database {
+BackgroundColor #FAEBDA-619196
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam sequence{
+    LifeLineBorderColor #619196
+    ParticipantBorderColor #619196
+    ParticipantBackgroundColor #B2D9EA-FFFFEE
+    ArrowColor #619196
+}
+' TODO: PriceReportDto does not exist at this time, but is used to represent the list of parameters
+
+GasStationController <-- PriceReportDto: PriceReportDto
+GasStationController -> GasStationService: setReport(PriceReportDto)
+GasStationService -> PriceReportRepository: setReport(PriceReportDto)
+PriceReportRepository -> PriceReportConverter: convertDtoToEntity(PriceReportDto)
+PriceReportConverter --> PriceReportRepository: PriceReport
+database DB
+PriceReportRepository -> DB: save(PriceReport)
+
+DB --> GasStationController
+
+@enduml
+```
+
+## UC8 - Obtain price of fuel for gas stations in a certain geographic area
+
+- (get user coordinates) - no method
+- get gas station dtos by proximity
+- for each gas station dto:
+        getPriceReportDtos
+
+```plantuml
+@startuml
+skinparam backgroundcolor #FFFFEE
+skinparam database {
+    BackgroundColor #FAEBDA-619196
+    ArrowColor #26424F
+    BorderColor #26424F
+}
+skinparam sequence{
+    LifeLineBorderColor #619196
+    ParticipantBorderColor #619196
+    ParticipantBackgroundColor #B2D9EA-FFFFEE
+    ArrowColor #619196
+}
+skinparam sequenceGroupBorderColor #26424F
+
+' TODO: use GeoPoint instead of 2 doubles for coordinates
+
+== Get Gas Stations from DB ==
+GasStationController <-- GeoPointDto: GeoPointDto
+GasStationController -> GasStationService: getGasStationsByProximity(GeoPointDto)
+GasStationService -> GasStationRepository: getGasStationsByProximity(GeoPointDto)
+GasStationRepository -> GeoPointConverter: convertDtoToEntity(GeoPointDto)
+GeoPointConverter --> GasStationRepository: GeoPoint
+database DB
+GasStationRepository -> DB: getByProximity(GeoPoint)
+DB --> GasStationRepository: List<GasStationDto>
+GasStationRepository --> GasStationService: List<GasStationDto>
+GasStationService --> GasStationController: List<GasStationDto>
+
+' TODO: understand if we can stop here, or we need another specialized method to get the Map
+== Get Price Reports ==
+loop for each gas station dto
+    GasStationService -> GasStationDto: getPriceReportDtos()
+    GasStationDto --> GasStationService: List<PriceReportDto>
+    GasStationService -> GasStationService: addLastPriceReportDtoToMap()
+end
+GasStationService --> GasStationController: Map<GasStationDto, PriceReportDto>
+
+@enduml
+```
+
+## UC10 - Evaluate price
+
+```plantuml
+@startuml
+skinparam backgroundcolor #FFFFEE
+skinparam database {
+    BackgroundColor #FAEBDA-619196
+    ArrowColor #26424F
+    BorderColor #26424F
+}
+skinparam sequence{
+    LifeLineBorderColor #619196
+    ParticipantBorderColor #619196
+    ParticipantBackgroundColor #B2D9EA-FFFFEE
+    ArrowColor #619196
+}
+skinparam sequenceGroupBorderColor #26424F
+
+' TODO: use GeoPoint instead of 2 doubles for coordinates
+
+== Get Gas Station from DB ==
+
+GasStationController -> GasStationService: getGasStationById(gasStationId)
+GasStationService -> GasStationRepository: getGasStationById(gasStationId)
+database DB
+GasStationRepository -> DB: getGasStationById(gasStationId)
+GasStationRepository <-- DB: GasStationDto
+GasStationService  <-- GasStationRepository: GasStationDto
+GasStationController <-- GasStationService: GasStationDto
+== Update User reputation ==
+UserController --> UserService: increaseUserReputation(userId)
+UserService --> UserRepository: increaseUserReputation(userId)
+database DB
+UserRepository -> DB: increaseUserReputation(userId)
+UserRepository <-- DB: integer
+UserService <-- UserRepository: integer
+UserController <-- UserService: integer
+
+@enduml
+```
 
 
