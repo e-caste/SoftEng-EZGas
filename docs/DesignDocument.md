@@ -359,7 +359,6 @@ scale 1/3
     
     package "it.polito.ezgas.service" {
        interface "GasStationService" as GSS {
-       --
        == Getters and Setters ==
            + getGasStationById(): GasStationDto
            + getAllGasStations(): List<GasStationDto>
@@ -377,7 +376,6 @@ scale 1/3
        }
         
        interface "UserService" as US {
-        __
         == Getter ==
             + getUserById(): UserDto
             + getAllUsers(): List<UserDto>
