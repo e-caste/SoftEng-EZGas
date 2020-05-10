@@ -767,7 +767,6 @@ skinparam sequence{
     ParticipantBackgroundColor #B2D9EA-FFFFEE
     ArrowColor #619196
 }
-' TODO: PriceReportDto does not exist at this time, but is used to represent the list of parameters
 
 GasStationController <-- PriceReportDto: PriceReportDto
 GasStationController -> GasStationService: setReport(PriceReportDto)
