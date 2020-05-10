@@ -782,12 +782,6 @@ DB --> GasStationController
 ```
 
 ## UC8 - Obtain price of fuel for gas stations in a certain geographic area
-
-- (get user coordinates) - no method
-- get gas station dtos by proximity
-- for each gas station dto:
-        getPriceReportDtos
-
 ```plantuml
 @startuml
 skinparam backgroundcolor #FFFFEE
@@ -831,7 +825,6 @@ GasStationService --> GasStationController: Map<GasStationDto, PriceReportDto>
 ```
 
 ## UC10 - Evaluate price
-
 ```plantuml
 @startuml
 skinparam backgroundcolor #FFFFEE
