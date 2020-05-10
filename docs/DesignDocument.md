@@ -261,6 +261,7 @@ BackgroundColor #FAEBDA/FFA563
 ArrowColor #26424F
 BorderColor #26424F
 }
+scale 1/3
 
     class BootEZGasApplication {
         + main()
