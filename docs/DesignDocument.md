@@ -358,41 +358,42 @@ scale 1/3
         }
     
     package "it.polito.ezgas.service" {
-       interface "GasStationService" as GSS
-       interface "UserService" as US
+       interface "GasStationService" as GSS {
+       --
+       == Getters and Setters ==
+           + getGasStationById(): GasStationDto
+           + getAllGasStations(): List<GasStationDto>
+           + getGasStationsByGasolineType(): List<GasStationDto>
+           + getGasStationsByProximity(): List<GasStationDto>
+           + getGasStationsByCarSharing(): List<GasStationDto>
+           + getGasStationsWithCoordinates(): List<GasStationDto>
+           + getGasStationsWithoutCoordinates(): List<GasStationDto>          
+           
+           + setReport(): void
+       == Save ==
+           + saveGasStation(): GasStationDto
+       == Delete ==
+           + deleteGasStationById(): Boolean
+       }
+        
+       interface "UserService" as US {
+        __
+        == Getter ==
+            + getUserById(): UserDto
+            + getAllUsers(): List<UserDto>
+        == Save ==
+            + saveUser(): UserDto
+        == Delete ==
+            + deleteUserById(): Boolean 
+            + login(): LoginDto
+        == Reputation ==
+            + increaseUserReputation(): Integer
+            + decreaseUserReputation(): Integer
+        }
 
         package "it.polito.ezgas.service.impl" {
-            class GasStationServiceImpl implements GSS {
-            __
-            == Getters and Setters ==
-                + getGasStationById(): GasStationDto
-                + getAllGasStations(): List<GasStationDto>
-                + getGasStationsByGasolineType(): List<GasStationDto>
-                + getGasStationsByProximity(): List<GasStationDto>
-                + getGasStationsByCarSharing(): List<GasStationDto>
-                + getGasStationsWithCoordinates(): List<GasStationDto>
-                + getGasStationsWithoutCoordinates(): List<GasStationDto>          
-                
-                + setReport(): void
-            == Save ==
-                + saveGasStation(): GasStationDto
-            == Delete ==
-                + deleteGasStationById(): Boolean
-            }
-            class UserServiceImpl implements US {
-            __
-            == Getter ==
-                + getUserById(): UserDto
-                + getAllUsers(): List<UserDto>
-            == Save ==
-                + saveUser(): UserDto
-            == Delete ==
-                + deleteUserById(): Boolean 
-                + login(): LoginDto
-            == Reputation ==
-                + increaseUserReputation(): Integer
-                + decreaseUserReputation(): Integer
-            }
+            class GasStationServiceImpl implements GSS
+            class UserServiceImpl implements US
         }
     }
     
