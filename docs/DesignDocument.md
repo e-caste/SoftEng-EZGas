@@ -273,11 +273,7 @@ scale 1/3
              - userId
              - geoPoint
             __
-            == Getter and Setter ==
-                + getUserId()
-                + setUserId()
-                + getGeoPoint()
-                + setGeoPoint()
+            == Getters and Setters ==
             }
             
             class User {
@@ -287,26 +283,18 @@ scale 1/3
              - reputation
              - isAdmin {y/n}
             __
-            == Getter and Setter ==
-                + getUserName()
-                + setUserName()
-                + getPassword()
-                + setPassword()
-                + getEmail()
-                + setEmail()
-                + getIsAdmin()
-                + setIsAdmin()
+            == Getters and Setters ==
             ==Remove==
                 + removeUser(): Boolean
             }
             
             class Administrator {
             __
-            ==Gas Station Managing==
+            == Gas Station Management ==
                 + addGasStation(): Boolean
                 + editGasStation(): Boolean
                 + removeGasStation(): Boolean
-            ==User Managing==
+            == User Management ==
                 + addUser(): Boolean
                 + editUser(): Boolean
                 + removeUser(UserDto): Boolean
@@ -338,45 +326,7 @@ scale 1/3
              - gasPrice
              - methanePrice
             __
-            ==Getter and Setter==
-                + getGasStationId()
-                + setGasStationId()
-                + getGasStationName()
-                + setGasStationName()
-                + getGasStationAddress()
-                + setGasStationAddress()
-                + getGeoPoint()
-                + setGeoPoint()
-            ..
-                + getPriceReport()
-                + setPriceReport()
-            ..
-                + getCarSharing()
-                + setCarSharing()
-                + getUser()
-                + setUser()
-            ..
-                + getHasDiesel()
-                + setHasDiesel()
-                + getHasSuper()
-                + setHasSuper()
-                + getHasSuperPlus()
-                + setHasSuperPlus()
-                + getHasGas()
-                + setHasGas()
-                + getHasMethane()
-                + setHasMethane()
-            ..
-                + getDieselPrice()
-                + setDieselPrice()
-                + getSuperPrice()
-                + setSuperPrice()
-                + getSuperPlusPrice()
-                + setSuperPlusPrice()
-                + getGasPrice()
-                + setGasPrice()
-                + getMethanePrice()
-                + setMethanePrice()
+            == Getters and Setters ==
             }
             
             class GeoPoint {
@@ -395,28 +345,7 @@ scale 1/3
              - gasPrice
              - methanePrice
             __
-            ==Getter and Setter==
-                + getPriceReportId()
-                + setPriceReportId()
-                + getUser()
-                + setUser()
-                + getPriceReportDependability()
-                + setPriceReportDependability()
-            ..Diesel..
-                + getDieselPrice()
-                + setDieselPrice()
-            ..Super..
-                + getSuperPrice()
-                + setSuperPrice()
-            ..Super Plus..
-                + getSuperPlusPrice()
-                + setSuperPlusPrice()
-            ..Gas..
-                + getGasPrice()
-                + setGasPrice()
-            ..Methane..
-                + getMethanePrice()
-                + setMethanePrice()
+            == Getters and Setters ==
             }
     
             GasStation  -- "0..1" PriceReport
@@ -435,7 +364,7 @@ scale 1/3
         package "it.polito.ezgas.service.impl" {
             class GasStationServiceImpl implements GSS {
             __
-            ==Getter and Setter==
+            == Getters and Setters ==
                 + getGasStationById(): GasStationDto
                 + getAllGasStations(): List<GasStationDto>
                 + getGasStationsByGasolineType(): List<GasStationDto>
@@ -445,22 +374,22 @@ scale 1/3
                 + getGasStationsWithoutCoordinates(): List<GasStationDto>          
                 
                 + setReport(): void
-            ==Save==
+            == Save ==
                 + saveGasStation(): GasStationDto
-            ==Delete==
+            == Delete ==
                 + deleteGasStationById(): Boolean
             }
             class UserServiceImpl implements US {
             __
-            ==Getter==
+            == Getter ==
                 + getUserById(): UserDto
                 + getAllUsers(): List<UserDto>
-            ==Save==
+            == Save ==
                 + saveUser(): UserDto
-            ==Delete==
+            == Delete ==
                 + deleteUserById(): Boolean 
                 + login(): LoginDto
-            ==Reputation==
+            == Reputation ==
                 + increaseUserReputation(): Integer
                 + decreaseUserReputation(): Integer
             }
@@ -502,7 +431,7 @@ scale 1/3
         class GasStationController {
          - gasStationService
         __
-        ==Getter==
+        == Getters ==
             + getGasStationById(): GasStationDto
             + getAllGasStations(): List<GasStationDto>
             + deleteGasStationById(): Boolean
@@ -511,24 +440,25 @@ scale 1/3
             + getGasStationsByCarSharing(): List<GasStationDto>
             + getGasStationsWithCoordinates(): List<GasStationDto>
             + getGasStationsWithoutCoordinates(): List<GasStationDto>
-        ==Setter==
+        == Setters ==
             + setReport(): void
-        ==Save==
+        == Save ==
             + saveGasStation(): void
         }
         
         class UserController {
          - userService
         __
-        ==Getter==
+        == Getters ==
             + getUserById(): UserDto
-            + saveUser(): UserDto
             + getAllUsers(): List<UserDto>
-        ==Delete==
+        == Save == 
+            + saveUser(): UserDto
+        == Delete ==
             + deleteUserById(): Boolean
-        ==Login==
+        == Login ==
             + login(): LoginDto
-        ==Reputation==
+        == Reputation ==
             + increaseUserReputation(): Integer
             + decreaseUserReputation(): Integer
         }
@@ -566,19 +496,7 @@ scale 1/3
          - reputation
          - isAdmin {y/n}
         __
-        ==Getter and Setter==
-            + getUserId()
-            + setUserId()
-            + getUserName():
-            + setUserName()
-            + getPassword()
-            + setPassword()
-            + getEmail()
-            + setEmail()
-            + getReputation()
-            + setReputation()
-            + getIsAdmin()
-            + setIsAdmin()
+        == Getters and Setters ==
         }
 
         class GasStationDto {
@@ -606,45 +524,7 @@ scale 1/3
          ~ gasPrice
          ~ methanePrice
         __
-        ==Getter and Setter==
-            + getGasStationId()
-            + setGasStationId()
-            + getGasStationName()
-            + setGasStationName()
-            + getGasStationAddress()
-            + setGasStationAddress()
-            + getGeoPoint()
-            + setGeoPoint()
-        ..
-            + getPriceReport()
-            + setPriceReport()
-        ..
-            + getCarSharing()
-            + setCarSharing()
-            + getUser()
-            + setUser()
-        ..
-            + getHasDiesel()
-            + setHasDiesel()
-            + getHasSuper()
-            + setHasSuper()
-            + getHasSuperPlus()
-            + setHasSuperPlus()
-            + getHasGas()
-            + setHasGas()
-            + getHasMethane()
-            + setHasMethane()
-        ..
-            + getDieselPrice()
-            + setDieselPrice()
-            + getSuperPrice()
-            + setSuperPrice()
-            + getSuperPlusPrice()
-            + setSuperPlusPrice()
-            + getGasPrice()
-            + setGasPrice()
-            + getMethanePrice()
-            + setMethanePrice()
+        == Getters and Setters ==
         }
         
         class PriceReportDto {
@@ -658,28 +538,7 @@ scale 1/3
          ~ gasPrice
          ~ methanePrice
         __
-        ==Getter and Setter==
-            + getPriceReportId()
-            + setPriceReportId()
-            + getUser()
-            + setUser()
-            + getPriceReportDependability()
-            + setPriceReportDependability()
-        ..Diesel..
-            + getDieselPrice()
-            + setDieselPrice()
-        ..Super..
-            + getSuperPrice()
-            + setSuperPrice()
-        ..Super Plus..
-            + getSuperPlusPrice()
-            + setSuperPlusPrice()
-        ..Gas..
-            + getGasPrice()
-            + setGasPrice()
-        ..Methane..
-            + getMethanePrice()
-            + setMethanePrice()
+        == Getters and Setters ==
         }
 
         class LoginDto {
@@ -690,50 +549,30 @@ scale 1/3
          ~ reputation
          ~ isAdmin {y/n}
         __
-        ==Getter and Setter==
-            + getUserId()
-            + setUserId()
-            + getUserName()
-            + setUserName()
-            + getToken()
-            + setToken()
-            + getEmail()
-            + setEmail()
-            + getReputation()
-            + setReputation()
-            + getIsAdmin()
-            + setIsAdmin()
+        == Getters and Setters ==
         }
 
         class IdPw {
          - user
          - pw
         __
-        ==Getter and Setter==
-            + getUser()
-            + setUser()
-            + getPw()
-            + setPw()
+        == Getters and Setters ==
         }
 
         class AnonymousUserDto {
          - userId
          - geoPoint
         __
-        ==Getter and Setter==
-            + getUserId()
-            + setUserId()
-            + getGeoPoint()
-            + setGeoPoint()
+        == Getters and Setters ==
         }
         
         class AdministratorDto {
         __
-        ==Gas Station Managing==
+        == Gas Station Management ==
             + addGasStation(): Boolean
             + editGasStation(): Boolean
             + removeGasStation(): Boolean
-        ==User Managing==
+        == User Management ==
             + addUser(): Boolean
             + editUser(): Boolean
             + removeUser(UserDto): Boolean
