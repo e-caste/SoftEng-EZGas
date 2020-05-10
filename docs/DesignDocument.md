@@ -390,13 +390,13 @@ scale 1/3
             + increaseUserReputation(): Integer
             + decreaseUserReputation(): Integer
         }
-
-        package "it.polito.ezgas.service.impl" {
-            class GasStationServiceImpl implements GSS
-            class UserServiceImpl implements US
-        }
     }
     
+    package "it.polito.ezgas.service.impl" {
+        class GasStationServiceImpl implements GSS
+        class UserServiceImpl implements US
+    }
+
     package "it.polito.ezgas.utils" {
         interface Constants {
          + GET_USER_BY_ID
