@@ -264,8 +264,8 @@ BorderColor #26424F
 scale 1/3
 
     class BootEZGasApplication {
-        + main()
-        + setupWithData()
+        + main(String): void
+        + setupWithData(): void
     }
 
     package "it.polito.ezgas.entity" {
@@ -285,7 +285,7 @@ scale 1/3
             __
             == Getters and Setters ==
             ==Remove==
-                + removeUser(): Boolean
+                + removeUser(Integer): Boolean
             }
             
             class Administrator {
@@ -360,33 +360,33 @@ scale 1/3
     package "it.polito.ezgas.service" {
        interface "GasStationService" as GSS {
        == Getters and Setters ==
-           + getGasStationById(): GasStationDto
+           + getGasStationById(Integer): GasStationDto
            + getAllGasStations(): List<GasStationDto>
-           + getGasStationsByGasolineType(): List<GasStationDto>
-           + getGasStationsByProximity(): List<GasStationDto>
-           + getGasStationsByCarSharing(): List<GasStationDto>
-           + getGasStationsWithCoordinates(): List<GasStationDto>
-           + getGasStationsWithoutCoordinates(): List<GasStationDto>          
+           + getGasStationsByGasolineType(String): List<GasStationDto>
+           + getGasStationsByProximity(Double, Double): List<GasStationDto>
+           + getGasStationsByCarSharing(String): List<GasStationDto>
+           + getGasStationsWithCoordinates(Double, Double, String, String): List<GasStationDto>
+           + getGasStationsWithoutCoordinates(Integer, Double, Double, Double, Double, Double, Integer): List<GasStationDto>          
            
-           + setReport(): void
+           + setReport(Integer): void
        == Save ==
-           + saveGasStation(): GasStationDto
+           + saveGasStation(GasStationDto): GasStationDto
        == Delete ==
-           + deleteGasStationById(): Boolean
+           + deleteGasStationById(Integer): Boolean
        }
         
        interface "UserService" as US {
         == Getter ==
-            + getUserById(): UserDto
+            + getUserById(Integer): UserDto
             + getAllUsers(): List<UserDto>
         == Save ==
             + saveUser(): UserDto
         == Delete ==
-            + deleteUserById(): Boolean 
-            + login(): LoginDto
+            + deleteUserById(Integer): Boolean 
+            + login(IdPw): LoginDto
         == Reputation ==
-            + increaseUserReputation(): Integer
-            + decreaseUserReputation(): Integer
+            + increaseUserReputation(Integer): Integer
+            + decreaseUserReputation(Integer): Integer
         }
     }
     
@@ -431,58 +431,60 @@ scale 1/3
          - gasStationService
         __
         == Getters ==
-            + getGasStationById(): GasStationDto
+            + getGasStationById(Integer): GasStationDto 
             + getAllGasStations(): List<GasStationDto>
             + deleteGasStationById(): Boolean
-            + getGasStationsByGasolineType(): List<GasStationDto>
-            + getGasStationsByProximity(): List<GasStationDto>
+            + getGasStationsByGasolineType(String): List<GasStationDto>
+            + getGasStationsByProximity(Double, Double): List<GasStationDto>
             + getGasStationsByCarSharing(): List<GasStationDto>
-            + getGasStationsWithCoordinates(): List<GasStationDto>
+            + getGasStationsWithCoordinates(Double, Double): List<GasStationDto>
             + getGasStationsWithoutCoordinates(): List<GasStationDto>
         == Setters ==
-            + setReport(): void
+            + setGasStationReport(Integer): void
         == Save ==
-            + saveGasStation(): void
+            + saveGasStation(GasStationDto): void
+        == Delete ==
+            + deleteUser(Integer): void
         }
         
         class UserController {
          - userService
         __
         == Getters ==
-            + getUserById(): UserDto
+            + getUserById(Integer): UserDto
             + getAllUsers(): List<UserDto>
         == Save == 
-            + saveUser(): UserDto
+            + saveUser(UserDto): UserDto
         == Delete ==
-            + deleteUserById(): Boolean
+            + deleteUserById(Integer): Boolean
         == Login ==
-            + login(): LoginDto
+            + login(IdPw): LoginDto
         == Reputation ==
-            + increaseUserReputation(): Integer
-            + decreaseUserReputation(): Integer
+            + increaseUserReputation(Integer): Integer
+            + decreaseUserReputation(Integer): Integer
         }
     }
     
     package "it.polito.ezgas.converter" {
         class GasStationConverter {
-            + convertEntityToDto(): GasStationDto
-            + convertDtoToEntity(): GasStation
+            + convertEntityToDto(GasStation): GasStationDto
+            + convertDtoToEntity(GasStationDto): GasStation
         }
         class PriceReportConverter {
-            + convertEntityToDto(): PriceReportDto
-            + convertDtoToEntity(): PriceReport
+            + convertEntityToDto(PriceReport): PriceReportDto
+            + convertDtoToEntity(PriceReportDto): PriceReport
         }
         class AnonymousUserConverter {
-            + convertEntityToDto(): AnonymousUserDto
-            + convertDtoToEntity(): AnonymousUser
+            + convertEntityToDto(AnonymousUser): AnonymousUserDto
+            + convertDtoToEntity(AnonymousUserDto): AnonymousUser
         }
         class UserConverter {
-            + convertEntityToDto(): UserDto
-            + convertDtoToEntity(): User
+            + convertEntityToDto(User): UserDto
+            + convertDtoToEntity(UserDto): User
         }
         class AdministratorConverter {
-            + convertEntityToDto(): AdministratorDto
-            + convertDtoToEntity(): Administrator
+            + convertEntityToDto(Administrator): AdministratorDto
+            + convertDtoToEntity(AdministratorDto): Administrator
         }
     }
     
