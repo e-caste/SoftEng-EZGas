@@ -588,6 +588,13 @@ scale 1/3
             + removeUser(UserDto): Boolean
             + banUser(): Boolean
         }
+
+        GasStationDto -- "0..1" PriceReportDto
+        UserDto "*"-- PriceReportDto
+        UserDto "1"--"1" IdPw
+        UserDto -- LoginDto
+        UserDto -|> AnonymousUserDto :extends
+        AdministratorDto -|> UserDto :extends
     }
     
     package "it.polito.ezgas.repository" {
@@ -639,6 +646,11 @@ scale 1/3
         AnonymousUserConverter o-- AnonymousUser
         AnonymousUserConverter o-- AnonymousUserDto
         AnonymousUserRepository o-- AnonymousUser
+
+        GasStationRepository --"0..1" PriceReportRepository
+        UserRepository "*"-- PriceReportRepository
+        UserRepository-|>AnonymousUserRepository :extends
+        AdministratorRepository -|>UserRepository :extends
         
     }
 
