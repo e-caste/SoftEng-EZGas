@@ -463,6 +463,9 @@ scale 1/3
             + increaseUserReputation(Integer): Integer
             + decreaseUserReputation(Integer): Integer
         }
+
+         HomeController --"*" UserController
+        HomeController --"*"GasStationController
     }
     
     package "it.polito.ezgas.converter" {
@@ -486,6 +489,12 @@ scale 1/3
             + convertEntityToDto(Administrator): AdministratorDto
             + convertDtoToEntity(AdministratorDto): Administrator
         }
+
+        GasStationConverter --"0..1" PriceReportConverter
+        UserConverter "*"-- PriceReportConverter
+         UserConverter -|> AnonymousUserConverter :extends
+        AdministratorConverter -|> UserConverter :extends
+
     }
     
     package "it.polito.ezgas.dto" {
