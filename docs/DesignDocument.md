@@ -355,6 +355,7 @@ scale 1/3
     
             User -|> AnonymousUser : extends
             Administrator -|> User : extends
+           
         }
     
     package "it.polito.ezgas.service" {
@@ -464,7 +465,7 @@ scale 1/3
             + decreaseUserReputation(Integer): Integer
         }
 
-         HomeController --"*" UserController
+        HomeController --"*" UserController
         HomeController --"*"GasStationController
     }
     
@@ -608,20 +609,25 @@ scale 1/3
         }
         class AdministratorRepository {
         }
-        
+
+          GasStationRepository --"0..1" PriceReportRepository
+          UserRepository "*"-- PriceReportRepository
+          UserRepository-|>AnonymousUserRepository :extends
+          AdministratorRepository -|>UserRepository :extends
+    }
+
         GasStation o-- GasStationRepository
-        GasStation - GeoPoint
-        GasStationController o-- GasStationService
+        GasStationController o-- GasStationServiceImpl        
         GasStationServiceImpl o-- GasStationRepository
         GasStationServiceImpl o-- PriceReportRepository
         GasStationServiceImpl o-- GasStationDto
         GasStationServiceImpl o-- GasStation
         GasStationConverter o-- GasStationDto
         GasStationConverter o-- GasStation
-        GasStationService o-- GasStationDto
+        GasStationServiceImpl o-- GasStationDto
         GasStationRepository o-- GasStation 
 
-        UserController o-- UserService
+        UserController o-- UserServiceImpl
         UserServiceImpl o-- UserRepository
         UserServiceImpl o-- PriceReportRepository
         UserServiceImpl o-- UserDto
@@ -631,9 +637,9 @@ scale 1/3
         UserRepository o-- User
         UserConverter o-- UserDto
         UserConverter o-- User
-        UserService o-- UserDto
-        UserService o-- LoginDto
-        UserService o-- IdPw
+        UserServiceImpl o-- UserDto
+        UserServiceImpl o-- LoginDto
+        UserServiceImpl o-- IdPw
 
         PriceReportRepository o-- PriceReport
         PriceReportConverter o-- PriceReportDto
@@ -647,12 +653,8 @@ scale 1/3
         AnonymousUserConverter o-- AnonymousUserDto
         AnonymousUserRepository o-- AnonymousUser
 
-        GasStationRepository --"0..1" PriceReportRepository
-        UserRepository "*"-- PriceReportRepository
-        UserRepository-|>AnonymousUserRepository :extends
-        AdministratorRepository -|>UserRepository :extends
+      
         
-    }
 
 
 @enduml
