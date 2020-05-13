@@ -24,6 +24,10 @@ public class PriceReportDto {
 	}
 
 
+	public PriceReportDto() {
+	}
+
+
 	public Integer getPriceReportId() {
 		return priceReportId;
 	}

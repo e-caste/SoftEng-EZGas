@@ -46,6 +46,14 @@ public class PriceReport {
 	
 	
 	
+	
+	public PriceReport() {
+		
+	}
+
+
+
+
 	public User getUser() {
 		return user;
 	}
