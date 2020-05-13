@@ -2,6 +2,10 @@ package it.polito.ezgas.impl;
 
 import java.util.List;
 
+import it.polito.ezgas.Repository.UserRepository;
+import it.polito.ezgas.converter.UserConverter;
+import it.polito.ezgas.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import exception.InvalidLoginDataException;
@@ -16,6 +20,10 @@ import it.polito.ezgas.service.UserService;
  */
 @Service
 public class UserServiceimpl implements UserService {
+
+	@Autowired
+	UserRepository userRepository;
+	UserConverter userConverter;
 
 	@Override
 	public UserDto getUserById(Integer userId) throws InvalidUserException {
@@ -43,8 +51,24 @@ public class UserServiceimpl implements UserService {
 
 	@Override
 	public LoginDto login(IdPw credentials) throws InvalidLoginDataException {
-		// TODO Auto-generated method stub
-		return null;
+		String username = credentials.getUser();
+		String password = credentials.getPw();
+
+		User user = userRepository.findByUserName(username);
+		if (user == null) {
+			throw new InvalidLoginDataException("User does not exist.");
+		}
+		if (!user.getPassword().equals(password)) {
+			throw new InvalidLoginDataException("Wrong password.");
+		}
+
+		return new LoginDto(
+				user.getUserId(),
+				user.getUserName(),
+				"token",
+				user.getEmail(),
+				user.getReputation()
+				);
 	}
 
 	@Override
