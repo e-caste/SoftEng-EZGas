@@ -8,7 +8,7 @@ public class GasStationConverter {
 
     public GasStationConverter() {};
 
-    public GasStationDto convertEntityToDto(GasStation gs){
+    public static GasStationDto convertEntityToDto(GasStation gs){
         GasStationDto gsDTO = new GasStationDto();
         gsDTO.setGasStationId(gs.getGasStationId());
         gsDTO.setGasStationName(gs.getGasStationName());
@@ -47,7 +47,7 @@ public class GasStationConverter {
         return gsDTO;
     }
 
-    public GasStation convertDtoToEntity(GasStationDto gsDTO){
+    public static GasStation convertDtoToEntity(GasStationDto gsDTO){
         GasStation gs = new GasStation();
         gs.setGasStationId(gsDTO.getGasStationId());
         gs.setGasStationName(gsDTO.getGasStationName());
