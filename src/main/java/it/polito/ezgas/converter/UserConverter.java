@@ -8,7 +8,7 @@ public class UserConverter {
 	public UserConverter() {
 	}
 
-	public UserDto convertEntityToDto(User userEntity) {
+	public static UserDto convertEntityToDto(User userEntity) {
 		UserDto userDto = new UserDto();
 		userDto.setUserId(userEntity.getUserId());
 		userDto.setEmail(userEntity.getEmail());
@@ -19,7 +19,7 @@ public class UserConverter {
 		return userDto;
 	}
 
-	public User convertDtoToEntity(UserDto userDto) {
+	public static User convertDtoToEntity(UserDto userDto) {
 		User user = new User();
 		user.setUserId(userDto.getUserId());
 		user.setEmail(userDto.getEmail());
