@@ -5,11 +5,19 @@ import it.polito.ezgas.entity.User;
 
 public class UserConverter {
 	
+	private UserDto userdto;
+	private User userentity;
+	
+	public UserConverter(UserDto ud,User ue) {
+		
+		this.userdto = ud;
+		this.userentity = ue;
+		
+	}
 	
 	
-	
-	UserDto convertEntityToEntity(User us) {
-		UserDto Udto=new UserDto();
+	UserDto convertEntityToDto(User us) {
+		UserDto Udto = new UserDto();
 		Udto.setUserId(us.getUserId());
 		Udto.setEmail(us.getEmail());
 		Udto.setPassword(us.getPassword());
@@ -21,7 +29,7 @@ public class UserConverter {
 	}
 	
 	User convertDtoToEntity(UserDto us) {
-		User Uentity=new User();
+		User Uentity = new User();
 		Uentity.setUserId(us.getUserId());
 		Uentity.setEmail(us.getEmail());
 		Uentity.setPassword(us.getPassword());
