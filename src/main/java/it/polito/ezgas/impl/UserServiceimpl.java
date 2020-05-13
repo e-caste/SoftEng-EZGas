@@ -32,18 +32,23 @@ public class UserServiceimpl implements UserService {
 
 	@Override
 	public UserDto saveUser(UserDto userDto) {
-		User user = userRepository.findByUserName(userDto.getUserName());
+		UserDto uDTO = new UserDto();
+		User user = userRepository.findById(userDto.getUserId());
 		// update existing user
 		if (user != null) {
 			user.setUserName(userDto.getUserName());
 			user.setEmail(userDto.getEmail());
 			user.setPassword(userDto.getPassword());
 			user.setReputation(userDto.getReputation());
+			userRepository.save(user);
+			uDTO = UserConverter.convertEntityToDto(user);
+		} else {
+			User u = UserConverter.convertDtoToEntity(userDto);
+			userRepository.save(u);
+			uDTO = UserConverter.convertEntityToDto(user);
 		}
 		// dto -> entity -> save -> entity -> dto
-		return UserConverter.convertEntityToDto(
-				userRepository.save(
-						UserConverter.convertDtoToEntity(userDto)));
+		return uDTO;
 	}
 
 	@Override
@@ -63,7 +68,7 @@ public class UserServiceimpl implements UserService {
 		String username = credentials.getUser();
 		String password = credentials.getPw();
 
-		User user = userRepository.findByUserName(username);
+		User user = userRepository.findByEmail(username);
 		if (user == null) {
 			throw new InvalidLoginDataException("User does not exist.");
 		}
