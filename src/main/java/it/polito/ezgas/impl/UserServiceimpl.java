@@ -23,7 +23,6 @@ public class UserServiceimpl implements UserService {
 
 	@Autowired
 	UserRepository userRepository;
-	UserConverter userConverter;
 
 	@Override
 	public UserDto getUserById(Integer userId) throws InvalidUserException {
@@ -33,8 +32,18 @@ public class UserServiceimpl implements UserService {
 
 	@Override
 	public UserDto saveUser(UserDto userDto) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = userRepository.findByUserName(userDto.getUserName());
+		// update existing user
+		if (user != null) {
+			user.setUserName(userDto.getUserName());
+			user.setEmail(userDto.getEmail());
+			user.setPassword(userDto.getPassword());
+			user.setReputation(userDto.getReputation());
+		}
+		// dto -> entity -> save -> entity -> dto
+		return UserConverter.convertEntityToDto(
+				userRepository.save(
+						UserConverter.convertDtoToEntity(userDto)));
 	}
 
 	@Override
