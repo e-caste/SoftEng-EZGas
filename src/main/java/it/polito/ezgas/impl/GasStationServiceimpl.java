@@ -1,4 +1,4 @@
-package it.polito.ezgas.service.impl;
+package it.polito.ezgas.impl;
 
 import java.util.List;
 
