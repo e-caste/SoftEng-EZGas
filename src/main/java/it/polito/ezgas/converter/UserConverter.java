@@ -4,41 +4,29 @@ import it.polito.ezgas.dto.UserDto;
 import it.polito.ezgas.entity.User;
 
 public class UserConverter {
-	
-	private UserDto userdto;
-	private User userentity;
-	
-	public UserConverter(UserDto ud,User ue) {
-		
-		this.userdto = ud;
-		this.userentity = ue;
-		
+
+	public UserConverter() {
 	}
-	
-	
-	UserDto convertEntityToDto(User us) {
-		UserDto Udto = new UserDto();
-		Udto.setUserId(us.getUserId());
-		Udto.setEmail(us.getEmail());
-		Udto.setPassword(us.getPassword());
-		Udto.setAdmin(us.getAdmin());
-		Udto.setReputation(us.getReputation());
-		Udto.setUserName(us.getUserName());
-		
-		return Udto;
+
+	UserDto convertEntityToDto(User userEntity) {
+		UserDto userDto = new UserDto();
+		userDto.setUserId(userEntity.getUserId());
+		userDto.setEmail(userEntity.getEmail());
+		userDto.setPassword(userEntity.getPassword());
+		userDto.setAdmin(userEntity.getAdmin());
+		userDto.setReputation(userEntity.getReputation());
+		userDto.setUserName(userEntity.getUserName());
+		return userDto;
 	}
-	
-	User convertDtoToEntity(UserDto us) {
-		User Uentity = new User();
-		Uentity.setUserId(us.getUserId());
-		Uentity.setEmail(us.getEmail());
-		Uentity.setPassword(us.getPassword());
-		Uentity.setAdmin(us.getAdmin());
-		Uentity.setReputation(us.getReputation());
-		Uentity.setUserName(us.getUserName());
-		
-		return Uentity;
+
+	User convertDtoToEntity(UserDto userDto) {
+		User user = new User();
+		user.setUserId(userDto.getUserId());
+		user.setEmail(userDto.getEmail());
+		user.setPassword(userDto.getPassword());
+		user.setAdmin(userDto.getAdmin());
+		user.setReputation(userDto.getReputation());
+		user.setUserName(userDto.getUserName());
+		return user;
 	}
-	
-	
 }
