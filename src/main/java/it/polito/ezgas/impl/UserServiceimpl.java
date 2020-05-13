@@ -71,6 +71,7 @@ public class UserServiceimpl implements UserService {
 			throw new InvalidLoginDataException("Wrong password.");
 		}
 
+		// TODO: check where to get token
 		return new LoginDto(
 				user.getUserId(),
 				user.getUserName(),
