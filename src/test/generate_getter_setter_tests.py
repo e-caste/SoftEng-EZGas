@@ -33,6 +33,34 @@ test_values = {
     'Boolean': ['true', 'false'],
     'boolean': ['true', 'false'],
 }
+test_values['User'] = [f"new User({choice(test_values['String'])}, "
+                       f"{choice(test_values['String'])}, "
+                       f"{choice(test_values['String'])}, "
+                       f"{choice(test_values['Integer'])})"]
+
+test_values['List<PriceReportDto>'] = [f"new ArrayList<PriceReportDto>(Arrays.asList("
+                                       f"new PriceReportDto({choice(test_values['Integer'])},"
+                                       f"{choice(test_values['User'])},"
+                                       f"{choice(test_values['double'])},"
+                                       f"{choice(test_values['double'])},"
+                                       f"{choice(test_values['double'])},"
+                                       f"{choice(test_values['double'])}"
+                                       f"),"
+                                       f"new PriceReportDto({choice(test_values['Integer'])},"
+                                       f"{choice(test_values['User'])},"
+                                       f"{choice(test_values['double'])},"
+                                       f"{choice(test_values['double'])},"
+                                       f"{choice(test_values['double'])},"
+                                       f"{choice(test_values['double'])}"
+                                       f"),"
+                                       f"new PriceReportDto({choice(test_values['Integer'])},"
+                                       f"{choice(test_values['User'])},"
+                                       f"{choice(test_values['double'])},"
+                                       f"{choice(test_values['double'])},"
+                                       f"{choice(test_values['double'])},"
+                                       f"{choice(test_values['double'])}"
+                                       f")))"]
+
 for package in file_methods:
     imports.add(f"import it.polito.ezgas.{package.split('java')[0][:-1]};")
     class_name = package.split(".")[1][0].lower() + package.split(".")[1][1:]
@@ -63,8 +91,12 @@ for package in methods_tmp:
 
 default_content = """package it.polito.ezgas;
 
-INSERT_IMPORTS_HERE
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.junit.Test;
+
+INSERT_IMPORTS_HERE
 
 public class GetterSetterTests {
 
