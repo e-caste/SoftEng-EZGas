@@ -1,4 +1,5 @@
 # by e-caste 2020
+# tested with Python 3.7
 
 import os
 from random import choice
@@ -70,7 +71,7 @@ for package in file_methods:
         try:
             value_type = file_methods[package][method_name]
             test_value = choice(test_values[value_type])
-        except KeyError:  # skip User methods
+        except KeyError:
             continue
         if package not in methods:
             methods[package] = [f"\t@Test\n"
