@@ -81,10 +81,5 @@ public class GasStationServiceimpl implements GasStationService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
-	
-	
 
 }

@@ -1,5 +1,6 @@
 package it.polito.ezgas.converter;
 
+import it.polito.ezgas.dto.LoginDto;
 import it.polito.ezgas.dto.UserDto;
 import it.polito.ezgas.entity.User;
 
@@ -28,5 +29,17 @@ public class UserConverter {
 		user.setReputation(userDto.getReputation());
 		user.setUserName(userDto.getUserName());
 		return user;
+	}
+
+	public static LoginDto toLoginDto(User userEntity){
+		LoginDto loginDto = new LoginDto();
+		loginDto.setUserId(userEntity.getUserId());
+		loginDto.setUserName(userEntity.getUserName());
+		// TODO: check where to get token
+		loginDto.setToken("token");
+		loginDto.setEmail(userEntity.getEmail());
+		loginDto.setReputation(userEntity.getReputation());
+		loginDto.setAdmin(userEntity.getAdmin());
+		return loginDto;
 	}
 }
