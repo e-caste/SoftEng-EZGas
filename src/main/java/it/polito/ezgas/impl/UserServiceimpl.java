@@ -61,10 +61,10 @@ public class UserServiceimpl implements UserService {
 
 	@Override
 	public LoginDto login(IdPw credentials) throws InvalidLoginDataException {
-		String username = credentials.getUser();
+		String email = credentials.getUser();
 		String password = credentials.getPw();
 
-		User user = userRepository.findByEmail(username);
+		User user = userRepository.findByEmail(email);
 		if (user == null) {
 			throw new InvalidLoginDataException("User does not exist.");
 		}
