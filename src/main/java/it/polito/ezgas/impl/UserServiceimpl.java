@@ -32,7 +32,7 @@ public class UserServiceimpl implements UserService {
 
 	@Override
 	public UserDto saveUser(UserDto userDto) {
-		UserDto uDTO = new UserDto();
+		// dto -> entity -> save -> entity -> dto
 		User user = userRepository.findById(userDto.getUserId());
 		// update existing user
 		if (user != null) {
@@ -40,15 +40,11 @@ public class UserServiceimpl implements UserService {
 			user.setEmail(userDto.getEmail());
 			user.setPassword(userDto.getPassword());
 			user.setReputation(userDto.getReputation());
-			userRepository.save(user);
-			uDTO = UserConverter.convertEntityToDto(user);
 		} else {
-			User u = UserConverter.convertDtoToEntity(userDto);
-			userRepository.save(u);
-			uDTO = UserConverter.convertEntityToDto(user);
+			user = UserConverter.convertDtoToEntity(userDto);
 		}
-		// dto -> entity -> save -> entity -> dto
-		return uDTO;
+		userRepository.save(user);
+		return UserConverter.convertEntityToDto(user);
 	}
 
 	@Override
