@@ -13,4 +13,8 @@ public class EZGasApplicationTests {
 	public void contextLoads() {
 	}
 
+	@Test
+	public void getterSetterTests() {
+		GetterSetterTests.main();
+	}
 }
