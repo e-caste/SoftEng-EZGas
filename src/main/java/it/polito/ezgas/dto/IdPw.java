@@ -4,13 +4,13 @@ public class IdPw {
 	
 	private String user;
 	private String pw;
-	
+
+	public IdPw() {}
+
 	public IdPw(String id, String pw) {
 		this.user = id;
 		this.pw = pw;
 	}
-	
-	public IdPw() {}
 
 	public String getUser() {
 		return user;
