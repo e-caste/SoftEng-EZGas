@@ -1,5 +1,6 @@
 package it.polito.ezgas.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import it.polito.ezgas.Repository.UserRepository;
@@ -49,8 +50,12 @@ public class UserServiceimpl implements UserService {
 
 	@Override
 	public List<UserDto> getAllUsers() {
-		// TODO Auto-generated method stub
-		return null;
+		List<User> users = userRepository.findAll();
+		List<UserDto> userDtos = new ArrayList<>();
+		for (User user : users) {
+			userDtos.add(UserConverter.convertEntityToDto(user));
+		}
+		return userDtos;
 	}
 
 	@Override
