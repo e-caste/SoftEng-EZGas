@@ -73,13 +73,17 @@ public class UserServiceimpl implements UserService {
 		}
 
 		// TODO: check where to get token
-		return new LoginDto(
-				user.getUserId(),
-				user.getUserName(),
-				"token",
-				user.getEmail(),
-				user.getReputation()
+		LoginDto loginDto = new LoginDto(
+					user.getUserId(),
+					user.getUserName(),
+					"token",
+					user.getEmail(),
+					user.getReputation()
 				);
+		if (user.getAdmin()) {
+			loginDto.setAdmin(true);
+		}
+		return loginDto;
 	}
 
 	@Override
