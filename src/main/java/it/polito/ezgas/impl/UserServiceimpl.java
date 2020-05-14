@@ -85,9 +85,7 @@ public class UserServiceimpl implements UserService {
 					user.getEmail(),
 					user.getReputation()
 				);
-		if (user.getAdmin()) {
-			loginDto.setAdmin(true);
-		}
+		loginDto.setAdmin(user.getAdmin());
 		return loginDto;
 	}
 
