@@ -22,8 +22,6 @@ import it.polito.ezgas.service.UserService;
  */
 @Service
 public class UserServiceimpl implements UserService {
-	
-	
 
 	@Autowired
 	UserRepository userRepository;
@@ -34,8 +32,7 @@ public class UserServiceimpl implements UserService {
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
-		UserDto userDto = UserConverter.convertEntityToDto(user);
-		return userDto;
+		return UserConverter.convertEntityToDto(user);
 	}
 
 	@Override
@@ -64,8 +61,6 @@ public class UserServiceimpl implements UserService {
 		}
 		return userDtos;
 	}
-	
-	
 
 	@Override
 	public Boolean deleteUser(Integer userId) throws InvalidUserException {
@@ -91,9 +86,7 @@ public class UserServiceimpl implements UserService {
 		}
 
 		// TODO: check where to get token
-		LoginDto loginDto = UserConverter.convertEntityToLoginDto(user);
-
-		return loginDto;
+		return UserConverter.convertEntityToLoginDto(user);
 	}
 
 	@Override
@@ -119,5 +112,4 @@ public class UserServiceimpl implements UserService {
 		userRepository.save(user);
 		return rep;
 	}
-	
 }
