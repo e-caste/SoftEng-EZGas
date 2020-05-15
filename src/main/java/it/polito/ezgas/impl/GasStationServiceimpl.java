@@ -9,10 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 
-import it.polito.ezgas.Repository.GasStationRepository;
-import it.polito.ezgas.Repository.UserRepository;
+import it.polito.ezgas.repository.GasStationRepository;
+import it.polito.ezgas.repository.UserRepository;
 import it.polito.ezgas.converter.GasStationConverter;
-import it.polito.ezgas.converter.UserConverter;
 import it.polito.ezgas.entity.GasStation;
 import it.polito.ezgas.entity.User;
 
@@ -26,11 +25,7 @@ import exception.InvalidUserException;
 import exception.PriceException;
 
 import it.polito.ezgas.dto.GasStationDto;
-import it.polito.ezgas.dto.UserDto;
-import it.polito.ezgas.entity.GasStation;
 import it.polito.ezgas.service.GasStationService;
-import it.polito.ezgas.Repository.GasStationRepository;
-import it.polito.ezgas.converter.GasStationConverter;
 
 /**
  * Created by softeng on 27/4/2020.

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-import it.polito.ezgas.Repository.UserRepository;
+import it.polito.ezgas.repository.UserRepository;
 import it.polito.ezgas.converter.UserConverter;
 import it.polito.ezgas.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;

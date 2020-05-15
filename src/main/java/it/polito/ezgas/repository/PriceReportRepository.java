@@ -1,4 +1,4 @@
-package it.polito.ezgas.Repository;
+package it.polito.ezgas.repository;
 
 import it.polito.ezgas.entity.PriceReport;
 import org.springframework.data.jpa.repository.JpaRepository;
