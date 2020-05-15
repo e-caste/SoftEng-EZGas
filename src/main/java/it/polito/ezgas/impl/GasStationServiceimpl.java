@@ -44,12 +44,10 @@ public class GasStationServiceimpl implements GasStationService {
 
 	List<String> GasolineTypes = Arrays.asList("Diesel", "Super", "SuperPlus", "LPG", "Methane");
 
-	
-	
 	@Override
 	public GasStationDto getGasStationById(Integer gasStationId) throws InvalidGasStationException {
 		GasStation gasStation = gasStationRepository.findById(gasStationId);
-		if(gasStation == null) {
+		if (gasStation == null) {
 			throw new InvalidGasStationException("GasStation not found");
 		}
 		return GasStationConverter.convertEntityToDto(gasStation);
@@ -60,16 +58,17 @@ public class GasStationServiceimpl implements GasStationService {
 		double difference;
 		double obsolescence;
 		
-		//values in millseconds
+		// values in milliseconds
 		long lastTS = Timestamp.valueOf(lastTimeStamp).getTime();
 		long newTS = Timestamp.valueOf(newTimeStamp).getTime();
-		
-		difference = (newTS - lastTS)/(7*24*60*60*1000);		//difference in ms converted in days
-		if(difference>7) {
+
+		// difference in ms converted in days
+		difference = (newTS - lastTS) / (7*24*60*60*1000);
+		if (difference > 7) {
 			obsolescence = 0;
 		}
 		else {
-			obsolescence = 1-(difference/7);
+			obsolescence = 1 - (difference / 7);
 		}
 		
 		dependability = 50 * (userTrustLevel + 5) / 10 + 50 * obsolescence;
@@ -104,50 +103,48 @@ public class GasStationServiceimpl implements GasStationService {
 			gasStation.setLat(gasStationDto.getLat());
 			gasStation.setLon(gasStationDto.getLon());
 			
-			if(gasStationDto.getHasDiesel()) {
-				if(gasStationDto.getDieselPrice()<0) {
+			if (gasStationDto.getHasDiesel()) {
+				if (gasStationDto.getDieselPrice() < 0) {
 					throw new PriceException("Wrong price"); 
 				}
 				
 				gasStation.setDieselPrice(gasStationDto.getDieselPrice());
 			}
 			
-			if(gasStationDto.getHasSuper()) {
-				if(gasStationDto.getSuperPrice()<0) {
+			if (gasStationDto.getHasSuper()) {
+				if (gasStationDto.getSuperPrice() < 0) {
 					throw new PriceException("Wrong price"); 
 				}
 				gasStation.setSuperPrice(gasStationDto.getSuperPrice());
 			}
 			
-			if(gasStationDto.getHasSuper()) {
-				if(gasStationDto.getSuperPrice()<0) {
+			if (gasStationDto.getHasSuper()) {
+				if (gasStationDto.getSuperPrice() < 0) {
 					throw new PriceException("Wrong price"); 
 				}
 				gasStation.setSuperPlusPrice(gasStationDto.getSuperPlusPrice());
 			}
 			
-			if(gasStationDto.getHasGas()) {
-				if(gasStationDto.getGasPrice()<0) {
+			if (gasStationDto.getHasGas()) {
+				if (gasStationDto.getGasPrice() < 0) {
 					throw new PriceException("Wrong price"); 
 				}
 				gasStation.setGasPrice(gasStationDto.getGasPrice());
 			}
 			
-			if(gasStationDto.getHasMethane()) {
-				if(gasStationDto.getMethanePrice()<0) {
+			if (gasStationDto.getHasMethane()) {
+				if (gasStationDto.getMethanePrice() < 0) {
 					throw new PriceException("Wrong price"); 
 				}
 				gasStation.setMethanePrice(gasStationDto.getMethanePrice());
 			}
-			
-			
+
 			double repDependability = reportDependability(gasStation.getReportTimestamp(),gasStationDto.getReportTimestamp(),user.getReputation());
 			gasStationDto.setReportDependability(repDependability);
 			
 			gasStation.setReportUser(gasStationDto.getReportUser());
 			gasStation.setReportTimestamp(gasStationDto.getReportTimestamp());
 			gasStation.setReportDependability(gasStationDto.getReportDependability());
-			
 		}
 		else {
 			
@@ -182,41 +179,39 @@ public class GasStationServiceimpl implements GasStationService {
 	}
 
 	@Override
-	public List<GasStationDto> getGasStationsByGasolineType(String gasolinetype) throws InvalidGasTypeException {
+	public List<GasStationDto> getGasStationsByGasolineType(String gasolineType) throws InvalidGasTypeException {
 		List<GasStation> gasStations = gasStationRepository.findAll();
 		List<GasStationDto> gasStationsDto = new ArrayList<>();
-		if(!GasolineTypes.contains(gasolinetype)) {
+		if(!GasolineTypes.contains(gasolineType)) {
 			throw new InvalidGasTypeException("Gasoline Type not found");
 		}
 		for(GasStation gs : gasStations) {
-			
-			switch (gasolinetype) {
-			
-			case "Diesel":
-				if(gs.getHasDiesel()) {
-					gasStationsDto.add(GasStationConverter.convertEntityToDto(gs));
-				}
-			break;
-			case "Methane":
-				if(gs.getHasMethane()) {
-					gasStationsDto.add(GasStationConverter.convertEntityToDto(gs));
-				}
-			break;
-			case "Super":
-				if(gs.getHasSuper()) {
-					gasStationsDto.add(GasStationConverter.convertEntityToDto(gs));
-				}
-			break;
-			case "SuperPlus":
-				if(gs.getHasSuperPlus()) {
-					gasStationsDto.add(GasStationConverter.convertEntityToDto(gs));
-				}
-			break;
-			case "LPG":
-				if(gs.getHasGas()) {
-					gasStationsDto.add(GasStationConverter.convertEntityToDto(gs));
-				}
-			break;
+			switch (gasolineType) {
+				case "Diesel":
+					if (gs.getHasDiesel()) {
+						gasStationsDto.add(GasStationConverter.convertEntityToDto(gs));
+					}
+				break;
+				case "Methane":
+					if (gs.getHasMethane()) {
+						gasStationsDto.add(GasStationConverter.convertEntityToDto(gs));
+					}
+				break;
+				case "Super":
+					if (gs.getHasSuper()) {
+						gasStationsDto.add(GasStationConverter.convertEntityToDto(gs));
+					}
+				break;
+				case "SuperPlus":
+					if (gs.getHasSuperPlus()) {
+						gasStationsDto.add(GasStationConverter.convertEntityToDto(gs));
+					}
+				break;
+				case "LPG":
+					if (gs.getHasGas()) {
+						gasStationsDto.add(GasStationConverter.convertEntityToDto(gs));
+					}
+				break;
 			}
 		}
 		return gasStationsDto;
@@ -225,13 +220,12 @@ public class GasStationServiceimpl implements GasStationService {
 	@Override
 	public List<GasStationDto> getGasStationsByProximity(double lat, double lon) throws GPSDataException {
 		List<GasStation> gasStations = gasStationRepository.findAll();
-		List<GasStationDto> gasStationDtos=new ArrayList<>(); 
+		List<GasStationDto> gasStationDtos = new ArrayList<>();
 		for(GasStation gs : gasStations) {
 			if(distance(lat,lon,gs.getLat(),gs.getLon())<=5) {
 				gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
 			}
 		}
-		
 		return gasStationDtos;
 	}
 
@@ -239,6 +233,7 @@ public class GasStationServiceimpl implements GasStationService {
 		double dLat = Math.toRadians((eLat - sLat));
 		double dLon = Math.toRadians((eLon - sLon));
 
+		// TODO: rename these variables with descriptive names
 		double a = Math.pow(Math.sin(dLat/2),2) + Math.cos(sLat) * Math.cos(eLat) * Math.pow(Math.sin(dLon/2),2);
 		double c = 2 * Math.asin(Math.sqrt(a));
 		double r = 6371;
@@ -251,23 +246,22 @@ public class GasStationServiceimpl implements GasStationService {
 			String carSharing) throws InvalidGasTypeException, GPSDataException {
 		List<GasStation> gasStations = new ArrayList<>();
 
-		if(lat > 90 || lat < -90 || lon > 180 || lon < -180)
+		if (lat > 90 || lat < -90 || lon > 180 || lon < -180)
 			throw new GPSDataException("Invalid GPS Data");
 
-		if(!GasolineTypes.contains(gasolineType) && gasolineType != null)
+		if (!GasolineTypes.contains(gasolineType) && gasolineType != null)
 			throw new InvalidGasTypeException("Invalid Gasoline Type");
 
-		if(carSharing != null)
+		if (carSharing != null)
 			 gasStations = gasStationRepository.findByCarSharing(carSharing);
 		else
 			gasStations = gasStationRepository.findAll();
-		
 
 		List<GasStationDto> gasStationDtos = new ArrayList<>();
 
 		for(GasStation gs : gasStations){
 			double dist = distance(lat, lon, gs.getLat(), gs.getLon());
-			if(dist <= 5)
+			if (dist <= 5)
 				gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
 		}
 
@@ -279,10 +273,10 @@ public class GasStationServiceimpl implements GasStationService {
 			throws InvalidGasTypeException {
 		List<GasStation> gasStations;
 
-		if(!GasolineTypes.contains(gasolineType) && gasolineType != null)
+		if (!GasolineTypes.contains(gasolineType) && gasolineType != null)
 			throw new InvalidGasTypeException("Invalid Gasoline Type");
 
-		if(carSharing != null)
+		if (carSharing != null)
 			gasStations = gasStationRepository.findByCarSharing(carSharing);
 		else
 			gasStations = gasStationRepository.findAll();
@@ -291,11 +285,11 @@ public class GasStationServiceimpl implements GasStationService {
 		
 
 		for(GasStation gs : gasStations){
-			if((gasolineType == "Diesel" && gs.getHasDiesel()) ||
-					(gasolineType == "Gasoline" && gs.getHasSuper()) ||
-					(gasolineType == "PremiumGasoline" && gs.getHasSuperPlus()) ||
-					(gasolineType == "LPG" && gs.getHasGas()) ||
-					(gasolineType == "Methane" && gs.getHasMethane())){
+			if ((gasolineType.equals("Diesel") && gs.getHasDiesel()) ||
+					(gasolineType.equals("Gasoline") && gs.getHasSuper()) ||
+					(gasolineType.equals("PremiumGasoline") && gs.getHasSuperPlus()) ||
+					(gasolineType.equals("LPG") && gs.getHasGas()) ||
+					(gasolineType.equals("Methane") && gs.getHasMethane())){
 				gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
 			}
 		}
@@ -308,10 +302,10 @@ public class GasStationServiceimpl implements GasStationService {
 			double gasPrice, double methanePrice, Integer userId)
 			throws InvalidGasStationException, PriceException, InvalidUserException {
 		GasStation gasStation = gasStationRepository.findOne(gasStationId);
-		if(gasStation == null)
+		if (gasStation == null)
 			throw new InvalidGasStationException("Gas Station not found");
 
-		if(dieselPrice < 0 || superPrice < 0 || superPlusPrice < 0 || gasPrice <0 || methanePrice < 0)
+		if (dieselPrice < 0 || superPrice < 0 || superPlusPrice < 0 || gasPrice <0 || methanePrice < 0)
 			throw new PriceException("Wrong Price");
 
 		gasStation.setDieselPrice(dieselPrice);
@@ -321,11 +315,10 @@ public class GasStationServiceimpl implements GasStationService {
 		gasStation.setMethanePrice(methanePrice);
 
 		User user = userRepository.findById(userId);
-		if(user == null){
+		if (user == null){
 			throw new InvalidUserException("User not found");
 		}
 		gasStation.setReportUser(userId);
-		
 	}
 
 	@Override
@@ -333,11 +326,10 @@ public class GasStationServiceimpl implements GasStationService {
 		List<GasStation> gasStations = gasStationRepository.findByCarSharing(carSharing);
 		List<GasStationDto> gasStationDtos = new ArrayList<>();
 
-		for(GasStation gs : gasStations){
+		for (GasStation gs : gasStations){
 			gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
 		}
 
 		return gasStationDtos;
 	}
-
 }
