@@ -7,7 +7,9 @@ public class LoginDto {
     String email;
     Integer reputation;
     Boolean admin;
-    
+
+	public LoginDto() {}
+
     public LoginDto (Integer userId, String userName, String token, String email, Integer reputation) {
     	this.userId = userId;
     	this.userName = userName;
@@ -15,8 +17,6 @@ public class LoginDto {
     	this.email = email;
     	this.reputation = reputation;
     }
-    
-    public LoginDto() {}
     
 	public Integer getUserId() {
 		return userId;

@@ -30,8 +30,12 @@ public class UserServiceimpl implements UserService {
 
 	@Override
 	public UserDto getUserById(Integer userId) throws InvalidUserException {
-		// TODO Auto-generated method stub
-		return null;
+		User user = userRepository.findById(userId);
+		if(user == null){
+			throw new InvalidUserException("User not found");
+		}
+		UserDto userDto = UserConverter.convertEntityToDto(user);
+		return userDto;
 	}
 
 	@Override
@@ -65,8 +69,12 @@ public class UserServiceimpl implements UserService {
 
 	@Override
 	public Boolean deleteUser(Integer userId) throws InvalidUserException {
-		// TODO Auto-generated method stub
-		return null;
+		User user = userRepository.findById(userId);
+		if(user == null){
+			throw new InvalidUserException("User not found");
+		}
+		userRepository.delete(userId);
+		return true;
 	}
 
 	@Override
@@ -83,27 +91,33 @@ public class UserServiceimpl implements UserService {
 		}
 
 		// TODO: check where to get token
-		LoginDto loginDto = new LoginDto(
-					user.getUserId(),
-					user.getUserName(),
-					"token",
-					user.getEmail(),
-					user.getReputation()
-				);
-		loginDto.setAdmin(user.getAdmin());
+		LoginDto loginDto = UserConverter.toLoginDto(user);
+
 		return loginDto;
 	}
 
 	@Override
 	public Integer increaseUserReputation(Integer userId) throws InvalidUserException {
-		// TODO Auto-generated method stub
-		return null;
+		User user = userRepository.findById(userId);
+		if(user == null){
+			throw new InvalidUserException("User not found");
+		}
+		Integer rep = user.getReputation() + 1;
+		user.setReputation(rep);
+		userRepository.save(user);
+		return rep;
 	}
 
 	@Override
 	public Integer decreaseUserReputation(Integer userId) throws InvalidUserException {
-		// TODO Auto-generated method stub
-		return null;
+		User user = userRepository.findById(userId);
+		if(user == null){
+			throw new InvalidUserException("User not found");
+		}
+		Integer rep = user.getReputation() - 1;
+		user.setReputation(rep);
+		userRepository.save(user);
+		return rep;
 	}
 	
 }

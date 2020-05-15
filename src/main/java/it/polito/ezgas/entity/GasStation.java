@@ -12,8 +12,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class GasStation implements Serializable {
-	
-	
+
     private static final long serialVersionUID = 0x62A6DA99AABDA8A9L;
 	
 	@Column
@@ -63,8 +62,31 @@ public class GasStation implements Serializable {
     private User user;
     
     //serve lista di fuels
-    
-    
+
+	public GasStation() {}
+
+	public GasStation(String gasStationName, String gasStationAddress, boolean hasDiesel, boolean hasSuper, boolean hasSuperPlus, boolean hasGas, boolean hasMethane, String carSharing, double lat, double lon, double dieselPrice, double superPrice, double superPlusPrice, double gasPrice, double methanePrice, Integer reportUser, String reportTimestamp, double reportDependability) {
+		this.gasStationName = gasStationName;
+		this.gasStationAddress = gasStationAddress;
+		this.carSharing = carSharing;
+		this.hasDiesel = hasDiesel;
+		this.hasGas = hasGas;
+		this.hasMethane = hasMethane;
+		this.hasSuper = hasSuper;
+		this.hasSuperPlus = hasSuperPlus;
+		this.lat = lat;
+		this.lon = lon;
+		this.dieselPrice = dieselPrice;
+		this.superPrice = superPrice;
+		this.superPlusPrice = superPlusPrice;
+		this.gasPrice = gasPrice;
+		this.methanePrice = methanePrice;
+		this.reportUser = reportUser;
+		this.user = null;
+		this.reportTimestamp = reportTimestamp;
+		this.reportDependability = reportDependability;
+	}
+
     public Integer getGasStationId() {
         return gasStationId;
     }
@@ -89,37 +111,6 @@ public class GasStation implements Serializable {
     	this.gasStationAddress = gasStationAddress;
     }
 
-    
-    
-    public GasStation() {
-    	
-    }
-    
-    public GasStation(String gasStationName, String gasStationAddress, boolean hasDiesel, boolean hasSuper, boolean hasSuperPlus, boolean hasGas, boolean hasMethane, String carSharing, double lat, double lon, double dieselPrice, double superPrice, double superPlusPrice, double gasPrice, double methanePrice, Integer reportUser, String reportTimestamp, double reportDependability) {
-        this.gasStationName = gasStationName;
-        this.gasStationAddress = gasStationAddress;
-        this.carSharing = carSharing;
-		this.hasDiesel = hasDiesel;
-		this.hasGas = hasGas;
-		this.hasMethane = hasMethane;
-		this.hasSuper = hasSuper;
-		this.hasSuperPlus = hasSuperPlus;
-		this.lat = lat;
-		this.lon = lon;
-		this.dieselPrice = dieselPrice;
-		this.superPrice = superPrice;
-		this.superPlusPrice = superPlusPrice;
-		this.gasPrice = gasPrice;
-		this.methanePrice = methanePrice;
-		this.reportUser = reportUser;
-		this.user = null;
-		this.reportTimestamp = reportTimestamp;
-		this.reportDependability = reportDependability;
-    }
-
-    
-    
-    
 	public double getReportDependability() {
 		return reportDependability;
 	}
@@ -175,7 +166,6 @@ public class GasStation implements Serializable {
 	public void setHasGas(boolean hasGas) {
 		this.hasGas = hasGas;
 	}
-
 
 	public double getLat() {
 		return lat;
@@ -256,15 +246,4 @@ public class GasStation implements Serializable {
 	public void setCarSharing(String carSharing) {
 		this.carSharing = carSharing;
 	}
-
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
 }

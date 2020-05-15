@@ -31,6 +31,15 @@ public class User implements Serializable{
     @Column
     private Boolean admin;
 
+    public User() {}
+
+    public User(String userName, String password, String email, Integer reputation) {
+        this.userName = userName;
+        this.password = password;
+        this.email = email;
+        this.reputation = reputation;
+    }
+
     public Integer getUserId() {
         return userId;
     }
@@ -61,17 +70,6 @@ public class User implements Serializable{
     
     public void setEmail(String email) {
     	this.email = email;
-    }
-
-
-    public User() {
-    }
-
-    public User(String userName, String password, String email, Integer reputation) {
-        this.userName = userName;
-        this.password = password;
-        this.email = email;
-        this.reputation = reputation;
     }
 
 	public Integer getReputation() {

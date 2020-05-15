@@ -4,12 +4,15 @@ package it.polito.ezgas.dto;
  * Created by softeng on 27/4/2020.
  */
 public class UserDto {
+
     Integer userId;
     String userName;
     String password;
     String email;
     Integer reputation;
     Boolean admin;
+
+    public UserDto() {}
 
     public UserDto(Integer userId, String userName, String password, String email, Integer reputation) {
         this.userId = userId;
@@ -27,9 +30,6 @@ public class UserDto {
         this.email = email;
         this.reputation = reputation;
         this.admin = admin;
-    }
-
-    public UserDto() {
     }
 
     public Integer getUserId() {
@@ -71,11 +71,12 @@ public class UserDto {
 	public void setReputation(Integer reputation) {
 		this.reputation = reputation;
 	}
+
 	public Boolean getAdmin() {
 		return admin;
 	}
+
 	public void setAdmin(Boolean admin) {
 		this.admin = admin;
 	}
-	
 }

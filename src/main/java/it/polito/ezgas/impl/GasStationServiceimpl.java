@@ -1,7 +1,18 @@
 package it.polito.ezgas.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+<<<<<<< HEAD
+=======
+import it.polito.ezgas.Repository.GasStationRepository;
+import it.polito.ezgas.Repository.UserRepository;
+import it.polito.ezgas.converter.GasStationConverter;
+import it.polito.ezgas.converter.UserConverter;
+import it.polito.ezgas.entity.GasStation;
+import it.polito.ezgas.entity.User;
+>>>>>>> 2f6b99268aa25426602b3823893278bf0e502092
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +33,12 @@ import it.polito.ezgas.converter.GasStationConverter;
  */
 @Service
 public class GasStationServiceimpl implements GasStationService {
+	@Autowired
+	GasStationRepository GasStationRepository;
+	@Autowired
+	UserRepository userRepository;
+
+	List<String> GasolineTypes = Arrays.asList("Diesel", "Super", "SuperPlus", "LPG", "Methane");
 
 	@Autowired
 	GasStationRepository gasStationRepository;
@@ -105,37 +122,107 @@ public class GasStationServiceimpl implements GasStationService {
 		return null;
 	}
 
-	@Override
-	public List<GasStationDto> getGasStationsWithCoordinates(double lat, double lon, String gasolinetype,
-			String carsharing) throws InvalidGasTypeException, GPSDataException {
-		// TODO Auto-generated method stub
-		return null;
+	public double distance(double sLat, double sLon, double eLat, double eLon){
+		double dLat = Math.toRadians((eLat - sLat));
+		double dLon = Math.toRadians((eLon - sLon));
+
+		double a = Math.pow(Math.sin(dLat/2),2) + Math.cos(sLat) * Math.cos(eLat) * Math.pow(Math.sin(dLon/2),2);
+		double c = 2 * Math.asin(Math.sqrt(a));
+		double r = 6371;
+
+		return c * r;
 	}
 
 	@Override
-	public List<GasStationDto> getGasStationsWithoutCoordinates(String gasolinetype, String carsharing)
+	public List<GasStationDto> getGasStationsWithCoordinates(double lat, double lon, String gasolineType,
+			String carSharing) throws InvalidGasTypeException, GPSDataException {
+		List<GasStation> gasStations = new ArrayList<>();
+
+		if(lat > 90 || lat < -90 || lon > 180 || lon < -180)
+			throw new GPSDataException("Invalid GPS Data");
+
+		if(!GasolineTypes.contains(gasolineType) && gasolineType != null)
+			throw new InvalidGasTypeException("Invalid Gasoline Type");
+
+		if(carSharing != null)
+			 gasStations = GasStationRepository.findByCarSharing(carSharing);
+		else
+			gasStations = GasStationRepository.findAll();
+
+		List<GasStationDto> gasStationDtos = new ArrayList<>();
+
+		for(GasStation gs : gasStations){
+			double dist = distance(lat, lon, gs.getLat(), gs.getLon());
+			if(dist <= 5)
+				gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
+		}
+
+		return gasStationDtos;
+	}
+
+	@Override
+	public List<GasStationDto> getGasStationsWithoutCoordinates(String gasolineType, String carSharing)
 			throws InvalidGasTypeException {
-		// TODO Auto-generated method stub
-		return null;
+		List<GasStation> gasStations;
+
+		if(!GasolineTypes.contains(gasolineType) && gasolineType != null)
+			throw new InvalidGasTypeException("Invalid Gasoline Type");
+
+		if(carSharing != null)
+			gasStations = GasStationRepository.findByCarSharing(carSharing);
+		else
+			gasStations = GasStationRepository.findAll();
+
+		List<GasStationDto> gasStationDtos = new ArrayList<>();
+
+		for(GasStation gs : gasStations){
+			if((gasolineType == "Diesel" && gs.getHasDiesel()) ||
+					(gasolineType == "Gasoline" && gs.getHasSuper()) ||
+					(gasolineType == "PremiumGasoline" && gs.getHasSuperPlus()) ||
+					(gasolineType == "LPG" && gs.getHasGas()) ||
+					(gasolineType == "Methane" && gs.getHasMethane())){
+				gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
+			}
+		}
+
+		return gasStationDtos;
 	}
 
 	@Override
 	public void setReport(Integer gasStationId, double dieselPrice, double superPrice, double superPlusPrice,
 			double gasPrice, double methanePrice, Integer userId)
 			throws InvalidGasStationException, PriceException, InvalidUserException {
-		// TODO Auto-generated method stub
+		GasStation gasStation = GasStationRepository.findOne(gasStationId);
+		if(gasStation == null)
+			throw new InvalidGasStationException("Gas Station not found");
+
+		if(dieselPrice < 0 || superPrice < 0 || superPlusPrice < 0 || gasPrice <0 || methanePrice < 0)
+			throw new PriceException("Wrong Price");
+
+		gasStation.setDieselPrice(dieselPrice);
+		gasStation.setSuperPrice(superPrice);
+		gasStation.setSuperPlusPrice(superPlusPrice);
+		gasStation.setGasPrice(gasPrice);
+		gasStation.setMethanePrice(methanePrice);
+
+		User user = userRepository.findById(userId);
+		if(user == null){
+			throw new InvalidUserException("User not found");
+		}
+		gasStation.setReportUser(userId);
 		
 	}
 
 	@Override
 	public List<GasStationDto> getGasStationByCarSharing(String carSharing) {
-		// TODO Auto-generated method stub
-		return null;
+		List<GasStation> gasStations = GasStationRepository.findByCarSharing(carSharing);
+		List<GasStationDto> gasStationDtos = new ArrayList<>();
+
+		for(GasStation gs : gasStations){
+			gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
+		}
+
+		return gasStationDtos;
 	}
-	
-	
-	
-	
-	
 
 }
