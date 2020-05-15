@@ -11,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import it.polito.ezgas.converter.UserConverter;
+import it.polito.ezgas.dto.UserDto;
 import it.polito.ezgas.entity.User;
 import it.polito.ezgas.controller.UserController;
 
@@ -30,19 +31,19 @@ public class BootEZGasApplication {
 		conn.close();
 		
 		
-		
+		/*
 		 
-		//list all the users stored in the database and, if there is no an admin user create it
+		list all the users stored in the database and, if there is no an admin user create it
 		 
-			//User user= new User("admin", "admin", "admin@ezgas.com", 5);
-			//user.setAdmin(true);
+			User user= new User("admin", "admin", "admin@ezgas.com", 5);
+			user.setAdmin(true);
 			
 			
 			
 			
-		 //then save it in the db
+		 then save it in the db
+		 */
 		 
-	
 			
 		
 

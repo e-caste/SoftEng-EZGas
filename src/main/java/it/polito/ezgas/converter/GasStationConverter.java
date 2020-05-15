@@ -39,8 +39,8 @@ public class GasStationConverter {
 
         gsDTO.setReportUser(gs.getReportUser());
 
-        UserConverter uc = new UserConverter();
-        gsDTO.setUserDto(uc.convertEntityToDto(gs.getUser()));
+       // UserConverter uc = new UserConverter();
+        gsDTO.setUserDto(UserConverter.convertEntityToDto(gs.getUser()));
 
         gsDTO.setReportTimestamp(gs.getReportTimestamp());
         gsDTO.setReportDependability(gs.getReportDependability());
@@ -78,8 +78,8 @@ public class GasStationConverter {
 
         gs.setReportUser(gsDTO.getReportUser());
 
-        UserConverter uc = new UserConverter();
-        gs.setUser(uc.convertDtoToEntity(gsDTO.getUserDto()));
+        //UserConverter uc = new UserConverter();
+        gs.setUser(UserConverter.convertDtoToEntity(gsDTO.getUserDto()));
 
         gs.setReportTimestamp(gsDTO.getReportTimestamp());
         gs.setReportDependability(gsDTO.getReportDependability());

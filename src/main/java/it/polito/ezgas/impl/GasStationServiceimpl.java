@@ -1,18 +1,18 @@
 package it.polito.ezgas.impl;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
-<<<<<<< HEAD
-=======
+
 import it.polito.ezgas.Repository.GasStationRepository;
 import it.polito.ezgas.Repository.UserRepository;
 import it.polito.ezgas.converter.GasStationConverter;
 import it.polito.ezgas.converter.UserConverter;
 import it.polito.ezgas.entity.GasStation;
 import it.polito.ezgas.entity.User;
->>>>>>> 2f6b99268aa25426602b3823893278bf0e502092
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,25 +34,34 @@ import it.polito.ezgas.converter.GasStationConverter;
 @Service
 public class GasStationServiceimpl implements GasStationService {
 	@Autowired
-	GasStationRepository GasStationRepository;
+	GasStationRepository gasStationRepository;
 	@Autowired
 	UserRepository userRepository;
 
 	List<String> GasolineTypes = Arrays.asList("Diesel", "Super", "SuperPlus", "LPG", "Methane");
 
-	@Autowired
-	GasStationRepository gasStationRepository;
+	
 	
 	@Override
 	public GasStationDto getGasStationById(Integer gasStationId) throws InvalidGasStationException {
 		GasStation gasStation = gasStationRepository.findById(gasStationId);
+		if(gasStation == null) {
+			throw new InvalidGasStationException("GasStation not found");
+		}
 		return GasStationConverter.convertEntityToDto(gasStation);
 	}
 
 	@Override
 	public GasStationDto saveGasStation(GasStationDto gasStationDto) throws PriceException, GPSDataException {
 		GasStation gasStation = gasStationRepository.findById(gasStationDto.getGasStationId());
+		if(gasStationDto.getLat() > 90 || gasStationDto.getLat() < -90 || gasStationDto.getLon() > 180 || gasStationDto.getLon() < -180) {
+			throw new GPSDataException("Invalid GPS Data");
+		}
+		
+	
 		if(gasStation != null) {
+					
+			
 			gasStation.setGasStationId(gasStationDto.getGasStationId());
 			gasStation.setGasStationName(gasStationDto.getGasStationName());
 			gasStation.setGasStationAddress(gasStationDto.getGasStationAddress());
@@ -100,13 +109,21 @@ public class GasStationServiceimpl implements GasStationService {
 
 	@Override
 	public List<GasStationDto> getAllGasStations() {
-		// TODO Auto-generated method stub
+		List<GasStation> gasStations = gasStationRepository.findAll();
+		List<GasStationDto> gasStationDtos = new ArrayList<>();
+		for(GasStation gs : gasStations) {
+			gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
+		}
 		return null;
 	}
 
 	@Override
 	public Boolean deleteGasStation(Integer gasStationId) throws InvalidGasStationException {
-		// TODO Auto-generated method stub
+		GasStation gasStation = gasStationRepository.findById(gasStationId);
+		if(gasStation == null) {
+			throw new InvalidGasStationException("GasStation not found");
+		}
+		gasStationRepository.delete(gasStationId);
 		return null;
 	}
 
@@ -145,9 +162,9 @@ public class GasStationServiceimpl implements GasStationService {
 			throw new InvalidGasTypeException("Invalid Gasoline Type");
 
 		if(carSharing != null)
-			 gasStations = GasStationRepository.findByCarSharing(carSharing);
+			 gasStations = gasStationRepository.findByCarSharing(carSharing);
 		else
-			gasStations = GasStationRepository.findAll();
+			gasStations = gasStationRepository.findAll();
 
 		List<GasStationDto> gasStationDtos = new ArrayList<>();
 
@@ -169,9 +186,9 @@ public class GasStationServiceimpl implements GasStationService {
 			throw new InvalidGasTypeException("Invalid Gasoline Type");
 
 		if(carSharing != null)
-			gasStations = GasStationRepository.findByCarSharing(carSharing);
+			gasStations = gasStationRepository.findByCarSharing(carSharing);
 		else
-			gasStations = GasStationRepository.findAll();
+			gasStations = gasStationRepository.findAll();
 
 		List<GasStationDto> gasStationDtos = new ArrayList<>();
 
@@ -192,7 +209,7 @@ public class GasStationServiceimpl implements GasStationService {
 	public void setReport(Integer gasStationId, double dieselPrice, double superPrice, double superPlusPrice,
 			double gasPrice, double methanePrice, Integer userId)
 			throws InvalidGasStationException, PriceException, InvalidUserException {
-		GasStation gasStation = GasStationRepository.findOne(gasStationId);
+		GasStation gasStation = gasStationRepository.findOne(gasStationId);
 		if(gasStation == null)
 			throw new InvalidGasStationException("Gas Station not found");
 
@@ -215,7 +232,7 @@ public class GasStationServiceimpl implements GasStationService {
 
 	@Override
 	public List<GasStationDto> getGasStationByCarSharing(String carSharing) {
-		List<GasStation> gasStations = GasStationRepository.findByCarSharing(carSharing);
+		List<GasStation> gasStations = gasStationRepository.findByCarSharing(carSharing);
 		List<GasStationDto> gasStationDtos = new ArrayList<>();
 
 		for(GasStation gs : gasStations){
