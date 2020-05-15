@@ -91,7 +91,7 @@ public class UserServiceimpl implements UserService {
 		}
 
 		// TODO: check where to get token
-		LoginDto loginDto = UserConverter.toLoginDto(user);
+		LoginDto loginDto = UserConverter.convertEntityToLoginDto(user);
 
 		return loginDto;
 	}

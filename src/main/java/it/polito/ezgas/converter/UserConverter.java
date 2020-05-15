@@ -31,7 +31,7 @@ public class UserConverter {
 		return user;
 	}
 
-	public static LoginDto toLoginDto(User userEntity){
+	public static LoginDto convertEntityToLoginDto(User userEntity){
 		LoginDto loginDto = new LoginDto();
 		loginDto.setUserId(userEntity.getUserId());
 		loginDto.setUserName(userEntity.getUserName());
