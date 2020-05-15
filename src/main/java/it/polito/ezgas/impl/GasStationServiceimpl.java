@@ -1,6 +1,7 @@
 package it.polito.ezgas.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import it.polito.ezgas.Repository.GasStationRepository;
@@ -29,6 +30,8 @@ public class GasStationServiceimpl implements GasStationService {
 	GasStationRepository GasStationRepository;
 	@Autowired
 	UserRepository userRepository;
+
+	List<String> GasolineTypes = Arrays.asList("Diesel", "Super", "SuperPlus", "LPG", "Methane");
 
 	@Override
 	public GasStationDto getGasStationById(Integer gasStationId) throws InvalidGasStationException {
@@ -66,37 +69,39 @@ public class GasStationServiceimpl implements GasStationService {
 		return null;
 	}
 
+	public double distance(double sLat, double sLon, double eLat, double eLon){
+		double dLat = Math.toRadians((eLat - sLat));
+		double dLon = Math.toRadians((eLon - sLon));
+
+		double a = Math.pow(Math.sin(dLat/2),2) + Math.cos(sLat) * Math.cos(eLat) * Math.pow(Math.sin(dLon/2),2);
+		double c = 2 * Math.asin(Math.sqrt(a));
+		double r = 6371;
+
+		return c * r;
+	}
+
 	@Override
 	public List<GasStationDto> getGasStationsWithCoordinates(double lat, double lon, String gasolineType,
 			String carSharing) throws InvalidGasTypeException, GPSDataException {
-		List<GasStation> gasStations = GasStationRepository.findByCoordinates(lat, lon);
+		List<GasStation> gasStations = new ArrayList<>();
 
-		if(gasStations == null)
-			throw new GPSDataException("Gas Station not found (GPSException)");
-		for(GasStation gs : gasStations){
-			if(gasolineType == "Diesel" && !gs.getHasDiesel())
-				gasStations.remove(gs);
-			if(gasolineType == "Gasoline" && !gs.getHasSuper())
-				gasStations.remove(gs);
-			if(gasolineType == "PremiumGasoline" && !gs.getHasSuperPlus())
-				gasStations.remove(gs);
-			if(gasolineType == "LPG" && !gs.getHasGas())
-				gasStations.remove(gs);
-			if(gasolineType == "Methane" && !gs.getHasMethane())
-				gasStations.remove(gs);
-		}
-		if(gasStations == null)
-			throw new InvalidGasTypeException("Gas Station not found (GasolineTypeException)");
+		if(lat > 90 || lat < -90 || lon > 180 || lon < -180)
+			throw new GPSDataException("Invalid GPS Data");
 
-		for(GasStation gs : gasStations){
-			if(gs.getCarSharing() != carSharing)
-				gasStations.remove(gs);
-		}
+		if(!GasolineTypes.contains(gasolineType) && gasolineType != null)
+			throw new InvalidGasTypeException("Invalid Gasoline Type");
+
+		if(carSharing != null)
+			 gasStations = GasStationRepository.findByCarSharing(carSharing);
+		else
+			gasStations = GasStationRepository.findAll();
 
 		List<GasStationDto> gasStationDtos = new ArrayList<>();
 
 		for(GasStation gs : gasStations){
-			gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
+			double dist = distance(lat, lon, gs.getLat(), gs.getLon());
+			if(dist <= 5)
+				gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
 		}
 
 		return gasStationDtos;
@@ -105,32 +110,26 @@ public class GasStationServiceimpl implements GasStationService {
 	@Override
 	public List<GasStationDto> getGasStationsWithoutCoordinates(String gasolineType, String carSharing)
 			throws InvalidGasTypeException {
-		List<GasStation> gasStations = GasStationRepository.findAll();
+		List<GasStation> gasStations;
 
-		for(GasStation gs : gasStations){
-			if(gasolineType == "Diesel" && !gs.getHasDiesel())
-				gasStations.remove(gs);
-			if(gasolineType == "Gasoline" && !gs.getHasSuper())
-				gasStations.remove(gs);
-			if(gasolineType == "PremiumGasoline" && !gs.getHasSuperPlus())
-				gasStations.remove(gs);
-			if(gasolineType == "LPG" && !gs.getHasGas())
-				gasStations.remove(gs);
-			if(gasolineType == "Methane" && !gs.getHasMethane())
-				gasStations.remove(gs);
-		}
-		if(gasStations == null)
-			throw new InvalidGasTypeException("Gas Station not found (GasolineTypeException)");
+		if(!GasolineTypes.contains(gasolineType) && gasolineType != null)
+			throw new InvalidGasTypeException("Invalid Gasoline Type");
 
-		for(GasStation gs : gasStations){
-			if(gs.getCarSharing() != carSharing)
-				gasStations.remove(gs);
-		}
+		if(carSharing != null)
+			gasStations = GasStationRepository.findByCarSharing(carSharing);
+		else
+			gasStations = GasStationRepository.findAll();
 
 		List<GasStationDto> gasStationDtos = new ArrayList<>();
 
 		for(GasStation gs : gasStations){
-			gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
+			if((gasolineType == "Diesel" && gs.getHasDiesel()) ||
+					(gasolineType == "Gasoline" && gs.getHasSuper()) ||
+					(gasolineType == "PremiumGasoline" && gs.getHasSuperPlus()) ||
+					(gasolineType == "LPG" && gs.getHasGas()) ||
+					(gasolineType == "Methane" && gs.getHasMethane())){
+				gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
+			}
 		}
 
 		return gasStationDtos;
@@ -144,30 +143,14 @@ public class GasStationServiceimpl implements GasStationService {
 		if(gasStation == null)
 			throw new InvalidGasStationException("Gas Station not found");
 
-		if(gasStation.getHasDiesel())
-			gasStation.setDieselPrice(dieselPrice);
-		else
-			throw new PriceException("Gas Station does not provide Diesel");
+		if(dieselPrice < 0 || superPrice < 0 || superPlusPrice < 0 || gasPrice <0 || methanePrice < 0)
+			throw new PriceException("Wrong Price");
 
-		if(gasStation.getHasSuper())
-			gasStation.setSuperPrice(superPrice);
-		else
-			throw new PriceException("Gas Station does not provide Super");
-
-		if(gasStation.getHasSuperPlus())
-			gasStation.setSuperPlusPrice(superPlusPrice);
-		else
-			throw new PriceException("Gas Station does not provide SuperPlus");
-
-		if(gasStation.getHasGas())
-			gasStation.setGasPrice(gasPrice);
-		else
-			throw new PriceException("Gas Station does not provide Gas");
-
-		if(gasStation.getHasMethane())
-			gasStation.setMethanePrice(methanePrice);
-		else
-			throw new PriceException("Gas Station does not provide Methane");
+		gasStation.setDieselPrice(dieselPrice);
+		gasStation.setSuperPrice(superPrice);
+		gasStation.setSuperPlusPrice(superPlusPrice);
+		gasStation.setGasPrice(gasPrice);
+		gasStation.setMethanePrice(methanePrice);
 
 		User user = userRepository.findById(userId);
 		if(user == null){
