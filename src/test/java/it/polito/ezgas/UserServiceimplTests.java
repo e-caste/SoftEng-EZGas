@@ -108,4 +108,29 @@ public class UserServiceimplTests {
         existingUserDto = UserConverter.convertEntityToDto(existingUser);
         assertNull(this.userService.saveUser(existingUserDto));
     }
+
+    @Test
+    public void testGetAllUsers() {
+
+    }
+
+    @Test
+    public void testDeleteUser() {
+
+    }
+
+    @Test
+    public void testLogin() {
+
+    }
+
+    @Test
+    public void testIncreaseUserReputation() {
+
+    }
+
+    @Test
+    public void testDecreaseUserReputation() {
+
+    }
 }
