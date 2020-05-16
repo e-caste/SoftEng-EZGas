@@ -8,6 +8,7 @@ import it.polito.ezgas.entity.User;
 import static org.junit.Assert.*;
 
 import it.polito.ezgas.service.UserService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,6 +61,11 @@ public class UserServiceimplTests {
         this.nonExistingUserDto = UserConverter.convertEntityToDto(this.nonExistingUser);
 
 //        this.userService.getAllUsers().forEach(System.out::println);
+    }
+
+    @After
+    public void tearDown() {
+        // TODO: reset database to initial state
     }
 
     @Test
