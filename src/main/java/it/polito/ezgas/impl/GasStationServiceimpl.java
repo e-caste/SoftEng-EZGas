@@ -213,8 +213,13 @@ public class GasStationServiceimpl implements GasStationService {
 	public List<GasStationDto> getGasStationsByProximity(double lat, double lon) throws GPSDataException {
 		List<GasStation> gasStations = gasStationRepository.findAll();
 		List<GasStationDto> gasStationDtos = new ArrayList<>();
+
+		if (lat > 90 || lat < -90 || lon > 180 || lon < -180) {
+			throw new GPSDataException("Invalid GPS Data");
+		}
+
 		for(GasStation gs : gasStations) {
-			if(distance(lat,lon,gs.getLat(),gs.getLon())<=5) {
+			if(distance(lat,lon,gs.getLat(),gs.getLon())<=1) {
 				gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
 			}
 		}
@@ -236,55 +241,45 @@ public class GasStationServiceimpl implements GasStationService {
 	@Override
 	public List<GasStationDto> getGasStationsWithCoordinates(double lat, double lon, String gasolineType,
 			String carSharing) throws InvalidGasTypeException, GPSDataException {
-		List<GasStation> gasStations;
-
-		if (lat > 90 || lat < -90 || lon > 180 || lon < -180)
+		if (lat > 90 || lat < -90 || lon > 180 || lon < -180){
 			throw new GPSDataException("Invalid GPS Data");
+		}
 
-		if (!GasolineTypes.contains(gasolineType) && gasolineType != null)
+		if (!GasolineTypes.contains(gasolineType) && gasolineType != null) {
 			throw new InvalidGasTypeException("Invalid Gasoline Type");
-
-		if (carSharing != null){
-			gasStations = gasStationRepository.findByCarSharing(carSharing);
-		} else {
-			gasStations = gasStationRepository.findAll();
 		}
 
 		List<GasStationDto> gasStationDtos = getGasStationsByGasolineType(gasolineType);
+		List<GasStationDto> gsDtos = new ArrayList<>();
 
-		for(GasStation gs : gasStations){
+		for(GasStationDto gs : gasStationDtos){
 			double dist = distance(lat, lon, gs.getLat(), gs.getLon());
-			if (dist > 5){
-				gasStationDtos.remove(gs);
+			if(dist <= 1){
+				if(carSharing.equals("null")){
+					gsDtos.add(gs);
+				} else if (gs.getCarSharing().equals(carSharing)){
+					gsDtos.add(gs);
+				}
 			}
 		}
 
-		return gasStationDtos;
+		return gsDtos;
 	}
 
 	@Override
 	public List<GasStationDto> getGasStationsWithoutCoordinates(String gasolineType, String carSharing)
 			throws InvalidGasTypeException {
-		List<GasStation> gasStations;
-
 		if (!GasolineTypes.contains(gasolineType) && gasolineType != null)
 			throw new InvalidGasTypeException("Invalid Gasoline Type");
 
-		if (carSharing != null){
-			gasStations = gasStationRepository.findByCarSharing(carSharing);
-		} else {
-			gasStations = gasStationRepository.findAll();
-		}
+		List<GasStationDto> gasStationDtos = getGasStationsByGasolineType(gasolineType);
+		List<GasStationDto> gsDtos = new ArrayList<>();
 
-		List<GasStationDto> gasStationDtos = new ArrayList<>();
-
-		for(GasStation gs : gasStations){
-			if ((gasolineType.equals("Diesel") && gs.getHasDiesel()) ||
-					(gasolineType.equals("Gasoline") && gs.getHasSuper()) ||
-					(gasolineType.equals("PremiumGasoline") && gs.getHasSuperPlus()) ||
-					(gasolineType.equals("LPG") && gs.getHasGas()) ||
-					(gasolineType.equals("Methane") && gs.getHasMethane())){
-				gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
+		for(GasStationDto gs : gasStationDtos){
+			if(carSharing.equals("null")){
+				gsDtos.add(gs);
+			} else if (gs.getCarSharing().equals(carSharing)){
+				gsDtos.add(gs);
 			}
 		}
 
@@ -307,17 +302,28 @@ public class GasStationServiceimpl implements GasStationService {
 			throw new PriceException("Wrong Price");
 		}
 
-		gasStation.setDieselPrice(dieselPrice);
-		gasStation.setSuperPrice(superPrice);
-		gasStation.setSuperPlusPrice(superPlusPrice);
-		gasStation.setGasPrice(gasPrice);
-		gasStation.setMethanePrice(methanePrice);
+		if(gasStation.getHasDiesel()){
+			gasStation.setDieselPrice(dieselPrice);
+		}
+		if(gasStation.getHasSuper()){
+			gasStation.setSuperPrice(superPrice);
+		}
+		if(gasStation.getHasSuperPlus()){
+			gasStation.setSuperPlusPrice(superPlusPrice);
+		}
+		if(gasStation.getHasGas()){
+			gasStation.setGasPrice(gasPrice);
+		}
+		if(gasStation.getHasMethane()){
+			gasStation.setMethanePrice(methanePrice);
+		}
 
 		User user = userRepository.findById(userId);
 		if (user == null){
 			throw new InvalidUserException("User not found");
+		} else {
+			gasStation.setReportUser(userId);
 		}
-		gasStation.setReportUser(userId);
 
 		String oldTimeStamp = gasStation.getReportTimestamp();
 		String newTimeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
