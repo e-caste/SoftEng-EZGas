@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 import it.polito.ezgas.repository.GasStationRepository;
@@ -58,10 +59,11 @@ public class GasStationServiceimpl implements GasStationService {
 		Timestamp newTS = Timestamp.valueOf(newTimeStamp);
 		long lastMS = lastTS.getTime();
 		long newMS = newTS.getTime();
-		
+		long lastDay = TimeUnit.MILLISECONDS.toDays(lastMS);
+		long newDay = TimeUnit.MILLISECONDS.toDays(newMS);
 
 		// difference in ms converted in days
-		difference = (newMS - lastMS) / (7*24*60*60*1000);
+		difference = newDay - lastDay;
 		if (difference > 7) {
 			obsolescence = 0;
 		}
@@ -86,7 +88,7 @@ public class GasStationServiceimpl implements GasStationService {
 			throw new PriceException("Wrong Exception");
 		}
 
-		String currentTimeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		String currentTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 		gasStationDto.setReportTimestamp(currentTimeStamp);
 
 		if(gasStationDto.getGasStationId() != null) {
@@ -145,7 +147,7 @@ public class GasStationServiceimpl implements GasStationService {
 		}
 		else {
 			GasStation gasStation = GasStationConverter.convertDtoToEntity(gasStationDto);
-			gasStation.setReportTimestamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
+			gasStation.setReportTimestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			gasStationRepository.save(gasStation);
 			gsDTo = GasStationConverter.convertEntityToDto(gasStation);
 		}
@@ -329,7 +331,7 @@ public class GasStationServiceimpl implements GasStationService {
 		}
 
 		String oldTimeStamp = gasStation.getReportTimestamp();
-		String newTimeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		String newTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
 		gasStation.setReportTimestamp(newTimeStamp);
 
 		double repDependability = reportDependability(oldTimeStamp,newTimeStamp,user.getReputation());

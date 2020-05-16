@@ -1,4 +1,4 @@
-package it.polito.ezgas;
+/*package it.polito.ezgas;
 
 import java.sql.Timestamp;
 
@@ -74,4 +74,4 @@ public class GasStationServiceimplTests {
 		Assertions.assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
 	}
 	
-}
+}*/
