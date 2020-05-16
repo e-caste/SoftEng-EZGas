@@ -137,8 +137,6 @@ public class GasStationServiceimpl implements GasStationService {
 				gasStation.setMethanePrice(gasStationDto.getMethanePrice());
 			}
 
-			gasStation.setReportTimestamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
-
 			gasStationRepository.save(gasStation);
 			gsDTo = GasStationConverter.convertEntityToDto(gasStation);
 		}
@@ -252,18 +250,12 @@ public class GasStationServiceimpl implements GasStationService {
 			gasStations = gasStationRepository.findAll();
 		}
 
-		List<GasStationDto> gasStationDtos = new ArrayList<>();
+		List<GasStationDto> gasStationDtos = getGasStationsByGasolineType(gasolineType);
 
 		for(GasStation gs : gasStations){
 			double dist = distance(lat, lon, gs.getLat(), gs.getLon());
-			if (dist <= 5){
-				if ((gasolineType.equals("Diesel") && gs.getHasDiesel()) ||
-						(gasolineType.equals("Gasoline") && gs.getHasSuper()) ||
-						(gasolineType.equals("PremiumGasoline") && gs.getHasSuperPlus()) ||
-						(gasolineType.equals("LPG") && gs.getHasGas()) ||
-						(gasolineType.equals("Methane") && gs.getHasMethane())) {
-					gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
-				}
+			if (dist > 5){
+				gasStationDtos.remove(gs);
 			}
 		}
 

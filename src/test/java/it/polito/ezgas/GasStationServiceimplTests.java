@@ -3,7 +3,7 @@ package it.polito.ezgas;
 import java.sql.Timestamp;
 
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
+//import org.junit.jupiter.api.Assertions;
 
 import it.polito.ezgas.impl.GasStationServiceimpl;
 
