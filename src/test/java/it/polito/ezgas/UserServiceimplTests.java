@@ -115,8 +115,25 @@ public class UserServiceimplTests {
     }
 
     @Test
-    public void testDeleteUser() {
+    public void testDeleteUser() throws InvalidUserException {
+        // local copy of class variables
+        User existingUser = this.existingUser;
+        User existingAdminUser = this.existingAdminUser;
+        User nonExistingUser = this.nonExistingUser;
 
+        // user id exists -> deleted
+        assertTrue(this.userService.deleteUser(existingUser.getUserId()));
+
+        // user id exists and is admin -> not deleted
+        assertFalse(this.userService.deleteUser(existingAdminUser.getUserId()));
+
+        // user id does not exist -> throw exception
+        try {
+            this.userService.deleteUser(nonExistingUser.getUserId());
+            fail("Expected InvalidUserException for userId " + nonExistingUser.getUserId());
+        } catch (InvalidUserException e) {
+            assertEquals(e.getMessage(), "User not found");
+        }
     }
 
     @Test
