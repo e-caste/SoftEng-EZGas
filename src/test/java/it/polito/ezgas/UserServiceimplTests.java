@@ -1,7 +1,10 @@
 package it.polito.ezgas;
 
+import exception.InvalidLoginDataException;
 import exception.InvalidUserException;
 import it.polito.ezgas.converter.UserConverter;
+import it.polito.ezgas.dto.IdPw;
+import it.polito.ezgas.dto.LoginDto;
 import it.polito.ezgas.dto.UserDto;
 import it.polito.ezgas.entity.User;
 
@@ -137,8 +140,41 @@ public class UserServiceimplTests {
     }
 
     @Test
-    public void testLogin() {
+    public void testLogin() throws InvalidLoginDataException {
+        // local copy of class variables
+        User existingUser = this.existingUser;
+        User existingAdminUser = this.existingAdminUser;
+        User nonExistingUser = this.nonExistingUser;
+        IdPw idPw;
+        LoginDto loginDto;
 
+        // email exists
+        // correct password -> get LoginDto
+        idPw = new IdPw(existingUser.getEmail(), existingUser.getPassword());
+        loginDto = UserConverter.convertEntityToLoginDto(existingUser);
+        assertEquals(loginDto, this.userService.login(idPw));
+
+        idPw = new IdPw(existingAdminUser.getEmail(), existingAdminUser.getPassword());
+        loginDto = UserConverter.convertEntityToLoginDto(existingAdminUser);
+        assertEquals(loginDto, this.userService.login(idPw));
+
+        // wrong password -> throw exception
+        idPw = new IdPw(existingUser.getEmail(), "wrongPassword");
+        try {
+            this.userService.login(idPw);
+            fail("Expected InvalidLoginDataException (wrong password) for email " + idPw.getUser() + ", password: " + idPw.getPw());
+        } catch (InvalidLoginDataException e) {
+            assertEquals(e.getMessage(), "Wrong password.");
+        }
+
+        // email does not exist -> throw exception
+        idPw = new IdPw(nonExistingUser.getEmail(), nonExistingUser.getPassword());
+        try {
+            this.userService.login(idPw);
+            fail("Expected InvalidLoginDataException (non-existing user) for email " + idPw.getUser() + ", password: " + idPw.getPw());
+        } catch (InvalidLoginDataException e) {
+            assertEquals(e.getMessage(), "User does not exist.");
+        }
     }
 
     @Test
