@@ -54,11 +54,14 @@ public class GasStationServiceimpl implements GasStationService {
 		double obsolescence;
 		
 		// values in milliseconds
-		long lastTS = Timestamp.valueOf(lastTimeStamp).getTime();
-		long newTS = Timestamp.valueOf(newTimeStamp).getTime();
+		Timestamp lastTS = Timestamp.valueOf(lastTimeStamp);
+		Timestamp newTS = Timestamp.valueOf(newTimeStamp);
+		long lastMS = lastTS.getTime();
+		long newMS = newTS.getTime();
+		
 
 		// difference in ms converted in days
-		difference = (newTS - lastTS) / (7*24*60*60*1000);
+		difference = (newMS - lastMS) / (7*24*60*60*1000);
 		if (difference > 7) {
 			obsolescence = 0;
 		}
