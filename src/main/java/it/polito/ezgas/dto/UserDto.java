@@ -32,6 +32,24 @@ public class UserDto {
         this.admin = admin;
     }
 
+    public String toString() {
+        return this.userId + " " +
+               this.userName + " " +
+               this.email + " " +
+               this.password + " " +
+               this.reputation + " " +
+               this.admin;
+    }
+
+    public boolean equals(UserDto other) {
+        return this.userId.equals(other.getUserId()) &&
+               this.userName.equals(other.getUserName()) &&
+               this.email.equals(other.getEmail()) &&
+               this.password.equals(other.getPassword()) &&
+               this.reputation.equals(other.getReputation()) &&
+               this.admin.equals(other.getAdmin());
+    }
+
     public Integer getUserId() {
         return userId;
     }
