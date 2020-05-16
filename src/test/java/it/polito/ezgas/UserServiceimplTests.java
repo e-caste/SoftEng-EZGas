@@ -18,6 +18,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+// IMPORTANT NOTE: these tests can't run if the website is up and running,
+//                 since they use the same port to connect to the DB
 @RunWith(SpringRunner.class)
 @SpringBootTest
 //@Configuration
@@ -52,7 +54,7 @@ public class UserServiceimplTests {
         nonExistingUser.setAdmin(this.nonExistingUserAdmin);
         this.nonExistingUserDto = UserConverter.convertEntityToDto(nonExistingUser);
 
-        this.userService.getAllUsers().forEach(System.out::println);
+//        this.userService.getAllUsers().forEach(System.out::println);
     }
 
     @Test
