@@ -178,8 +178,30 @@ public class UserServiceimplTests {
     }
 
     @Test
-    public void testIncreaseUserReputation() {
+    public void testIncreaseUserReputation() throws InvalidUserException {
+        // local copy of class variables
+        User existingUser = this.existingUser;
+        User existingAdminUser = this.existingAdminUser;
+        User nonExistingUser = this.nonExistingUser;
+        Integer userId;
 
+        // user exists
+        // and reputation is 0 (can increase)
+        userId = existingUser.getUserId();
+        assertEquals(new Integer(1), this.userService.increaseUserReputation(userId));
+
+        // and reputation is 5 (max, can't increase)
+        userId = existingAdminUser.getUserId();
+        assertEquals(new Integer(5), this.userService.increaseUserReputation(userId));
+
+        // user does not exist -> throw exception
+        userId = nonExistingUser.getUserId();
+        try {
+            this.userService.increaseUserReputation(userId);
+            fail("Expected InvalidUserException for userId " + userId);
+        } catch (InvalidUserException e) {
+            assertEquals(e.getMessage(), "User not found");
+        }
     }
 
     @Test
