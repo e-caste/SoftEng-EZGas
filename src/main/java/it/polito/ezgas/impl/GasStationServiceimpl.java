@@ -73,19 +73,22 @@ public class GasStationServiceimpl implements GasStationService {
 
 	@Override
 	public GasStationDto saveGasStation(GasStationDto gasStationDto) throws PriceException, GPSDataException {
-		GasStation gasStation = gasStationRepository.findById(gasStationDto.getGasStationId());
+		GasStationDto gsDTo = null;
 		
 		if(gasStationDto.getLat() > 90 || gasStationDto.getLat() < -90 || gasStationDto.getLon() > 180 || gasStationDto.getLon() < -180) {
 			throw new GPSDataException("Invalid GPS Data");
-		}	
-		
-		User user = userRepository.findById(gasStationDto.getReportUser()); 
+		}
+
+		if(gasStationDto.getPriceReportDtos() == null){
+			throw new PriceException("Wrong Exception");
+		}
+
 		String currentTimeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
 		gasStationDto.setReportTimestamp(currentTimeStamp);
-		
-	
-		if(gasStation != null) {					
-			
+
+		if(gasStationDto.getGasStationId() != null) {
+			GasStation gasStation = gasStationRepository.findById(gasStationDto.getGasStationId());
+
 			gasStation.setGasStationId(gasStationDto.getGasStationId());
 			gasStation.setGasStationName(gasStationDto.getGasStationName());
 			gasStation.setGasStationAddress(gasStationDto.getGasStationAddress());
@@ -134,23 +137,19 @@ public class GasStationServiceimpl implements GasStationService {
 				gasStation.setMethanePrice(gasStationDto.getMethanePrice());
 			}
 
-			double repDependability = reportDependability(gasStation.getReportTimestamp(),gasStationDto.getReportTimestamp(),user.getReputation());
-			gasStationDto.setReportDependability(repDependability);
-			
-			gasStation.setReportUser(gasStationDto.getReportUser());
-			gasStation.setReportTimestamp(gasStationDto.getReportTimestamp());
-			gasStation.setReportDependability(gasStationDto.getReportDependability());
+			gasStation.setReportTimestamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
+
+			gasStationRepository.save(gasStation);
+			gsDTo = GasStationConverter.convertEntityToDto(gasStation);
 		}
 		else {
-			
-			double repDependability = reportDependability(gasStationDto.getReportTimestamp(),gasStationDto.getReportTimestamp(),user.getReputation());
-			gasStationDto.setReportDependability(repDependability);
-			
-			gasStation = GasStationConverter.convertDtoToEntity(gasStationDto);
-			
+			GasStation gasStation = GasStationConverter.convertDtoToEntity(gasStationDto);
+			gasStation.setReportTimestamp(new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()));
+			gasStationRepository.save(gasStation);
+			gsDTo = GasStationConverter.convertEntityToDto(gasStation);
 		}
-		gasStationRepository.save(gasStation);
-		return GasStationConverter.convertEntityToDto(gasStation);
+
+		return gsDTo;
 	}
 
 	@Override
@@ -239,7 +238,7 @@ public class GasStationServiceimpl implements GasStationService {
 	@Override
 	public List<GasStationDto> getGasStationsWithCoordinates(double lat, double lon, String gasolineType,
 			String carSharing) throws InvalidGasTypeException, GPSDataException {
-		List<GasStation> gasStations = new ArrayList<>();
+		List<GasStation> gasStations;
 
 		if (lat > 90 || lat < -90 || lon > 180 || lon < -180)
 			throw new GPSDataException("Invalid GPS Data");
@@ -247,17 +246,25 @@ public class GasStationServiceimpl implements GasStationService {
 		if (!GasolineTypes.contains(gasolineType) && gasolineType != null)
 			throw new InvalidGasTypeException("Invalid Gasoline Type");
 
-		if (carSharing != null)
-			 gasStations = gasStationRepository.findByCarSharing(carSharing);
-		else
+		if (carSharing != null){
+			gasStations = gasStationRepository.findByCarSharing(carSharing);
+		} else {
 			gasStations = gasStationRepository.findAll();
+		}
 
 		List<GasStationDto> gasStationDtos = new ArrayList<>();
 
 		for(GasStation gs : gasStations){
 			double dist = distance(lat, lon, gs.getLat(), gs.getLon());
-			if (dist <= 5)
-				gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
+			if (dist <= 5){
+				if ((gasolineType.equals("Diesel") && gs.getHasDiesel()) ||
+						(gasolineType.equals("Gasoline") && gs.getHasSuper()) ||
+						(gasolineType.equals("PremiumGasoline") && gs.getHasSuperPlus()) ||
+						(gasolineType.equals("LPG") && gs.getHasGas()) ||
+						(gasolineType.equals("Methane") && gs.getHasMethane())) {
+					gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
+				}
+			}
 		}
 
 		return gasStationDtos;
@@ -271,13 +278,13 @@ public class GasStationServiceimpl implements GasStationService {
 		if (!GasolineTypes.contains(gasolineType) && gasolineType != null)
 			throw new InvalidGasTypeException("Invalid Gasoline Type");
 
-		if (carSharing != null)
+		if (carSharing != null){
 			gasStations = gasStationRepository.findByCarSharing(carSharing);
-		else
+		} else {
 			gasStations = gasStationRepository.findAll();
+		}
 
 		List<GasStationDto> gasStationDtos = new ArrayList<>();
-		
 
 		for(GasStation gs : gasStations){
 			if ((gasolineType.equals("Diesel") && gs.getHasDiesel()) ||
@@ -300,8 +307,13 @@ public class GasStationServiceimpl implements GasStationService {
 		if (gasStation == null)
 			throw new InvalidGasStationException("Gas Station not found");
 
-		if (dieselPrice < 0 || superPrice < 0 || superPlusPrice < 0 || gasPrice <0 || methanePrice < 0)
+		if ((dieselPrice < 0 && gasStation.getHasDiesel()) ||
+				(superPrice < 0 && gasStation.getHasSuper()) ||
+				(superPlusPrice < 0 && gasStation.getHasSuperPlus()) ||
+				(gasPrice < 0 && gasStation.getHasGas()) ||
+				(methanePrice < 0 && gasStation.getHasMethane())) {
 			throw new PriceException("Wrong Price");
+		}
 
 		gasStation.setDieselPrice(dieselPrice);
 		gasStation.setSuperPrice(superPrice);
@@ -314,6 +326,15 @@ public class GasStationServiceimpl implements GasStationService {
 			throw new InvalidUserException("User not found");
 		}
 		gasStation.setReportUser(userId);
+
+		String oldTimeStamp = gasStation.getReportTimestamp();
+		String newTimeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
+		gasStation.setReportTimestamp(newTimeStamp);
+
+		double repDependability = reportDependability(oldTimeStamp,newTimeStamp,user.getReputation());
+		gasStation.setReportDependability(repDependability);
+
+		gasStationRepository.save(gasStation);
 	}
 
 	@Override
