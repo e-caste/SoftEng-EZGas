@@ -215,7 +215,7 @@ public class UserServiceimplTests {
         // user exists
         // and reputation is 0 (can decrease)
         userId = existingUser.getUserId();
-        assertEquals(new Integer(1), this.userService.decreaseUserReputation(userId));
+        assertEquals(new Integer(-1), this.userService.decreaseUserReputation(userId));
 
         // and reputation is -5 (min, can't decrease)
         userId = existingUser.getUserId();
