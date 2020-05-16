@@ -50,6 +50,14 @@ public class UserDto {
                this.admin.equals(other.getAdmin());
     }
 
+    public boolean equalsIgnoreUserId(UserDto other) {
+        return this.userName.equals(other.getUserName()) &&
+               this.email.equals(other.getEmail()) &&
+               this.password.equals(other.getPassword()) &&
+               this.reputation.equals(other.getReputation()) &&
+               this.admin.equals(other.getAdmin());
+    }
+
     public Integer getUserId() {
         return userId;
     }
