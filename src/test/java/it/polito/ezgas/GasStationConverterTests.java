@@ -2,6 +2,7 @@ package it.polito.ezgas;
 
 import static org.junit.Assert.*;
 
+import it.polito.ezgas.converter.GasStationConverter;
 import it.polito.ezgas.dto.GasStationDto;
 import it.polito.ezgas.entity.GasStation;
 import it.polito.ezgas.entity.User;
@@ -88,7 +89,7 @@ public class GasStationConverterTests {
 
     @Test
     public void testConvertEntityToDto() {
-
+        assertTrue(gasStationDto.equals(GasStationConverter.convertEntityToDto(gasStation)));
     }
 
     @Test
