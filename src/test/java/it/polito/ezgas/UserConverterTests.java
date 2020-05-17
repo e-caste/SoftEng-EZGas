@@ -44,7 +44,7 @@ public class UserConverterTests {
 
     @Test
     public void testConvertDtoToEntity() {
-
+        assertTrue(user.equals(UserConverter.convertDtoToEntity(userDto)));
     }
 
     @Test
