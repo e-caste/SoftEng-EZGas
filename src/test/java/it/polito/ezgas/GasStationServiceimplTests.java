@@ -3,7 +3,7 @@
 import java.sql.Timestamp;
 
 import org.junit.Test;
-//import org.junit.jupiter.api.Assertions;
+import static org.junit.Assert.*;
 
 import it.polito.ezgas.impl.GasStationServiceimpl;
 
@@ -23,7 +23,7 @@ public class GasStationServiceimplTests {
 		int userTrustLevel = 2;
 		double expectedRes = 35;
 		
-		Assertions.assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
+		assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -35,7 +35,7 @@ public class GasStationServiceimplTests {
 		int userTrustLevel = 2;
 		double expectedRes = 77.857;
 		
-		Assertions.assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
+		assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -47,7 +47,7 @@ public class GasStationServiceimplTests {
 		int userTrustLevel = 5;
 		double expectedRes = 100;
 		
-		Assertions.assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
+		assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -59,7 +59,7 @@ public class GasStationServiceimplTests {
 		int userTrustLevel = -5;
 		double expectedRes = 50;
 		
-		Assertions.assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
+		assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -71,7 +71,7 @@ public class GasStationServiceimplTests {
 		int userTrustLevel = -5;
 		double expectedRes = 0;
 		
-		Assertions.assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
+		assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
 	}
 	
 }*/
