@@ -17,6 +17,15 @@ public class LoginDto {
     	this.email = email;
     	this.reputation = reputation;
     }
+
+    public boolean equals(LoginDto other) {
+		return this.userId.equals(other.getUserId()) &&
+				this.admin.equals(other.getAdmin()) &&
+				this.email.equals(other.getEmail()) &&
+				this.userName.equals(other.getUserName()) &&
+				this.token.equals(other.getToken()) &&
+				this.reputation.equals(other.getReputation());
+	}
     
 	public Integer getUserId() {
 		return userId;
