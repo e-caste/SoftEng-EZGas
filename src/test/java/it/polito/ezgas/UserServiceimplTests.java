@@ -11,8 +11,9 @@ import it.polito.ezgas.entity.User;
 import static org.junit.Assert.*;
 
 import it.polito.ezgas.service.UserService;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,12 @@ public class UserServiceimplTests {
     private User existingAdminUser, existingUser, nonExistingUser;
     private UserDto existingAdminUserDto, existingUserDto, nonExistingUserDto;
 
-    @Before  // run only once
+    @BeforeClass  // run only once
+    public static void setUpDatabase() {
+        // TODO: instantiate DB connection
+    }
+
+    @Before  // run before each test
     public void setUp() {
 
         // admin user with existing id in the database
@@ -66,8 +72,8 @@ public class UserServiceimplTests {
 //        this.userService.getAllUsers().forEach(System.out::println);
     }
 
-    @After
-    public void tearDown() {
+    @AfterClass  // run only once
+    public static void tearDown() {
         // TODO: reset database to initial state
     }
 
