@@ -230,7 +230,8 @@ public class GasStationServiceimpl implements GasStationService {
 		}
 		return gasStationDtos;
 	}
-
+	
+	//Ref: https://www.geeksforgeeks.org/haversine-formula-to-find-distance-between-two-points-on-a-sphere/
 	public double distance(double sLat, double sLon, double eLat, double eLon){
 		double r = 6371;
 		double dLat = Math.toRadians((eLat - sLat));
