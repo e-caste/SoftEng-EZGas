@@ -90,10 +90,9 @@ public class GasStation implements Serializable {
 	}
 
 	public boolean equals(GasStation other) {
-		return this.gasStationId.equals(other.getGasStationId()) &&
-				this.gasStationName.equals(other.getGasStationName()) &&
+		return this.gasStationName.equals(other.getGasStationName()) &&
 				this.gasStationAddress.equals(other.getGasStationAddress()) &&
-				this.carSharing.equals(other.getCarSharing()) &&
+				(this.carSharing == null || this.carSharing.equals(other.getCarSharing())) &&
 				this.hasDiesel == other.getHasDiesel() &&
 				this.hasGas == other.getHasGas() &&
 				this.hasMethane == other.getHasMethane() &&
@@ -106,9 +105,9 @@ public class GasStation implements Serializable {
 				this.superPlusPrice == other.getSuperPlusPrice() &&
 				this.gasPrice == other.getGasPrice() &&
 				this.methanePrice == other.getMethanePrice() &&
-				this.reportUser.equals(other.getReportUser()) &&
+				(this.reportUser == null || this.reportUser.equals(other.getReportUser())) &&
 //				this.user.equals(other.getUser()) &&
-				this.reportTimestamp.equals(other.getReportTimestamp()) &&
+				(this.reportTimestamp == null || this.reportTimestamp.equals(other.getReportTimestamp())) &&
 				this.reportDependability == other.getReportDependability();
 	}
 
