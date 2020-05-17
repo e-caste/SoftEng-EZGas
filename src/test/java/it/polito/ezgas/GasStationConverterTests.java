@@ -94,6 +94,6 @@ public class GasStationConverterTests {
 
     @Test
     public void testConvertDtoToEntity() {
-
+        assertTrue(gasStation.equals(GasStationConverter.convertDtoToEntity(gasStationDto)));
     }
 }
