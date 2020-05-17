@@ -73,7 +73,7 @@ public class UserServiceimplTests {
         // uncomment following lines for debugging
 //        ResultSet rs = st.executeQuery(sqlSelectAllUsers);
 //        while (rs.next()) {
-//            System.err.println("ID: " + rs.getInt("id") + " " +
+//            System.err.println("ID: " + rs.getInt("user_id") + " " +
 //                                "ADMIN: " + rs.getBoolean("admin") + " " +
 //                                "EMAIL: " + rs.getString("email") + " " +
 //                                "PASSWORD: " + rs.getString("password") + " " +
@@ -125,7 +125,7 @@ public class UserServiceimplTests {
 //        st.executeUpdate(sqlDropUserTable);
 //        while (backup.next()) {
 //            sqlInsertBackupUsers.add("INSERT INTO USER VALUES " +
-//                                     "(" + backup.getInt("id") +
+//                                     "(" + backup.getInt("user_id") +
 //                                     ", " + backup.getBoolean("admin") +
 //                                     ", '" + backup.getString("email") + "'" +
 //                                     ", '" + backup.getString("password") +"'" +
@@ -181,8 +181,37 @@ public class UserServiceimplTests {
     }
 
     @Test
-    public void testGetAllUsers() {
-        // TODO: implement using DB connection
+    public void testGetAllUsers() throws SQLException {
+        // get users from DB
+        List<UserDto> usersDB = new ArrayList<>();
+        ResultSet rs = st.executeQuery(sqlSelectAllUsers);
+        while (rs.next()) {
+            UserDto userDto = new UserDto(
+                                    rs.getInt("user_id"),
+                                    rs.getString("user_name"),
+                                    rs.getString("password"),
+                                    rs.getString("email"),
+                                    rs.getInt("reputation"),
+                                    rs.getBoolean("admin")
+                                );
+            usersDB.add(userDto);
+        }
+
+        // get users from repository
+        List<UserDto> usersRepository = userService.getAllUsers();
+
+        // check if same number of users in DB and repository
+        assertEquals(usersDB.size(), usersRepository.size());
+
+        // check if all users with same ID are equal
+        for (UserDto userDB : usersDB) {
+            for (UserDto userRepository : usersRepository) {
+                if (userDB.getUserId().equals(userRepository.getUserId())) {
+                    assertTrue(userDB.equals(userRepository));
+                    break;
+                }
+            }
+        }
     }
 
     @Test
