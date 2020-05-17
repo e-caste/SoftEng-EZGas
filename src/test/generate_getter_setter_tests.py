@@ -4,7 +4,7 @@
 import os
 from random import choice
 
-from secret import path  # absolute path down to ezgas directory in src of project
+from .secret import path  # absolute path down to ezgas directory in src of project
 
 file_methods = {}
 return_types = set()
