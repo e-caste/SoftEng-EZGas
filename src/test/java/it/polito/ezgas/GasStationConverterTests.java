@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import it.polito.ezgas.converter.GasStationConverter;
 import it.polito.ezgas.dto.GasStationDto;
 import it.polito.ezgas.entity.GasStation;
-import it.polito.ezgas.entity.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,8 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class GasStationConverterTests {
 
-    GasStation gasStation;
-    GasStationDto gasStationDto;
+    GasStation gasStationAllFuels, gasStation;
+    GasStationDto gasStationDtoAllFuels, gasStationDto;
 
     // constants to initialize variables in setUp method
     Integer gasStationId = 1,
@@ -27,9 +26,9 @@ public class GasStationConverterTests {
            carSharing = "Enjoy",
            reportTimestamp = "1589707858";
     boolean hasDiesel = true,
-            hasSuper = false,
+            hasSuper = true,
             hasSuperPlus = true,
-            hasGas = false,
+            hasGas = true,
             hasMethane = true;
     double lat = 45.06248474121094,
            lon = 7.662814140319824,
@@ -42,7 +41,7 @@ public class GasStationConverterTests {
 
     @Before
     public void setUp() {
-        gasStation = new GasStation(
+        gasStationAllFuels = new GasStation(
                 gasStationName,
                 gasStationAddress,
                 hasDiesel,
@@ -62,9 +61,17 @@ public class GasStationConverterTests {
                 reportTimestamp,
                 reportDependability
         );
-        gasStation.setGasStationId(gasStationId);
+        gasStationAllFuels.setGasStationId(gasStationId);
 
-        gasStationDto = new GasStationDto(
+        // instance with some null values
+        gasStation = new GasStation();
+        gasStation.setGasStationId(gasStationId);
+        gasStation.setGasStationName(gasStationName);
+        gasStation.setGasStationAddress(gasStationAddress);
+        gasStation.setHasDiesel(true);
+        gasStation.setDieselPrice(dieselPrice);
+
+        gasStationDtoAllFuels = new GasStationDto(
                 gasStationId,
                 gasStationName,
                 gasStationAddress,
@@ -85,15 +92,24 @@ public class GasStationConverterTests {
                 reportTimestamp,
                 reportDependability
         );
+
+        gasStationDto = new GasStationDto();
+        gasStationDto.setGasStationId(gasStationId);
+        gasStationDto.setGasStationName(gasStationName);
+        gasStationDto.setGasStationAddress(gasStationAddress);
+        gasStationDto.setHasDiesel(true);
+        gasStationDto.setDieselPrice(dieselPrice);
     }
 
     @Test
     public void testConvertEntityToDto() {
+        assertTrue(gasStationDtoAllFuels.equals(GasStationConverter.convertEntityToDto(gasStationAllFuels)));
         assertTrue(gasStationDto.equals(GasStationConverter.convertEntityToDto(gasStation)));
     }
 
     @Test
     public void testConvertDtoToEntity() {
+        assertTrue(gasStationAllFuels.equals(GasStationConverter.convertDtoToEntity(gasStationDtoAllFuels)));
         assertTrue(gasStation.equals(GasStationConverter.convertDtoToEntity(gasStationDto)));
     }
 }
