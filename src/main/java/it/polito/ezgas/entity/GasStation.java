@@ -1,5 +1,7 @@
 package it.polito.ezgas.entity;
 
+import it.polito.ezgas.dto.GasStationDto;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -85,6 +87,29 @@ public class GasStation implements Serializable {
 		this.user = null;
 		this.reportTimestamp = reportTimestamp;
 		this.reportDependability = reportDependability;
+	}
+
+	public boolean equals(GasStation other) {
+		return this.gasStationId.equals(other.getGasStationId()) &&
+				this.gasStationName.equals(other.getGasStationName()) &&
+				this.gasStationAddress.equals(other.getGasStationAddress()) &&
+				this.carSharing.equals(other.getCarSharing()) &&
+				this.hasDiesel == other.getHasDiesel() &&
+				this.hasGas == other.getHasGas() &&
+				this.hasMethane == other.getHasMethane() &&
+				this.hasSuper == other.getHasSuper() &&
+				this.hasSuperPlus == other.getHasSuperPlus() &&
+				this.lat == other.getLat() &&
+				this.lon == other.getLon() &&
+				this.dieselPrice == other.getDieselPrice() &&
+				this.superPrice == other.getSuperPrice() &&
+				this.superPlusPrice == other.getSuperPlusPrice() &&
+				this.gasPrice == other.getGasPrice() &&
+				this.methanePrice == other.getMethanePrice() &&
+				this.reportUser.equals(other.getReportUser()) &&
+//				this.user.equals(other.getUser()) &&
+				this.reportTimestamp.equals(other.getReportTimestamp()) &&
+				this.reportDependability == other.getReportDependability();
 	}
 
     public Integer getGasStationId() {
