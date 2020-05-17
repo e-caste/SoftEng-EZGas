@@ -61,15 +61,16 @@ public class UserServiceimplTests {
     @PostConstruct
     @BeforeClass  // run only once
     public static void setUpDatabase() throws SQLException {
-        db = DriverManager.getConnection("jdbc:h2:./data/memo", "sa", "password");
+        db = DriverManager.getConnection("jdbc:h2:./data/test", "sa", "password");
         st = db.createStatement();
-        backup = st.executeQuery(sqlSelectAllUsers);
+//        backup = st.executeQuery(sqlSelectAllUsers);
         st.executeUpdate(sqlDropUserTable);
         st.executeUpdate(sqlCreateUserTable);
         for (String sql : sqlInsertUsers) {
             st.executeUpdate(sql);
         }
-//        String sqlSelectAllUsers = "SELECT * FROM USER";
+
+        // uncomment following lines for debugging
 //        ResultSet rs = st.executeQuery(sqlSelectAllUsers);
 //        while (rs.next()) {
 //            System.err.println("ID: " + rs.getInt("id") + " " +
@@ -80,6 +81,8 @@ public class UserServiceimplTests {
 //                                "USERNAME: " + rs.getString("user_name")
 //                    );
 //        }
+//
+//        System.exit(33);
     }
 
     @Before  // run before each test
@@ -116,21 +119,24 @@ public class UserServiceimplTests {
     public static void tearDown() throws SQLException {
         // manually reset DB to pre-test state
         // because can't use savepoint and rollback feature with H2 in server mode
-        List<String> sqlInsertBackupUsers = new ArrayList<>();
-        st.executeUpdate(sqlDropUserTable);
-        while (backup.next()) {
-            sqlInsertBackupUsers.add("INSERT INTO USER VALUES " +
-                                     "(" + backup.getInt("id") +
-                                     ", " + backup.getBoolean("admin") +
-                                     ", '" + backup.getString("email") + "'" +
-                                     ", '" + backup.getString("password") +"'" +
-                                     ", " + backup.getInt("reputation") +
-                                     ", '" + backup.getString("user_name") + "'" +
-                                     ")");
-        }
-        for (String sql : sqlInsertBackupUsers) {
-            st.executeUpdate(sql);
-        }
+
+        // comment lines below if using test db instead of memo
+//        List<String> sqlInsertBackupUsers = new ArrayList<>();
+//        st.executeUpdate(sqlDropUserTable);
+//        while (backup.next()) {
+//            sqlInsertBackupUsers.add("INSERT INTO USER VALUES " +
+//                                     "(" + backup.getInt("id") +
+//                                     ", " + backup.getBoolean("admin") +
+//                                     ", '" + backup.getString("email") + "'" +
+//                                     ", '" + backup.getString("password") +"'" +
+//                                     ", " + backup.getInt("reputation") +
+//                                     ", '" + backup.getString("user_name") + "'" +
+//                                     ")");
+//        }
+//        for (String sql : sqlInsertBackupUsers) {
+//            st.executeUpdate(sql);
+//        }
+
         st.close();
         db.close();
     }
@@ -147,7 +153,6 @@ public class UserServiceimplTests {
         }
     }
 
-    @Ignore
     @Test
     public void testSaveUser() {
         // local variables
