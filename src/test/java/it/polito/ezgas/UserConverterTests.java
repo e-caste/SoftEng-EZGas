@@ -1,5 +1,8 @@
 package it.polito.ezgas;
 
+import static org.junit.Assert.*;
+
+import it.polito.ezgas.converter.UserConverter;
 import it.polito.ezgas.dto.LoginDto;
 import it.polito.ezgas.dto.UserDto;
 import it.polito.ezgas.entity.User;
@@ -36,7 +39,7 @@ public class UserConverterTests {
 
     @Test
     public void testConvertEntityToDto() {
-
+        assertTrue(userDto.equals(UserConverter.convertEntityToDto(user)));
     }
 
     @Test
