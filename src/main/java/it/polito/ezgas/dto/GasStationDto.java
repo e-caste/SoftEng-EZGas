@@ -57,6 +57,29 @@ public class GasStationDto {
 		this.reportDependability = reportDependability;
 	}
 
+	public boolean equals(GasStationDto other) {
+		return this.gasStationId.equals(other.getGasStationId()) &&
+				this.gasStationName.equals(other.getGasStationName()) &&
+				this.gasStationAddress.equals(other.getGasStationAddress()) &&
+				this.carSharing.equals(other.getCarSharing()) &&
+				this.hasDiesel == other.getHasDiesel() &&
+				this.hasGas == other.getHasGas() &&
+				this.hasMethane == other.getHasMethane() &&
+				this.hasSuper == other.getHasSuper() &&
+				this.hasSuperPlus == other.getHasSuperPlus() &&
+				this.lat == other.getLat() &&
+				this.lon == other.getLon() &&
+				this.dieselPrice == other.getDieselPrice() &&
+				this.superPrice == other.getSuperPrice() &&
+				this.superPlusPrice == other.getSuperPlusPrice() &&
+				this.gasPrice == other.getGasPrice() &&
+				this.methanePrice == other.getMethanePrice() &&
+				this.reportUser.equals(other.getReportUser()) &&
+//				this.userDto.equals(other.getUserDto()) &&
+				this.reportTimestamp.equals(other.getReportTimestamp()) &&
+				this.reportDependability == other.getReportDependability();
+	}
+
 	public double getReportDependability() {
 		return reportDependability;
 	}
