@@ -15,13 +15,21 @@ public class PriceReportDto {
 	
 	public PriceReportDto(Integer priceReportId, User user, double dieselPrice, double superPrice,
 			double superPlusPrice, double gasPrice) {
-		super();
 		this.priceReportId = priceReportId;
 		this.user = user;
 		this.dieselPrice = dieselPrice;
 		this.superPrice = superPrice;
 		this.superPlusPrice = superPlusPrice;
 		this.gasPrice = gasPrice;
+	}
+
+	public boolean equals(PriceReportDto other) {
+		return this.priceReportId.equals(other.getPriceReportId()) &&
+				this.user.equals(other.getUser()) &&
+				this.dieselPrice == other.getDieselPrice() &&
+				this.superPrice == other.getSuperPrice() &&
+				this.superPlusPrice == other.getSuperPlusPrice() &&
+				this.gasPrice == other.getGasPrice();
 	}
 
 	public Integer getPriceReportId() {
