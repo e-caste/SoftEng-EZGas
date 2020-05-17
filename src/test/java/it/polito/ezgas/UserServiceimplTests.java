@@ -46,30 +46,30 @@ public class UserServiceimplTests {
     public void setUp() {
 
         // admin user with existing id in the database
-        this.existingAdminUser = new User("admin", "admin", "admin@ezgas.com", 5);
-        this.existingAdminUserId = 2;
-        this.existingAdminUserAdmin = true;
-        this.existingAdminUser.setUserId(this.existingAdminUserId);
-        this.existingAdminUser.setAdmin(this.existingAdminUserAdmin);
-        this.existingAdminUserDto = UserConverter.convertEntityToDto(this.existingAdminUser);
+        existingAdminUser = new User("admin", "admin", "admin@ezgas.com", 5);
+        existingAdminUserId = 2;
+        existingAdminUserAdmin = true;
+        existingAdminUser.setUserId(existingAdminUserId);
+        existingAdminUser.setAdmin(existingAdminUserAdmin);
+        existingAdminUserDto = UserConverter.convertEntityToDto(existingAdminUser);
 
         // user with existing id in the database
-        this.existingUser = new User("asd", "asd", "asd@asd.asd", 0);
-        this.existingUserId = 1;
-        this.existingUserAdmin = false;
-        this.existingUser.setUserId(this.existingUserId);
-        this.existingUser.setAdmin(this.existingUserAdmin);
-        this.existingUserDto = UserConverter.convertEntityToDto(this.existingUser);
+        existingUser = new User("asd", "asd", "asd@asd.asd", 0);
+        existingUserId = 1;
+        existingUserAdmin = false;
+        existingUser.setUserId(existingUserId);
+        existingUser.setAdmin(existingUserAdmin);
+        existingUserDto = UserConverter.convertEntityToDto(existingUser);
 
         // user with non-existing id in the database
-        this.nonExistingUser = new User("test", "test", "test", 0);
-        this.nonExistingUserId = 1000;
-        this.nonExistingUserAdmin = false;
-        this.nonExistingUser.setUserId(this.nonExistingUserId);
-        this.nonExistingUser.setAdmin(this.nonExistingUserAdmin);
-        this.nonExistingUserDto = UserConverter.convertEntityToDto(this.nonExistingUser);
+        nonExistingUser = new User("test", "test", "test", 0);
+        nonExistingUserId = 1000;
+        nonExistingUserAdmin = false;
+        nonExistingUser.setUserId(nonExistingUserId);
+        nonExistingUser.setAdmin(nonExistingUserAdmin);
+        nonExistingUserDto = UserConverter.convertEntityToDto(nonExistingUser);
 
-//        this.userService.getAllUsers().forEach(System.out::println);
+//        userService.getAllUsers().forEach(System.out::println);
     }
 
     @AfterClass  // run only once
@@ -79,10 +79,10 @@ public class UserServiceimplTests {
 
     @Test
     public void testGetUserById() throws InvalidUserException {
-        assertTrue(this.existingAdminUserDto.equals(this.userService.getUserById(this.existingAdminUserId)));
+        assertTrue(this.existingAdminUserDto.equals(userService.getUserById(this.existingAdminUserId)));
         // assertThrows() - not available in this version of JUnit4
         try {
-            this.userService.getUserById(this.nonExistingUserId);
+            userService.getUserById(this.nonExistingUserId);
             fail("Expected InvalidUserException for userId " + this.nonExistingUserId);
         } catch (InvalidUserException e) {
             assertEquals(e.getMessage(), "User not found");
@@ -91,9 +91,7 @@ public class UserServiceimplTests {
 
     @Test
     public void testSaveUser() {
-        // local copy of class variables
-        User nonExistingUser = this.nonExistingUser;
-        User existingUser = this.existingUser;
+        // local variables
         UserDto nonExistingUserDto, existingUserDto;
 
         // user does not exist in database
@@ -101,44 +99,39 @@ public class UserServiceimplTests {
         nonExistingUser.setAdmin(true);
         nonExistingUser.setUserId(null);
         nonExistingUserDto = UserConverter.convertEntityToDto(nonExistingUser);
-        assertNull(this.userService.saveUser(nonExistingUserDto));
+        assertNull(userService.saveUser(nonExistingUserDto));
 
         // and is valid -> save new
-        assertTrue(nonExistingUserDto.equalsIgnoreUserId(this.userService.saveUser(nonExistingUserDto)));
+        assertTrue(nonExistingUserDto.equalsIgnoreUserId(userService.saveUser(nonExistingUserDto)));
 
         // user exists in database
         // user id exists and email is same -> update user fields in database
         existingUser.setPassword("newPassword");
         existingUserDto = UserConverter.convertEntityToDto(existingUser);
-        assertTrue(existingUserDto.equals(this.userService.saveUser(existingUserDto)));
+        assertTrue(existingUserDto.equals(userService.saveUser(existingUserDto)));
 
         // user id exists but updates email -> reject (email must be invariable)
         existingUser.setEmail("qwe@qwe.qwe");
         existingUserDto = UserConverter.convertEntityToDto(existingUser);
-        assertNull(this.userService.saveUser(existingUserDto));
+        assertNull(userService.saveUser(existingUserDto));
     }
 
     @Test
     public void testGetAllUsers() {
-
+        // TODO: implement using DB connection
     }
 
     @Test
     public void testDeleteUser() throws InvalidUserException {
-        // local copy of class variables
-        User existingUser = this.existingUser;
-        User existingAdminUser = this.existingAdminUser;
-        User nonExistingUser = this.nonExistingUser;
-
         // user id exists -> deleted
-        assertTrue(this.userService.deleteUser(existingUser.getUserId()));
+        assertTrue(userService.deleteUser(existingUser.getUserId()));
 
         // user id exists and is admin -> not deleted
-        assertFalse(this.userService.deleteUser(existingAdminUser.getUserId()));
+        assertFalse(userService.deleteUser(existingAdminUser.getUserId()));
 
         // user id does not exist -> throw exception
         try {
-            this.userService.deleteUser(nonExistingUser.getUserId());
+            userService.deleteUser(nonExistingUser.getUserId());
             fail("Expected InvalidUserException for userId " + nonExistingUser.getUserId());
         } catch (InvalidUserException e) {
             assertEquals(e.getMessage(), "User not found");
@@ -147,10 +140,7 @@ public class UserServiceimplTests {
 
     @Test
     public void testLogin() throws InvalidLoginDataException {
-        // local copy of class variables
-        User existingUser = this.existingUser;
-        User existingAdminUser = this.existingAdminUser;
-        User nonExistingUser = this.nonExistingUser;
+        // local variables
         IdPw idPw;
         LoginDto loginDto;
 
@@ -158,16 +148,16 @@ public class UserServiceimplTests {
         // correct password -> get LoginDto
         idPw = new IdPw(existingUser.getEmail(), existingUser.getPassword());
         loginDto = UserConverter.convertEntityToLoginDto(existingUser);
-        assertEquals(loginDto, this.userService.login(idPw));
+        assertEquals(loginDto, userService.login(idPw));
 
         idPw = new IdPw(existingAdminUser.getEmail(), existingAdminUser.getPassword());
         loginDto = UserConverter.convertEntityToLoginDto(existingAdminUser);
-        assertEquals(loginDto, this.userService.login(idPw));
+        assertEquals(loginDto, userService.login(idPw));
 
         // wrong password -> throw exception
         idPw = new IdPw(existingUser.getEmail(), "wrongPassword");
         try {
-            this.userService.login(idPw);
+            userService.login(idPw);
             fail("Expected InvalidLoginDataException (wrong password) for email " + idPw.getUser() + ", password: " + idPw.getPw());
         } catch (InvalidLoginDataException e) {
             assertEquals(e.getMessage(), "Wrong password.");
@@ -176,7 +166,7 @@ public class UserServiceimplTests {
         // email does not exist -> throw exception
         idPw = new IdPw(nonExistingUser.getEmail(), nonExistingUser.getPassword());
         try {
-            this.userService.login(idPw);
+            userService.login(idPw);
             fail("Expected InvalidLoginDataException (non-existing user) for email " + idPw.getUser() + ", password: " + idPw.getPw());
         } catch (InvalidLoginDataException e) {
             assertEquals(e.getMessage(), "User does not exist.");
@@ -185,25 +175,22 @@ public class UserServiceimplTests {
 
     @Test
     public void testIncreaseUserReputation() throws InvalidUserException {
-        // local copy of class variables
-        User existingUser = this.existingUser;
-        User existingAdminUser = this.existingAdminUser;
-        User nonExistingUser = this.nonExistingUser;
+        // local variables
         Integer userId;
 
         // user exists
         // and reputation is 0 (can increase)
         userId = existingUser.getUserId();
-        assertEquals(new Integer(1), this.userService.increaseUserReputation(userId));
+        assertEquals(new Integer(1), userService.increaseUserReputation(userId));
 
         // and reputation is 5 (max, can't increase)
         userId = existingAdminUser.getUserId();
-        assertEquals(new Integer(5), this.userService.increaseUserReputation(userId));
+        assertEquals(new Integer(5), userService.increaseUserReputation(userId));
 
         // user does not exist -> throw exception
         userId = nonExistingUser.getUserId();
         try {
-            this.userService.increaseUserReputation(userId);
+            userService.increaseUserReputation(userId);
             fail("Expected InvalidUserException for userId " + userId);
         } catch (InvalidUserException e) {
             assertEquals(e.getMessage(), "User not found");
@@ -212,26 +199,23 @@ public class UserServiceimplTests {
 
     @Test
     public void testDecreaseUserReputation() throws InvalidUserException {
-        // local copy of class variables
-        User existingUser = this.existingUser;
-        User existingAdminUser = this.existingAdminUser;
-        User nonExistingUser = this.nonExistingUser;
+        // local variables
         Integer userId;
 
         // user exists
         // and reputation is 0 (can decrease)
         userId = existingUser.getUserId();
-        assertEquals(new Integer(-1), this.userService.decreaseUserReputation(userId));
+        assertEquals(new Integer(-1), userService.decreaseUserReputation(userId));
 
         // and reputation is -5 (min, can't decrease)
         userId = existingUser.getUserId();
         existingUser.setReputation(-5);
-        assertEquals(new Integer(-5), this.userService.decreaseUserReputation(userId));
+        assertEquals(new Integer(-5), userService.decreaseUserReputation(userId));
 
         // user does not exist -> throw exception
         userId = nonExistingUser.getUserId();
         try {
-            this.userService.increaseUserReputation(userId);
+            userService.increaseUserReputation(userId);
             fail("Expected InvalidUserException for userId " + userId);
         } catch (InvalidUserException e) {
             assertEquals(e.getMessage(), "User not found");
