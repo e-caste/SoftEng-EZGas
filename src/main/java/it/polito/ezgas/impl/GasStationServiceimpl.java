@@ -232,15 +232,20 @@ public class GasStationServiceimpl implements GasStationService {
 	}
 
 	public double distance(double sLat, double sLon, double eLat, double eLon){
+		double r = 6371;
 		double dLat = Math.toRadians((eLat - sLat));
 		double dLon = Math.toRadians((eLon - sLon));
 
-		// TODO: rename these variables with descriptive names
-		double a = Math.pow(Math.sin(dLat/2),2) + Math.cos(sLat) * Math.cos(eLat) * Math.pow(Math.sin(dLon/2),2);
-		double c = 2 * Math.asin(Math.sqrt(a));
-		double r = 6371;
+		sLat = Math.toRadians(sLat);
+		eLat = Math.toRadians(eLat);
 
-		return c * r;
+		// TODO: rename these variables with descriptive names
+		double a = Math.pow(Math.sin(dLat/2),2) + Math.cos(eLat) * Math.cos(sLat) * Math.pow(Math.sin(dLon/2),2);
+		double c = 2 * Math.asin(Math.sqrt(a));
+
+		double result = c * r;
+
+		return result;
 	}
 
 	@Override

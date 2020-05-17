@@ -37,19 +37,27 @@ public class UserServiceimpl implements UserService {
 
 	@Override
 	public UserDto saveUser(UserDto userDto) {
-		// dto -> entity -> save -> entity -> dto
 		User user = userRepository.findById(userDto.getUserId());
+		UserDto uDto = null;
+
 		// update existing user
 		if (user != null) {
 			user.setUserName(userDto.getUserName());
 			user.setEmail(userDto.getEmail());
 			user.setPassword(userDto.getPassword());
 			user.setReputation(userDto.getReputation());
+
+			userRepository.save(user);
+			uDto = UserConverter.convertEntityToDto(user);
 		} else {
 			user = UserConverter.convertDtoToEntity(userDto);
+			if(!user.getAdmin()){
+				userRepository.save(user);
+				uDto = UserConverter.convertEntityToDto(user);
+			}
 		}
-		userRepository.save(user);
-		return UserConverter.convertEntityToDto(user);
+
+		return uDto;
 	}
 
 	@Override
@@ -68,8 +76,12 @@ public class UserServiceimpl implements UserService {
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
-		userRepository.delete(userId);
-		return true;
+		if(!user.getAdmin()){
+			userRepository.delete(userId);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
@@ -95,10 +107,16 @@ public class UserServiceimpl implements UserService {
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
-		Integer rep = user.getReputation() + 1;
-		user.setReputation(rep);
-		userRepository.save(user);
-		return rep;
+		Integer actualRep = user.getReputation();
+		Integer newRep;
+		if(actualRep < 5){
+			newRep = actualRep + 1;
+			user.setReputation(newRep);
+			userRepository.save(user);
+		} else {
+			newRep = actualRep;
+		}
+		return newRep;
 	}
 
 	@Override
@@ -107,9 +125,15 @@ public class UserServiceimpl implements UserService {
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
-		Integer rep = user.getReputation() - 1;
-		user.setReputation(rep);
-		userRepository.save(user);
-		return rep;
+		Integer actualRep = user.getReputation();
+		Integer newRep;
+		if(actualRep > -5){
+			newRep = actualRep - 1;
+			user.setReputation(newRep);
+			userRepository.save(user);
+		} else {
+			newRep = actualRep;
+		}
+		return newRep;
 	}
 }

@@ -10,11 +10,13 @@ import it.polito.ezgas.entity.User;
 
 import static org.junit.Assert.*;
 
+import it.polito.ezgas.repository.UserRepository;
 import it.polito.ezgas.service.UserService;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Repository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -30,6 +32,8 @@ import java.util.List;
 @SpringBootTest
 @ActiveProfiles("test")
 public class UserServiceimplTests {
+    @Autowired
+    UserRepository userRepository;
 
     static Connection db;
     static Statement st;
@@ -276,7 +280,7 @@ public class UserServiceimplTests {
         userId = existingUser.getUserId();
         assertEquals(new Integer(1), userService.increaseUserReputation(userId));
 
-        // and reputation is 5 (max, can't increase)
+        // and reputation is 5 (max, can't increase) for admin
         userId = existingAdminUser.getUserId();
         assertEquals(new Integer(5), userService.increaseUserReputation(userId));
 
@@ -303,6 +307,7 @@ public class UserServiceimplTests {
         // and reputation is -5 (min, can't decrease)
         userId = existingUser.getUserId();
         existingUser.setReputation(-5);
+        userRepository.save(existingUser);
         assertEquals(new Integer(-5), userService.decreaseUserReputation(userId));
 
         // user does not exist -> throw exception
