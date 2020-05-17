@@ -11,14 +11,17 @@ import it.polito.ezgas.entity.User;
 import static org.junit.Assert.*;
 
 import it.polito.ezgas.service.UserService;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.annotation.PostConstruct;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 // IMPORTANT NOTE: these tests can't run if the website is up and running,
 //                 since they use the same port to connect to the DB
@@ -27,6 +30,24 @@ import org.springframework.test.context.junit4.SpringRunner;
 //@Configuration
 //@ComponentScan("it.polito.ezgas.repository")
 public class UserServiceimplTests {
+
+    static Connection db;
+    static Statement st;
+    static ResultSet backup;
+    static String sqlSelectAllUsers = "SELECT * FROM USER";
+    static String sqlDropUserTable = "DROP TABLE IF EXISTS USER";
+    static String sqlCreateUserTable = "CREATE TABLE USER " +
+                                       "(id INTEGER NOT NULL, " +
+                                       "admin BOOLEAN, " +
+                                       "email VARCHAR(255), " +
+                                       "password VARCHAR(255), " +
+                                       "reputation INTEGER, " +
+                                       "user_name VARCHAR(255), " +
+                                       "PRIMARY KEY (id))";
+    static List<String> sqlInsertUsers = Arrays.asList(
+            "INSERT INTO USER VALUES (1, TRUE, 'admin@ezgas.com', 'admin', 5, 'admin')",
+            "INSERT INTO USER VALUES (2, FALSE, 'asd@asd.asd', 'asd', 0, 'asd')"
+    );
 
     // using UserService instead of UserServiceimpl since it's the interface
     @Autowired
@@ -37,9 +58,28 @@ public class UserServiceimplTests {
     private User existingAdminUser, existingUser, nonExistingUser;
     private UserDto existingAdminUserDto, existingUserDto, nonExistingUserDto;
 
+    @PostConstruct
     @BeforeClass  // run only once
-    public static void setUpDatabase() {
-        // TODO: instantiate DB connection
+    public static void setUpDatabase() throws SQLException {
+        db = DriverManager.getConnection("jdbc:h2:./data/memo", "sa", "password");
+        st = db.createStatement();
+        backup = st.executeQuery(sqlSelectAllUsers);
+        st.executeUpdate(sqlDropUserTable);
+        st.executeUpdate(sqlCreateUserTable);
+        for (String sql : sqlInsertUsers) {
+            st.executeUpdate(sql);
+        }
+//        String sqlSelectAllUsers = "SELECT * FROM USER";
+//        ResultSet rs = st.executeQuery(sqlSelectAllUsers);
+//        while (rs.next()) {
+//            System.err.println("ID: " + rs.getInt("id") + " " +
+//                                "ADMIN: " + rs.getBoolean("admin") + " " +
+//                                "EMAIL: " + rs.getString("email") + " " +
+//                                "PASSWORD: " + rs.getString("password") + " " +
+//                                "REPUTATION: " + rs.getInt("reputation") + " " +
+//                                "USERNAME: " + rs.getString("user_name")
+//                    );
+//        }
     }
 
     @Before  // run before each test
@@ -47,7 +87,7 @@ public class UserServiceimplTests {
 
         // admin user with existing id in the database
         existingAdminUser = new User("admin", "admin", "admin@ezgas.com", 5);
-        existingAdminUserId = 2;
+        existingAdminUserId = 1;
         existingAdminUserAdmin = true;
         existingAdminUser.setUserId(existingAdminUserId);
         existingAdminUser.setAdmin(existingAdminUserAdmin);
@@ -55,7 +95,7 @@ public class UserServiceimplTests {
 
         // user with existing id in the database
         existingUser = new User("asd", "asd", "asd@asd.asd", 0);
-        existingUserId = 1;
+        existingUserId = 2;
         existingUserAdmin = false;
         existingUser.setUserId(existingUserId);
         existingUser.setAdmin(existingUserAdmin);
@@ -73,8 +113,26 @@ public class UserServiceimplTests {
     }
 
     @AfterClass  // run only once
-    public static void tearDown() {
-        // TODO: reset database to initial state
+    public static void tearDown() throws SQLException {
+        // manually reset DB to pre-test state
+        // because can't use savepoint and rollback feature with H2 in server mode
+        List<String> sqlInsertBackupUsers = new ArrayList<>();
+        st.executeUpdate(sqlDropUserTable);
+        while (backup.next()) {
+            sqlInsertBackupUsers.add("INSERT INTO USER VALUES " +
+                                     "(" + backup.getInt("id") +
+                                     ", " + backup.getBoolean("admin") +
+                                     ", '" + backup.getString("email") + "'" +
+                                     ", '" + backup.getString("password") +"'" +
+                                     ", " + backup.getInt("reputation") +
+                                     ", '" + backup.getString("user_name") + "'" +
+                                     ")");
+        }
+        for (String sql : sqlInsertBackupUsers) {
+            st.executeUpdate(sql);
+        }
+        st.close();
+        db.close();
     }
 
     @Test
@@ -89,6 +147,7 @@ public class UserServiceimplTests {
         }
     }
 
+    @Ignore
     @Test
     public void testSaveUser() {
         // local variables
