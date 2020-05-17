@@ -102,10 +102,11 @@ import org.junit.Test;
 INSERT_IMPORTS_HERE
 
 public class GetterSetterTests {
-
+/*
     public static void main() {
 INSERT_METHOD_CALLS_HERE
     }
+*/
 
 INSERT_METHODS_HERE
 }"""
