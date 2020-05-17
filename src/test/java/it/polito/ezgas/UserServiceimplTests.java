@@ -15,6 +15,7 @@ import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.PostConstruct;
@@ -27,8 +28,7 @@ import java.util.List;
 //                 since they use the same port to connect to the DB
 @RunWith(SpringRunner.class)
 @SpringBootTest
-//@Configuration
-//@ComponentScan("it.polito.ezgas.repository")
+@ActiveProfiles("test")
 public class UserServiceimplTests {
 
     static Connection db;
@@ -37,13 +37,13 @@ public class UserServiceimplTests {
     static String sqlSelectAllUsers = "SELECT * FROM USER";
     static String sqlDropUserTable = "DROP TABLE IF EXISTS USER";
     static String sqlCreateUserTable = "CREATE TABLE USER " +
-                                       "(id INTEGER NOT NULL, " +
+                                       "(user_id INTEGER NOT NULL, " +
                                        "admin BOOLEAN, " +
                                        "email VARCHAR(255), " +
                                        "password VARCHAR(255), " +
                                        "reputation INTEGER, " +
                                        "user_name VARCHAR(255), " +
-                                       "PRIMARY KEY (id))";
+                                       "PRIMARY KEY (user_id))";
     static List<String> sqlInsertUsers = Arrays.asList(
             "INSERT INTO USER VALUES (1, TRUE, 'admin@ezgas.com', 'admin', 5, 'admin')",
             "INSERT INTO USER VALUES (2, FALSE, 'asd@asd.asd', 'asd', 0, 'asd')"
@@ -143,11 +143,11 @@ public class UserServiceimplTests {
 
     @Test
     public void testGetUserById() throws InvalidUserException {
-        assertTrue(this.existingAdminUserDto.equals(userService.getUserById(this.existingAdminUserId)));
+        assertTrue(existingAdminUserDto.equals(userService.getUserById(existingAdminUserId)));
         // assertThrows() - not available in this version of JUnit4
         try {
-            userService.getUserById(this.nonExistingUserId);
-            fail("Expected InvalidUserException for userId " + this.nonExistingUserId);
+            userService.getUserById(nonExistingUserId);
+            fail("Expected InvalidUserException for userId " + nonExistingUserId);
         } catch (InvalidUserException e) {
             assertEquals(e.getMessage(), "User not found");
         }
@@ -161,7 +161,7 @@ public class UserServiceimplTests {
         // user does not exist in database
         // and is admin -> reject (only one admin allowed)
         nonExistingUser.setAdmin(true);
-        nonExistingUser.setUserId(null);
+        nonExistingUser.setUserId(nonExistingUserId);
         nonExistingUserDto = UserConverter.convertEntityToDto(nonExistingUser);
         assertNull(userService.saveUser(nonExistingUserDto));
 
