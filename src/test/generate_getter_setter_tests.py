@@ -75,7 +75,7 @@ for package in file_methods:
             continue
         if package not in methods:
             methods[package] = [f"\t@Test\n"
-                                f"\tpublic void {class_name}() " + "{\n"
+                                f"\tpublic void test{class_name_capital}() " + "{\n"
                                 f"\t\t{class_name_capital} {class_name} = new {class_name_capital}();\n"]
         methods[package].append(f"\t\t{class_name}.set{method_name}({test_value});\n"
                                 f"""\t\tassert {class_name}.get{method_name}(){f'.equals({test_value})'
