@@ -15,6 +15,7 @@ local.properties
 .loadpath
 .recommenders
 data/*
+test/secret.py
 
 
 # External tool builders
