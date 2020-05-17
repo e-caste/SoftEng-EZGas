@@ -86,4 +86,13 @@ public class GasStationConverterTests {
         );
     }
 
+    @Test
+    public void testConvertEntityToDto() {
+
+    }
+
+    @Test
+    public void testConvertDtoToEntity() {
+
+    }
 }
