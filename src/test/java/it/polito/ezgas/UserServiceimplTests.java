@@ -148,11 +148,11 @@ public class UserServiceimplTests {
         // correct password -> get LoginDto
         idPw = new IdPw(existingUser.getEmail(), existingUser.getPassword());
         loginDto = UserConverter.convertEntityToLoginDto(existingUser);
-        assertEquals(loginDto, userService.login(idPw));
+        assertTrue(loginDto.equals(userService.login(idPw)));
 
         idPw = new IdPw(existingAdminUser.getEmail(), existingAdminUser.getPassword());
         loginDto = UserConverter.convertEntityToLoginDto(existingAdminUser);
-        assertEquals(loginDto, userService.login(idPw));
+        assertTrue(loginDto.equals(userService.login(idPw)));
 
         // wrong password -> throw exception
         idPw = new IdPw(existingUser.getEmail(), "wrongPassword");
