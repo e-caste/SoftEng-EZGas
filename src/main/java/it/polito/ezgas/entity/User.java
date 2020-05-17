@@ -43,12 +43,12 @@ public class User implements Serializable{
     }
 
     public boolean equals(User other) {
-        return this.userId.equals(other.getUserId()) &&
+        return (this.userId == null || this.userId.equals(other.getUserId())) &&
                 this.userName.equals(other.getUserName()) &&
                 this.email.equals(other.getEmail()) &&
                 this.password.equals(other.getPassword()) &&
                 this.reputation.equals(other.getReputation()) &&
-                this.admin.equals(other.getAdmin());
+                (this.admin == null || this.admin.equals(other.getAdmin()));
     }
 
     public Integer getUserId() {
