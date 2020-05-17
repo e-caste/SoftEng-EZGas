@@ -1,5 +1,7 @@
 package it.polito.ezgas.entity;
 
+import it.polito.ezgas.dto.UserDto;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -38,6 +40,15 @@ public class User implements Serializable{
         this.password = password;
         this.email = email;
         this.reputation = reputation;
+    }
+
+    public boolean equals(User other) {
+        return this.userId.equals(other.getUserId()) &&
+                this.userName.equals(other.getUserName()) &&
+                this.email.equals(other.getEmail()) &&
+                this.password.equals(other.getPassword()) &&
+                this.reputation.equals(other.getReputation()) &&
+                this.admin.equals(other.getAdmin());
     }
 
     public Integer getUserId() {
