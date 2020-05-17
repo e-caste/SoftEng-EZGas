@@ -49,6 +49,6 @@ public class UserConverterTests {
 
     @Test
     public void testConvertEntityToLoginDto() {
-
+        assertTrue(loginDto.equals(UserConverter.convertEntityToLoginDto(user)));
     }
 }
