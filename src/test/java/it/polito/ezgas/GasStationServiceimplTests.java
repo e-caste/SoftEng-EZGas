@@ -22,9 +22,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import exception.GPSDataException;
 import exception.InvalidGasStationException;
 import exception.InvalidGasTypeException;
 import exception.InvalidUserException;
+import exception.PriceException;
 
 import static org.junit.Assert.*;
 
@@ -47,33 +49,33 @@ public class GasStationServiceimplTests {
 	static Connection db;
     static Statement st;
     static ResultSet backup;
-    static String sqlSelectAllGSs = "SELECT * FROM GS";
-    static String sqlDropGSTable = "DROP TABLE IF EXISTS GS";
-    static String sqlCreateGSTable = "CREATE TABLE GS " +
-                                       "(gasStationId INTEGER NOT NULL, " +
-                                       "gasStationName VARCHAR(255), " +
-                                       "gasStationAddress VARCHAR(255), " +
-                                       "hasDiesel BOOLEAN, " +
-                                       "hasSuper BOOLEAN, " +
-                                       "hasSuperPlus BOOLEAN, " +
-                                       "hasGas BOOLEAN, " +
-                                       "hasMethane BOOLEAN, " +
-                                       "carSharing VARCHAR(255), " +
-                                       "lat FLOAT, " +
-                                       "lon FLOAT, " +
-                                       "dieselPrice FLOAT, " +
-                                       "superPrice FLOAT, " +
-                                       "superPlusPrice FLOAT, " +
-                                       "gasPrice FLOAT, " +
-                                       "methanePrice FLOAT, " +
-                                       "reportUser INTEGER, " +
-                                       "reportTimestamp VARCHAR(255), "+
-                                       "reportDependability FLOAT, " +
-                                       "PRIMARY KEY (gasStationId))";
+    static String sqlSelectAllGSs = "SELECT * FROM GAS_STATION";
+    static String sqlDropGSTable = "DROP TABLE IF EXISTS GAS_STATION";
+    static String sqlCreateGSTable = "CREATE TABLE GAS_STATION " +
+                                       "(gas_station_id INTEGER NOT NULL, " +
+                                       "gas_station_name VARCHAR(255), " +
+                                       "gas_station_address VARCHAR(255), " +
+                                       "has_diesel BOOLEAN, " +
+                                       "has_super BOOLEAN, " +
+                                       "has_super_Plus BOOLEAN, " +
+                                       "has_gas BOOLEAN, " +
+                                       "has_methane BOOLEAN, " +
+                                       "car_sharing VARCHAR(255), " +
+                                       "lat DOUBLE, " +
+                                       "lon DOUBLE, " +
+                                       "diesel_price DOUBLE, " +
+                                       "super_price DOUBLE, " +
+                                       "super_plus_price DOUBLE, " +
+                                       "gas_price DOUBLE, " +
+                                       "methane_price DOUBLE, " +
+                                       "report_user INTEGER, " +
+                                       "report_timestamp VARCHAR(255), "+
+                                       "report_dependability DOUBLE, " +
+                                       "PRIMARY KEY (gas_station_id))";
     
     static List<String> sqlInsertGSs = Arrays.asList(
-            "INSERT INTO GS VALUES (1, 'Esso', 'via Olanda, 12, Torino', TRUE, TRUE, FALSE, TRUE, FALSE, 'bah', 45.048903, 7.659812, 1.375, 1.872,  NULL, 1.756, NULL, NULL, NULL, NULL)",
-            "INSERT INTO GS VALUES (2, 'Eni', 'via Spagna, 32, Torino', TRUE, TRUE, FALSE, TRUE, FALSE, 'enjoy', 45.048903, 7.659812, 1.375, 1.872,  NULL, 1.756, NULL, NULL, NULL, NULL)"
+            "INSERT INTO GAS_STATION VALUES (1, 'Esso', 'via Olanda, 12, Torino', TRUE, TRUE, FALSE, TRUE, FALSE, 'bah', 45.048903, 7.659812, 1.375, 1.872,  NULL, 1.756, NULL, NULL, NULL, NULL)",
+            "INSERT INTO GAS_STATION VALUES (2, 'Eni', 'via Spagna, 32, Torino', TRUE, TRUE, FALSE, TRUE, FALSE, 'enjoy', 45.048903, 7.659812, 1.375, 1.872,  NULL, 1.756, NULL, NULL, NULL, NULL)"
 
     );
 	
@@ -81,6 +83,7 @@ public class GasStationServiceimplTests {
 	
 	@Autowired
 	private GasStationService gasStationService;
+	
 	private Integer GS1id;
 	private GasStation GS1;
 	private GasStationDto GS1Dto;
@@ -100,25 +103,25 @@ public class GasStationServiceimplTests {
         // uncomment following lines for debugging
 	        ResultSet rs = st.executeQuery(sqlSelectAllGSs);
 	        while (rs.next()) {
-	            System.err.println(	"GASSTATIONID: " 		+ rs.getInt("gasStationId") + " " +
-							        "GASSTATIONNAME: " 		+ rs.getString("gasStationName") + " " +
-							        "GASSTATIONADDRESS: " 	+ rs.getString("gasStationAddress") + " " +
-							        "HASDIESEL: " 			+ rs.getBoolean("hasDiesel") + " " +
-							        "HASSUPER: " 			+ rs.getBoolean("hasSuper") + " " +
-							        "HASSUPERPLUS: " 		+ rs.getBoolean("hasSuperPlus") + " " +
-							        "HASGAS: " 				+ rs.getBoolean("hasGas") + " " +
-							        "HASMETHANE: " 			+ rs.getBoolean("hasMethane") + " " +
-							        "CARSHARING: " 			+ rs.getString("carSharing") + " " +
-							        "LAT: " 				+ rs.getFloat("lat") + " " +
-							        "LON: "					+ rs.getFloat("lon") + " " +
-							        "DIESELPRICE: "			+ rs.getFloat("dieselPrice") + " " +
-							        "SUPERPRICE: "			+ rs.getFloat("superPrice") + " " +
-							        "SUPERPLUSPRICE: "		+ rs.getFloat("superPlusPrice") + " " +
-							        "GASPRICE: " 			+ rs.getFloat("gasPrice") + " " +
-							        "METHANEPRICE: "		+ rs.getFloat("methanePrice") + " " +
-							        "REPORTUSER: "			+ rs.getInt("reportUser") + " " +
-							        "REPORTTIMESTAMP: "		+ rs.getString("reportTimestamp") + " " +
-							        "REPORTDEPENDABILITY:"	+ rs.getFloat("reportDependability")
+	            System.err.println(	"GASSTATIONID: " 		+ rs.getInt("gas_station_id") + " " +
+							        "GASSTATIONNAME: " 		+ rs.getString("gas_station_name") + " " +
+							        "GASSTATIONADDRESS: " 	+ rs.getString("gas_station_address") + " " +
+							        "HASDIESEL: " 			+ rs.getBoolean("has_diesel") + " " +
+							        "HASSUPER: " 			+ rs.getBoolean("has_super") + " " +
+							        "HASSUPERPLUS: " 		+ rs.getBoolean("has_super_plus") + " " +
+							        "HASGAS: " 				+ rs.getBoolean("has_gas") + " " +
+							        "HASMETHANE: " 			+ rs.getBoolean("has_methane") + " " +
+							        "CARSHARING: " 			+ rs.getString("car_sharing") + " " +
+							        "LAT: " 				+ rs.getDouble("lat") + " " +
+							        "LON: "					+ rs.getDouble("lon") + " " +
+							        "DIESELPRICE: "			+ rs.getDouble("diesel_price") + " " +
+							        "SUPERPRICE: "			+ rs.getDouble("super_price") + " " +
+							        "SUPERPLUSPRICE: "		+ rs.getDouble("super_plus_price") + " " +
+							        "GASPRICE: " 			+ rs.getDouble("gas_price") + " " +
+							        "METHANEPRICE: "		+ rs.getDouble("methane_price") + " " +
+							        "REPORTUSER: "			+ rs.getInt("report_user") + " " +
+							        "REPORTTIMESTAMP: "		+ rs.getString("report_timestamp") + " " +
+							        "REPORTDEPENDABILITY:"	+ rs.getDouble("report_dependability")
                     );
 	        }
 
@@ -163,25 +166,25 @@ public class GasStationServiceimplTests {
 		List<GasStationDto> gssDB = new ArrayList<>();
 		ResultSet rs = st.executeQuery(sqlSelectAllGSs);
 		while(rs.next()) {
-			GasStationDto gsDto = new GasStationDto(rs.getInt("gasStationId"),
-													rs.getString("gasStationName"),
-													rs.getString("gasStationAddress"),
-													rs.getBoolean("hasDiesel"),
-													rs.getBoolean("hasSuper"),
-													rs.getBoolean("hasSuperPlus"),
-													rs.getBoolean("hasGas"), 
-													rs.getBoolean("hasMethane"),   
-													rs.getString("carSharing"), 
-													rs.getFloat("lat"), 
-													rs.getFloat("lon"),                 
-													rs.getFloat("dieselPrice"),
-													rs.getFloat("superPrice"),
-													rs.getFloat("superPlusPrice"),
-													rs.getFloat("gasPrice"),
-													rs.getFloat("methanePrice"),
-													rs.getInt("reportUser"),
-													rs.getString("reportTimestamp"),
-													rs.getFloat("reportDependability")            
+			GasStationDto gsDto = new GasStationDto(rs.getInt("gas_station_id"),
+													rs.getString("gas_station_name"),
+													rs.getString("gas_station_address"),
+													rs.getBoolean("has_diesel"),
+													rs.getBoolean("has_super"),
+													rs.getBoolean("has_super_plus"),
+													rs.getBoolean("has_gas"), 
+													rs.getBoolean("has_methane"),   
+													rs.getString("car_sharing"), 
+													rs.getDouble("lat"), 
+													rs.getDouble("lon"),                 
+													rs.getDouble("diesel_price"),
+													rs.getDouble("super_price"),
+													rs.getDouble("super_plus_price"),
+													rs.getDouble("gas_price"),
+													rs.getDouble("methane_price"),
+													rs.getInt("report_user"),
+													rs.getString("report_timestamp"),
+													rs.getDouble("report_dependability")            
 									);
 			gssDB.add(gsDto);
 		}
@@ -311,6 +314,86 @@ public class GasStationServiceimplTests {
 		double expectedRes = 0;
 		
 		assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
+	}
+	
+	@Test
+	public void test_getGasStationsByProximity_invalidGPS() {
+		try {
+			gasStationService.getGasStationsByProximity(91, 45);
+			fail("Expected GPSDataException");
+		} catch (GPSDataException e) {
+			assertEquals(e.getMessage(), "Ivalid GPS Data");
+		}
+		
+		try {
+			gasStationService.getGasStationsByProximity(-91, 45);
+			fail("Expected GPSDataException");
+		} catch (GPSDataException e) {
+			assertEquals(e.getMessage(), "Ivalid GPS Data");
+		}
+		
+		try {
+			gasStationService.getGasStationsByProximity(45, 181);
+			fail("Expected GPSDataException");
+		} catch (GPSDataException e) {
+			assertEquals(e.getMessage(), "Ivalid GPS Data");
+		}
+		
+		try {
+			gasStationService.getGasStationsByProximity(45, -181);
+			fail("Expected GPSDataException");
+		} catch (GPSDataException e) {
+			assertEquals(e.getMessage(), "Ivalid GPS Data");
+		}
+	}
+	
+	@Test
+	public void test_saveGasStation_invalidGPS() throws PriceException {
+		GasStationDto gsDto_invalidGps;
+		
+		GS1.setLat(91);
+		GS1.setLon(45);
+		gsDto_invalidGps = GasStationConverter.convertEntityToDto(GS1);
+		
+		try {
+			gasStationService.saveGasStation(gsDto_invalidGps);
+			fail("Expected GPSDataException for invalid lat value");
+		} catch (GPSDataException e) {
+			assertEquals(e.getMessage(), "Invalid GPS Data");
+		}
+		
+		GS1.setLat(-91);
+		GS1.setLon(45);
+		gsDto_invalidGps = GasStationConverter.convertEntityToDto(GS1);
+		
+		try {
+			gasStationService.saveGasStation(gsDto_invalidGps);
+			fail("Expected GPSDataException for invalid lat value");
+		} catch (GPSDataException e) {
+			assertEquals(e.getMessage(), "Invalid GPS Data");
+		}
+		
+		GS1.setLat(45);
+		GS1.setLon(181);
+		gsDto_invalidGps = GasStationConverter.convertEntityToDto(GS1);
+		
+		try {
+			gasStationService.saveGasStation(gsDto_invalidGps);
+			fail("Expected GPSDataException for invalid lon value");
+		} catch (GPSDataException e) {
+			assertEquals(e.getMessage(), "Invalid GPS Data");
+		}
+		
+		GS1.setLat(45);
+		GS1.setLon(-181);
+		gsDto_invalidGps = GasStationConverter.convertEntityToDto(GS1);
+		
+		try {
+			gasStationService.saveGasStation(gsDto_invalidGps);
+			fail("Expected GPSDataException for invalid lon value");
+		} catch (GPSDataException e) {
+			assertEquals(e.getMessage(), "Invalid GPS Data");
+		}
 	}
 	
 }
