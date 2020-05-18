@@ -91,8 +91,9 @@ public class GasStationServiceimpl implements GasStationService {
 		String currentTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 		gasStationDto.setReportTimestamp(currentTimeStamp);
 
-		if(gasStationDto.getGasStationId() != null) {
-			GasStation gasStation = gasStationRepository.findById(gasStationDto.getGasStationId());
+		GasStation gasStation = gasStationRepository.findById(gasStationDto.getGasStationId());
+		if(gasStation != null) {
+			
 
 			gasStation.setGasStationId(gasStationDto.getGasStationId());
 			gasStation.setGasStationName(gasStationDto.getGasStationName());
@@ -146,7 +147,7 @@ public class GasStationServiceimpl implements GasStationService {
 			gsDTo = GasStationConverter.convertEntityToDto(gasStation);
 		}
 		else {
-			GasStation gasStation = GasStationConverter.convertDtoToEntity(gasStationDto);
+			gasStation = GasStationConverter.convertDtoToEntity(gasStationDto);
 			gasStation.setReportTimestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 			gasStationRepository.save(gasStation);
 			gsDTo = GasStationConverter.convertEntityToDto(gasStation);
@@ -174,6 +175,8 @@ public class GasStationServiceimpl implements GasStationService {
 		gasStationRepository.delete(gasStationId);
 		return null;
 	}
+	
+	
 
 	@Override
 	public List<GasStationDto> getGasStationsByGasolineType(String gasolineType) throws InvalidGasTypeException {

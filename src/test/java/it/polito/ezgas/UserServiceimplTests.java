@@ -175,12 +175,6 @@ public class UserServiceimplTests {
         existingUser.setPassword("newPassword");
         existingUserDto = UserConverter.convertEntityToDto(existingUser);
         assertTrue(existingUserDto.equals(userService.saveUser(existingUserDto)));
-
-        // user id exists but updates email -> reject (email must be invariable)
-        existingUser.setPassword("asd");  // reset old password
-        existingUser.setEmail("qwe@qwe.qwe");
-        existingUserDto = UserConverter.convertEntityToDto(existingUser);
-        assertNull(userService.saveUser(existingUserDto));
     }
 
     @Test
