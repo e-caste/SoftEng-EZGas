@@ -53,29 +53,34 @@ public class GasStationServiceimplTests {
     static String sqlSelectGSbyCarSharing = "SELECT * FROM GAS_STATION WHERE CAR_SHARING='bah';";
     static String sqlDropGSTable = "DROP TABLE IF EXISTS GAS_STATION";
     static String sqlCreateGSTable = "CREATE TABLE GAS_STATION " +
-                                       "(gas_station_id INTEGER AUTO_INCREMENT PRIMARY KEY, " +
-                                       "gas_station_name VARCHAR(255), " +
-                                       "gas_station_address VARCHAR(255), " +
-                                       "has_diesel BOOLEAN, " +
-                                       "has_super BOOLEAN, " +
-                                       "has_super_Plus BOOLEAN, " +
-                                       "has_gas BOOLEAN, " +
-                                       "has_methane BOOLEAN, " +
-                                       "car_sharing VARCHAR(255), " +
-                                       "lat DOUBLE, " +
-                                       "lon DOUBLE, " +
-                                       "diesel_price DOUBLE, " +
-                                       "super_price DOUBLE, " +
-                                       "super_plus_price DOUBLE, " +
-                                       "gas_price DOUBLE, " +
-                                       "methane_price DOUBLE, " +
-                                       "report_user INTEGER, " +
-                                       "report_timestamp VARCHAR(255), "+
-                                       "report_dependability DOUBLE)";
+										"(gas_station_id INTEGER AUTO_INCREMENT PRIMARY KEY, " +
+										"car_sharing VARCHAR(255), " +
+										"diesel_price DOUBLE, " +
+										"gas_price DOUBLE, " +
+										"gas_station_address VARCHAR(255), " +
+										"gas_station_name VARCHAR(255), " +
+										"has_diesel BOOLEAN, " +
+										"has_gas BOOLEAN, " +
+										"has_methane BOOLEAN, " +
+										"has_super BOOLEAN, " +
+										"has_super_plus BOOLEAN, " +
+										"lat DOUBLE, " +
+										"lon DOUBLE, " +
+										"methane_price DOUBLE, " + 
+										"report_dependability DOUBLE, " +
+										"report_timestamp VARCHAR(255), " +
+										"report_user INTEGER, " +
+										"super_price DOUBLE, " +
+										"super_plus_price DOUBLE, " +
+										"user_id INTEGER)";           
+                                      
+                                       
+                                       
+                                       
     
     static List<String> sqlInsertGSs = Arrays.asList(
-            "INSERT INTO GAS_STATION VALUES (1, 'Esso', 'via Olanda, 12, Torino', TRUE, TRUE, FALSE, TRUE, FALSE, 'bah', 45.048903, 7.659812, 1.375, 1.872,  NULL, 1.756, NULL, NULL, NULL, NULL)",
-            "INSERT INTO GAS_STATION VALUES (2, 'Eni', 'via Spagna, 32, Torino', TRUE, TRUE, FALSE, TRUE, FALSE, 'enjoy', 45.048903, 7.659812, 1.375, 1.872,  NULL, 1.756, NULL, NULL, NULL, NULL)"
+            "INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, NULL,  NULL, NULL, NULL, NULL, 1.864, NULL)",
+            "INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, NULL, NULL,  NULL, NULL, NULL, 1.854, NULL)"
 
     );
 	
@@ -105,25 +110,26 @@ public class GasStationServiceimplTests {
 	        ResultSet rs = st.executeQuery(sqlSelectAllGSs);
 	        while (rs.next()) {
 	            System.err.println(	"GASSTATIONID: " 		+ rs.getInt("gas_station_id") + " " +
-							        "GASSTATIONNAME: " 		+ rs.getString("gas_station_name") + " " +
+	            					"CARSHARING: " 			+ rs.getString("car_sharing") + " " +
+	            					"DIESELPRICE: "			+ rs.getDouble("diesel_price") + " " +
+	            					"GASPRICE: " 			+ rs.getDouble("gas_price") + " " +
 							        "GASSTATIONADDRESS: " 	+ rs.getString("gas_station_address") + " " +
+							        "GASSTATIONNAME: " 		+ rs.getString("gas_station_name") + " " +
 							        "HASDIESEL: " 			+ rs.getBoolean("has_diesel") + " " +
-							        "HASSUPER: " 			+ rs.getBoolean("has_super") + " " +
-							        "HASSUPERPLUS: " 		+ rs.getBoolean("has_super_plus") + " " +
 							        "HASGAS: " 				+ rs.getBoolean("has_gas") + " " +
 							        "HASMETHANE: " 			+ rs.getBoolean("has_methane") + " " +
-							        "CARSHARING: " 			+ rs.getString("car_sharing") + " " +
+							        "HASSUPER: " 			+ rs.getBoolean("has_super") + " " +
+							        "HASSUPERPLUS: " 		+ rs.getBoolean("has_super_plus") + " " +
 							        "LAT: " 				+ rs.getDouble("lat") + " " +
 							        "LON: "					+ rs.getDouble("lon") + " " +
-							        "DIESELPRICE: "			+ rs.getDouble("diesel_price") + " " +
-							        "SUPERPRICE: "			+ rs.getDouble("super_price") + " " +
-							        "SUPERPLUSPRICE: "		+ rs.getDouble("super_plus_price") + " " +
-							        "GASPRICE: " 			+ rs.getDouble("gas_price") + " " +
 							        "METHANEPRICE: "		+ rs.getDouble("methane_price") + " " +
-							        "REPORTUSER: "			+ rs.getInt("report_user") + " " +
+							        "REPORTDEPENDABILITY:"	+ rs.getDouble("report_dependability") + " " +
 							        "REPORTTIMESTAMP: "		+ rs.getString("report_timestamp") + " " +
-							        "REPORTDEPENDABILITY:"	+ rs.getDouble("report_dependability")
-                    );
+							        "REPORTUSER: "			+ rs.getInt("report_user") + " " +
+							        "SUPERPLUSPRICE: "		+ rs.getDouble("super_plus_price") + " " +
+							        "SUPERPRICE: "			+ rs.getDouble("super_price") + " " +
+							        "USERID: "				+ rs.getInt("user_id")
+							        );  
 	        }
 
 	        //System.exit(33);
