@@ -32,6 +32,15 @@ public class PriceReportDto {
 				this.gasPrice == other.getGasPrice();
 	}
 
+	public String toString() {
+		return this.priceReportId + " " +
+				this.user + " " +
+				this.dieselPrice + " " +
+				this.superPrice + " " +
+				this.superPlusPrice + " " +
+				this.gasPrice;
+	}
+
 	public Integer getPriceReportId() {
 		return priceReportId;
 	}

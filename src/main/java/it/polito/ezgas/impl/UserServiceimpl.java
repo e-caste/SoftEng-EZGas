@@ -17,9 +17,7 @@ import it.polito.ezgas.dto.LoginDto;
 import it.polito.ezgas.dto.UserDto;
 import it.polito.ezgas.service.UserService;
 
-/**
- * Created by softeng on 27/4/2020.
- */
+
 @Service
 public class UserServiceimpl implements UserService {
 
@@ -79,9 +77,8 @@ public class UserServiceimpl implements UserService {
 		if(!user.getAdmin()){
 			userRepository.delete(userId);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override
@@ -97,7 +94,6 @@ public class UserServiceimpl implements UserService {
 			throw new InvalidLoginDataException("Wrong password.");
 		}
 
-		// TODO: check where to get token
 		return UserConverter.convertEntityToLoginDto(user);
 	}
 
@@ -107,14 +103,14 @@ public class UserServiceimpl implements UserService {
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
-		Integer actualRep = user.getReputation();
+		Integer currentReputation = user.getReputation();
 		Integer newRep;
-		if(actualRep < 5){
-			newRep = actualRep + 1;
+		if(currentReputation < 5){
+			newRep = currentReputation + 1;
 			user.setReputation(newRep);
 			userRepository.save(user);
 		} else {
-			newRep = actualRep;
+			newRep = currentReputation;
 		}
 		return newRep;
 	}
@@ -125,14 +121,14 @@ public class UserServiceimpl implements UserService {
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
-		Integer actualRep = user.getReputation();
+		Integer currentReputation = user.getReputation();
 		Integer newRep;
-		if(actualRep > -5){
-			newRep = actualRep - 1;
+		if(currentReputation > -5){
+			newRep = currentReputation - 1;
 			user.setReputation(newRep);
 			userRepository.save(user);
 		} else {
-			newRep = actualRep;
+			newRep = currentReputation;
 		}
 		return newRep;
 	}
