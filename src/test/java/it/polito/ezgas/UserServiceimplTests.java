@@ -108,7 +108,7 @@ public class UserServiceimplTests {
         existingUserDto = UserConverter.convertEntityToDto(existingUser);
 
         // user with non-existing id in the database
-        nonExistingUser = new User("test", "test", "test", 0);
+        nonExistingUser = new User("test", "test", "test@test.test", 0);
         nonExistingUserId = 3;
         nonExistingUserAdmin = false;
         nonExistingUser.setUserId(nonExistingUserId);
@@ -177,6 +177,7 @@ public class UserServiceimplTests {
         assertTrue(existingUserDto.equals(userService.saveUser(existingUserDto)));
 
         // user id exists but updates email -> reject (email must be invariable)
+        existingUser.setPassword("asd");  // reset old password
         existingUser.setEmail("qwe@qwe.qwe");
         existingUserDto = UserConverter.convertEntityToDto(existingUser);
         assertNull(userService.saveUser(existingUserDto));
