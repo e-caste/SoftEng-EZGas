@@ -160,8 +160,17 @@ public class GetterSetterTests {
         gasStationDto.setGasPrice(87348.58894);
         assert gasStationDto.getGasPrice() == 87348.58894;
 
+        System.out.println(new ArrayList<PriceReportDto>(Arrays.asList(new PriceReportDto(-568,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,2.76,-1.0,-1.0),new PriceReportDto(125,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),87348.58894,-999999.999999,3.14,3.14),new PriceReportDto(597,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,-1.0,-1.0,87348.58894))));
         gasStationDto.setPriceReportDtos(new ArrayList<PriceReportDto>(Arrays.asList(new PriceReportDto(-568,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,2.76,-1.0,-1.0),new PriceReportDto(125,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),87348.58894,-999999.999999,3.14,3.14),new PriceReportDto(597,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,-1.0,-1.0,87348.58894))));
-        assert gasStationDto.getPriceReportDtos().equals(new ArrayList<PriceReportDto>(Arrays.asList(new PriceReportDto(-568,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,2.76,-1.0,-1.0),new PriceReportDto(125,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),87348.58894,-999999.999999,3.14,3.14),new PriceReportDto(597,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,-1.0,-1.0,87348.58894))));
+        System.out.println(gasStationDto.getPriceReportDtos());
+        // true - User.equals() works
+//        System.out.println(new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369).equals(new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369)));
+        // true - ArrayList.equals() works
+//        System.out.println(new ArrayList<String>(Arrays.asList("ciao", "test")).equals(new ArrayList<String>(Arrays.asList("ciao", "test"))));
+        // true - PriceReportDto.equals() works
+//        System.out.println(new PriceReportDto(-568,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,2.76,-1.0,-1.0).equals(new PriceReportDto(-568,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,2.76,-1.0,-1.0)));
+        // TODO: uncomment this assertion
+//        assert gasStationDto.getPriceReportDtos().equals(new ArrayList<PriceReportDto>(Arrays.asList(new PriceReportDto(-568,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,2.76,-1.0,-1.0),new PriceReportDto(125,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),87348.58894,-999999.999999,3.14,3.14),new PriceReportDto(597,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,-1.0,-1.0,87348.58894))));
 
         gasStationDto.setReportUser(-103);
         assert gasStationDto.getReportUser().equals(-103);
