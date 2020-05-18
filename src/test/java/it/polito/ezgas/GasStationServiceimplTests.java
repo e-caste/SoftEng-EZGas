@@ -80,8 +80,8 @@ public class GasStationServiceimplTests {
     
     static List<String> sqlInsertGSs = Arrays.asList(
 																			//id|car|dies_pr|gas_pr|gas_station_address|station_name|has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|r_dep|time|r_user|s_pr|s_p_pr|user_id
-											"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, NULL, NULL, 	0, 1.864, NULL)",
-            								"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  NULL, NULL, 0, 1.854, NULL)"
+											"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, NULL, NULL, 1.864, 0, NULL)",
+            								"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  NULL, NULL, 1.854, 0, NULL)"
 
     );
 	
@@ -90,7 +90,7 @@ public class GasStationServiceimplTests {
 	@Autowired
 	private GasStationService gasStationService;
 	
-	private Integer GS1id;
+	Integer GS1id;
 	private String GS1carSharing;
 	private GasStation GS1;
 	private GasStationDto GS1Dto;
@@ -108,7 +108,7 @@ public class GasStationServiceimplTests {
         }
 
         // uncomment following lines for debugging
-	        ResultSet rs = st.executeQuery(sqlSelectAllGSs);
+	    /*    ResultSet rs = st.executeQuery(sqlSelectAllGSs);
 	        while (rs.next()) {
 	            System.err.println(	"GASSTATIONID: " 		+ rs.getInt("gas_station_id") + " " +
 	            					"CARSHARING: " 			+ rs.getString("car_sharing") + " " +
@@ -132,7 +132,7 @@ public class GasStationServiceimplTests {
 							        "USERID: "				+ rs.getInt("user_id")
 							        );  
 	        }
-
+*/
 	        //System.exit(33);
     }
 
@@ -147,11 +147,29 @@ public class GasStationServiceimplTests {
 		GS1 = new GasStation();
 		GS1id = 1;
 		GS1carSharing = "bah";
+		GS1.setDieselPrice(1.375);
+		GS1.setGasPrice(1.753);
+		GS1.setGasStationAddress("via Olanda, 12, Torino");
+		GS1.setGasStationName("Esso");
+		GS1.setHasDiesel(true);
+		GS1.setHasGas(true);
+		GS1.setHasMethane(false);
+		GS1.setHasSuper(true);
+		GS1.setHasSuperPlus(false);
+		GS1.setMethanePrice(0);
+		GS1.setReportDependability(0);
+		GS1.setReportTimestamp(null);
+		GS1.setReportUser(0);
+		GS1.setSuperPrice(1.864);
+		GS1.setSuperPlusPrice(0);
 		GS1.setGasStationId(GS1id);
 		GS1.setLat(45.048903);
 		GS1.setLon(7.659812);
 		GS1.setCarSharing(GS1carSharing);
-		GS1Dto = GasStationConverter.convertEntityToDto(GS1);
+		//GS1Dto = GasStationConverter.convertEntityToDto(GS1);
+		
+		
+		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, "bah", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, null, null, 0);
 		
 	}
 
@@ -201,12 +219,14 @@ public class GasStationServiceimplTests {
 		List<GasStationDto> gsDtoListRepository = gasStationService.getAllGasStations();
 		
 		assertEquals(gsDtoListDB.size(), gsDtoListRepository.size());
-
+		System.err.println("| gsDtoListDB.size() = " + gsDtoListDB.size() + " | gsDtoListRepository.size() = " + gsDtoListRepository.size() + "|");
+		 
         // check if all GSs with same ID are equal
-        for (GasStationDto gsDB : gsDtoListDB) {
-            for (GasStationDto gasStationRepository : gsDtoListRepository) {
-                if (gsDB.getGasStationId().equals(gasStationRepository.getGasStationId())) {
-                    assertTrue(gsDB.equals(gasStationRepository));
+        for (GasStationDto gsDtoDB : gsDtoListDB) {
+            for (GasStationDto gsDtoRep : gsDtoListRepository) {
+                if (gsDtoDB.getGasStationId().equals(gsDtoRep.getGasStationId())) {
+                	System.err.println("| gsDtoDB.getGasStationName() = " + gsDtoDB.getGasStationName() + " | gsDtoRep.getGasStationName() = " + gsDtoRep.getGasStationName() + "|");
+                	assertTrue(gsDtoDB.equals(gsDtoRep));
                     break;
                 }
             }
@@ -216,7 +236,7 @@ public class GasStationServiceimplTests {
     @Test
     public void test_DeleteGasStation_existing() throws InvalidGasStationException {
         //id exists -> deleted
-        assertTrue(gasStationService.deleteGasStation(GS1.getGasStationId()));
+        assertTrue(gasStationServiceimpl.deleteGasStation(GS1id));
     }
     
     @Test
