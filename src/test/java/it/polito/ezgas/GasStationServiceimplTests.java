@@ -80,8 +80,8 @@ public class GasStationServiceimplTests {
     
     static List<String> sqlInsertGSs = Arrays.asList(
 																			//id|car|dies_pr|gas_pr|gas_station_address|station_name|has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|r_dep|time|r_user|s_pr|s_p_pr|user_id
-											"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, NULL,  NULL, NULL, NULL, NULL, 1.864, NULL)",
-            								"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, NULL, NULL,  NULL, NULL, NULL, 1.854, NULL)"
+											"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, NULL, NULL, 	0, 1.864, NULL)",
+            								"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  NULL, NULL, 0, 1.854, NULL)"
 
     );
 	
@@ -331,28 +331,28 @@ public class GasStationServiceimplTests {
 			gasStationService.getGasStationsByProximity(91, 45);
 			fail("Expected GPSDataException");
 		} catch (GPSDataException e) {
-			assertEquals(e.getMessage(), "Ivalid GPS Data");
+			assertEquals(e.getMessage(), "Invalid GPS Data");
 		}
 		
 		try {
 			gasStationService.getGasStationsByProximity(-91, 45);
 			fail("Expected GPSDataException");
 		} catch (GPSDataException e) {
-			assertEquals(e.getMessage(), "Ivalid GPS Data");
+			assertEquals(e.getMessage(), "Invalid GPS Data");
 		}
 		
 		try {
 			gasStationService.getGasStationsByProximity(45, 181);
 			fail("Expected GPSDataException");
 		} catch (GPSDataException e) {
-			assertEquals(e.getMessage(), "Ivalid GPS Data");
+			assertEquals(e.getMessage(), "Invalid GPS Data");
 		}
 		
 		try {
 			gasStationService.getGasStationsByProximity(45, -181);
 			fail("Expected GPSDataException");
 		} catch (GPSDataException e) {
-			assertEquals(e.getMessage(), "Ivalid GPS Data");
+			assertEquals(e.getMessage(), "Invalid GPS Data");
 		}
 	}
 	
