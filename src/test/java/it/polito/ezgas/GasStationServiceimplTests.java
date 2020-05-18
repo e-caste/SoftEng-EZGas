@@ -50,9 +50,10 @@ public class GasStationServiceimplTests {
     static Statement st;
     static ResultSet backup;
     static String sqlSelectAllGSs = "SELECT * FROM GAS_STATION";
+    static String sqlSelectGSbyCarSharing = "SELECT * FROM GAS_STATION WHERE CAR_SHARING='bah';";
     static String sqlDropGSTable = "DROP TABLE IF EXISTS GAS_STATION";
     static String sqlCreateGSTable = "CREATE TABLE GAS_STATION " +
-                                       "(gas_station_id INTEGER NOT NULL, " +
+                                       "(gas_station_id INTEGER AUTO_INCREMENT PRIMARY KEY, " +
                                        "gas_station_name VARCHAR(255), " +
                                        "gas_station_address VARCHAR(255), " +
                                        "has_diesel BOOLEAN, " +
@@ -70,8 +71,7 @@ public class GasStationServiceimplTests {
                                        "methane_price DOUBLE, " +
                                        "report_user INTEGER, " +
                                        "report_timestamp VARCHAR(255), "+
-                                       "report_dependability DOUBLE, " +
-                                       "PRIMARY KEY (gas_station_id))";
+                                       "report_dependability DOUBLE)";
     
     static List<String> sqlInsertGSs = Arrays.asList(
             "INSERT INTO GAS_STATION VALUES (1, 'Esso', 'via Olanda, 12, Torino', TRUE, TRUE, FALSE, TRUE, FALSE, 'bah', 45.048903, 7.659812, 1.375, 1.872,  NULL, 1.756, NULL, NULL, NULL, NULL)",
@@ -85,6 +85,7 @@ public class GasStationServiceimplTests {
 	private GasStationService gasStationService;
 	
 	private Integer GS1id;
+	private String GS1carSharing;
 	private GasStation GS1;
 	private GasStationDto GS1Dto;
 	
@@ -138,10 +139,11 @@ public class GasStationServiceimplTests {
 	public void setUp() {
 		GS1 = new GasStation();
 		GS1id = 1;
+		GS1carSharing = "bah";
 		GS1.setGasStationId(GS1id);
 		GS1.setLat(45.048903);
 		GS1.setLon(7.659812);
-		
+		GS1.setCarSharing(GS1carSharing);
 		GS1Dto = GasStationConverter.convertEntityToDto(GS1);
 		
 	}
@@ -155,7 +157,7 @@ public class GasStationServiceimplTests {
 	public void test_getGasStationById_notExisting() {
 		try {
 	        gasStationService.getGasStationById(1000);
-	        fail("Expected InvalidGasStationException");
+	        fail("Expected InvalidGasStationException for non existing gasStationId");
 	    } catch (InvalidGasStationException e) {
 	        assertEquals(e.getMessage(), "GasStation not found");
 	    }
@@ -163,7 +165,7 @@ public class GasStationServiceimplTests {
 	 
 	@Test
 	public void test_GetAllGasStations() throws SQLException {
-		List<GasStationDto> gssDB = new ArrayList<>();
+		List<GasStationDto> gsDtoListDB = new ArrayList<>();
 		ResultSet rs = st.executeQuery(sqlSelectAllGSs);
 		while(rs.next()) {
 			GasStationDto gsDto = new GasStationDto(rs.getInt("gas_station_id"),
@@ -186,16 +188,16 @@ public class GasStationServiceimplTests {
 													rs.getString("report_timestamp"),
 													rs.getDouble("report_dependability")            
 									);
-			gssDB.add(gsDto);
+			gsDtoListDB.add(gsDto);
 		}
 		
-		List<GasStationDto> gssRepository = gasStationService.getAllGasStations();
+		List<GasStationDto> gsDtoListRepository = gasStationService.getAllGasStations();
 		
-		assertEquals(gssDB.size(), gssRepository.size());
+		assertEquals(gsDtoListDB.size(), gsDtoListRepository.size());
 
         // check if all GSs with same ID are equal
-        for (GasStationDto gsDB : gssDB) {
-            for (GasStationDto gasStationRepository : gssRepository) {
+        for (GasStationDto gsDB : gsDtoListDB) {
+            for (GasStationDto gasStationRepository : gsDtoListRepository) {
                 if (gsDB.getGasStationId().equals(gasStationRepository.getGasStationId())) {
                     assertTrue(gsDB.equals(gasStationRepository));
                     break;
@@ -394,6 +396,39 @@ public class GasStationServiceimplTests {
 		} catch (GPSDataException e) {
 			assertEquals(e.getMessage(), "Invalid GPS Data");
 		}
+	}
+	
+	@Test
+	public void test_getGasStationByCarSharing() throws SQLException {
+		List<GasStationDto> gsDtoListDB = new ArrayList<>();
+		ResultSet rs = st.executeQuery(sqlSelectGSbyCarSharing);
+		while(rs.next()) {
+			GasStationDto gsDto = new GasStationDto(rs.getInt("gas_station_id"),
+													rs.getString("gas_station_name"),
+													rs.getString("gas_station_address"),
+													rs.getBoolean("has_diesel"),
+													rs.getBoolean("has_super"),
+													rs.getBoolean("has_super_plus"),
+													rs.getBoolean("has_gas"), 
+													rs.getBoolean("has_methane"),   
+													rs.getString("car_sharing"), 
+													rs.getDouble("lat"), 
+													rs.getDouble("lon"),                 
+													rs.getDouble("diesel_price"),
+													rs.getDouble("super_price"),
+													rs.getDouble("super_plus_price"),
+													rs.getDouble("gas_price"),
+													rs.getDouble("methane_price"),
+													rs.getInt("report_user"),
+													rs.getString("report_timestamp"),
+													rs.getDouble("report_dependability")            
+									);
+			gsDtoListDB.add(gsDto);
+		}
+		
+		List<GasStationDto> gsDtoListRepository = gasStationService.getGasStationByCarSharing(GS1carSharing);
+		
+		assertEquals(gsDtoListDB.size(), gsDtoListRepository.size());
 	}
 	
 }
