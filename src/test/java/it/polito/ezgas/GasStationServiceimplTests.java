@@ -79,8 +79,9 @@ public class GasStationServiceimplTests {
                                        
     
     static List<String> sqlInsertGSs = Arrays.asList(
-            "INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, NULL,  NULL, NULL, NULL, NULL, 1.864, NULL)",
-            "INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, NULL, NULL,  NULL, NULL, NULL, 1.854, NULL)"
+																			//id|car|dies_pr|gas_pr|gas_station_address|station_name|has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|r_dep|time|r_user|s_pr|s_p_pr|user_id
+											"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, NULL,  NULL, NULL, NULL, NULL, 1.864, NULL)",
+            								"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, NULL, NULL,  NULL, NULL, NULL, 1.854, NULL)"
 
     );
 	
