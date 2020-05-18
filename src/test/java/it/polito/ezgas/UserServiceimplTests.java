@@ -41,13 +41,12 @@ public class UserServiceimplTests {
     static String sqlSelectAllUsers = "SELECT * FROM USER";
     static String sqlDropUserTable = "DROP TABLE IF EXISTS USER";
     static String sqlCreateUserTable = "CREATE TABLE USER " +
-                                       "(user_id INTEGER NOT NULL, " +
+                                       "(user_id INTEGER AUTO_INCREMENT PRIMARY KEY, " +
                                        "admin BOOLEAN, " +
                                        "email VARCHAR(255), " +
                                        "password VARCHAR(255), " +
                                        "reputation INTEGER, " +
-                                       "user_name VARCHAR(255), " +
-                                       "PRIMARY KEY (user_id))";
+                                       "user_name VARCHAR(255))";
     static List<String> sqlInsertUsers = Arrays.asList(
             "INSERT INTO USER VALUES (1, TRUE, 'admin@ezgas.com', 'admin', 5, 'admin')",
             "INSERT INTO USER VALUES (2, FALSE, 'asd@asd.asd', 'asd', 0, 'asd')"
@@ -110,7 +109,7 @@ public class UserServiceimplTests {
 
         // user with non-existing id in the database
         nonExistingUser = new User("test", "test", "test", 0);
-        nonExistingUserId = 1000;
+        nonExistingUserId = 3;
         nonExistingUserAdmin = false;
         nonExistingUser.setUserId(nonExistingUserId);
         nonExistingUser.setAdmin(nonExistingUserAdmin);
@@ -159,17 +158,16 @@ public class UserServiceimplTests {
 
     @Test
     public void testSaveUser() {
-        // local variables
-        UserDto nonExistingUserDto, existingUserDto;
 
         // user does not exist in database
         // and is admin -> reject (only one admin allowed)
         nonExistingUser.setAdmin(true);
-        nonExistingUser.setUserId(nonExistingUserId);
         nonExistingUserDto = UserConverter.convertEntityToDto(nonExistingUser);
         assertNull(userService.saveUser(nonExistingUserDto));
 
         // and is valid -> save new
+        nonExistingUser.setAdmin(false);
+        nonExistingUserDto = UserConverter.convertEntityToDto(nonExistingUser);
         assertTrue(nonExistingUserDto.equalsIgnoreUserId(userService.saveUser(nonExistingUserDto)));
 
         // user exists in database
