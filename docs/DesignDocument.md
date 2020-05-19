@@ -3,9 +3,9 @@
 
 Authors: Enrico Castelli s280124, Augusto Maria Guerriero s278018, Francesca Ponzetta s276535, Monica Rungi s276979
 
-Date: 04/05/2020
+Date: 19/05/2020
 
-Version: 1
+Version: 2
 
 
 # Contents
@@ -269,36 +269,16 @@ scale 1/3
     }
 
     package "it.polito.ezgas.entity" {
-            class AnonymousUser {
-             - userId
-             - geoPoint
-            __
-            == Getters and Setters ==
-            }
-            
             class User {
              - userName
              - password
              - email
              - reputation
-             - isAdmin {y/n}
+             - admin {true/false}
             __
+            ==
+                + equals(User): Boolean
             == Getters and Setters ==
-            ==Remove==
-                + removeUser(Integer): Boolean
-            }
-            
-            class Administrator {
-            __
-            == Gas Station Management ==
-                + addGasStation(): Boolean
-                + editGasStation(): Boolean
-                + removeGasStation(): Boolean
-            == User Management ==
-                + addUser(): Boolean
-                + editUser(): Boolean
-                + removeUser(UserDto): Boolean
-                + banUser(): Boolean
             }
             
             class GasStation {
@@ -306,9 +286,12 @@ scale 1/3
              - gasStationId
              - gasStationName
              - gasStationAddress
-             - geoPoint
-            ..
-             - priceReport
+             - lat
+             - lon
+            ..Report..
+             - ReportUser
+             - ReportTimestamp
+             - ReportDependability
             ..
              - carSharing
              - user
@@ -329,11 +312,6 @@ scale 1/3
             == Getters and Setters ==
             }
             
-            class GeoPoint {
-             + latitude
-             + longitude
-            }
-            
             class PriceReport {
              - priceReportId
              - user
@@ -346,44 +324,40 @@ scale 1/3
              - methanePrice
             __
             == Getters and Setters ==
+            ==
+                + equals(GaStation): Boolean
             }
     
             GasStation  -- "0..1" PriceReport
             User "*" -- GeoPoint
             GasStation "*" -- GeoPoint
             User "*" -- PriceReport
-    
-            User -|> AnonymousUser : extends
-            Administrator -|> User : extends
            
         }
     
     package "it.polito.ezgas.service" {
        interface "GasStationService" as GSS {
-       == Getters and Setters ==
-           + getGasStationById(Integer): GasStationDto
-           + getAllGasStations(): List<GasStationDto>
+       == Getters ==
            + getGasStationsByGasolineType(String): List<GasStationDto>
-           + getGasStationsByProximity(Double, Double): List<GasStationDto>
-           + getGasStationsByCarSharing(String): List<GasStationDto>
-           + getGasStationsWithCoordinates(Double, Double, String, String): List<GasStationDto>
-           + getGasStationsWithoutCoordinates(Integer, Double, Double, Double, Double, Double, Integer): List<GasStationDto>          
-           
-           + setReport(Integer): void
+           + getGasStationsByProximity(double, double): List<GasStationDto> 
+           + getGasStationsWithCoordinates(double, double, String, String): List<GasStationDto> 
+           + getGasStationsWithoutCoordinates(String, String): List<GasStationDto>
+           + getGasStationsByCarSharing(String): List<GasStationDto> 
+       == Setter ==
+           + setReport(Integer, double, double, double, double, double, Integer): void
        == Save ==
            + saveGasStation(GasStationDto): GasStationDto
        == Delete ==
-           + deleteGasStationById(Integer): Boolean
+           + deleteGasStation(Integer): Boolean
        }
         
        interface "UserService" as US {
         == Getter ==
-            + getUserById(Integer): UserDto
-            + getAllUsers(): List<UserDto>
         == Save ==
             + saveUser(): UserDto
         == Delete ==
-            + deleteUserById(Integer): Boolean 
+            + deleteUser(Integer): Boolean 
+        ==
             + login(IdPw): LoginDto
         == Reputation ==
             + increaseUserReputation(Integer): Integer
@@ -478,23 +452,14 @@ scale 1/3
             + convertEntityToDto(PriceReport): PriceReportDto
             + convertDtoToEntity(PriceReportDto): PriceReport
         }
-        class AnonymousUserConverter {
-            + convertEntityToDto(AnonymousUser): AnonymousUserDto
-            + convertDtoToEntity(AnonymousUserDto): AnonymousUser
-        }
         class UserConverter {
             + convertEntityToDto(User): UserDto
             + convertDtoToEntity(UserDto): User
-        }
-        class AdministratorConverter {
-            + convertEntityToDto(Administrator): AdministratorDto
-            + convertDtoToEntity(AdministratorDto): Administrator
+            + convertEntityToLoginDto(User): LoginDto 
         }
 
         GasStationConverter --"0..1" PriceReportConverter
         UserConverter "*"-- PriceReportConverter
-         UserConverter -|> AnonymousUserConverter :extends
-        AdministratorConverter -|> UserConverter :extends
 
     }
     
@@ -505,7 +470,7 @@ scale 1/3
          - password
          - email
          - reputation
-         - isAdmin {y/n}
+         - admin {TRUE/FALSE}
         __
         == Getters and Setters ==
         }
@@ -515,12 +480,15 @@ scale 1/3
          ~ gasStationId
          ~ gasStationName
          ~ gasStationAddress
-         ~ geoPoint
+         ~ lat
+         ~ lon
         ..
-         ~ priceReport
+         ~ reportUser
+         ~ reportTimestamp
+         ~ reportDependability
         ..
          - carSharing
-         ~ user
+         ~ userDto
         ..boolean info..
          ~ hasDiesel
          ~ hasGasoline
@@ -541,8 +509,7 @@ scale 1/3
         class PriceReportDto {
          ~ priceReportId
          ~ user
-         ~ priceReportDependability
-         ..Type of Fuel..
+         ..Types of Fuel..
          ~ dieselPrice
          ~ superPrice
          ~ superPlusPrice
@@ -558,7 +525,7 @@ scale 1/3
          ~ token
          ~ email
          ~ reputation
-         ~ isAdmin {y/n}
+         ~ admin {TRUE/FALSE}
         __
         == Getters and Setters ==
         }
@@ -570,32 +537,10 @@ scale 1/3
         == Getters and Setters ==
         }
 
-        class AnonymousUserDto {
-         - userId
-         - geoPoint
-        __
-        == Getters and Setters ==
-        }
-        
-        class AdministratorDto {
-        __
-        == Gas Station Management ==
-            + addGasStation(): Boolean
-            + editGasStation(): Boolean
-            + removeGasStation(): Boolean
-        == User Management ==
-            + addUser(): Boolean
-            + editUser(): Boolean
-            + removeUser(UserDto): Boolean
-            + banUser(): Boolean
-        }
-
         GasStationDto -- "0..1" PriceReportDto
         UserDto "*"-- PriceReportDto
         UserDto "1"--"1" IdPw
         UserDto -- LoginDto
-        UserDto -|> AnonymousUserDto :extends
-        AdministratorDto -|> UserDto :extends
     }
     
     package "it.polito.ezgas.repository" {
@@ -603,17 +548,11 @@ scale 1/3
         }
         class PriceReportRepository {
         }
-        class AnonymousUserRepository {
-        }
         class UserRepository {
-        }
-        class AdministratorRepository {
         }
 
           GasStationRepository --"0..1" PriceReportRepository
           UserRepository "*"-- PriceReportRepository
-          UserRepository-|>AnonymousUserRepository :extends
-          AdministratorRepository -|>UserRepository :extends
     }
 
         GasStation o-- GasStationRepository
@@ -637,25 +576,10 @@ scale 1/3
         UserRepository o-- User
         UserConverter o-- UserDto
         UserConverter o-- User
-        UserServiceImpl o-- UserDto
-        UserServiceImpl o-- LoginDto
-        UserServiceImpl o-- IdPw
 
         PriceReportRepository o-- PriceReport
         PriceReportConverter o-- PriceReportDto
         PriceReportConverter o-- PriceReport
-
-        AdministratorConverter o-- Administrator
-        AdministratorConverter o-- AdministratorDto
-        AdministratorRepository o-- Administrator
-
-        AnonymousUserConverter o-- AnonymousUser
-        AnonymousUserConverter o-- AnonymousUserDto
-        AnonymousUserRepository o-- AnonymousUser
-
-      
-        
-
 
 @enduml
 ```

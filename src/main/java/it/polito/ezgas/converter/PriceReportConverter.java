@@ -6,11 +6,7 @@ import it.polito.ezgas.entity.PriceReport;
 
 
 public class PriceReportConverter {
-	
 
-	
-	
-	
 	public PriceReportConverter() {
 		
 	}
