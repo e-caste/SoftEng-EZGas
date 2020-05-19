@@ -544,11 +544,11 @@ scale 1/3
     }
     
     package "it.polito.ezgas.repository" {
-        class GasStationRepository {
+        interface GasStationRepository {
         }
-        class PriceReportRepository {
+        interface PriceReportRepository {
         }
-        class UserRepository {
+        interface UserRepository {
         }
 
           GasStationRepository --"0..1" PriceReportRepository
