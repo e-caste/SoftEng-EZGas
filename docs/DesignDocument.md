@@ -551,10 +551,14 @@ scale 1/3
     
     package "it.polito.ezgas.repository" {
         interface GasStationRepository {
+            +findById(String): GasStation
+            +findByCarSharing(String): GasStation
         }
         interface PriceReportRepository {
         }
         interface UserRepository {
+            + findById(String): User
+            + findByEmail(String): User
         }
 
           GasStationRepository --"0..1" PriceReportRepository
