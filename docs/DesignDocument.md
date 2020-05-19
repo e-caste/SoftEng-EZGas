@@ -321,6 +321,7 @@ scale 1/3
              - superPrice: Double
              - superPlusPrice: Double
              - gasPrice: Double
+             ~ methanePrice: Double
              
             __
             == Getters and Setters ==
@@ -469,11 +470,11 @@ scale 1/3
     
     package "it.polito.ezgas.dto" {
         class UserDto {
-         - userId
-         - userName
-         - password
-         - email
-         - reputation
+         - userId: Integer
+         - userName: String
+         - password: String
+         - email: String
+         - reputation: Integer
          - admin {TRUE/FALSE}
         __
         == Getters and Setters ==
@@ -481,62 +482,63 @@ scale 1/3
 
         class GasStationDto {
         ..GS info..
-         ~ gasStationId
-         ~ gasStationName
-         ~ gasStationAddress
-         ~ lat
-         ~ lon
+         ~ gasStationId: Integer
+         ~ gasStationName: String
+         ~ gasStationAddress: String
+         ~ lat: Double
+         ~ lon: Double
         ..
-         ~ reportUser
-         ~ reportTimestamp
-         ~ reportDependability
+         ~ reportUser: Integer
+         ~ reportTimestamp: String
+         ~ reportDependability: Double
         ..
-         - carSharing
-         ~ userDto
+         - carSharing: String
+         ~ userDto: UserDto
         ..boolean info..
-         ~ hasDiesel
-         ~ hasGasoline
-         ~ hasPremiumDiesel
-         ~ hasPremiumGasoline
-         ~ hasLPG
-         ~ hasMethane
+         ~ hasDiesel: Boolean
+         ~ hasGasoline: Boolean
+         ~ hasPremiumDiesel: Boolean
+         ~ hasPremiumGasoline: Boolean
+         ~ hasLPG: Boolean
+         ~ hasMethane: Boolean
         ..
-         ~ dieselPrice
-         ~ superPrice
-         ~ superPlusPrice
-         ~ gasPrice
-         ~ methanePrice
+         ~ dieselPrice: Double
+         ~ superPrice: Double
+         ~ superPlusPrice: Double
+         ~ gasPrice: Double
+         ~ methanePrice: Double
         __
         == Getters and Setters ==
         }
         
         class PriceReportDto {
-         ~ priceReportId
-         ~ user
+         ~ priceReportId: Integer
+         ~ user: User
          ..Types of Fuel..
-         ~ dieselPrice
-         ~ superPrice
-         ~ superPlusPrice
-         ~ gasPrice
-         ~ methanePrice
+         ~ dieselPrice: Double
+         ~ superPrice: Double
+         ~ superPlusPrice: Double
+         ~ gasPrice: Double
+         ~ methanePrice: Double
+        
         __
         == Getters and Setters ==
         }
 
         class LoginDto {
-         ~ userId
-         ~ userName
-         ~ token
-         ~ email
-         ~ reputation
+         ~ userId: Integer
+         ~ userName: String
+         ~ token: String
+         ~ email: String
+         ~ reputation: Integer
          ~ admin {TRUE/FALSE}
         __
         == Getters and Setters ==
         }
 
         class IdPw {
-         - user
-         - pw
+         - user: String
+         - pw: String
         __
         == Getters and Setters ==
         }
