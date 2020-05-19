@@ -22,6 +22,31 @@ Version: 1
     the set up of all Spring components
     >
 
+ ### **Class *GetterSetterTests* - *all methods***
+
+**Criteria for *all methods*:**
+
+ - set extracted value from possible values of correct type in setter
+ - use corresponding getter to get the previously set value
+ - check if values are equals with equals method
+
+**Predicates for *all methods*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| value    | = extracted value of type String, Integer, Boolean, boolean, double |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|  value  | no boundaries, the only limit is the type of the value which corresponds to the type expected by the setter |
+
+**Combination of predicates**:
+
+Given the number of getter and setter methods to test, only one test case per couple of getter/setter was written. 
+This can be easily increased by tweaking the Python script used to generate the tests in the src/test directory.
+
  ### **Class *class_name* - method *name***
 
 
@@ -68,7 +93,6 @@ Version: 1
 |||||||
 |||||||
 |||||||
-
 
 
 
