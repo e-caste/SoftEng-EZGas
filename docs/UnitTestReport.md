@@ -1,18 +1,14 @@
 # Unit Testing Documentation
 
-Authors:
+Authors: Enrico Castelli s280124, Augusto Maria Guerriero s278018, Francesca Ponzetta s276535, Monica Rungi s276979
 
-Date:
+Date: 19/05/2020
 
-Version:
+Version: 1
 
 # Contents
 
 - [Black Box Unit Tests](#black-box-unit-tests)
-
-
-
-
 - [White Box Unit Tests](#white-box-unit-tests)
 
 
