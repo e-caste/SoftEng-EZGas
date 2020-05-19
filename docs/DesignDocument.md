@@ -270,10 +270,11 @@ scale 1/3
 
     package "it.polito.ezgas.entity" {
             class User {
-             - userName
-             - password
-             - email
-             - reputation
+             - userId: Integer
+             - userName: String
+             - password: String
+             - email: String
+             - reputation: Integer
              - admin {true/false}
             __
             ==
@@ -283,45 +284,44 @@ scale 1/3
             
             class GasStation {
             ..GS info..
-             - gasStationId
-             - gasStationName
-             - gasStationAddress
-             - lat
-             - lon
+             - gasStationId: Integer
+             - gasStationName: String
+             - gasStationAddress: String
+             - lat: Double
+             - lon: Double
             ..Report..
-             - ReportUser
-             - ReportTimestamp
-             - ReportDependability
+             - ReportUser: Integer
+             - ReportTimestamp: String
+             - ReportDependability: Double
             ..
-             - carSharing
-             - user
+             - carSharing: String
+             - user: User
             ..Boolean info..
-             - hasDiesel
-             - hasGasoline
-             - hasPremiumDiesel
-             - hasPremiumGasoline
-             - hasLPG
-             - hasMethane
+             - hasDiesel: Boolean
+             - hasGasoline: Boolean
+             - hasPremiumDiesel: Boolean
+             - hasPremiumGasoline: Boolean
+             - hasLPG: Boolean
+             - hasMethane: Boolean
             ..Price info..
-             - dieselPrice
-             - superPrice
-             - superPlusPrice
-             - gasPrice
-             - methanePrice
+             - dieselPrice: Double
+             - superPrice: Double
+             - superPlusPrice: Double
+             - gasPrice: Double
+             - methanePrice: Double
             __
             == Getters and Setters ==
             }
             
             class PriceReport {
-             - priceReportId
-             - user
-             - priceReportDependability
+             - priceReportId: Integer
+             - user: User
             ..Type of Fuel..
-             - dieselPrice
-             - superPrice
-             - superPlusPrice
-             - gasPrice
-             - methanePrice
+             - dieselPrice: Double
+             - superPrice: Double
+             - superPlusPrice: Double
+             - gasPrice: Double
+             
             __
             == Getters and Setters ==
             ==
