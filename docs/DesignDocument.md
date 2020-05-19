@@ -353,6 +353,7 @@ scale 1/3
         
        interface "UserService" as US {
         == Getter ==
+            + getUserById(Integer): UserDto
         == Save ==
             + saveUser(): UserDto
         == Delete ==
@@ -366,7 +367,10 @@ scale 1/3
     }
     
     package "it.polito.ezgas.service.impl" {
-        class GasStationServiceImpl implements GSS
+        class GasStationServiceImpl implements GSS{
+            + reportDependability(String, String, Integer): Double
+            + distance(Double,Double,Double,Double): Double
+        }
         class UserServiceImpl implements US
     }
 
