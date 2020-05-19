@@ -189,7 +189,7 @@ public class GasStationServiceimplTests {
 	}
 	 
 	@Test
-	public void test_GetAllGasStations() throws SQLException {
+	public void test_getAllGasStations() throws SQLException {
 		List<GasStationDto> gsDtoListDB = new ArrayList<>();
 		ResultSet rs = st.executeQuery(sqlSelectAllGSs);
 		while(rs.next()) {
@@ -234,13 +234,17 @@ public class GasStationServiceimplTests {
 	}
 	
     @Test
-    public void test_DeleteGasStation_existing() throws InvalidGasStationException {
+    public void test_deleteGasStation_existing() {
         //id exists -> deleted
-        assertTrue(gasStationServiceimpl.deleteGasStation(GS1id));
+    	try {
+    		assertTrue(gasStationServiceimpl.deleteGasStation(GS1id));
+        } catch (InvalidGasStationException e) {
+            fail("Existing GasStation Id was passed, unexpected InvalidGasStationException");
+        }
     }
     
     @Test
-    public void test_DeleteGasStation_notExisting() {
+    public void test_deleteGasStation_notExisting() {
 
         //id does not exist -> throw exception
         try {
