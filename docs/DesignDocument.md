@@ -593,6 +593,87 @@ scale 1/3
 
 @enduml
 ```
+# Test package
+```plantuml
+@startuml
+package "it.polito.ezgas.test" {
+        class EZGasApplicationTests {
+            + contextLoads
+        }
+        class GasStationServiceimplTests {
+            + setUpDatabase
+            + tearDown
+            + setUp
+            + test_getGasStationById_existing
+            + test_getGasStationById_notExisting
+            + test_GetAllGasStations
+            + test_DeleteGasStation_existing
+            + test_DeleteGasStation_notExisting
+            + test_distance_nearest
+            + test_distance_near
+            + test_distance_far
+            + test_distance_furthest
+            + test_reportDependability_obsolescent
+            + test_reportDependability_notObsolescent
+            + test_reportDependability_sameDay_perfectUser
+            + test_reportDependability_sameDay_worstUser
+            + test_reportDependability_obsolescent_worstUser
+            + test_getGasStationsByProximity_invalidGPS
+            + test_saveGasStation_invalidGPS
+            + test_getGasStationByCarSharing
+           
+        }
+        class GetterSetterTests {
+            + testPriceReportDto
+            + testIdPw
+            + testLoginDto
+            + testUserDto
+            + testGasStationDto
+            + testGasStation
+            + testUser
+            + testPriceReport
+        }
+
+        class UserConverterTests {
+           + setUp
+           + testConvertEntityToDto
+           + testConvertDtoToEntity
+           + testConvertEntityToLoginDto
+        }
+
+        class UserServiceimplTests {
+            + setUpDatabase
+            + setUp
+            + tearDown
+            + testGetUserById
+            + testSaveUser
+            + testGetAllUsers
+            + testDeleteUser
+            + testLogin
+            + testIncreaseUserReputation
+            + testDecreaseUserReputation
+                    
+        }
+        class GasStationConverterTests {
+           + setUp
+           + testConvertEntityToDto
+           + testConvertDtoToEntity
+        }
+
+         class H2TestProfileJPAConfig {
+           + dataSource(void): DataSource
+        }
+
+     
+
+    }
+
+
+@enduml
+```
+
+
+
 
 # Verification traceability matrix
 
