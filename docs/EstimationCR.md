@@ -1,10 +1,10 @@
 # CR - Change Request Poll
 
-Authors:
+Authors: Enrico Castelli s280124, Augusto Maria Guerriero s278018, Francesca Ponzetta s276535, Monica Rungi s276979
 
-Date:
+Date: 22/05/2020
 
-Version:
+Version: 1
 
 
 
@@ -23,11 +23,10 @@ update of documents. Consider only effort on the back end (changes to all packag
 
 |   CR          | Priority (1 lowest 5 highest)       |          Effort (person hours) |   
 | ----------- | ------------------------------- | ---------------------------- | 
-| CR1   | | |          
-| CR2   | | | 
-| CR3   | | | 
-| CR4   | | | 
-| CR5   | | | 
-| CR6   | | | 
-| CR7   | | | 
-| CR8   | | | 
+| CR1   | 4 | 8 |          
+| CR2   | 2 | 12 | 
+| CR3   | 2 | 16 | 
+| CR4   | 5 | 8 | 
+| CR5   | 1 | 12 | 
+| CR6   | 1 | 16 | 
+| CR7   | 5 | 8 | 
