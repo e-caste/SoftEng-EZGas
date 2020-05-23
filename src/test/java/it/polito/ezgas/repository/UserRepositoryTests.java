@@ -173,11 +173,17 @@ public class UserRepositoryTests {
 
     @Test
     public void testSave() {
+        // save new user -> insert in database
 
+        // save existing user -> update database (the checks if it's possible are done by UserService, ignored here)
+
+        // save incomplete user -> should probably fail?
     }
 
     @Test
     public void testDelete() {
+        // id exists -> user deleted from database (the checks if it's admin are done in UserService, ignored here)
 
+        // id doesn't exist -> fail
     }
 }
