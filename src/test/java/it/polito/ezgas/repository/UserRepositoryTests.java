@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.PostConstruct;
@@ -17,8 +18,11 @@ import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("test")
 public class UserRepositoryTests {
 
     @Autowired
@@ -131,7 +135,13 @@ public class UserRepositoryTests {
 
     @Test
     public void testFindById() {
+        // id exists in database -> return User object
+        User user = userRepository.findById(existingUserId);
+        assertTrue(user.equals(existingUser));
 
+        // id doesn't exist in database -> return null
+        user = userRepository.findById(nonExistingUserId);
+        assertNull(user);
     }
 
     @Test
