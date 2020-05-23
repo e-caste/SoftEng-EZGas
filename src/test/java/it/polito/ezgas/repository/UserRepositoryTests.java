@@ -47,6 +47,7 @@ public class UserRepositoryTests {
 
     Integer existingAdminUserId, existingUserId, nonExistingUserId;
     Boolean existingAdminUserAdmin, existingUserAdmin, nonExistingUserAdmin;
+    String existingUserEmail = "asd@asd.asd", nonExistingUserEmail = "test@test.test";
     private User existingAdminUser, existingUser, nonExistingUser;
     private UserDto existingAdminUserDto, existingUserDto, nonExistingUserDto;
 
@@ -89,7 +90,7 @@ public class UserRepositoryTests {
         existingAdminUserDto = UserConverter.convertEntityToDto(existingAdminUser);
 
         // user with existing id in the database
-        existingUser = new User("asd", "asd", "asd@asd.asd", 0);
+        existingUser = new User("asd", "asd", existingUserEmail, 0);
         existingUserId = 2;
         existingUserAdmin = false;
         existingUser.setUserId(existingUserId);
@@ -97,7 +98,7 @@ public class UserRepositoryTests {
         existingUserDto = UserConverter.convertEntityToDto(existingUser);
 
         // user with non-existing id in the database
-        nonExistingUser = new User("test", "test", "test@test.test", 0);
+        nonExistingUser = new User("test", "test", nonExistingUserEmail, 0);
         nonExistingUserId = 3;
         nonExistingUserAdmin = false;
         nonExistingUser.setUserId(nonExistingUserId);
@@ -146,7 +147,13 @@ public class UserRepositoryTests {
 
     @Test
     public void testFindByEmail() {
+        // email exists in database -> return User object
+        User user = userRepository.findByEmail(existingUserEmail);
+        assertTrue(user.equals(existingUser));
 
+        // email doesn't exist in database -> return null
+        user = userRepository.findByEmail(nonExistingUserEmail);
+        assertNull(user);
     }
 
     @Test
