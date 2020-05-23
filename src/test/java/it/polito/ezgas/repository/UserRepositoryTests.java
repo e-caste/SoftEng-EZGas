@@ -6,6 +6,7 @@ import it.polito.ezgas.entity.User;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -128,5 +129,28 @@ public class UserRepositoryTests {
         db.close();
     }
 
+    @Test
+    public void testFindById() {
 
+    }
+
+    @Test
+    public void testFindByEmail() {
+
+    }
+
+    @Test
+    public void testFindAll() {
+
+    }
+
+    @Test
+    public void testSave() {
+
+    }
+
+    @Test
+    public void testDelete() {
+
+    }
 }
