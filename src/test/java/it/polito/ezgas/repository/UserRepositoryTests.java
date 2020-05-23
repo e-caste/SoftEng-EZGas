@@ -158,7 +158,17 @@ public class UserRepositoryTests {
 
     @Test
     public void testFindAll() {
-
+        // check that the manually inserted users existingAdminUser and existingUser are returned
+        List<User> users = userRepository.findAll();
+        assertEquals(2, users.size());
+        for (User user : users) {
+            if (user.getUserId().equals(existingAdminUserId)) {
+                assertTrue(user.equals(existingAdminUser));
+            }
+            if (user.getUserId().equals(existingUserId)) {
+                assertTrue(user.equals(existingUser));
+            }
+        }
     }
 
     @Test
