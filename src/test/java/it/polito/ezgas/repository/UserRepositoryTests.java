@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -182,8 +183,18 @@ public class UserRepositoryTests {
 
     @Test
     public void testDelete() {
+        // the delete method returns void, so no checks can be done directly
         // id exists -> user deleted from database (the checks if it's admin are done in UserService, ignored here)
+        userRepository.delete(existingUserId);
+        List<User> users = userRepository.findAll();
+        assertEquals(1, users.size());
+        assertTrue(users.get(0).equals(existingAdminUser));
 
         // id doesn't exist -> fail
+        try {
+            userRepository.delete(nonExistingUserId);  // throws hidden exception  // TODO: implement try catch in UserService
+        } catch (EmptyResultDataAccessException e) {
+            assertEquals(e.getMessage(), "No class it.polito.ezgas.entity.User entity with id 3 exists!");
+        }
     }
 }
