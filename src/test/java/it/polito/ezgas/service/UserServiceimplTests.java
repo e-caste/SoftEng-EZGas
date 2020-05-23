@@ -1,4 +1,4 @@
-package it.polito.ezgas;
+package it.polito.ezgas.service;
 
 import exception.InvalidLoginDataException;
 import exception.InvalidUserException;

@@ -1,8 +1,7 @@
-package it.polito.ezgas;
+package it.polito.ezgas.converter;
 
 import static org.junit.Assert.*;
 
-import it.polito.ezgas.converter.GasStationConverter;
 import it.polito.ezgas.dto.GasStationDto;
 import it.polito.ezgas.entity.GasStation;
 import org.junit.Before;

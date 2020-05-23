@@ -1,4 +1,4 @@
-package it.polito.ezgas;
+package it.polito.ezgas.service;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
