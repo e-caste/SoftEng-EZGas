@@ -6,8 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -91,9 +93,9 @@ public class GasStationServiceimplTests {
 	private GasStationService gasStationService;
 	
 	Integer GS1id;
-	private String GS1carSharing;
+	private String GS1Name, GS1carSharing;
 	private GasStation GS1;
-	private GasStationDto GS1Dto;
+	private GasStationDto GS1Dto, GS3Dto;
 	
 	@PostConstruct
     @BeforeClass  // run only once
@@ -146,11 +148,12 @@ public class GasStationServiceimplTests {
 	public void setUp() {
 		GS1 = new GasStation();
 		GS1id = 1;
+		GS1Name = "Esso";
 		GS1carSharing = "bah";
 		GS1.setDieselPrice(1.375);
 		GS1.setGasPrice(1.753);
 		GS1.setGasStationAddress("via Olanda, 12, Torino");
-		GS1.setGasStationName("Esso");
+		GS1.setGasStationName(GS1Name);
 		GS1.setHasDiesel(true);
 		GS1.setHasGas(true);
 		GS1.setHasMethane(false);
@@ -170,7 +173,7 @@ public class GasStationServiceimplTests {
 		
 		
 		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, "bah", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, null, null, 0);
-		
+		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0, 1.753, 0, null, null, 0);
 	}
 
 	@Test
@@ -438,6 +441,15 @@ public class GasStationServiceimplTests {
 		}catch(PriceException e) {
 			assertEquals(e.getMessage(), "Wrong Exception");
 		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void test_saveGasStation_existing() throws PriceException, GPSDataException {
+		GasStationDto gsDto = gasStationService.saveGasStation(GS1Dto);
+		assertEquals(gsDto.getGasStationId(), GS1id);
+		assertEquals(gsDto.getGasStationName(), GS1Name);
+		assertEquals(Timestamp.valueOf(gsDto.getReportTimestamp()).getDate(), Timestamp.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())).getDate());
 	}
 	
 	@Test
