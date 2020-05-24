@@ -305,10 +305,10 @@ public class GasStationServiceimplTests {
     }
     
     @Test
-    public void test_getGasStationsByGasolineType_notExisting() {
+    public void test_getGasStationsByGasolineType_InvalidGasType() {
     	 //GasolineType does not exist -> throw exception
         try {
-            gasStationService.getGasStationsByGasolineType("NotARealGasolineType");
+            gasStationService.getGasStationsByGasolineType("NotAValidGasType");
             fail("Expected InvalidGastTypeException");
         } catch (InvalidGasTypeException e) {
             assertEquals(e.getMessage(), "Gasoline Type not found");
@@ -316,7 +316,7 @@ public class GasStationServiceimplTests {
     }
     
     @Test
-    public void test_getGasStationsByGasolineType_existing() throws SQLException {
+    public void test_getGasStationsByGasolineType_validGasType() throws SQLException {
     	List<GasStationDto> gsDtoListDB = new ArrayList<>();
 		
     	ResultSet rs = st.executeQuery(sqlSelectGSbyGasType);
@@ -483,6 +483,63 @@ public class GasStationServiceimplTests {
 	}
 	
 	@Test
+	public void test_getGasStationsWithCoordinates_invalidGPS() throws InvalidGasTypeException {
+		try {
+			gasStationService.getGasStationsWithCoordinates(91, 45, "Diesel", "bah");
+			fail("Expected GPSDataException");
+		} catch (GPSDataException e) {
+			assertEquals(e.getMessage(), "Invalid GPS Data");
+		}
+		
+		try {
+			gasStationService.getGasStationsWithCoordinates(-91, 45, "Diesel", "bah");
+			fail("Expected GPSDataException");
+		} catch (GPSDataException e) {
+			assertEquals(e.getMessage(), "Invalid GPS Data");
+		}
+		
+		try {
+			gasStationService.getGasStationsWithCoordinates(45, 181, "Diesel", "bah");
+			fail("Expected GPSDataException");
+		} catch (GPSDataException e) {
+			assertEquals(e.getMessage(), "Invalid GPS Data");
+		}
+		
+		try {
+			gasStationService.getGasStationsWithCoordinates(45, -181, "Diesel", "bah");
+			fail("Expected GPSDataException");
+		} catch (GPSDataException e) {
+			assertEquals(e.getMessage(), "Invalid GPS Data");
+		}
+	}
+	
+	@Test
+	public void test_getGasStationsWithCoordinates_invalidGasType() throws GPSDataException {
+		 //GasolineType does not exist -> throw exception
+        try {
+            gasStationService.getGasStationsWithCoordinates(45, 45, "NotAValidGasType", "bah");
+            fail("Expected InvalidGastTypeException");
+        } catch (InvalidGasTypeException e) {
+            assertEquals(e.getMessage(), "Invalid Gasoline Type");
+        }
+	}
+	
+	@Test
+	public void test_getGasStationsWithCoordinates_existing() throws InvalidGasTypeException, GPSDataException {
+		List<GasStationDto> gsDtos = gasStationService.getGasStationsWithCoordinates(45.048903, 7.659812, "Diesel", "bah");
+				
+		assertEquals(1, gsDtos.size());
+		assertTrue(GS1Dto.equals(gsDtos.get(0)));
+	}
+	
+	@Test
+	public void test_getGasStationsWithCoordinates_notExisting() throws InvalidGasTypeException, GPSDataException {
+		List<GasStationDto> gsDtos = gasStationService.getGasStationsWithCoordinates(45.048903, 7.659812, "Diesel", "NonAnExistingCarSharing");
+				
+		assertEquals(0, gsDtos.size());
+	}	
+	
+	@Test
 	public void test_saveGasStation_invalidGPS() throws PriceException {
 		GasStationDto gsDto_invalidGps;
 		
@@ -494,7 +551,7 @@ public class GasStationServiceimplTests {
 			gasStationService.saveGasStation(gsDto_invalidGps);
 			fail("Expected GPSDataException for invalid lat value");
 		} catch (GPSDataException e) {
-			assertEquals(e.getMessage(), "Invalid GPS Data");
+			assertEquals("Invalid GPS Data", e.getMessage());
 		}
 		
 		GS1.setLat(-91);
