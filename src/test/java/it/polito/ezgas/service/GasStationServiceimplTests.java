@@ -430,6 +430,17 @@ public class GasStationServiceimplTests {
 	}
 	
 	@Test
+	public void test_saveGasStation_nullPriceReportDtos() throws GPSDataException {
+		GS1Dto.setPriceReportDtos(null);
+		try {
+			gasStationService.saveGasStation(GS1Dto);
+			fail("Expected PriceException for null PriceReportDtos");
+		}catch(PriceException e) {
+			assertEquals(e.getMessage(), "Wrong Exception");
+		}
+	}
+	
+	@Test
 	public void test_getGasStationByCarSharing_existing() throws SQLException {
 		List<GasStationDto> gsDtoListDB = new ArrayList<>();
 		ResultSet rs = st.executeQuery(sqlSelectGSbyCarSharing);
