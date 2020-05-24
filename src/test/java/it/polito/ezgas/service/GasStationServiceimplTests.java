@@ -430,7 +430,7 @@ public class GasStationServiceimplTests {
 	}
 	
 	@Test
-	public void test_getGasStationByCarSharing() throws SQLException {
+	public void test_getGasStationByCarSharing_existing() throws SQLException {
 		List<GasStationDto> gsDtoListDB = new ArrayList<>();
 		ResultSet rs = st.executeQuery(sqlSelectGSbyCarSharing);
 		while(rs.next()) {
@@ -462,4 +462,11 @@ public class GasStationServiceimplTests {
 		assertEquals(gsDtoListDB.size(), gsDtoListRepository.size());
 	}
 	
+	
+	@Test
+	public void test_getGasStationByCarSharing_notExisting() throws SQLException {
+		List<GasStationDto> gsDtoListRepository = gasStationService.getGasStationByCarSharing("notExistingCarSharing");
+		
+		assertEquals(0, gsDtoListRepository.size());
+	}
 }
