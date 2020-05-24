@@ -34,7 +34,7 @@ public class UserRepositoryTests {
     static Statement st;
     static ResultSet backup;
     static String sqlSelectAllUsers = "SELECT * FROM USER";
-    static String sqlSelectUserWhereId = "SELECT * FROM USER WHERE ID=:id";
+    static String sqlSelectUserWhereId = "SELECT * FROM USER WHERE USER_ID=:id";
     static String sqlDropUserTable = "DROP TABLE IF EXISTS USER";
     static String sqlCreateUserTable = "CREATE TABLE USER " +
                                        "(user_id INTEGER AUTO_INCREMENT PRIMARY KEY, " +
@@ -158,15 +158,18 @@ public class UserRepositoryTests {
         // this may be prone to SQL injection, but the statement.setInt() method is not available for some reason
         // also, this is not really a security issue since we're only using this for testing
         ResultSet rs = st.executeQuery(sqlSelectUserWhereId.replace(":id", String.valueOf(id)));
-        User user = new User(
-                rs.getString("user_name"),
-                rs.getString("password"),
-                rs.getString("email"),
-                rs.getInt("reputation")
-        );
-        user.setUserId(rs.getInt("user_id"));
-        user.setAdmin(rs.getBoolean("admin"));
-        return user;
+        if (rs.next()) {
+            User user = new User(
+                    rs.getString("user_name"),
+                    rs.getString("password"),
+                    rs.getString("email"),
+                    rs.getInt("reputation")
+            );
+            user.setUserId(rs.getInt("user_id"));
+            user.setAdmin(rs.getBoolean("admin"));
+            return user;
+        }
+        return null;
     }
 
     @Test
@@ -206,13 +209,26 @@ public class UserRepositoryTests {
         }
     }
 
+    // should run last as this method changes the content of the database
     @Test
-    public void testSave() {
+    public void testSave() throws SQLException {
         // save new user -> insert in database
+        userRepository.save(nonExistingUser);
+        assertTrue(nonExistingUser.equals(selectById(nonExistingUserId)));
 
         // save existing user -> update database (the checks if it's possible are done by UserService, ignored here)
+        existingUser.setPassword("aNewPassword");
+        userRepository.save(existingUser);
+        assertTrue(existingUser.equals(selectById(existingUserId)));
 
-        // save incomplete user -> should probably fail?
+        // save incomplete user -> should probably fail? but it doesn't, since the only not null key is the id
+        Integer incompleteUserId = 4;
+        User incompleteUser = new User("username", null, "email", null);
+        incompleteUser.setUserId(incompleteUserId);
+        userRepository.save(incompleteUser);
+        // this below fails because the null value of the password doesn't have an equals() method
+        // TODO: verify where the checks that username, password, email, reputation are not null should happen - GUI, Service..?
+//        assertTrue(incompleteUser.equals(selectById(incompleteUserId)));
     }
 
     @Test
