@@ -3,11 +3,9 @@ package it.polito.ezgas.repository;
 import it.polito.ezgas.converter.UserConverter;
 import it.polito.ezgas.dto.UserDto;
 import it.polito.ezgas.entity.User;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -16,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.PostConstruct;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,6 +23,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserRepositoryTests {
 
     @Autowired
@@ -33,6 +33,7 @@ public class UserRepositoryTests {
     static Statement st;
     static ResultSet backup;
     static String sqlSelectAllUsers = "SELECT * FROM USER";
+    static String sqlSelectUserWhereId = "SELECT * FROM USER WHERE USER_ID=:id";
     static String sqlDropUserTable = "DROP TABLE IF EXISTS USER";
     static String sqlCreateUserTable = "CREATE TABLE USER " +
                                        "(user_id INTEGER AUTO_INCREMENT PRIMARY KEY, " +
@@ -135,6 +136,41 @@ public class UserRepositoryTests {
         db.close();
     }
 
+    private List<User> selectAll() throws SQLException {
+        ResultSet rs = st.executeQuery(sqlSelectAllUsers);
+        List<User> allUsers = new ArrayList<>();
+        while (rs.next()) {
+            User user = new User(
+                    rs.getString("user_name"),
+                    rs.getString("password"),
+                    rs.getString("email"),
+                    rs.getInt("reputation")
+                    );
+            user.setUserId(rs.getInt("user_id"));
+            user.setAdmin(rs.getBoolean("admin"));
+            allUsers.add(user);
+        }
+        return allUsers;
+    }
+
+    private User selectById(Integer id) throws SQLException {
+        // this may be prone to SQL injection, but the statement.setInt() method is not available for some reason
+        // also, this is not really a security issue since we're only using this for testing
+        ResultSet rs = st.executeQuery(sqlSelectUserWhereId.replace(":id", String.valueOf(id)));
+        if (rs.next()) {
+            User user = new User(
+                    rs.getString("user_name"),
+                    rs.getString("password"),
+                    rs.getString("email"),
+                    rs.getInt("reputation")
+            );
+            user.setUserId(rs.getInt("user_id"));
+            user.setAdmin(rs.getBoolean("admin"));
+            return user;
+        }
+        return null;
+    }
+
     @Test
     public void testFindById() {
         // id exists in database -> return User object
@@ -172,21 +208,35 @@ public class UserRepositoryTests {
         }
     }
 
+    // runs last (in alphabetical order) as this method changes the content of the database
     @Test
-    public void testSave() {
+    public void testSave() throws SQLException {
         // save new user -> insert in database
+        userRepository.save(nonExistingUser);
+        assertTrue(nonExistingUser.equals(selectById(nonExistingUserId)));
 
         // save existing user -> update database (the checks if it's possible are done by UserService, ignored here)
+        existingUser.setPassword("aNewPassword");
+        userRepository.save(existingUser);
+        assertTrue(existingUser.equals(selectById(existingUserId)));
 
-        // save incomplete user -> should probably fail?
+        // save incomplete user -> should probably fail? but it doesn't, since the only not null key is the id
+        Integer incompleteUserId = 4;
+        User incompleteUser = new User("username", null, "email", null);
+        incompleteUser.setUserId(incompleteUserId);
+        userRepository.save(incompleteUser);
+        // this below fails because the null value of the password doesn't have an equals() method
+        // TODO: verify where the checks that username, password, email, reputation are not null should happen - GUI, Service..?
+        //assertTrue(incompleteUser.equals(selectById(incompleteUserId)));
     }
 
     @Test
-    public void testDelete() {
+    public void testDelete() throws SQLException {
         // the delete method returns void, so no checks can be done directly
         // id exists -> user deleted from database (the checks if it's admin are done in UserService, ignored here)
         userRepository.delete(existingUserId);
-        List<User> users = userRepository.findAll();
+//        List<User> users = userRepository.findAll();
+        List<User> users = selectAll();
         assertEquals(1, users.size());
         assertTrue(users.get(0).equals(existingAdminUser));
 
