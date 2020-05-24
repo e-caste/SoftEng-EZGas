@@ -3,11 +3,9 @@ package it.polito.ezgas.repository;
 import it.polito.ezgas.converter.UserConverter;
 import it.polito.ezgas.dto.UserDto;
 import it.polito.ezgas.entity.User;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -25,6 +23,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles("test")
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserRepositoryTests {
 
     @Autowired
@@ -209,7 +208,7 @@ public class UserRepositoryTests {
         }
     }
 
-    // should run last as this method changes the content of the database
+    // runs last (in alphabetical order) as this method changes the content of the database
     @Test
     public void testSave() throws SQLException {
         // save new user -> insert in database
