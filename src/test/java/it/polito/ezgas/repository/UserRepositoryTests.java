@@ -216,11 +216,12 @@ public class UserRepositoryTests {
     }
 
     @Test
-    public void testDelete() {
+    public void testDelete() throws SQLException {
         // the delete method returns void, so no checks can be done directly
         // id exists -> user deleted from database (the checks if it's admin are done in UserService, ignored here)
         userRepository.delete(existingUserId);
-        List<User> users = userRepository.findAll();
+//        List<User> users = userRepository.findAll();
+        List<User> users = selectAll();
         assertEquals(1, users.size());
         assertTrue(users.get(0).equals(existingAdminUser));
 
