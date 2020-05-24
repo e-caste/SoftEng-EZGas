@@ -227,7 +227,7 @@ public class UserRepositoryTests {
         userRepository.save(incompleteUser);
         // this below fails because the null value of the password doesn't have an equals() method
         // TODO: verify where the checks that username, password, email, reputation are not null should happen - GUI, Service..?
-//        assertTrue(incompleteUser.equals(selectById(incompleteUserId)));
+        //assertTrue(incompleteUser.equals(selectById(incompleteUserId)));
     }
 
     @Test
