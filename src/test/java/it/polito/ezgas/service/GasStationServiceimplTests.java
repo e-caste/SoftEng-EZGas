@@ -231,7 +231,7 @@ public class GasStationServiceimplTests {
         for (GasStationDto gsDtoDB : gsDtoListDB) {
             for (GasStationDto gsDtoRep : gsDtoListRepository) {
                 if (gsDtoDB.getGasStationId().equals(gsDtoRep.getGasStationId())) {
-                	
+                		/*
         	            System.err.println(	"GASSTATIONID: " 		+ gsDtoDB.getGasStationId() + " " +
         	            					"CARSHARING: " 			+ gsDtoDB.getCarSharing() + " " +
         	            					"DIESELPRICE: "			+ gsDtoDB.getDieselPrice() + " " +
@@ -272,9 +272,7 @@ public class GasStationServiceimplTests {
 									        "SUPERPLUSPRICE: "		+ gsDtoRep.getSuperPlusPrice() + " " +
 									        "SUPERPRICE: "			+ gsDtoRep.getSuperPrice()
 									        );  
-        	        
-                	
-                	
+        	        */
                 	assertTrue(gsDtoDB.equals(gsDtoRep));
                     break;
                 }
@@ -540,6 +538,34 @@ public class GasStationServiceimplTests {
 	}	
 	
 	@Test
+	public void test_getGasStationsWithoutCoordinates_invalidGasType() {
+		 //GasolineType does not exist -> throw exception
+        try {
+            gasStationService.getGasStationsWithoutCoordinates("NotAValidGasType", "bah");
+            fail("Expected InvalidGastTypeException");
+        } catch (InvalidGasTypeException e) {
+            assertEquals(e.getMessage(), "Invalid Gasoline Type");
+        }
+	}
+	
+	@Test
+	public void test_getGasStationsWithoutCoordinates_existing() throws InvalidGasTypeException {
+		List<GasStationDto> gsDtos = new ArrayList<>();
+		
+		gsDtos = gasStationService.getGasStationsWithoutCoordinates("Diesel", "null");
+		assertEquals(2, gsDtos.size());
+		assertTrue(GS1Dto.equals(gsDtos.get(0)));
+		
+		gsDtos = gasStationService.getGasStationsWithoutCoordinates("LPG", "bah");
+		assertEquals(1, gsDtos.size());
+		assertTrue(GS1Dto.equals(gsDtos.get(0)));
+		
+		gsDtos = gasStationService.getGasStationsWithoutCoordinates("Super", "Enjoy");
+		assertEquals(1, gsDtos.size());
+		assertEquals("Eni", gsDtos.get(0).getGasStationName());
+	}
+	
+	@Test
 	public void test_saveGasStation_invalidGPS() throws PriceException {
 		GasStationDto gsDto_invalidGps;
 		
@@ -603,8 +629,6 @@ public class GasStationServiceimplTests {
 	@Test
 	public void test_saveGasStation_existing() throws PriceException, GPSDataException {
 		GasStationDto gsDto = gasStationService.saveGasStation(GS1Dto);
-		//assertEquals(gsDto.getGasStationId(), GS1id);
-		//assertEquals(gsDto.getGasStationName(), GS1Name);
 		assertTrue(gsDto.equals(GS1Dto));
 	}
 	
