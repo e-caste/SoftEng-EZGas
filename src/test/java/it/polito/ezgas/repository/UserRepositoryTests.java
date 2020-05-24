@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.PostConstruct;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class UserRepositoryTests {
     static Statement st;
     static ResultSet backup;
     static String sqlSelectAllUsers = "SELECT * FROM USER";
+    static String sqlSelectUserWhereId = "SELECT * FROM USER WHERE ID=:id";
     static String sqlDropUserTable = "DROP TABLE IF EXISTS USER";
     static String sqlCreateUserTable = "CREATE TABLE USER " +
                                        "(user_id INTEGER AUTO_INCREMENT PRIMARY KEY, " +
@@ -133,6 +135,38 @@ public class UserRepositoryTests {
 
         st.close();
         db.close();
+    }
+
+    private List<User> selectAll() throws SQLException {
+        ResultSet rs = st.executeQuery(sqlSelectAllUsers);
+        List<User> allUsers = new ArrayList<>();
+        while (rs.next()) {
+            User user = new User(
+                    rs.getString("user_name"),
+                    rs.getString("password"),
+                    rs.getString("email"),
+                    rs.getInt("reputation")
+                    );
+            user.setUserId(rs.getInt("user_id"));
+            user.setAdmin(rs.getBoolean("admin"));
+            allUsers.add(user);
+        }
+        return allUsers;
+    }
+
+    private User selectById(Integer id) throws SQLException {
+        // this may be prone to SQL injection, but the statement.setInt() method is not available for some reason
+        // also, this is not really a security issue since we're only using this for testing
+        ResultSet rs = st.executeQuery(sqlSelectUserWhereId.replace(":id", String.valueOf(id)));
+        User user = new User(
+                rs.getString("user_name"),
+                rs.getString("password"),
+                rs.getString("email"),
+                rs.getInt("reputation")
+        );
+        user.setUserId(rs.getInt("user_id"));
+        user.setAdmin(rs.getBoolean("admin"));
+        return user;
     }
 
     @Test
