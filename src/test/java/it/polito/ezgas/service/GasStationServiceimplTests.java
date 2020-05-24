@@ -85,8 +85,8 @@ public class GasStationServiceimplTests {
     
     static List<String> sqlInsertGSs = Arrays.asList(
 																			//id|car|dies_pr|gas_pr|gas_station_address|station_name|has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|r_dep|time|r_user|s_pr|s_p_pr|user_id
-											"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, NULL, 0, 1.864, 0, NULL)",
-            								"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  NULL, 0, 1.854, 0, NULL)"
+											"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, NULL, -1, 1.864, 0, NULL)",
+            								"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  NULL, -1, 1.854, 0, NULL)"
 
     );
 	
@@ -165,7 +165,7 @@ public class GasStationServiceimplTests {
 		GS1.setMethanePrice(0);
 		GS1.setReportDependability(0);
 		GS1.setReportTimestamp(null);
-		GS1.setReportUser(0);
+		GS1.setReportUser(-1);
 		GS1.setSuperPrice(1.864);
 		GS1.setSuperPlusPrice(0);
 		GS1.setGasStationId(GS1id);
@@ -175,8 +175,8 @@ public class GasStationServiceimplTests {
 		//GS1Dto = GasStationConverter.convertEntityToDto(GS1);
 		
 		
-		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, "bah", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, null, null, 0);
-		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0, 1.753, 0, null, null, 0);
+		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, "bah", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, -1, null, 0);
+		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0, 1.753, 0, -1, null, 0);
 	}
 
 	@Test
@@ -546,10 +546,12 @@ public class GasStationServiceimplTests {
 	@Test
 	public void test_saveGasStation_existing() throws PriceException, GPSDataException {
 		GasStationDto gsDto = gasStationService.saveGasStation(GS1Dto);
-		assertEquals(gsDto.getGasStationId(), GS1id);
-		assertEquals(gsDto.getGasStationName(), GS1Name);
-		assertEquals(Timestamp.valueOf(gsDto.getReportTimestamp()).getDate(), Timestamp.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date())).getDate());
+		//assertEquals(gsDto.getGasStationId(), GS1id);
+		//assertEquals(gsDto.getGasStationName(), GS1Name);
+		assertTrue(gsDto.equals(GS1Dto));
 	}
+	
+	//TODO test_saveGasStation_notExisting
 	
 	@Test
 	public void test_getGasStationByCarSharing_existing() throws SQLException {
