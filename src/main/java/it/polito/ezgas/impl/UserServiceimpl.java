@@ -81,8 +81,10 @@ public class UserServiceimpl implements UserService {
 			} catch (EmptyResultDataAccessException e) {
 				return false;
 			}
+			return true;
+		} else {
+			return false;
 		}
-		return true;
 	}
 
 	@Override

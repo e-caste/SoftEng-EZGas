@@ -227,10 +227,49 @@ This can be easily increased by tweaking the Python script used to generate the 
 
 
 | Unit name | JUnit test case |
-|--|--|
-|||
-|||
-||||
+| --------- | --------------- |
+| GetterSetterTests | testUser |
+|                   | testGasStation  |
+|                   | testUserDto     |
+|                   | testGasStationDto |
+|                   | testLoginDto    |
+|                   | testIdPw        |
+|                   | testPriceReportDto |
+| UserConverterTests| testConvertEntityToDto |
+|                   | testConvertDtoToEntity |
+|                   | testConvertEntityToLoginDto |
+| GasStationConverterTests | testConvertEntityToDto |
+|                          | testConvertDtoToEntity |
+| UserRepositoryTests | testFindById |
+|                     | testFindByEmail |
+|                     | testFindAll |
+|                     | testSave |
+|                     | testDelete |
+| UserServiceimplTests | testGetUserById |
+|                      | testSaveUser |
+|                      | testGetAllUsers |
+|                      | testDeleteUser |
+|                      | testLogin |
+|                      | testIncreaseUserReputation |
+|                      | testDecreaseUserReputation |
+| GasStationServiceimplTests | test_getGasStationById_existing |
+|                            | test_getGasStationById_notExisting |
+|                            | test_getAllGasStations |
+|                            | test_deleteGasStation_existing |
+|                            | test_deleteGasStation_notExisting |
+|                            | test_distance_nearest |
+|                            | test_distance_near |
+|                            | test_distance_far |
+|                            | test_distance_furthest |
+|                            | test_reportDependability_obsolescent |
+|                            | test_reportDependability_notObsolescent |
+|                            | test_reportDependability_sameDay_perfectUser |
+|                            | test_reportDependability_sameDay_worstUser |
+|                            | test_reportDependability_obsolescent_worstUser |
+|                            | test_getGasStationsByProximity_invalidGPS |
+|                            | test_saveGasStation_invalidGPS |
+|                            | test_getGasStationByCarSharing |
+
 
 ### Code coverage report
 
