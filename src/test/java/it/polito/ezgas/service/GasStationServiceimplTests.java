@@ -173,7 +173,7 @@ public class GasStationServiceimplTests {
 		GS1.setLon(7.659812);
 		GS1.setCarSharing(GS1carSharing);
 		//GS1Dto = GasStationConverter.convertEntityToDto(GS1);
-		
+		gasStationRepository.save(GS1);
 		
 		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, "bah", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, -1, null, 0);
 		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0, 1.753, 0, -1, null, 0);
@@ -284,7 +284,7 @@ public class GasStationServiceimplTests {
     public void test_deleteGasStation_existing() {
         //id exists -> deleted
     	try {
-    		assertTrue(gasStationServiceimpl.deleteGasStation(GS1id));
+    		assertTrue(gasStationService.deleteGasStation(GS1.getGasStationId()));
         } catch (InvalidGasStationException e) {
             fail("Existing GasStation Id was passed, unexpected InvalidGasStationException");
         }
