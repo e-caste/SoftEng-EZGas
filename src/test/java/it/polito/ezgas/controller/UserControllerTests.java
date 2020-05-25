@@ -280,7 +280,35 @@ public class UserControllerTests {
     }
 
     @Test
-    public void testLogin() {
+    public void testLogin() throws Exception {
+        // TODO: add checks for jsonPath
+        // TODO: fix "Did not find handler method for [/user/login]" -> always get 200 OK with no response body
+        // login existing admin user
+        mockMvc.perform(post(apiPrefix + LOGIN)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"user\":\"admin\",\"pw\":\"admin\"}")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("{\"userId\":1,\"userName\":\"admin\",\"password\":\"admin\",\"email\":\"admin@ezgas.com\",\"reputation\":5,\"admin\":true}"))
+                .andExpect(status().isOk())
+                .andDo(print());
+        separateTestsGraphically();
 
+        // login existing non-admin user
+        mockMvc.perform(post(apiPrefix + LOGIN)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"user\":\"asd\",\"pw\":\"asd\"}")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("{\"userId\":2,\"userName\":\"asd\",\"password\":\"asd\",\"email\":\"asd@asd.asd\",\"reputation\":0,\"admin\":false}"))
+                .andExpect(status().isOk())
+                .andDo(print());
+        separateTestsGraphically();
+
+        // login non-existing user
+        mockMvc.perform(post(apiPrefix + LOGIN)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"user\":\"doesNotExist\",\"pw\":\"doesNotExist\"}")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 }
