@@ -1,31 +1,61 @@
 package it.polito.ezgas.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polito.ezgas.BootEZGasApplication;
 import it.polito.ezgas.converter.UserConverter;
 import it.polito.ezgas.dto.UserDto;
 import it.polito.ezgas.entity.User;
-import it.polito.ezgas.repository.UserRepository;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import javax.annotation.PostConstruct;
+import java.sql.*;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = UserController.class)
+@ContextConfiguration(classes = BootEZGasApplication.class)
+@SpringBootTest
+@ActiveProfiles("test")
 public class UserControllerTests {
 
-    @Autowired
     MockMvc mockMvc;
 
-    @MockBean
-    UserRepository userRepository;
-
     @Autowired
-    ObjectMapper objectMapper;
+    WebApplicationContext webApplicationContext;
+
+    static Connection db;
+    static Statement st;
+    static ResultSet backup;
+    static String sqlSelectAllUsers = "SELECT * FROM USER";
+    static String sqlDropUserTable = "DROP TABLE IF EXISTS USER";
+    static String sqlCreateUserTable = "CREATE TABLE USER " +
+                                       "(user_id INTEGER AUTO_INCREMENT PRIMARY KEY, " +
+                                       "admin BOOLEAN, " +
+                                       "email VARCHAR(255), " +
+                                       "password VARCHAR(255), " +
+                                       "reputation INTEGER, " +
+                                       "user_name VARCHAR(255))";
+    static List<String> sqlInsertUsers = Arrays.asList(
+            "INSERT INTO USER VALUES (1, TRUE, 'admin@ezgas.com', 'admin', 5, 'admin')",
+            "INSERT INTO USER VALUES (2, FALSE, 'asd@asd.asd', 'asd', 0, 'asd')"
+    );
 
     Integer existingAdminUserId, existingUserId, nonExistingUserId;
     Boolean existingAdminUserAdmin, existingUserAdmin, nonExistingUserAdmin;
@@ -34,6 +64,8 @@ public class UserControllerTests {
 
     @Before  // run before each test
     public void setUp() {
+
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         // admin user with existing id in the database
         existingAdminUser = new User("admin", "admin", "admin@ezgas.com", 5);
@@ -62,14 +94,36 @@ public class UserControllerTests {
 //        userService.getAllUsers().forEach(System.out::println);
     }
 
+    @PostConstruct
+    @BeforeClass  // run only once
+    public static void setUpDatabase() throws SQLException {
+        db = DriverManager.getConnection("jdbc:h2:./data/test", "sa", "password");
+        st = db.createStatement();
+//        backup = st.executeQuery(sqlSelectAllUsers);
+        st.executeUpdate(sqlDropUserTable);
+        st.executeUpdate(sqlCreateUserTable);
+        for (String sql : sqlInsertUsers) {
+            st.executeUpdate(sql);
+        }
+    }
+
+    @AfterClass  // run only once
+    public static void tearDown() throws SQLException {
+        st.close();
+        db.close();
+    }
+
     @Test
     public void testGetUserById() {
 
     }
 
     @Test
-    public void testGetAllUsers() {
-
+    public void testGetAllUsers() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/getAllUsers").accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
+                .andDo(print());
     }
 
     @Test
