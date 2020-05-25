@@ -26,8 +26,11 @@ import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
 
+import static it.polito.ezgas.utils.Constants.*;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = BootEZGasApplication.class)
@@ -56,6 +59,8 @@ public class UserControllerTests {
             "INSERT INTO USER VALUES (1, TRUE, 'admin@ezgas.com', 'admin', 5, 'admin')",
             "INSERT INTO USER VALUES (2, FALSE, 'asd@asd.asd', 'asd', 0, 'asd')"
     );
+
+    static String apiPrefix = "/user";
 
     Integer existingAdminUserId, existingUserId, nonExistingUserId;
     Boolean existingAdminUserAdmin, existingUserAdmin, nonExistingUserAdmin;
@@ -90,8 +95,6 @@ public class UserControllerTests {
         nonExistingUser.setUserId(nonExistingUserId);
         nonExistingUser.setAdmin(nonExistingUserAdmin);
         nonExistingUserDto = UserConverter.convertEntityToDto(nonExistingUser);
-
-//        userService.getAllUsers().forEach(System.out::println);
     }
 
     @PostConstruct
@@ -99,7 +102,6 @@ public class UserControllerTests {
     public static void setUpDatabase() throws SQLException {
         db = DriverManager.getConnection("jdbc:h2:./data/test", "sa", "password");
         st = db.createStatement();
-//        backup = st.executeQuery(sqlSelectAllUsers);
         st.executeUpdate(sqlDropUserTable);
         st.executeUpdate(sqlCreateUserTable);
         for (String sql : sqlInsertUsers) {
@@ -120,9 +122,9 @@ public class UserControllerTests {
 
     @Test
     public void testGetAllUsers() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/user/getAllUsers").accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(2)))
+        mockMvc.perform(get(apiPrefix + GET_ALL_USERS).accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
                 .andDo(print());
     }
 
