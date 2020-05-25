@@ -122,7 +122,10 @@ public class UserControllerTests {
 
     @Test
     public void testGetAllUsers() throws Exception {
-        mockMvc.perform(get(apiPrefix + GET_ALL_USERS).accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(
+                        get(apiPrefix + GET_ALL_USERS)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content("[{\"userId\":1,\"userName\":\"admin\",\"password\":\"admin\",\"email\":\"admin@ezgas.com\",\"reputation\":5,\"admin\":true},{\"userId\":2,\"userName\":\"asd\",\"password\":\"asd\",\"email\":\"asd@asd.asd\",\"reputation\":0,\"admin\":false}]"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andDo(print());
