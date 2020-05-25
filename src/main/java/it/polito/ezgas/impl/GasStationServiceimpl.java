@@ -17,6 +17,7 @@ import it.polito.ezgas.entity.GasStation;
 import it.polito.ezgas.entity.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import exception.GPSDataException;
@@ -156,8 +157,12 @@ public class GasStationServiceimpl implements GasStationService {
 		if(gasStation == null) {
 			throw new InvalidGasStationException("GasStation not found");
 		}
-		gasStationRepository.delete(gasStationId);
-		return null;
+		try {
+			gasStationRepository.delete(gasStationId);
+		} catch (EmptyResultDataAccessException e) {
+			return false;
+		}
+		return true;
 	}
 	
 	
@@ -281,7 +286,7 @@ public class GasStationServiceimpl implements GasStationService {
 			}
 		}
 
-		return gasStationDtos;
+		return gsDtos;
 	}
 
 	@Override

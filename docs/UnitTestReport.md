@@ -226,49 +226,15 @@ This can be easily increased by tweaking the Python script used to generate the 
     <For traceability write the class and method name that contains the test case>
 
 
-| Unit name | JUnit test case |
-| --------- | --------------- |
-| GetterSetterTests | testUser |
-|                   | testGasStation  |
-|                   | testUserDto     |
-|                   | testGasStationDto |
-|                   | testLoginDto    |
-|                   | testIdPw        |
-|                   | testPriceReportDto |
-| UserConverterTests| testConvertEntityToDto |
-|                   | testConvertDtoToEntity |
-|                   | testConvertEntityToLoginDto |
-| GasStationConverterTests | testConvertEntityToDto |
-|                          | testConvertDtoToEntity |
-| UserRepositoryTests | testFindById |
-|                     | testFindByEmail |
-|                     | testFindAll |
-|                     | testSave |
-|                     | testDelete |
-| UserServiceimplTests | testGetUserById |
-|                      | testSaveUser |
-|                      | testGetAllUsers |
-|                      | testDeleteUser |
-|                      | testLogin |
-|                      | testIncreaseUserReputation |
-|                      | testDecreaseUserReputation |
-| GasStationServiceimplTests | test_getGasStationById_existing |
-|                            | test_getGasStationById_notExisting |
-|                            | test_getAllGasStations |
-|                            | test_deleteGasStation_existing |
-|                            | test_deleteGasStation_notExisting |
-|                            | test_distance_nearest |
-|                            | test_distance_near |
-|                            | test_distance_far |
-|                            | test_distance_furthest |
-|                            | test_reportDependability_obsolescent |
-|                            | test_reportDependability_notObsolescent |
-|                            | test_reportDependability_sameDay_perfectUser |
-|                            | test_reportDependability_sameDay_worstUser |
-|                            | test_reportDependability_obsolescent_worstUser |
-|                            | test_getGasStationsByProximity_invalidGPS |
-|                            | test_saveGasStation_invalidGPS |
-|                            | test_getGasStationByCarSharing |
+| Unit name      | JUnit test case    |
+| ---------------| ---------------    |
+| User           | testUser           |
+| GasStation     | testGasStation     |
+| UserDto        | testUserDto        |
+| LoginDto       | testLoginDto       |
+| GasStationDto  | testGasStationDto  |
+| IdPw           | testIdPw           |
+| PriceReportDto | testPriceReportDto |
 
 
 ### Code coverage report
@@ -282,11 +248,18 @@ This can be easily increased by tweaking the Python script used to generate the 
     <Identify significant loops in the units and reports the test cases
     developed to cover zero, one or multiple iterations >
 
-|Unit name | Loop rows | Number of iterations | JUnit test case |
-|---|---|---|---|
-|||||
-|||||
-||||||
-
-
+|Unit name              | Loop rows | Number of iterations | JUnit test case |
+|-----------------------|-----------|----------------------|-----------------|
+|GasStationServiceimpl  | | | |
+| getAllGasStations | lines 147-149 | multiple | test_getAllGasStations |
+| getGasStationsByGasolineType | lines 172-200 | zero     | |
+|                              |               | one      | |
+|                              |               | multiple | |
+| getGasStationsWithCoordinates | lines 253-262 | zero     | test_getGasStationsWithCoordinates_notExisting |
+|                               |               | one      | test_getGasStationsWithCoordinates_existing |
+| getGasStationsWithoutCoordinates | lines 276-282 | one   | test_getGasStationsWithoutCoordinates_existing |
+| getGasStationByCarSharing | lines 341-343 | zero      | test_getGasStationByCarSharing_existing |
+|                           |               | one       | test_getGasStationByCarSharing_notExisting |
+|UserServiceimpl  | | | |
+| getAllUsers | lines 66-68 | multiple     | testGetAllUsers |
 

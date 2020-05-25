@@ -26,6 +26,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.junit.runner.RunWith;
 
+<<<<<<< HEAD
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -46,6 +47,10 @@ import java.util.Optional;
 @ActiveProfiles("test")
 
 @WebMvcTest(controllers = GasStationController)
+=======
+@RunWith(SpringRunner.class)
+//@WebMvcTest(controllers = GasStationController)
+>>>>>>> aabdae3b0a0cd5bd3c99868046f1de1245a7017e
 public class GasStationControllerTests {
     @Autowired
     MockMvc mockMvc;
