@@ -4,11 +4,9 @@ import it.polito.ezgas.BootEZGasApplication;
 import it.polito.ezgas.converter.UserConverter;
 import it.polito.ezgas.dto.UserDto;
 import it.polito.ezgas.entity.User;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -36,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = BootEZGasApplication.class)
 @SpringBootTest
 @ActiveProfiles("test")
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserControllerTests {
 
     MockMvc mockMvc;
@@ -115,6 +114,10 @@ public class UserControllerTests {
         db.close();
     }
 
+    private void separateTestsGraphically() {
+        System.err.println("-----------------------------------------------------------------------------------------");
+    }
+
     @Test
     public void testGetUserById() throws Exception {
         // user exists -> JSON returned
@@ -123,7 +126,7 @@ public class UserControllerTests {
                 .content("{\"userId\":1,\"userName\":\"admin\",\"password\":\"admin\",\"email\":\"admin@ezgas.com\",\"reputation\":5,\"admin\":true}"))
             .andExpect(status().isOk())
             .andDo(print());
-        System.err.println("-----------------------------------------------------------");
+        separateTestsGraphically();
 
         // user exists -> JSON returned
         mockMvc.perform(get(apiPrefix + GET_USER_BY_ID.replace("{userId}", String.valueOf(existingUserId)))
@@ -131,9 +134,9 @@ public class UserControllerTests {
                 .content("{\"userId\":2,\"userName\":\"asd\",\"password\":\"asd\",\"email\":\"asd@asd.asd\",\"reputation\":0,\"admin\":false}"))
                 .andExpect(status().isOk())
                 .andDo(print());
-        System.err.println("-----------------------------------------------------------");
+        separateTestsGraphically();
 
-        // user does not exist -> empty JSON returned, no explicit error message nor status different from 200
+        // user does not exist -> no JSON returned, no explicit error message nor status different from 200
         mockMvc.perform(get(apiPrefix + GET_USER_BY_ID.replace("{userId}", String.valueOf(nonExistingUserId)))
                 .accept(MediaType.APPLICATION_JSON)
                 .content(""))
@@ -152,9 +155,14 @@ public class UserControllerTests {
                 .andDo(print());
     }
 
+    // run as last test, since it modifies the database
     @Test
     public void testSaveUser() {
+        // save new user
 
+        separateTestsGraphically();
+
+        // update existing user
     }
 
     @Test
