@@ -635,6 +635,36 @@ public class GasStationServiceimplTests {
 	//TODO test_saveGasStation_notExisting
 	
 	@Test
+	public void test_setReport_invalidPrice() throws InvalidGasStationException, InvalidUserException {
+		try {
+			gasStationService.setReport(GS1.getGasStationId(), GS1.getDieselPrice(), GS1.getSuperPrice(), 1.986, GS1.getGasPrice(), GS1.getMethanePrice(), 1);
+			fail("Expected PriceException");
+		}catch(PriceException e){
+			assertEquals("Wrong Price", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void test_setReport_invalidGasStation() throws InvalidUserException, PriceException {
+		try {
+			gasStationService.setReport(GS1.getGasStationId(), GS1.getDieselPrice(), GS1.getSuperPrice(), GS1.getSuperPlusPrice(), GS1.getGasPrice(), GS1.getMethanePrice(), 1);
+			fail("Expected InvalidGasStationException");
+		}catch(InvalidGasStationException e){
+			assertEquals("Gas Station not found", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void test_setReport_invalidUser() throws PriceException, InvalidGasStationException {
+		try {
+			gasStationService.setReport(GS1.getGasStationId(), GS1.getDieselPrice(), GS1.getSuperPrice(), GS1.getSuperPlusPrice(), GS1.getGasPrice(), GS1.getMethanePrice(), 1000);
+			fail("Expected InvalidUserException");
+		}catch(InvalidUserException e){
+			assertEquals("User not found", e.getMessage());
+		}
+	}
+	
+	@Test
 	public void test_getGasStationByCarSharing_existing() throws SQLException {
 		List<GasStationDto> gsDtoListDB = new ArrayList<>();
 		ResultSet rs = st.executeQuery(sqlSelectGSbyCarSharing);
