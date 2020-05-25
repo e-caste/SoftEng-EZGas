@@ -255,16 +255,11 @@ This can be easily increased by tweaking the Python script used to generate the 
 | getGasStationsByGasolineType | lines 172-200 | zero     | |
 |                              |               | one      | |
 |                              |               | multiple | |
-| getGasStationsByProximity | lines 213-217 | zero     | |
-|                           |               | one      | |
-|                           |               | multiple | |
-| getGasStationsWithCoordinates | lines 253-262 | zero     | |
-|                               |               | one      | |
-|                               |               | multiple | |
-| getGasStationsWithoutCoordinates | lines 276-282 | zero     | |
-|                                  |               | one      | |
-|                                  |               | multiple | |
-| getGasStationByCarSharing | lines 341-343 | one      | test_getGasStationByCarSharing |
+| getGasStationsWithCoordinates | lines 253-262 | zero     | test_getGasStationsWithCoordinates_notExisting |
+|                               |               | one      | test_getGasStationsWithCoordinates_existing |
+| getGasStationsWithoutCoordinates | lines 276-282 | one   | test_getGasStationsWithoutCoordinates_existing |
+| getGasStationByCarSharing | lines 341-343 | zero      | test_getGasStationByCarSharing_existing |
+|                           |               | one       | test_getGasStationByCarSharing_notExisting |
 |UserServiceimpl  | | | |
 | getAllUsers | lines 66-68 | multiple     | testGetAllUsers |
 

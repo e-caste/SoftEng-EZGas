@@ -281,7 +281,7 @@ public class GasStationServiceimpl implements GasStationService {
 			}
 		}
 
-		return gasStationDtos;
+		return gsDtos;
 	}
 
 	@Override
