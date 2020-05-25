@@ -116,8 +116,29 @@ public class UserControllerTests {
     }
 
     @Test
-    public void testGetUserById() {
+    public void testGetUserById() throws Exception {
+        // user exists -> JSON returned
+        mockMvc.perform(get(apiPrefix + GET_USER_BY_ID.replace("{userId}", String.valueOf(existingAdminUserId)))
+                .accept(MediaType.APPLICATION_JSON)
+                .content("{\"userId\":1,\"userName\":\"admin\",\"password\":\"admin\",\"email\":\"admin@ezgas.com\",\"reputation\":5,\"admin\":true}"))
+            .andExpect(status().isOk())
+            .andDo(print());
+        System.err.println("-----------------------------------------------------------");
 
+        // user exists -> JSON returned
+        mockMvc.perform(get(apiPrefix + GET_USER_BY_ID.replace("{userId}", String.valueOf(existingUserId)))
+                .accept(MediaType.APPLICATION_JSON)
+                .content("{\"userId\":2,\"userName\":\"asd\",\"password\":\"asd\",\"email\":\"asd@asd.asd\",\"reputation\":0,\"admin\":false}"))
+                .andExpect(status().isOk())
+                .andDo(print());
+        System.err.println("-----------------------------------------------------------");
+
+        // user does not exist -> empty JSON returned, no explicit error message nor status different from 200
+        mockMvc.perform(get(apiPrefix + GET_USER_BY_ID.replace("{userId}", String.valueOf(nonExistingUserId)))
+                .accept(MediaType.APPLICATION_JSON)
+                .content(""))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test
