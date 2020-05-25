@@ -242,6 +242,7 @@ public class UserControllerTests {
                 .andDo(print());
     }
 
+    // TODO: add test case for non-existing user to 2 following tests
     @Test
     public void testIncreaseUserReputation() throws Exception {
         // increase from 0 -> return 1
