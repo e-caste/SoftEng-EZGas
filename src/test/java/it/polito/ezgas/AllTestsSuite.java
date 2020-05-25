@@ -1,5 +1,6 @@
 package it.polito.ezgas;
 
+import it.polito.ezgas.controller.ControllerTestSuite;
 import it.polito.ezgas.converter.ConverterTestSuite;
 import it.polito.ezgas.nodependencies.GetterSetterTests;
 import it.polito.ezgas.repository.RepositoryTestSuite;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
         EZGasApplicationTests.class,
         GetterSetterTests.class,
         ConverterTestSuite.class,
+        ControllerTestSuite.class,
         RepositoryTestSuite.class,
         ServiceTestSuite.class
 })
