@@ -3,9 +3,9 @@
 
 Authors: Enrico Castelli s280124, Augusto Maria Guerriero s278018, Francesca Ponzetta s276535, Monica Rungi s276979
 
-Date: 04/05/2020
+Date: 19/05/2020
 
-Version: 1
+Version: 2
 
 
 # Contents
@@ -261,211 +261,120 @@ BackgroundColor #FAEBDA/FFA563
 ArrowColor #26424F
 BorderColor #26424F
 }
+scale 1/3
 
     class BootEZGasApplication {
-        + main()
-        + setupWithData()
+        + main(String): void
+        + setupWithData(): void
     }
 
     package "it.polito.ezgas.entity" {
-            class AnonymousUser {
-             - userId
-             - geoPoint
-            __
-            == Getter and Setter ==
-                + getUserId()
-                + setUserId()
-                + getGeoPoint()
-                + setGeoPoint()
-            }
-            
             class User {
-             - userName
-             - password
-             - email
-             - reputation
-             - isAdmin {y/n}
+             - userId: Integer
+             - userName: String
+             - password: String
+             - email: String
+             - reputation: Integer
+             - admin {true/false}
             __
-            == Getter and Setter ==
-                + getUserName()
-                + setUserName()
-                + getPassword()
-                + setPassword()
-                + getEmail()
-                + setEmail()
-                + getIsAdmin()
-                + setIsAdmin()
-            ==Remove==
-                + removeUser(): Boolean
-            }
-            
-            class Administrator {
-            __
-            ==Gas Station Managing==
-                + addGasStation(): Boolean
-                + editGasStation(): Boolean
-                + removeGasStation(): Boolean
-            ==User Managing==
-                + addUser(): Boolean
-                + editUser(): Boolean
-                + removeUser(UserDto): Boolean
-                + banUser(): Boolean
+            ==
+                + equals(User): Boolean
+            == Getters and Setters ==
             }
             
             class GasStation {
             ..GS info..
-             - gasStationId
-             - gasStationName
-             - gasStationAddress
-             - geoPoint
+             - gasStationId: Integer
+             - gasStationName: String
+             - gasStationAddress: String
+             - lat: Double
+             - lon: Double
+            ..Report..
+             - ReportUser: Integer
+             - ReportTimestamp: String
+             - ReportDependability: Double
             ..
-             - priceReport
-            ..
-             - carSharing
-             - user
+             - carSharing: String
+             - user: User
             ..Boolean info..
-             - hasDiesel
-             - hasGasoline
-             - hasPremiumDiesel
-             - hasPremiumGasoline
-             - hasLPG
-             - hasMethane
+             - hasDiesel: Boolean
+             - hasGasoline: Boolean
+             - hasPremiumDiesel: Boolean
+             - hasPremiumGasoline: Boolean
+             - hasLPG: Boolean
+             - hasMethane: Boolean
             ..Price info..
-             - dieselPrice
-             - superPrice
-             - superPlusPrice
-             - gasPrice
-             - methanePrice
+             - dieselPrice: Double
+             - superPrice: Double
+             - superPlusPrice: Double
+             - gasPrice: Double
+             - methanePrice: Double
             __
-            ==Getter and Setter==
-                + getGasStationId()
-                + setGasStationId()
-                + getGasStationName()
-                + setGasStationName()
-                + getGasStationAddress()
-                + setGasStationAddress()
-                + getGeoPoint()
-                + setGeoPoint()
-            ..
-                + getPriceReport()
-                + setPriceReport()
-            ..
-                + getCarSharing()
-                + setCarSharing()
-                + getUser()
-                + setUser()
-            ..
-                + getHasDiesel()
-                + setHasDiesel()
-                + getHasSuper()
-                + setHasSuper()
-                + getHasSuperPlus()
-                + setHasSuperPlus()
-                + getHasGas()
-                + setHasGas()
-                + getHasMethane()
-                + setHasMethane()
-            ..
-                + getDieselPrice()
-                + setDieselPrice()
-                + getSuperPrice()
-                + setSuperPrice()
-                + getSuperPlusPrice()
-                + setSuperPlusPrice()
-                + getGasPrice()
-                + setGasPrice()
-                + getMethanePrice()
-                + setMethanePrice()
-            }
-            
-            class GeoPoint {
-             + latitude
-             + longitude
+            == Getters and Setters ==
             }
             
             class PriceReport {
-             - priceReportId
-             - user
-             - priceReportDependability
+             - priceReportId: Integer
+             - user: User
             ..Type of Fuel..
-             - dieselPrice
-             - superPrice
-             - superPlusPrice
-             - gasPrice
-             - methanePrice
+             - dieselPrice: Double
+             - superPrice: Double
+             - superPlusPrice: Double
+             - gasPrice: Double
+             ~ methanePrice: Double
+             
             __
-            ==Getter and Setter==
-                + getPriceReportId()
-                + setPriceReportId()
-                + getUser()
-                + setUser()
-                + getPriceReportDependability()
-                + setPriceReportDependability()
-            ..Diesel..
-                + getDieselPrice()
-                + setDieselPrice()
-            ..Super..
-                + getSuperPrice()
-                + setSuperPrice()
-            ..Super Plus..
-                + getSuperPlusPrice()
-                + setSuperPlusPrice()
-            ..Gas..
-                + getGasPrice()
-                + setGasPrice()
-            ..Methane..
-                + getMethanePrice()
-                + setMethanePrice()
+            == Getters and Setters ==
+            ==
+                + equals(GaStation): Boolean
             }
     
             GasStation  -- "0..1" PriceReport
             User "*" -- GeoPoint
             GasStation "*" -- GeoPoint
             User "*" -- PriceReport
-    
-            User -|> AnonymousUser : extends
-            Administrator -|> User : extends
+           
         }
     
     package "it.polito.ezgas.service" {
-       interface "GasStationService" as GSS
-       interface "UserService" as US
-
-        package "it.polito.ezgas.service.impl" {
-            class GasStationServiceImpl implements GSS {
-            __
-            ==Getter and Setter==
-                + getGasStationById(): GasStationDto
-                + getAllGasStations(): List<GasStationDto>
-                + getGasStationsByGasolineType(): List<GasStationDto>
-                + getGasStationsByProximity(): List<GasStationDto>
-                + getGasStationsByCarSharing(): List<GasStationDto>
-                + getGasStationsWithCoordinates(): List<GasStationDto>
-                + getGasStationsWithoutCoordinates(): List<GasStationDto>          
-                
-                + setReport(): void
-            ==Save==
-                + saveGasStation(): GasStationDto
-            ==Delete==
-                + deleteGasStationById(): Boolean
-            }
-            class UserServiceImpl implements US {
-            __
-            ==Getter==
-                + getUserById(): UserDto
-                + getAllUsers(): List<UserDto>
-            ==Save==
-                + saveUser(): UserDto
-            ==Delete==
-                + deleteUserById(): Boolean 
-                + login(): LoginDto
-            ==Reputation==
-                + increaseUserReputation(): Integer
-                + decreaseUserReputation(): Integer
-            }
+       interface "GasStationService" as GSS {
+       == Getters ==
+           + getGasStationsByGasolineType(String): List<GasStationDto>
+           + getGasStationsByProximity(double, double): List<GasStationDto> 
+           + getGasStationsWithCoordinates(double, double, String, String): List<GasStationDto> 
+           + getGasStationsWithoutCoordinates(String, String): List<GasStationDto>
+           + getGasStationsByCarSharing(String): List<GasStationDto> 
+       == Setter ==
+           + setReport(Integer, double, double, double, double, double, Integer): void
+       == Save ==
+           + saveGasStation(GasStationDto): GasStationDto
+       == Delete ==
+           + deleteGasStation(Integer): Boolean
+       }
+        
+       interface "UserService" as US {
+        == Getter ==
+            + getUserById(Integer): UserDto
+        == Save ==
+            + saveUser(): UserDto
+        == Delete ==
+            + deleteUser(Integer): Boolean 
+        ==
+            + login(IdPw): LoginDto
+        == Reputation ==
+            + increaseUserReputation(Integer): Integer
+            + decreaseUserReputation(Integer): Integer
         }
     }
     
+    package "it.polito.ezgas.service.impl" {
+        class GasStationServiceImpl implements GSS{
+            + reportDependability(String, String, Integer): Double
+            + distance(Double,Double,Double,Double): Double
+        }
+        class UserServiceImpl implements US
+    }
+
     package "it.polito.ezgas.utils" {
         interface Constants {
          + GET_USER_BY_ID
@@ -501,270 +410,173 @@ BorderColor #26424F
         class GasStationController {
          - gasStationService
         __
-        ==Getter==
-            + getGasStationById(): GasStationDto
+        == Getters ==
+            + getGasStationById(Integer): GasStationDto 
             + getAllGasStations(): List<GasStationDto>
             + deleteGasStationById(): Boolean
-            + getGasStationsByGasolineType(): List<GasStationDto>
-            + getGasStationsByProximity(): List<GasStationDto>
+            + getGasStationsByGasolineType(String): List<GasStationDto>
+            + getGasStationsByProximity(Double, Double): List<GasStationDto>
             + getGasStationsByCarSharing(): List<GasStationDto>
-            + getGasStationsWithCoordinates(): List<GasStationDto>
+            + getGasStationsWithCoordinates(Double, Double): List<GasStationDto>
             + getGasStationsWithoutCoordinates(): List<GasStationDto>
-        ==Setter==
-            + setReport(): void
-        ==Save==
-            + saveGasStation(): void
+        == Setters ==
+            + setGasStationReport(Integer): void
+        == Save ==
+            + saveGasStation(GasStationDto): void
+        == Delete ==
+            + deleteUser(Integer): void
         }
         
         class UserController {
          - userService
         __
-        ==Getter==
-            + getUserById(): UserDto
-            + saveUser(): UserDto
+        == Getters ==
+            + getUserById(Integer): UserDto
             + getAllUsers(): List<UserDto>
-        ==Delete==
-            + deleteUserById(): Boolean
-        ==Login==
-            + login(): LoginDto
-        ==Reputation==
-            + increaseUserReputation(): Integer
-            + decreaseUserReputation(): Integer
+        == Save == 
+            + saveUser(UserDto): UserDto
+        == Delete ==
+            + deleteUserById(Integer): Boolean
+        == Login ==
+            + login(IdPw): LoginDto
+        == Reputation ==
+            + increaseUserReputation(Integer): Integer
+            + decreaseUserReputation(Integer): Integer
         }
+
+        HomeController --"*" UserController
+        HomeController --"*"GasStationController
     }
     
     package "it.polito.ezgas.converter" {
         class GasStationConverter {
-            + convertEntityToDto(): GasStationDto
-            + convertDtoToEntity(): GasStation
+            + convertEntityToDto(GasStation): GasStationDto
+            + convertDtoToEntity(GasStationDto): GasStation
         }
         class PriceReportConverter {
-            + convertEntityToDto(): PriceReportDto
-            + convertDtoToEntity(): PriceReport
-        }
-        class AnonymousUserConverter {
-            + convertEntityToDto(): AnonymousUserDto
-            + convertDtoToEntity(): AnonymousUser
+            + convertEntityToDto(PriceReport): PriceReportDto
+            + convertDtoToEntity(PriceReportDto): PriceReport
         }
         class UserConverter {
-            + convertEntityToDto(): UserDto
-            + convertDtoToEntity(): User
+            + convertEntityToDto(User): UserDto
+            + convertDtoToEntity(UserDto): User
+            + convertEntityToLoginDto(User): LoginDto 
         }
-        class AdministratorConverter {
-            + convertEntityToDto(): AdministratorDto
-            + convertDtoToEntity(): Administrator
-        }
+
+        GasStationConverter --"0..1" PriceReportConverter
+        UserConverter "*"-- PriceReportConverter
+
     }
     
     package "it.polito.ezgas.dto" {
         class UserDto {
-         - userId
-         - userName
-         - password
-         - email
-         - reputation
-         - isAdmin {y/n}
+         - userId: Integer
+         - userName: String
+         - password: String
+         - email: String
+         - reputation: Integer
+         - admin {TRUE/FALSE}
         __
-        ==Getter and Setter==
-            + getUserId()
-            + setUserId()
-            + getUserName():
-            + setUserName()
-            + getPassword()
-            + setPassword()
-            + getEmail()
-            + setEmail()
-            + getReputation()
-            + setReputation()
-            + getIsAdmin()
-            + setIsAdmin()
+        == Getters and Setters ==
         }
 
         class GasStationDto {
         ..GS info..
-         ~ gasStationId
-         ~ gasStationName
-         ~ gasStationAddress
-         ~ geoPoint
+         ~ gasStationId: Integer
+         ~ gasStationName: String
+         ~ gasStationAddress: String
+         ~ lat: Double
+         ~ lon: Double
         ..
-         ~ priceReport
+         ~ reportUser: Integer
+         ~ reportTimestamp: String
+         ~ reportDependability: Double
         ..
-         - carSharing
-         ~ user
+         - carSharing: String
+         ~ userDto: UserDto
         ..boolean info..
-         ~ hasDiesel
-         ~ hasGasoline
-         ~ hasPremiumDiesel
-         ~ hasPremiumGasoline
-         ~ hasLPG
-         ~ hasMethane
+         ~ hasDiesel: Boolean
+         ~ hasGasoline: Boolean
+         ~ hasPremiumDiesel: Boolean
+         ~ hasPremiumGasoline: Boolean
+         ~ hasLPG: Boolean
+         ~ hasMethane: Boolean
         ..
-         ~ dieselPrice
-         ~ superPrice
-         ~ superPlusPrice
-         ~ gasPrice
-         ~ methanePrice
+         ~ dieselPrice: Double
+         ~ superPrice: Double
+         ~ superPlusPrice: Double
+         ~ gasPrice: Double
+         ~ methanePrice: Double
         __
-        ==Getter and Setter==
-            + getGasStationId()
-            + setGasStationId()
-            + getGasStationName()
-            + setGasStationName()
-            + getGasStationAddress()
-            + setGasStationAddress()
-            + getGeoPoint()
-            + setGeoPoint()
-        ..
-            + getPriceReport()
-            + setPriceReport()
-        ..
-            + getCarSharing()
-            + setCarSharing()
-            + getUser()
-            + setUser()
-        ..
-            + getHasDiesel()
-            + setHasDiesel()
-            + getHasSuper()
-            + setHasSuper()
-            + getHasSuperPlus()
-            + setHasSuperPlus()
-            + getHasGas()
-            + setHasGas()
-            + getHasMethane()
-            + setHasMethane()
-        ..
-            + getDieselPrice()
-            + setDieselPrice()
-            + getSuperPrice()
-            + setSuperPrice()
-            + getSuperPlusPrice()
-            + setSuperPlusPrice()
-            + getGasPrice()
-            + setGasPrice()
-            + getMethanePrice()
-            + setMethanePrice()
+        == Getters and Setters ==
         }
         
         class PriceReportDto {
-         ~ priceReportId
-         ~ user
-         ~ priceReportDependability
-         ..Type of Fuel..
-         ~ dieselPrice
-         ~ superPrice
-         ~ superPlusPrice
-         ~ gasPrice
-         ~ methanePrice
+         ~ priceReportId: Integer
+         ~ user: User
+         ..Types of Fuel..
+         ~ dieselPrice: Double
+         ~ superPrice: Double
+         ~ superPlusPrice: Double
+         ~ gasPrice: Double
+         ~ methanePrice: Double
+        
         __
-        ==Getter and Setter==
-            + getPriceReportId()
-            + setPriceReportId()
-            + getUser()
-            + setUser()
-            + getPriceReportDependability()
-            + setPriceReportDependability()
-        ..Diesel..
-            + getDieselPrice()
-            + setDieselPrice()
-        ..Super..
-            + getSuperPrice()
-            + setSuperPrice()
-        ..Super Plus..
-            + getSuperPlusPrice()
-            + setSuperPlusPrice()
-        ..Gas..
-            + getGasPrice()
-            + setGasPrice()
-        ..Methane..
-            + getMethanePrice()
-            + setMethanePrice()
+        == Getters and Setters ==
         }
 
         class LoginDto {
-         ~ userId
-         ~ userName
-         ~ token
-         ~ email
-         ~ reputation
-         ~ isAdmin {y/n}
+         ~ userId: Integer
+         ~ userName: String
+         ~ token: String
+         ~ email: String
+         ~ reputation: Integer
+         ~ admin {TRUE/FALSE}
         __
-        ==Getter and Setter==
-            + getUserId()
-            + setUserId()
-            + getUserName()
-            + setUserName()
-            + getToken()
-            + setToken()
-            + getEmail()
-            + setEmail()
-            + getReputation()
-            + setReputation()
-            + getIsAdmin()
-            + setIsAdmin()
+        == Getters and Setters ==
         }
 
         class IdPw {
-         - user
-         - pw
+         - user: String
+         - pw: String
         __
-        ==Getter and Setter==
-            + getUser()
-            + setUser()
-            + getPw()
-            + setPw()
+        == Getters and Setters ==
         }
 
-        class AnonymousUserDto {
-         - userId
-         - geoPoint
-        __
-        ==Getter and Setter==
-            + getUserId()
-            + setUserId()
-            + getGeoPoint()
-            + setGeoPoint()
-        }
-        
-        class AdministratorDto {
-        __
-        ==Gas Station Managing==
-            + addGasStation(): Boolean
-            + editGasStation(): Boolean
-            + removeGasStation(): Boolean
-        ==User Managing==
-            + addUser(): Boolean
-            + editUser(): Boolean
-            + removeUser(UserDto): Boolean
-            + banUser(): Boolean
-        }
+        GasStationDto -- "0..1" PriceReportDto
+        UserDto "*"-- PriceReportDto
+        UserDto "1"--"1" IdPw
+        UserDto -- LoginDto
     }
     
     package "it.polito.ezgas.repository" {
-        class GasStationRepository {
+        interface GasStationRepository {
+            +findById(String): GasStation
+            +findByCarSharing(String): GasStation
         }
-        class PriceReportRepository {
+        interface PriceReportRepository {
         }
-        class AnonymousUserRepository {
+        interface UserRepository {
+            + findById(String): User
+            + findByEmail(String): User
         }
-        class UserRepository {
-        }
-        class AdministratorRepository {
-        }
-        
+
+          GasStationRepository --"0..1" PriceReportRepository
+          UserRepository "*"-- PriceReportRepository
+    }
+
         GasStation o-- GasStationRepository
-        GasStation - GeoPoint
-        GasStationController o-- GasStationService
+        GasStationController o-- GasStationServiceImpl        
         GasStationServiceImpl o-- GasStationRepository
         GasStationServiceImpl o-- PriceReportRepository
         GasStationServiceImpl o-- GasStationDto
         GasStationServiceImpl o-- GasStation
         GasStationConverter o-- GasStationDto
         GasStationConverter o-- GasStation
-        GasStationService o-- GasStationDto
+        GasStationServiceImpl o-- GasStationDto
         GasStationRepository o-- GasStation 
 
-        UserController o-- UserService
+        UserController o-- UserServiceImpl
         UserServiceImpl o-- UserRepository
         UserServiceImpl o-- PriceReportRepository
         UserServiceImpl o-- UserDto
@@ -774,27 +586,94 @@ BorderColor #26424F
         UserRepository o-- User
         UserConverter o-- UserDto
         UserConverter o-- User
-        UserService o-- UserDto
-        UserService o-- LoginDto
-        UserService o-- IdPw
 
         PriceReportRepository o-- PriceReport
         PriceReportConverter o-- PriceReportDto
         PriceReportConverter o-- PriceReport
 
-        AdministratorConverter o-- Administrator
-        AdministratorConverter o-- AdministratorDto
-        AdministratorRepository o-- Administrator
+@enduml
+```
+# Test package
+```plantuml
+@startuml
+package "it.polito.ezgas.test" {
+        class EZGasApplicationTests {
+            + contextLoads
+        }
+        class GasStationServiceimplTests {
+            + setUpDatabase
+            + tearDown
+            + setUp
+            + test_getGasStationById_existing
+            + test_getGasStationById_notExisting
+            + test_GetAllGasStations
+            + test_DeleteGasStation_existing
+            + test_DeleteGasStation_notExisting
+            + test_distance_nearest
+            + test_distance_near
+            + test_distance_far
+            + test_distance_furthest
+            + test_reportDependability_obsolescent
+            + test_reportDependability_notObsolescent
+            + test_reportDependability_sameDay_perfectUser
+            + test_reportDependability_sameDay_worstUser
+            + test_reportDependability_obsolescent_worstUser
+            + test_getGasStationsByProximity_invalidGPS
+            + test_saveGasStation_invalidGPS
+            + test_getGasStationByCarSharing
+           
+        }
+        class GetterSetterTests {
+            + testPriceReportDto
+            + testIdPw
+            + testLoginDto
+            + testUserDto
+            + testGasStationDto
+            + testGasStation
+            + testUser
+            + testPriceReport
+        }
 
-        AnonymousUserConverter o-- AnonymousUser
-        AnonymousUserConverter o-- AnonymousUserDto
-        AnonymousUserRepository o-- AnonymousUser
-        
+        class UserConverterTests {
+           + setUp
+           + testConvertEntityToDto
+           + testConvertDtoToEntity
+           + testConvertEntityToLoginDto
+        }
+
+        class UserServiceimplTests {
+            + setUpDatabase
+            + setUp
+            + tearDown
+            + testGetUserById
+            + testSaveUser
+            + testGetAllUsers
+            + testDeleteUser
+            + testLogin
+            + testIncreaseUserReputation
+            + testDecreaseUserReputation
+                    
+        }
+        class GasStationConverterTests {
+           + setUp
+           + testConvertEntityToDto
+           + testConvertDtoToEntity
+        }
+
+         class H2TestProfileJPAConfig {
+           + dataSource(void): DataSource
+        }
+
+     
+
     }
 
 
 @enduml
 ```
+
+
+
 
 # Verification traceability matrix
 
@@ -927,7 +806,6 @@ skinparam sequence{
     ParticipantBackgroundColor #B2D9EA-FFFFEE
     ArrowColor #619196
 }
-' TODO: PriceReportDto does not exist at this time, but is used to represent the list of parameters
 
 GasStationController <-- PriceReportDto: PriceReportDto
 GasStationController -> GasStationService: setReport(PriceReportDto)
@@ -943,12 +821,6 @@ DB --> GasStationController
 ```
 
 ## UC8 - Obtain price of fuel for gas stations in a certain geographic area
-
-- (get user coordinates) - no method
-- get gas station dtos by proximity
-- for each gas station dto:
-        getPriceReportDtos
-
 ```plantuml
 @startuml
 skinparam backgroundcolor #FFFFEE
@@ -992,7 +864,6 @@ GasStationService --> GasStationController: Map<GasStationDto, PriceReportDto>
 ```
 
 ## UC10 - Evaluate price
-
 ```plantuml
 @startuml
 skinparam backgroundcolor #FFFFEE

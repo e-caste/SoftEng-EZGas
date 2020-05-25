@@ -7,7 +7,9 @@ public class LoginDto {
     String email;
     Integer reputation;
     Boolean admin;
-    
+
+	public LoginDto() {}
+
     public LoginDto (Integer userId, String userName, String token, String email, Integer reputation) {
     	this.userId = userId;
     	this.userName = userName;
@@ -15,8 +17,15 @@ public class LoginDto {
     	this.email = email;
     	this.reputation = reputation;
     }
-    
-    public LoginDto() {}
+
+    public boolean equals(LoginDto other) {
+		return this.userId.equals(other.getUserId()) &&
+				this.admin.equals(other.getAdmin()) &&
+				this.email.equals(other.getEmail()) &&
+				this.userName.equals(other.getUserName()) &&
+				this.token.equals(other.getToken()) &&
+				this.reputation.equals(other.getReputation());
+	}
     
 	public Integer getUserId() {
 		return userId;

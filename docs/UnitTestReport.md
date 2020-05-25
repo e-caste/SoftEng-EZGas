@@ -1,18 +1,14 @@
 # Unit Testing Documentation
 
-Authors:
+Authors: Enrico Castelli s280124, Augusto Maria Guerriero s278018, Francesca Ponzetta s276535, Monica Rungi s276979
 
-Date:
+Date: 19/05/2020
 
-Version:
+Version: 1
 
 # Contents
 
 - [Black Box Unit Tests](#black-box-unit-tests)
-
-
-
-
 - [White Box Unit Tests](#white-box-unit-tests)
 
 
@@ -26,7 +22,154 @@ Version:
     the set up of all Spring components
     >
 
- ### **Class *class_name* - method *name***
+ ### **Class *GetterSetterTests* - *all methods***
+
+**Criteria for *all methods*:**
+
+ - set extracted value from possible values of correct type in setter
+ - use corresponding getter to get the previously set value
+ - check if values are equals with equals method
+
+**Predicates for *all methods*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+| value    | = extracted value of type String, Integer, Boolean, boolean, double |
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|  value  | no boundaries, the only limit is the type of the value which corresponds to the type expected by the setter |
+
+**Combination of predicates**:
+
+Given the number of getter and setter methods to test, only one test case per couple of getter/setter was written. 
+This can be easily increased by tweaking the Python script used to generate the tests in the src/test directory.
+
+ ### **Class *GasStationServiceimplTest* - method *test_reportDependability_****
+
+
+
+**Criteria for method *test_reportDependability_******:**
+
+
+ - Number of days between new and last timestamps
+ - Value of userTrustLevel
+
+
+
+
+
+**Predicates for method *name*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|    Number of days between new and last timestamps      |     Number of days >= 7      |
+|          |       0 <= Number of days < 7     |
+|      Value of userTrustLevel    |   -5  <= userTrustLevel <= 5     |
+|          |      userTrustLevel > 5     |
+|          |     userTrustLevel < -5     |
+|          |          |
+
+
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|    Number of days between new and last timestamps      |         0, 1, ... , 7, 8, ... ∞    |
+|    Value of userTrustLevel      |        -∞ ... -6, -5, ... , 0, ... , 5, 6, ... ∞          |
+
+
+
+**Combination of predicates**:
+
+
+| Number of days | userTrustLevel | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|
+|Number of days >= 7|-5  <= userTrustLevel <= 5|Valid|days = 8,  userTrustLevel = 2|test_reportDependability_obsolescent|
+|||Valid|days = 8, userTrustLevel = -5|test_reportDependability_obsolescent_worstUser|
+|| userTrustLevel > 5|Invalid?||
+|| userTrustLevel < 5|Invalid?||
+|0 <= Number of days < 7|-5  <= userTrustLevel <= 5|Valid|days = 1, userTrustLevel = 2|test_reportDependability_notObsolescent|
+|||Valid|days = 0, userTrustLevel = -5|test_reportDependability_sameDay_worstUser|
+|||Valid|days = 0, userTrustLevel = 5|test_reportDependability_sameDay_perfectUser|
+|| userTrustLevel > 5|Invalid?||
+|| userTrustLevel < 5|Invalid?||
+
+### **Class *GasStationServiceimplTest* - method *test_distance_****
+
+
+
+**Criteria for method *test_distance_******:**
+	
+
+ - Distance between two geopoints
+ - lat
+ - lon
+
+
+
+
+
+**Predicates for method *name*:**
+
+| Criteria | Predicate |
+| -------- | --------- |
+|      Distance between two geopoints    |       0 <= distance <= 1 km   |
+|          |      distance > 1 km     |
+|   at |  -95 <= lat <= 95 |
+|       | lat > 95 |
+|       |  lat < -95|
+|   lon |   -180 <= lon <= 180 |
+|       | lon > 180 |
+|       | lon < 180 |
+
+
+
+
+
+**Boundaries**:
+
+| Criteria | Boundary values |
+| -------- | --------------- |
+|      Distance between two geopoints    |     0 ...  ∞    |
+|   lat |  -95 <= lat <= 95 |
+|      lon    |        -180 <= lon <= 180         |
+
+
+
+**Combination of predicates**:
+
+
+| Distance between two geopoints | lat | lon | Valid / Invalid | Description of the test case | JUnit test case |
+|-------|-------|-------|-------|-------|-------|
+| 0 <= distance <= 1 km | -95 <= lat <= 95|-180 <= lon <= 180 |Valid|distance =~ 0.3km |test_distance_nearest|
+|||lon > 180|||
+|||lon < 180|||
+||lat > 95||||
+|||lon > 180|||
+|||lon < 180|||
+||lat < -95||||
+|||lon > 180|||
+|||lon < 180|||
+| distance > 1 km  | -95 <= lat <= 95|-180 <= lon <= 180 |Valid|distance =~ 1.6km |test_distance_near|
+|||||distance =~ 5.1|test_distance_far|
+|||||distance =~ 7.1|test_distance_furthest|
+|||lon > 180|||
+|||lon < 180|||
+||lat > 95||||
+|||lon > 180|||
+|||lon < 180|||
+||lat < -95||||
+|||lon > 180|||
+|||lon < 180|||
+
+
+### **Class *class_name* - method *name***
 
 
 
@@ -72,8 +215,6 @@ Version:
 |||||||
 |||||||
 |||||||
-
-
 
 
 # White Box Unit Tests

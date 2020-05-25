@@ -4,12 +4,15 @@ package it.polito.ezgas.dto;
  * Created by softeng on 27/4/2020.
  */
 public class UserDto {
+
     Integer userId;
     String userName;
     String password;
     String email;
     Integer reputation;
     Boolean admin;
+
+    public UserDto() {}
 
     public UserDto(Integer userId, String userName, String password, String email, Integer reputation) {
         this.userId = userId;
@@ -29,7 +32,30 @@ public class UserDto {
         this.admin = admin;
     }
 
-    public UserDto() {
+    public String toString() {
+        return this.userId + " " +
+               this.userName + " " +
+               this.email + " " +
+               this.password + " " +
+               this.reputation + " " +
+               this.admin;
+    }
+
+    public boolean equals(UserDto other) {
+        return this.userId.equals(other.getUserId()) &&
+               this.userName.equals(other.getUserName()) &&
+               this.email.equals(other.getEmail()) &&
+               this.password.equals(other.getPassword()) &&
+               this.reputation.equals(other.getReputation()) &&
+               this.admin.equals(other.getAdmin());
+    }
+
+    public boolean equalsIgnoreUserId(UserDto other) {
+        return this.userName.equals(other.getUserName()) &&
+               this.email.equals(other.getEmail()) &&
+               this.password.equals(other.getPassword()) &&
+               this.reputation.equals(other.getReputation()) &&
+               this.admin.equals(other.getAdmin());
     }
 
     public Integer getUserId() {
@@ -71,11 +97,12 @@ public class UserDto {
 	public void setReputation(Integer reputation) {
 		this.reputation = reputation;
 	}
+
 	public Boolean getAdmin() {
 		return admin;
 	}
+
 	public void setAdmin(Boolean admin) {
 		this.admin = admin;
 	}
-	
 }

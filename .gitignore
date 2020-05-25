@@ -15,7 +15,9 @@ local.properties
 .loadpath
 .recommenders
 data/*
-
+test/secret.py
+test/GetterSetterTests.java
+test/__pycache__
 
 # External tool builders
 .externalToolBuilders/
