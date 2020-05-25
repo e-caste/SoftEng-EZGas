@@ -34,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = BootEZGasApplication.class)
 @SpringBootTest
 @ActiveProfiles("test")
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserControllerTests {
 
     MockMvc mockMvc;
@@ -67,7 +66,7 @@ public class UserControllerTests {
     private UserDto existingAdminUserDto, existingUserDto, nonExistingUserDto;
 
     @Before  // run before each test
-    public void setUp() {
+    public void setUp() throws SQLException {
 
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
@@ -94,6 +93,13 @@ public class UserControllerTests {
         nonExistingUser.setUserId(nonExistingUserId);
         nonExistingUser.setAdmin(nonExistingUserAdmin);
         nonExistingUserDto = UserConverter.convertEntityToDto(nonExistingUser);
+
+        // reset database
+        st.executeUpdate(sqlDropUserTable);
+        st.executeUpdate(sqlCreateUserTable);
+        for (String sql : sqlInsertUsers) {
+            st.executeUpdate(sql);
+        }
     }
 
     @PostConstruct
@@ -101,11 +107,6 @@ public class UserControllerTests {
     public static void setUpDatabase() throws SQLException {
         db = DriverManager.getConnection("jdbc:h2:./data/test", "sa", "password");
         st = db.createStatement();
-        st.executeUpdate(sqlDropUserTable);
-        st.executeUpdate(sqlCreateUserTable);
-        for (String sql : sqlInsertUsers) {
-            st.executeUpdate(sql);
-        }
     }
 
     @AfterClass  // run only once
@@ -172,7 +173,6 @@ public class UserControllerTests {
                 .andDo(print());
     }
 
-    // run as last test, since it modifies the database
     @Test
     public void testSaveUser() throws Exception {
         // save new user
