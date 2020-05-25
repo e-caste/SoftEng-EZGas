@@ -240,8 +240,21 @@ public class UserControllerTests {
     }
 
     @Test
-    public void testIncreaseUserReputation() {
+    public void testIncreaseUserReputation() throws Exception {
+        // increase from 0 -> return 1
+        mockMvc.perform(post(apiPrefix + INCREASE_REPUTATION.replace("{userId}", String.valueOf(existingUserId)))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(1))
+                .andDo(print());
+        separateTestsGraphically();
 
+        // increase from 5 -> return 5
+        mockMvc.perform(post(apiPrefix + INCREASE_REPUTATION.replace("{userId}", String.valueOf(existingAdminUserId)))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(5))
+                .andDo(print());
     }
 
     @Test
