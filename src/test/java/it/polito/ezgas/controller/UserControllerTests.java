@@ -57,6 +57,7 @@ public class UserControllerTests {
             "INSERT INTO USER VALUES (1, TRUE, 'admin@ezgas.com', 'admin', 5, 'admin')",
             "INSERT INTO USER VALUES (2, FALSE, 'asd@asd.asd', 'asd', 0, 'asd')"
     );
+    static String sqlSetAdminReputationNegativeFive = "UPDATE USER SET reputation = -5 WHERE user_id = 1";
 
     static String apiPrefix = "/user";
 
@@ -260,8 +261,22 @@ public class UserControllerTests {
     }
 
     @Test
-    public void testDecreaseUserReputation() {
+    public void testDecreaseUserReputation() throws Exception {
+        // decrease from 0 -> return -1
+        mockMvc.perform(post(apiPrefix + DECREASE_REPUTATION.replace("{userId}", String.valueOf(existingUserId)))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(-1))
+                .andDo(print());
+        separateTestsGraphically();
 
+        // decrease from -5 -> return -5
+        st.executeUpdate(sqlSetAdminReputationNegativeFive);
+        mockMvc.perform(post(apiPrefix + DECREASE_REPUTATION.replace("{userId}", String.valueOf(existingAdminUserId)))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(-5))
+                .andDo(print());
     }
 
     @Test
