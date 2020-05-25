@@ -625,19 +625,23 @@ public class GasStationServiceimplTests {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	@Test
 	public void test_saveGasStation_existing() throws PriceException, GPSDataException {
 		GasStationDto gsDto = gasStationService.saveGasStation(GS1Dto);
 		assertTrue(gsDto.equals(GS1Dto));
 	}
 	
-	//TODO test_saveGasStation_notExisting
+	@Test
+	public void test_saveGasStation_notExisting() throws PriceException, GPSDataException {
+		GasStationDto gsDto = gasStationService.saveGasStation(GS3Dto);
+		assertTrue(gsDto.equals(GS3Dto));
+	}
+	
 	
 	@Test
 	public void test_setReport_invalidPrice() throws InvalidGasStationException, InvalidUserException {
 		try {
-			gasStationService.setReport(GS1.getGasStationId(), GS1.getDieselPrice(), GS1.getSuperPrice(), 1.986, GS1.getGasPrice(), GS1.getMethanePrice(), 1);
+			gasStationService.setReport(GS1.getGasStationId(), GS1.getDieselPrice(), -1, GS1.getSuperPlusPrice(), GS1.getGasPrice(), GS1.getMethanePrice(), 1);
 			fail("Expected PriceException");
 		}catch(PriceException e){
 			assertEquals("Wrong Price", e.getMessage());
@@ -647,7 +651,7 @@ public class GasStationServiceimplTests {
 	@Test
 	public void test_setReport_invalidGasStation() throws InvalidUserException, PriceException {
 		try {
-			gasStationService.setReport(GS1.getGasStationId(), GS1.getDieselPrice(), GS1.getSuperPrice(), GS1.getSuperPlusPrice(), GS1.getGasPrice(), GS1.getMethanePrice(), 1);
+			gasStationService.setReport(1000, GS1.getDieselPrice(), GS1.getSuperPrice(), GS1.getSuperPlusPrice(), GS1.getGasPrice(), GS1.getMethanePrice(), 1);
 			fail("Expected InvalidGasStationException");
 		}catch(InvalidGasStationException e){
 			assertEquals("Gas Station not found", e.getMessage());
