@@ -118,6 +118,23 @@ public class UserControllerTests {
         System.err.println("-----------------------------------------------------------------------------------------");
     }
 
+    private String convertDtoToJSON(UserDto userDto) {
+        String JSON =  "{" +
+                       "\"userName\":\"" + userDto.getUserName() + "\"," +
+                       "\"password\":\"" + userDto.getPassword() + "\"," +
+                       "\"email\":\"" + userDto.getEmail() + "\"," +
+                       "\"reputation\":" + userDto.getReputation() + ",";
+        if (userDto.getUserId() != null) {
+            JSON += "\"userId\":" + userDto.getUserId() + ",";
+        }
+        if (userDto.getAdmin() != null) {
+            JSON += "\"admin\":\"" + userDto.getAdmin() + "\"";
+        }
+        JSON += "}";
+        System.out.println(JSON);
+        return JSON;
+    }
+
     @Test
     public void testGetUserById() throws Exception {
         // user exists -> JSON returned
@@ -157,12 +174,53 @@ public class UserControllerTests {
 
     // run as last test, since it modifies the database
     @Test
-    public void testSaveUser() {
+    public void testSaveUser() throws Exception {
         // save new user
-
+        nonExistingUser.setUserId(null);  // the userId of a non-existing user can be either null or the next expected value (3 in this case)
+        nonExistingUserDto = UserConverter.convertEntityToDto(nonExistingUser);
+        mockMvc.perform(post(apiPrefix + SAVE_USER)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(convertDtoToJSON(nonExistingUserDto))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").exists())
+                .andExpect(jsonPath("$.userId").value(3))
+                .andExpect(jsonPath("$.userName").exists())
+                .andExpect(jsonPath("$.userName").value("test"))
+                .andExpect(jsonPath("$.password").exists())
+                .andExpect(jsonPath("$.password").value("test"))
+                .andExpect(jsonPath("$.email").exists())
+                .andExpect(jsonPath("$.email").value("test@test.test"))
+                .andExpect(jsonPath("$.reputation").exists())
+                .andExpect(jsonPath("$.reputation").value(0))
+                .andExpect(jsonPath("$.admin").exists())
+                .andExpect(jsonPath("$.admin").value(false))
+                .andDo(print());
         separateTestsGraphically();
 
         // update existing user
+        // we keep using nonExistingUser, but at this point it is an existing user in the database
+        nonExistingUser.setUserId(3);
+        nonExistingUser.setPassword("updatedPassword");
+        nonExistingUserDto = UserConverter.convertEntityToDto(nonExistingUser);
+        mockMvc.perform(post(apiPrefix + SAVE_USER)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(convertDtoToJSON(nonExistingUserDto))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").exists())
+                .andExpect(jsonPath("$.userId").value(3))
+                .andExpect(jsonPath("$.userName").exists())
+                .andExpect(jsonPath("$.userName").value("test"))
+                .andExpect(jsonPath("$.password").exists())
+                .andExpect(jsonPath("$.password").value("updatedPassword"))
+                .andExpect(jsonPath("$.email").exists())
+                .andExpect(jsonPath("$.email").value("test@test.test"))
+                .andExpect(jsonPath("$.reputation").exists())
+                .andExpect(jsonPath("$.reputation").value(0))
+                .andExpect(jsonPath("$.admin").exists())
+                .andExpect(jsonPath("$.admin").value(false))
+                .andDo(print());
     }
 
     @Test
