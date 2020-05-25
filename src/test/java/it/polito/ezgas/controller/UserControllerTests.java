@@ -228,13 +228,15 @@ public class UserControllerTests {
         // delete existing user -> return true
         mockMvc.perform(delete(apiPrefix + DELETE_USER.replace("{userId}", String.valueOf(existingUserId)))
                         .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(true))
                 .andDo(print());
         separateTestsGraphically();
 
         // delete non-existing user -> return false
         mockMvc.perform(delete(apiPrefix + DELETE_USER.replace("{userId}", String.valueOf(nonExistingUserId)))
-                .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(false))
                 .andDo(print());
     }
