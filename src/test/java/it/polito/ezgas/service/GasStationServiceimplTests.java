@@ -85,8 +85,8 @@ public class GasStationServiceimplTests {
     
     static List<String> sqlInsertGSs = Arrays.asList(
 																			//id|car|dies_pr|gas_pr|gas_station_address|station_name|has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|r_dep|time|r_user|s_pr|s_p_pr|user_id
-											"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, NULL, -1, 1.864, 0, NULL)",
-            								"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  NULL, -1, 1.854, 0, NULL)"
+											"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, '2020-05-24 19:54:07', -1, 1.864, 0, NULL)",
+            								"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  '2020-05-23 15:32:09', -1, 1.854, 0, NULL)"
 
     );
 	
@@ -171,12 +171,13 @@ public class GasStationServiceimplTests {
 		GS1.setGasStationId(GS1id);
 		GS1.setLat(45.048903);
 		GS1.setLon(7.659812);
+		GS1.setReportTimestamp("2020-05-24 19:54:07");
 		GS1.setCarSharing(GS1carSharing);
 		//GS1Dto = GasStationConverter.convertEntityToDto(GS1);
 		gasStationRepository.save(GS1);
 		
-		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, "bah", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, -1, null, 0);
-		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0, 1.753, 0, -1, null, 0);
+		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, "bah", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, -1, "2020-05-24 19:54:07", 0);
+		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0, 1.753, 0, -1, "2020-05-26 10:44:04", 0);
 	}
 
 	@Test
@@ -626,15 +627,24 @@ public class GasStationServiceimplTests {
 	}
 	
 	@Test
-	public void test_saveGasStation_existing() throws PriceException, GPSDataException {
+	public void test_saveGasStation_existing() throws PriceException, GPSDataException, InvalidGasStationException {
+		GS1Dto.setDieselPrice(1.524);
+		GS1Dto.setHasMethane(true);
+		GS1Dto.setMethanePrice(0.986);
+		
 		GasStationDto gsDto = gasStationService.saveGasStation(GS1Dto);
-		assertTrue(gsDto.equals(GS1Dto));
+		
+		assertTrue(gsDto.getGasStationId() == GS1Dto.getGasStationId());
+		assertTrue(gasStationService.getGasStationById(GS1Dto.getGasStationId()).getDieselPrice() == 1.524 );
+		assertTrue(gasStationService.getGasStationById(GS1Dto.getGasStationId()).getHasMethane());
+		assertTrue(gasStationService.getGasStationById(GS1Dto.getGasStationId()).getMethanePrice() == 0.986);
 	}
 	
 	@Test
-	public void test_saveGasStation_notExisting() throws PriceException, GPSDataException {
+	public void test_saveGasStation_notExisting() throws PriceException, GPSDataException, InvalidGasStationException {
 		GasStationDto gsDto = gasStationService.saveGasStation(GS3Dto);
 		assertTrue(gsDto.equals(GS3Dto));
+		assertTrue(gasStationService.getGasStationById(GS3Dto.getGasStationId()).equals(gsDto));
 	}
 	
 	
@@ -666,6 +676,19 @@ public class GasStationServiceimplTests {
 		}catch(InvalidUserException e){
 			assertEquals("User not found", e.getMessage());
 		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Test
+	public void test_setReport() throws InvalidGasStationException, PriceException, InvalidUserException {
+		Double oldDieselPrice = GS1.getDieselPrice();
+		Double oldSuperPrice = GS1.getSuperPrice();
+		Double oldGasPrice = GS1.getGasPrice();
+		
+		gasStationService.setReport(GS1.getGasStationId(), ++oldDieselPrice, ++oldSuperPrice, GS1.getSuperPlusPrice(), ++oldGasPrice, GS1.getMethanePrice(), 1);
+		assertEquals(oldDieselPrice, gasStationService.getGasStationById(GS1.getGasStationId()).getDieselPrice(), 0);
+		assertEquals(oldSuperPrice, gasStationService.getGasStationById(GS1.getGasStationId()).getSuperPrice(), 0);
+		assertEquals(oldGasPrice, gasStationService.getGasStationById(GS1.getGasStationId()).getGasPrice(), 0);
 	}
 	
 	@Test
