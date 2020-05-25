@@ -242,7 +242,6 @@ public class UserControllerTests {
                 .andDo(print());
     }
 
-    // TODO: add test case for non-existing user to 2 following tests
     @Test
     public void testIncreaseUserReputation() throws Exception {
         // increase from 0 -> return 1
@@ -258,6 +257,14 @@ public class UserControllerTests {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(5))
+                .andDo(print());
+        separateTestsGraphically();
+
+        // user doesn't exist -> return 0 // TODO check if default value
+        mockMvc.perform(post(apiPrefix + INCREASE_REPUTATION.replace("{userId}", String.valueOf(nonExistingUserId)))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(0))
                 .andDo(print());
     }
 
@@ -277,6 +284,14 @@ public class UserControllerTests {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(-5))
+                .andDo(print());
+        separateTestsGraphically();
+
+        // user doesn't exist -> return 0 // TODO check if default value
+        mockMvc.perform(post(apiPrefix + DECREASE_REPUTATION.replace("{userId}", String.valueOf(nonExistingUserId)))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(0))
                 .andDo(print());
     }
 
