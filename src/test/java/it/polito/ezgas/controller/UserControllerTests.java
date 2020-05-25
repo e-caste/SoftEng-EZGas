@@ -6,6 +6,7 @@ import it.polito.ezgas.dto.UserDto;
 import it.polito.ezgas.entity.User;
 import it.polito.ezgas.repository.UserRepository;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -14,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(controllers = UserController.class)  // TODO: remove class?
+@WebMvcTest(controllers = UserController.class)
 public class UserControllerTests {
 
     @Autowired
@@ -59,5 +60,40 @@ public class UserControllerTests {
         nonExistingUserDto = UserConverter.convertEntityToDto(nonExistingUser);
 
 //        userService.getAllUsers().forEach(System.out::println);
+    }
+
+    @Test
+    public void testGetUserById() {
+
+    }
+
+    @Test
+    public void testGetAllUsers() {
+
+    }
+
+    @Test
+    public void testSaveUser() {
+
+    }
+
+    @Test
+    public void testDeleteUser() {
+
+    }
+
+    @Test
+    public void testIncreaseUserReputation() {
+
+    }
+
+    @Test
+    public void testDecreaseUserReputation() {
+
+    }
+
+    @Test
+    public void testLogin() {
+
     }
 }
