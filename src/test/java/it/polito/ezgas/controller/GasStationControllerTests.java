@@ -99,7 +99,7 @@ public class GasStationControllerTests {
         GS10_nonExisting = new GasStation("Repsol", "via Olanda, 12, Torino", true, false, false, false, false, "Enjoy", 45.048903, 7.659812, 1.375, 0, 0, 0, 0, -1, "2020-05-26 19:54:07", 0);
         GS10_id = 10;
         GS10_nonExisting.setGasStationId(GS10_id);
-        GS1dto = GasStationConverter.convertEntityToDto(GS10_nonExisting);
+        GS10dto = GasStationConverter.convertEntityToDto(GS10_nonExisting);
 
 
         // reset database
