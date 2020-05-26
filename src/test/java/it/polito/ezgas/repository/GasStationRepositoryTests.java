@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,7 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
+import org.springframework.dao.EmptyResultDataAccessException;
+import exception.InvalidGasStationException;
 import it.polito.ezgas.dto.GasStationDto;
 import it.polito.ezgas.entity.GasStation;
 
@@ -74,8 +76,8 @@ public class GasStationRepositoryTests {
     
 	Integer GS1id;
 	private String GS1Name, GS1carSharing;
-	private GasStation GS1;
-	private GasStationDto GS1Dto, GS3Dto;
+	private GasStation GS1, GS3;
+	private GasStationDto GS1Dto;
 	
 	@PostConstruct
     @BeforeClass  // run only once
@@ -153,7 +155,8 @@ public class GasStationRepositoryTests {
 		gasStationRepository.save(GS1);
 		
 		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, "bah", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, -1, null, 0);
-		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0, 1.753, 0, -1, null, 0);
+		GS3 = new GasStation("Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0, 1.753, 0, -1, null, 0);
+		GS3.setGasStationId(3);
 	}
 	
 	@Test
@@ -180,4 +183,149 @@ public class GasStationRepositoryTests {
 		gasStation = gasStationRepository.findByCarSharing("NonExistingCarSharing");
 		assertEquals(0, gasStation.size());
 	}
+	
+	//TODO findone
+	
+	@Test
+	public void test_findAll() throws SQLException {
+		List<GasStation> gsListDB = new ArrayList<>();
+		ResultSet rs = st.executeQuery(sqlSelectAllGSs);
+		while(rs.next()) {
+			GasStation gsDB = new GasStation(
+													rs.getString("gas_station_name"),
+													rs.getString("gas_station_address"),
+													rs.getBoolean("has_diesel"),
+													rs.getBoolean("has_super"),
+													rs.getBoolean("has_super_plus"),
+													rs.getBoolean("has_gas"), 
+													rs.getBoolean("has_methane"),   
+													rs.getString("car_sharing"), 
+													rs.getDouble("lat"), 
+													rs.getDouble("lon"),                 
+													rs.getDouble("diesel_price"),
+													rs.getDouble("super_price"),
+													rs.getDouble("super_plus_price"),
+													rs.getDouble("gas_price"),
+													rs.getDouble("methane_price"),
+													rs.getInt("report_user"),
+													rs.getString("report_timestamp"),
+													rs.getDouble("report_dependability")            
+									);
+			gsDB.setGasStationId(rs.getInt("gas_station_id"));
+			gsListDB.add(gsDB);
+		}
+		
+		List<GasStation> gsListRepository = gasStationRepository.findAll();
+		
+		assertEquals(gsListDB.size(), gsListRepository.size());
+		System.err.println("| gsListDB.size() = " + gsListDB.size() + " | gsListRepository.size() = " + gsListRepository.size() + "|");
+		 
+        // check if all GSs with same ID are equal
+        for (GasStation gsDB : gsListDB) {
+            for (GasStation gsRep : gsListRepository) {
+				/*
+            	System.err.println(	"GASSTATIONID: " 		+ gsDB.getGasStationId() + " " +
+									"CARSHARING: " 			+ gsDB.getCarSharing() + " " +
+									"DIESELPRICE: "			+ gsDB.getDieselPrice() + " " +
+									"GASPRICE: " 			+ gsDB.getGasPrice() + " " +
+									"GASSTATIONADDRESS: " 	+ gsDB.getGasStationAddress() + " " +
+									"GASSTATIONNAME: " 		+ gsDB.getGasStationName() + " " +
+									"HASDIESEL: " 			+ gsDB.getHasDiesel() + " " +
+									"HASGAS: " 				+ gsDB.getHasGas() + " " +
+									"HASMETHANE: " 			+ gsDB.getHasMethane() + " " +
+									"HASSUPER: " 			+ gsDB.getHasSuper() + " " +
+									"HASSUPERPLUS: " 		+ gsDB.getHasSuperPlus() + " " +
+									"LAT: " 				+ gsDB.getLat() + " " +
+									"LON: "					+ gsDB.getLon() + " " +
+									"METHANEPRICE: "		+ gsDB.getMethanePrice() + " " +
+									"REPORTDEPENDABILITY:"	+ gsDB.getReportDependability() + " " +
+									"REPORTTIMESTAMP: "		+ gsDB.getReportTimestamp() + " " +
+									"REPORTUSER: "			+ gsDB.getReportUser() + " " +
+									"SUPERPLUSPRICE: "		+ gsDB.getSuperPlusPrice() + " " +
+									"SUPERPRICE: "			+ gsDB.getSuperPrice()        							        
+				);  
+				System.err.println(	"GASSTATIONID: " 		+ gsRep.getGasStationId() + " " +
+										"CARSHARING: " 			+ gsRep.getCarSharing() + " " +
+										"DIESELPRICE: "			+ gsRep.getDieselPrice() + " " +
+										"GASPRICE: " 			+ gsRep.getGasPrice() + " " +
+										"GASSTATIONADDRESS: " 	+ gsRep.getGasStationAddress() + " " +
+										"GASSTATIONNAME: " 		+ gsRep.getGasStationName() + " " +
+										"HASDIESEL: " 			+ gsRep.getHasDiesel() + " " +
+										"HASGAS: " 				+ gsRep.getHasGas() + " " +
+										"HASMETHANE: " 			+ gsRep.getHasMethane() + " " +
+										"HASSUPER: " 			+ gsRep.getHasSuper() + " " +
+										"HASSUPERPLUS: " 		+ gsRep.getHasSuperPlus() + " " +
+										"LAT: " 				+ gsRep.getLat() + " " +
+										"LON: "					+ gsRep.getLon() + " " +
+										"METHANEPRICE: "		+ gsRep.getMethanePrice() + " " +
+										"REPORTDEPENDABILITY:"	+ gsRep.getReportDependability() + " " +
+										"REPORTTIMESTAMP: "		+ gsRep.getReportTimestamp() + " " +
+										"REPORTUSER: "			+ gsRep.getReportUser() + " " +
+										"SUPERPLUSPRICE: "		+ gsRep.getSuperPlusPrice() + " " +
+										"SUPERPRICE: "			+ gsRep.getSuperPrice()
+				);  
+				*/
+ 
+            	if (gsDB.getGasStationId().equals(gsRep.getGasStationId())) {
+                		
+        	           
+                	assertTrue(gsDB.equals(gsRep));
+                    break;
+                }
+            }
+        }
+	}
+	
+	@Test
+	public void test_save_existing() {
+		GS1.setDieselPrice(1.524);
+		GS1.setHasMethane(true);
+		GS1.setMethanePrice(0.986);
+		
+		GasStation gs = gasStationRepository.save(GS1);
+		
+		assertTrue(gs.getGasStationId() == GS1.getGasStationId());
+		assertTrue(gs.getDieselPrice() == 1.524 );
+		assertTrue(gs.getHasMethane());
+		assertTrue(gs.getMethanePrice() == 0.986);
+		
+		assertTrue(gasStationRepository.findById(GS1.getGasStationId()).getDieselPrice() == 1.524 );
+		assertTrue(gasStationRepository.findById(GS1.getGasStationId()).getHasMethane());
+		assertTrue(gasStationRepository.findById(GS1.getGasStationId()).getMethanePrice() == 0.986);
+	}
+	
+	@Test
+	public void test_save_notExisting() {
+		GasStation gs = gasStationRepository.save(GS3);
+		
+		assertTrue(gasStationRepository.findById(GS3.getGasStationId()).equals(GS3));
+	}
+	
+	 @Test
+    public void test_delete_existing() {
+        //id exists -> deleted
+		assertTrue(gasStationRepository.findById(GS1.getGasStationId()).equals(GS1));
+    	gasStationRepository.delete(GS1.getGasStationId());
+    	assertNull(gasStationRepository.findById(GS1.getGasStationId()));
+    }
+    
+    @Test
+    public void test_delete_notExisting() {
+
+        //id does not exist -> throw exception
+        try {
+        	gasStationRepository.delete(1000);
+            fail("Expected EmptyResultDataAccessException");
+        } catch (EmptyResultDataAccessException e) {}
+    }
+    
+    @Test
+    public void test_findOne() {
+    	//existing id
+    	assertTrue(gasStationRepository.findOne(GS1.getGasStationId()).equals(GS1));
+    	
+    	//id does not exist -> throw exception
+        assertNull(gasStationRepository.findOne(1000));
+    }
+    
 }
