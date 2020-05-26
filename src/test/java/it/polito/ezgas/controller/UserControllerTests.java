@@ -276,6 +276,7 @@ public class UserControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(-1))
                 .andDo(print());
+
         separateTestsGraphically();
 
         // decrease from -5 -> return -5

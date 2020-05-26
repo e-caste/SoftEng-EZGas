@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.Null;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
@@ -38,16 +39,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @ActiveProfiles("test")
 public class GasStationControllerTests {
-   MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @Autowired
     WebApplicationContext webApplicationContext;
+
     static Connection db;
     static Statement st;
     static ResultSet backup;
     static String sqlSelectAllGSs = "SELECT * FROM GAS_STATION";
     static String sqlSelectGSbyCarSharing = "SELECT * FROM GAS_STATION WHERE CAR_SHARING='bah';";
-    static String sqlSelectGSbyGasType = "SELECT * FROM GAS_STATION WHERE HAS_DIESEL=TRUE;";
+    static String sqlSelectGSbyGasType = "SELECT * FROM GAS_STATION WHERE HAS_SUPER=TRUE;";
 
     static String sqlDropGSTable = "DROP TABLE IF EXISTS GAS_STATION";
     static String sqlCreateGSTable = "CREATE TABLE GAS_STATION " +
@@ -73,35 +75,31 @@ public class GasStationControllerTests {
             "user_id INTEGER)";
 
 
-
-
-
     static List<String> sqlInsertGSs = Arrays.asList(
             //id|car|dies_pr|gas_pr|gas_station_address|station_name|                                 has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|  r_dep|time|               r_user|s_pr|s_p_pr|user_id
-            "INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE,  TRUE,  FALSE, 45.048903, 7.659812, 0,  		0, '2020-05-24 19:54:07', -1,  1.864, 0,    NULL)",
-            "INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE,  TRUE,  FALSE, 45.048903, 7.659812, 0, 		0,  '2020-05-23 15:32:09', -1, 1.854, 0,    NULL)"
+            "INSERT INTO GAS_STATION VALUES (1, 'Enjoy', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE,  TRUE,  FALSE, 45.048903, 7.659812, 0,  		0, '2020-05-24 19:54:07', -1,  1.864, 0,    NULL)",
+            "INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE,  FALSE,  FALSE, 45.048903, 7.659812, 0, 		0,  '2020-05-23 15:32:09', -1, 0, 0,    NULL)"
 
     );
     static String apiPrefix = "/gasstation";
-    private GasStation GS1_existing, GS2_nonExisting;
-    private GasStationDto GS1dto;
-    Integer GS1_id, GS2_id;
+    private GasStation GS1_existing, GS10_nonExisting;
+    private GasStationDto GS1dto, GS10dto;
+    Integer GS1_id, GS10_id;
 
 
     @Before
-    public void setUp() throws SQLException{
+    public void setUp() throws SQLException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         //Gas station with existing id in the database
-        GS1_existing = new GasStation("Esso12","via Olanda, 12, Torino",true,false,true,true,false,"Enjoy",45.048903, 7.659812,1.375,1.864,0,1.753,0,-1,"2020-05-24 19:54:07",0);
+        GS1_existing = new GasStation("Esso", "via Olanda, 12, Torino", true, true, false, true, false, "Enjoy", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, -1, "2020-05-24 19:54:07", 0);
         GS1_id = 1;
         GS1_existing.setGasStationId(GS1_id);
         GS1dto = GasStationConverter.convertEntityToDto(GS1_existing);
 
-        GS2_nonExisting = new GasStation("Esso","via Olanda, 12, Torino",true,false,true,true,false,"bah",45.048903, 7.659812,1.375,1.864,0,1.753,0,-1,"2020-05-24 19:54:07",0);
-        GS2_id = 10;
-        GS2_nonExisting.setGasStationId(GS2_id);
-        GS1dto = GasStationConverter.convertEntityToDto(GS2_nonExisting);
-
+        GS10_nonExisting = new GasStation("Repsol", "via Olanda, 12, Torino", true, false, false, false, false, "Enjoy", 45.048903, 7.659812, 1.375, 0, 0, 0, 0, -1, "2020-05-26 19:54:07", 0);
+        GS10_id = 10;
+        GS10_nonExisting.setGasStationId(GS10_id);
+        GS1dto = GasStationConverter.convertEntityToDto(GS10_nonExisting);
 
 
         // reset database
@@ -128,26 +126,26 @@ public class GasStationControllerTests {
     }
 
     private String convertDtoToJSON(GasStationDto gasStationDto) {
-        String JSON =  "{" +
+        String JSON = "{" +
                 "\"gasStationName\":\"" + gasStationDto.getGasStationName() + "\"," +
                 "\"gasStationAddress\":\"" + gasStationDto.getGasStationAddress() + "\"," +
                 "\"hasDiesel\":\"" + gasStationDto.getHasDiesel() + "\"," +
-                "\"hasSuper\":" + gasStationDto.getHasSuper() + ","+
-                "\"hasSuperPlus\":" + gasStationDto.getHasSuperPlus() + ","+
-                "\"hasGas\":" + gasStationDto.getHasGas() + ","+
-                "\"hasMethane\":" + gasStationDto.getHasMethane() + ","+
-                "\"carSharing\":" + gasStationDto.getCarSharing() + ","+
-                "\"lat\":" + gasStationDto.getLat() + ","+
-                "\"lon\":" + gasStationDto.getLon() + ","+
-                "\"dieselPrice\":" + gasStationDto.getDieselPrice() + ","+
-                "\"superPrice\":" + gasStationDto.getSuperPrice() + ","+
-                "\"superPlusPrice\":" + gasStationDto.getSuperPlusPrice()+ ","+
-                "\"gasPrice\":" + gasStationDto.getGasPrice() + ","+
-                "\"methanePrice\":" + gasStationDto.getMethanePrice() + ","+
-                "\"reportUser\":" + gasStationDto.getReportUser() + ","+
-                "\"userDto\":" + gasStationDto.getUserDto() + ","+
-                "\"reportTimestamp\":" + gasStationDto.getReportTimestamp() + ","+
-                "\"reportDependability\":" + gasStationDto.getReportDependability() + ","+
+                "\"hasSuper\":" + gasStationDto.getHasSuper() + "," +
+                "\"hasSuperPlus\":" + gasStationDto.getHasSuperPlus() + "," +
+                "\"hasGas\":" + gasStationDto.getHasGas() + "," +
+                "\"hasMethane\":" + gasStationDto.getHasMethane() + "," +
+                "\"carSharing\":" + gasStationDto.getCarSharing() + "," +
+                "\"lat\":" + gasStationDto.getLat() + "," +
+                "\"lon\":" + gasStationDto.getLon() + "," +
+                "\"dieselPrice\":" + gasStationDto.getDieselPrice() + "," +
+                "\"superPrice\":" + gasStationDto.getSuperPrice() + "," +
+                "\"superPlusPrice\":" + gasStationDto.getSuperPlusPrice() + "," +
+                "\"gasPrice\":" + gasStationDto.getGasPrice() + "," +
+                "\"methanePrice\":" + gasStationDto.getMethanePrice() + "," +
+                "\"reportUser\":" + gasStationDto.getReportUser() + "," +
+                "\"userDto\":" + gasStationDto.getUserDto() + "," +
+                "\"reportTimestamp\":" + gasStationDto.getReportTimestamp() + "," +
+                "\"reportDependability\":" + gasStationDto.getReportDependability() + "," +
                 "\"priceReportDtos\":" + gasStationDto.getPriceReportDtos() + ",";
 
         if (gasStationDto.getGasStationId() != null) {
@@ -159,19 +157,23 @@ public class GasStationControllerTests {
         return JSON;
     }
 
+    private void separateTestsGraphically() {
+        System.err.println("-----------------------------------------------------------------------------------------");
+    }
+
 
     @Test
-    public void test_getGasStationById()throws Exception {
+    public void test_getGasStationById() throws Exception {
         //existing gas station
         mockMvc.perform(get(apiPrefix + GET_GASSTATION_BY_ID.replace("{gasStationId}", String.valueOf(GS1_id)))
-        .accept(MediaType.APPLICATION_JSON)
-        .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":false,\"hasSuperPlus\":true,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
-        .andExpect(status().isOk())
-        .andDo(print());
+                .accept(MediaType.APPLICATION_JSON)
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .andExpect(status().isOk())
+                .andDo(print());
 
 
         //not existing gas station
-        mockMvc.perform(get(apiPrefix + GET_GASSTATION_BY_ID.replace("{gasStationId}", String.valueOf(GS2_id)))
+        mockMvc.perform(get(apiPrefix + GET_GASSTATION_BY_ID.replace("{gasStationId}", String.valueOf(GS10_id)))
                 .accept(MediaType.APPLICATION_JSON)
                 .content(""))
                 .andExpect(status().isOk())
@@ -180,63 +182,237 @@ public class GasStationControllerTests {
     }
 
     @Test
-    public void test_getAllGasStations() throws Exception{
-        mockMvc.perform(get(apiPrefix + GET_ALL_GASSTATIONS.replace("{gasStationId}", String.valueOf(GS1_id)))
+    public void test_getAllGasStations() throws Exception {
+        mockMvc.perform(get(apiPrefix + GET_ALL_GASSTATIONS)
                 .accept(MediaType.APPLICATION_JSON)
-                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":false,\"hasSuperPlus\":true,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}" +
+                        "{\"gasStationId\":2,\"gasStationName\":\"Eni\",\"gasStationAddress\":\"via Spagna, 32, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.431,\"superPrice\":1.854,\"superPlusPrice\":0.0,\"gasPrice\":1.658,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-23 15:32:09\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
                 .andDo(print());
     }
+
+ @Test
+    public void test_saveGasStation() throws Exception {
+
+        // save new gasStation
+        GS10_nonExisting.setGasStationId(GS10_id);  // the gasStationId of a non-existing GS can be either null or a new value
+        GS10dto = GasStationConverter.convertEntityToDto(GS10_nonExisting);
+        mockMvc.perform(post(apiPrefix + SAVE_GASSTATION)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(convertDtoToJSON(GS10dto))
+                    .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.gasStationId").exists())
+                .andExpect(jsonPath("$.gasStationId").value(10))
+                .andExpect(jsonPath("$.gasStationName").exists())
+                .andExpect(jsonPath("$.gasStationName").value("Repsol"))
+                .andExpect(jsonPath("$.gasStationAddress").exists())
+                .andExpect(jsonPath("$.gasStationAddress").value("via Olanda, 12, Torino"))
+                .andExpect(jsonPath("$.hasDiesel").exists())
+                .andExpect(jsonPath("$.hasDiesel").value(true))
+                .andExpect(jsonPath("$.hasSuper").exists())
+                .andExpect(jsonPath("$.hasSuper").value(false))
+                .andExpect(jsonPath("$.hasSuperPlus").exists())
+                .andExpect(jsonPath("$.hasSuperPlus").value(false))
+                .andExpect(jsonPath("$.hasGas").exists())
+                .andExpect(jsonPath("$.hasGas").value(false))
+                .andExpect(jsonPath("$.hasMethane").exists())
+                .andExpect(jsonPath("$.hasMethane").value(false))
+                .andExpect(jsonPath("$.carSharing").exists())
+                .andExpect(jsonPath("$.carSharing").value("Enjoy"))
+                .andExpect(jsonPath("$.lat").exists())
+                .andExpect(jsonPath("$.lat").value(45.048903))
+                .andExpect(jsonPath("$.lon").exists())
+                .andExpect(jsonPath("$.lon").value(7.659812))
+                .andExpect(jsonPath("$.dieselPrice").exists())
+                .andExpect(jsonPath("$.dieselPrice").value(1.375))
+                .andExpect(jsonPath("$.superPrice").exists())
+                .andExpect(jsonPath("$.superPrice").value(0))
+                .andExpect(jsonPath("$.superPlusPrice").exists())
+                .andExpect(jsonPath("$.superPlusPrice").value(0))
+                .andExpect(jsonPath("$.gasPrice").exists())
+                .andExpect(jsonPath("$.gasPrice").value(0))
+                .andExpect(jsonPath("$.methanePrice").exists())
+                .andExpect(jsonPath("$.methanePrice").value(0))
+                .andExpect(jsonPath("$.reportUser").exists())
+                .andExpect(jsonPath("$.reportUser").value(-1))
+                .andExpect(jsonPath("$.reportTimestamp").exists())
+                .andExpect(jsonPath("$.reportTimestamp").value("2020-05-26 19:54:07"))
+                .andExpect(jsonPath("$.reportDependability").exists())
+                .andExpect(jsonPath("$.reportDependability").value(0))
+                .andDo(print());
+
+        separateTestsGraphically();
+
+        // update existing gasStation
+        // we keep using GS10_nonExisting, but at this point it is an existing gasStation in the database
+        GS10_nonExisting.setGasStationId(10);
+        GS10_nonExisting.setGasStationName("newName");
+        GS10dto = GasStationConverter.convertEntityToDto(GS10_nonExisting);
+        mockMvc.perform(post(apiPrefix + SAVE_GASSTATION)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(convertDtoToJSON(GS10dto))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.gasStationId").exists())
+                .andExpect(jsonPath("$.gasStationId").value(10))
+                .andExpect(jsonPath("$.gasStationName").exists())
+                .andExpect(jsonPath("$.gasStationName").value("newName"))
+                .andExpect(jsonPath("$.gasStationAddress").exists())
+                .andExpect(jsonPath("$.gasStationAddress").value("via Olanda, 12, Torino"))
+                .andExpect(jsonPath("$.hasDiesel").exists())
+                .andExpect(jsonPath("$.hasDiesel").value(true))
+                .andExpect(jsonPath("$.hasSuper").exists())
+                .andExpect(jsonPath("$.hasSuper").value(false))
+                .andExpect(jsonPath("$.hasSuperPlus").exists())
+                .andExpect(jsonPath("$.hasSuperPlus").value(false))
+                .andExpect(jsonPath("$.hasGas").exists())
+                .andExpect(jsonPath("$.hasGas").value(false))
+                .andExpect(jsonPath("$.hasMethane").exists())
+                .andExpect(jsonPath("$.hasMethane").value(false))
+                .andExpect(jsonPath("$.carSharing").exists())
+                .andExpect(jsonPath("$.carSharing").value("Enjoy"))
+                .andExpect(jsonPath("$.lat").exists())
+                .andExpect(jsonPath("$.lat").value(45.048903))
+                .andExpect(jsonPath("$.lon").exists())
+                .andExpect(jsonPath("$.lon").value(7.659812))
+                .andExpect(jsonPath("$.dieselPrice").exists())
+                .andExpect(jsonPath("$.dieselPrice").value(1.375))
+                .andExpect(jsonPath("$.superPrice").exists())
+                .andExpect(jsonPath("$.superPrice").value(0))
+                .andExpect(jsonPath("$.superPlusPrice").exists())
+                .andExpect(jsonPath("$.superPlusPrice").value(0))
+                .andExpect(jsonPath("$.gasPrice").exists())
+                .andExpect(jsonPath("$.gasPrice").value(0))
+                .andExpect(jsonPath("$.methanePrice").exists())
+                .andExpect(jsonPath("$.methanePrice").value(0))
+                .andExpect(jsonPath("$.reportUser").exists())
+                .andExpect(jsonPath("$.reportUser").value(-1))
+                .andExpect(jsonPath("$.reportTimestamp").exists())
+                .andExpect(jsonPath("$.reportTimestamp").value("2020-05-26 19:54:07"))
+                .andExpect(jsonPath("$.reportDependability").exists())
+                .andExpect(jsonPath("$.reportDependability").value(0))
+                .andDo(print());
+
+    }
+
+
+
 
     @Test
     public void test_deleteGasStation() throws Exception {
 
         //deleting an existing gasStation
-        mockMvc.perform(delete(apiPrefix + DELETE_GASSTATION.replace("{gasStationId}", String.valueOf(GS1_id)))
-                .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(delete(apiPrefix + DELETE_GASSTATION.replace("{gasStationId}",String.valueOf(GS1_id)))
+                    .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$ ").value(true))
+                .andExpect(jsonPath("$").value(true))
                 .andDo(print());
 
-
+        separateTestsGraphically();
         //deleting a non existing gasStation
-        mockMvc.perform(get(apiPrefix + DELETE_GASSTATION.replace("{gasStationId}", String.valueOf(GS2_id)))
-                .accept(MediaType.APPLICATION_JSON))
+        mockMvc.perform(delete(apiPrefix + DELETE_GASSTATION.replace("{gasStationId}", String.valueOf(GS10_id)))
+                    .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$ ").value(false))
+                .andExpect(jsonPath("$").value(false))
                 .andDo(print());
 
 
 
     }
 
-    /*
-    @Test
-    public void test_getGasStationsByGasolineType(){
 
-    }
 
     @Test
-    public void test_getGasStationsByProximity(){
+    public void test_getGasStationsByGasolineType() throws Exception {
 
-    }
-
-    @Test
-    public void test_getGasStationsWithCoordinates(){
-
-    }
-
-    @Test
-    public void test_setGasStationReport(){
-
+        mockMvc.perform(get(apiPrefix + GET_GASSTATIONS_BY_GASOLINETYPE.replace("{gasolinetype}", String.valueOf("Super")))
+                .accept(MediaType.APPLICATION_JSON)
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andDo(print());
     }
 
 
- */
+
+
+
+    @Test
+    public void test_getGasStationsByProximity() throws Exception {
+        //test with correct values for latitude and longitude
+        mockMvc.perform(get(apiPrefix + GET_GASSTATIONS_BY_PROXIMITY.replace("{myLat}",String.valueOf("45.048903"))
+                .replace("{myLon}",String.valueOf("7.659812")))
+                .accept(MediaType.APPLICATION_JSON)
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andDo(print());
+
+        separateTestsGraphically();
+        //test with invalid values for latitude and longitude
+        mockMvc.perform(get(apiPrefix + GET_GASSTATIONS_BY_PROXIMITY.replace("{myLat}","-91")
+                .replace("{myLon}","45"))
+                .accept(MediaType.APPLICATION_JSON)
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)))
+                .andDo(print());
+    }
+
+
+
+    @Test
+    public void test_getGasStationsWithCoordinates() throws Exception {
+        mockMvc.perform(get(apiPrefix + GET_GASSTATIONS_WITH_COORDINATES.replace("{myLat}","45.048903")
+                .replace("{myLon}","7.659812")
+                .replace("{gasolineType}","Super").replace("{carSharing}","Enjoy"))
+                .accept(MediaType.APPLICATION_JSON)
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andDo(print());
+
+        separateTestsGraphically();
+        //invalid car sharing
+        mockMvc.perform(get(apiPrefix + GET_GASSTATIONS_WITH_COORDINATES.replace("{myLat}","45.048903")
+                .replace("{myLon}","7.659812")
+                .replace("{gasolineType}","Super").replace("{carSharing}","boh"))
+                .accept(MediaType.APPLICATION_JSON)
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)))
+                .andDo(print());
+
+        separateTestsGraphically();
+   //invalid coordinates
+        mockMvc.perform(get(apiPrefix + GET_GASSTATIONS_WITH_COORDINATES.replace("{myLat}","91")
+                .replace("{myLon}","45")
+                .replace("{gasolineType}","Super").replace("{carSharing}","Enjoy"))
+                .accept(MediaType.APPLICATION_JSON)
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)))
+                .andDo(print());
+    }
 
 
 
 
+
+
+    @Test
+    public void test_setGasStationReport() throws Exception {
+        mockMvc.perform(post(apiPrefix + SET_GASSTATION_REPORT.replace("{gasStationId}",String.valueOf(GS1_id))
+                            .replace("{dieselPrice}","1.452").replace("{superPrice}","1.764")
+                            .replace("{superPlusPrice}", "0").replace("{gasPrice}","1.812")
+                            .replace("{methanePrice}", "0").replace("{userId}", "1"))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+    }
 
 }
 
