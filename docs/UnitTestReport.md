@@ -239,9 +239,7 @@ This can be easily increased by tweaking the Python script used to generate the 
 
 ### Code coverage report
 
-    <Add here the screenshot report of the statement and branch coverage obtained using
-    the Eclemma tool. >
-
+<img src="/images/Coverage/unknown.png">
 
 ### Loop coverage analysis
 
@@ -252,9 +250,7 @@ This can be easily increased by tweaking the Python script used to generate the 
 |-----------------------|-----------|----------------------|-----------------|
 |GasStationServiceimpl  | | | |
 | getAllGasStations | lines 147-149 | multiple | test_getAllGasStations |
-| getGasStationsByGasolineType | lines 172-200 | zero     | |
-|                              |               | one      | |
-|                              |               | multiple | |
+| getGasStationsByGasolineType | lines 172-200 | multiple | test_getGasStationsByGasolineType_validGasType|
 | getGasStationsWithCoordinates | lines 253-262 | zero     | test_getGasStationsWithCoordinates_notExisting |
 |                               |               | one      | test_getGasStationsWithCoordinates_existing |
 | getGasStationsWithoutCoordinates | lines 276-282 | one   | test_getGasStationsWithoutCoordinates_existing |
