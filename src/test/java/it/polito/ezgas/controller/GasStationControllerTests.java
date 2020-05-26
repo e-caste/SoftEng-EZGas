@@ -129,12 +129,12 @@ public class GasStationControllerTests {
         String JSON = "{" +
                 "\"gasStationName\":\"" + gasStationDto.getGasStationName() + "\"," +
                 "\"gasStationAddress\":\"" + gasStationDto.getGasStationAddress() + "\"," +
-                "\"hasDiesel\":\"" + gasStationDto.getHasDiesel() + "\"," +
+                "\"hasDiesel\":" + gasStationDto.getHasDiesel() + "," +
                 "\"hasSuper\":" + gasStationDto.getHasSuper() + "," +
                 "\"hasSuperPlus\":" + gasStationDto.getHasSuperPlus() + "," +
                 "\"hasGas\":" + gasStationDto.getHasGas() + "," +
                 "\"hasMethane\":" + gasStationDto.getHasMethane() + "," +
-                "\"carSharing\":" + gasStationDto.getCarSharing() + "," +
+                "\"carSharing\":\"" + gasStationDto.getCarSharing() + "\"," +
                 "\"lat\":" + gasStationDto.getLat() + "," +
                 "\"lon\":" + gasStationDto.getLon() + "," +
                 "\"dieselPrice\":" + gasStationDto.getDieselPrice() + "," +
@@ -144,12 +144,13 @@ public class GasStationControllerTests {
                 "\"methanePrice\":" + gasStationDto.getMethanePrice() + "," +
                 "\"reportUser\":" + gasStationDto.getReportUser() + "," +
                 "\"userDto\":" + gasStationDto.getUserDto() + "," +
-                "\"reportTimestamp\":" + gasStationDto.getReportTimestamp() + "," +
-                "\"reportDependability\":" + gasStationDto.getReportDependability() + "," +
-                "\"priceReportDtos\":" + gasStationDto.getPriceReportDtos() + ",";
+                "\"reportTimestamp\":\"" + gasStationDto.getReportTimestamp() + "\"," +
+                "\"reportDependability\":" + gasStationDto.getReportDependability() + ",";
+                // TODO: we are currently not using the list of priceReportDtos, and anyway it is not JSON-serializable
+//                "\"priceReportDtos\":\"" + gasStationDto.getPriceReportDtos() + "\",";
 
         if (gasStationDto.getGasStationId() != null) {
-            JSON += "\"gasStationId\":" + gasStationDto.getGasStationId() + ",";
+            JSON += "\"gasStationId\":" + gasStationDto.getGasStationId();
         }
 
         JSON += "}";
