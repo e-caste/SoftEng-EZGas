@@ -1,8 +1,7 @@
-package it.polito.ezgas;
+package it.polito.ezgas.converter;
 
 import static org.junit.Assert.*;
 
-import it.polito.ezgas.converter.UserConverter;
 import it.polito.ezgas.dto.LoginDto;
 import it.polito.ezgas.dto.UserDto;
 import it.polito.ezgas.entity.User;

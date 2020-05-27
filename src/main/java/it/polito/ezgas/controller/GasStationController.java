@@ -55,7 +55,7 @@ public class GasStationController {
 	}
 	
 	@RequestMapping(value = Constants.DELETE_GASSTATION, method = RequestMethod.DELETE)
-	public void deleteUser(@PathVariable Integer gasStationId) {
+	public void deleteGasStation(@PathVariable Integer gasStationId) {
 		try {
 			gasStationService.deleteGasStation(gasStationId);
 		} catch (InvalidGasStationException e) {

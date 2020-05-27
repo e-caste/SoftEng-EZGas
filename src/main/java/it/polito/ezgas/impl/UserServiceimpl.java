@@ -8,6 +8,7 @@ import it.polito.ezgas.repository.UserRepository;
 import it.polito.ezgas.converter.UserConverter;
 import it.polito.ezgas.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import exception.InvalidLoginDataException;
@@ -75,10 +76,15 @@ public class UserServiceimpl implements UserService {
 			throw new InvalidUserException("User not found");
 		}
 		if(!user.getAdmin()){
-			userRepository.delete(userId);
+			try {
+				userRepository.delete(userId);
+			} catch (EmptyResultDataAccessException e) {
+				return false;
+			}
 			return true;
+		} else {
+			return false;
 		}
-		return false;
 	}
 
 	@Override

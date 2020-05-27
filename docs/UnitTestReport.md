@@ -226,28 +226,36 @@ This can be easily increased by tweaking the Python script used to generate the 
     <For traceability write the class and method name that contains the test case>
 
 
-| Unit name | JUnit test case |
-|--|--|
-|||
-|||
-||||
+| Unit name      | JUnit test case    |
+| ---------------| ---------------    |
+| User           | testUser           |
+| GasStation     | testGasStation     |
+| UserDto        | testUserDto        |
+| LoginDto       | testLoginDto       |
+| GasStationDto  | testGasStationDto  |
+| IdPw           | testIdPw           |
+| PriceReportDto | testPriceReportDto |
+
 
 ### Code coverage report
 
-    <Add here the screenshot report of the statement and branch coverage obtained using
-    the Eclemma tool. >
-
+<img src="/images/Coverage/unknown.png">
 
 ### Loop coverage analysis
 
     <Identify significant loops in the units and reports the test cases
     developed to cover zero, one or multiple iterations >
 
-|Unit name | Loop rows | Number of iterations | JUnit test case |
-|---|---|---|---|
-|||||
-|||||
-||||||
-
-
+|Unit name              | Loop rows | Number of iterations | JUnit test case |
+|-----------------------|-----------|----------------------|-----------------|
+|GasStationServiceimpl  | | | |
+| getAllGasStations | lines 147-149 | multiple | test_getAllGasStations |
+| getGasStationsByGasolineType | lines 172-200 | multiple | test_getGasStationsByGasolineType_validGasType|
+| getGasStationsWithCoordinates | lines 253-262 | zero     | test_getGasStationsWithCoordinates_notExisting |
+|                               |               | one      | test_getGasStationsWithCoordinates_existing |
+| getGasStationsWithoutCoordinates | lines 276-282 | one   | test_getGasStationsWithoutCoordinates_existing |
+| getGasStationByCarSharing | lines 341-343 | zero      | test_getGasStationByCarSharing_existing |
+|                           |               | one       | test_getGasStationByCarSharing_notExisting |
+|UserServiceimpl  | | | |
+| getAllUsers | lines 66-68 | multiple     | testGetAllUsers |
 
