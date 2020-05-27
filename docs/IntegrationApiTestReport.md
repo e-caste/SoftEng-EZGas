@@ -155,13 +155,67 @@ Version: 1
 |                 | testIncreaseUserReputation |
 |                 | testDecreaseUserReputation |
 
+
 # Scenarios
 
 
 <If needed, define here additional scenarios for the application. Scenarios should be named
  referring the UC they detail>
 
-## Scenario SC9.1
+## Scenario SC1 - Corresponds to UC1
+
+| Scenario | User login |
+| ------------- |:-------------:|
+| Precondition | User U exists and has a valid Account |
+| Postcondition| User il logged in |
+| Step#        | Description |
+|  1     | U goes to login page |
+|  2     | U inserts correct email and password |
+|  3     | System gives User access |
+
+
+## Scenario SC8.1 - Corresponds to UC8
+
+| Scenario |  Address is provided, CarSharing is selected |
+| ------------- |:-------------:| 
+|  Precondition     | User U exists |
+|  Post condition     | |
+| Step#        | Description  |
+|  1     |  U inserts Address and CarSharing |  
+|  2     |  System returns the list of GasStations within 1km from the GeoPoint corresponding to the provided Address affiliated to the selected CarSharing |
+
+## Scenario SC8.2 - Corresponds to UC8
+
+| Scenario |  GasolineType is selected |
+| ------------- |:-------------:| 
+|  Precondition     | User U exists |
+|  Post condition     | |
+| Step#        | Description  |
+|  1     |  U selects Gasolinte Type |  
+|  2     |  System returns the list of GasStations that provide the selected GasolineType, sorted by increasing price of that GasolinteType |
+
+## Scenario SC8.3 - Corresponds to UC8
+
+| Scenario | Address is provided |
+| ------------- |:-------------:| 
+|  Precondition     | User U exists |
+|  Post condition     | |
+| Step#        | Description  |
+|  1     |  U selects Gasolinte Type |  
+|  2     |  System returns the list of GasStations within 1km from the GeoPoint corresponding to the provided address |
+
+## Scenario SC8.4 - Corresponds to UC8
+
+| Scenario | Address is provided, GasolineType is selected, CarSharing is selected |
+| ------------- |:-------------:| 
+|  Precondition     | User U exists |
+|  Post condition     | |
+| Step#        | Description  |
+|  1     |  U selects Gasolinte Type |  
+|  2     |  System returns the list of GasStations within 1km from the GeoPoint corresponding to the provided address affiliated to the selected CarSharing that provide the selected GasolineType |
+
+
+## Scenario SC9.1 - Corresponds to UC9
 
 | Scenario |  Dependability is not obsolescent |
 | ------------- |:-------------:| 
@@ -174,7 +228,7 @@ Version: 1
 |  3     |  obsolescence = 1 - (today - P.time_tag)/7 if (today - lastUpdate) <= 7 |
 |  4     |  System sets the dependability using U's trust level |
 
-## Scenario SC9.2
+## Scenario SC9.2 - Corresponds to UC9
 
 | Scenario |  Dependability is obsolescent |
 | ------------- |:-------------:| 
@@ -187,32 +241,6 @@ Version: 1
 |  3     |  obsolescence = 0 if (today - lastUpdate) > 7 |
 |  4     |  System sets the dependability using U's trust level |
 
-## Scenario SC10.1
-
-| Scenario |  price is correct |
-| ------------- |:-------------:| 
-|  Precondition     | User U exists and has valid account |
-|                   | Gas Station G exists and has price list inserted by U2 |
-|  Post condition     | U2.trust_level++ |
-| Step#        | Description  |
-|  1     |  U selects gas station G |  
-|  2     |  U signals price for G is correct |
-|  3     |  System searches the user U2 who did signal the prices for G |
-|  4     |  System increases by 1 the trust level of U2 |
-
-## Scenario SC10.2
-
-| Scenario |  price is correct |
-| ------------- |:-------------:| 
-|  Precondition     | User U exists and has valid account |
-|                   | Gas Station G exists and has price list inserted by U2 |
-|  Post condition     | U2.trust_level-- |
-| Step#        | Description  |
-|  1     |  U selects gas station G |  
-|  2     |  U signals price for G is wrong |
-|  3     |  System searches the user U2 who did signal the prices for G |
-|  4     |  System decreases by 1 the trust level of U2 |
-
 
 # Coverage of Scenarios and FR
 
@@ -222,24 +250,24 @@ Report also for each of the scenarios the (one or more) API JUnit tests that cov
 
 | Scenario ID | Functional Requirements covered | JUnit  Test(s) | 
 | ----------- | ------------------------------- | ----------- | 
-|  UC1, UC2, UC3    | FR1                       | testUser(), testUserDto() |
-|  UC1, UC2         | FR1.1                     | testSaveUser(), testFindById() , testSave(), testConvertDtoToEntity(), testConvertEntityToDto() |             
-|  UC3              | FR1.2                     | testDeleteUser(), testFindById(), testDelete() |             
-| ...               | FR1.3                     | testGetAllUsers(),  testFindAll(), testConvertEntityToDto() |             
-| ...               | FR1.4                     | testGetUserById(), testFindById(), testConvertEntityToDto() |             
-| ...               | FR2                       | testLoginDto(), testIdPw(), testFindByEmail(), testConvertEntityToLoginDto() |             
-| UC4, UC5, UC6     | FR3                       | testGasStation(), testGasStationDto() |             
-|UC4, UC5           |FR3.1                      | test_saveGasStation_existing(), test_saveGasStation_invalidGPS(), test_saveGasStation_notExisting(), test_saveGasStation_nullPriceReportDtos(), test_findById(), testConvertDtoToEntity(), testConvertEntityToDto(), test_save_existing(), test_save_notExisting() |
-|UC6                |FR3.2                      | test_deleteGasStation_existing(), test_deleteGasStation_notExisting(), test_findById(), test_delete_existing(), test_delete_notExisting()|
-|                   |FR3.3                      | test_getAllGasStations(), test_findAll(), testConvertEntityToDto()|
-|  UC8              | FR4                       | testGasStation(), testGasStationDto()|           
-|UC8                |FR4.1, FR4.2               | test_getGasStationsByProximity_invalidGPS(), test_findAll(), test_distance_far(), test_distance_furthest(), test_distance_near(), test_distance_nearest(), testConvertEntityToDto()|
-|UC8                |FR4.5                      | test_getGasStationsWithCoordinates_existing(), test_getGasStationsWithCoordinates_invalidGasType(), test_getGasStationsWithCoordinates_invalidGPS(), test_getGasStationsWithCoordinates_notExisting(), test_getGasStationsWithoutCoordinates_existing(), test_getGasStationsWithoutCoordinates_invalidGasType(), test_getGasStationByCarSharing_existing(), test_getGasStationByCarSharing_notExisting(), test_getGasStationsByGasolineType_InvalidGasType(), test_getGasStationsByGasolineType_validGasType()|
-|UC7, UC9, UC10     |FR5                        | testPriceReport(), testPriceReportDto()|
-| SC9.1             |FR5.1,  FR5.2              | test_findOne(), test_findById(), test_setReport(), test_setReport_invalidGasStation(), test_setReport_invalidPrice(), test_setReport_invalidUser(), test_reportDependability_notObsolescent()|
-| SC9.2             |FR5.1,  FR5.2              | test_findOne(), test_findById(), test_setReport(), test_setReport_invalidGasStation(), test_setReport_invalidPrice(), test_setReport_invalidUser(),, test_reportDependability_obsolescent()|
-| SC10.1            |FR5.3                      | testIncreaseUserReputation(), testUser() |
-| SC10.2            |FR5.3                      | testDecreaseUserReputation(), testUser() |
+|  UC1, UC2, UC3| FR1                       | testUser(), testUserDto() |
+|  UC1, UC2     | FR1.1                     | testSaveUser(), testFindById() , testSave(), testConvertDtoToEntity(), testConvertEntityToDto() |            
+|  UC3          | FR1.2                     | testDeleteUser(), testFindById(), testDelete() |             
+|               | FR1.3                     | testGetAllUsers(),  testFindAll(), testConvertEntityToDto() |             
+|               | FR1.4                     | testGetUserById(), testFindById(), testConvertEntityToDto() |             
+|  SC1          | FR2                       | testLoginDto(), testIdPw(), testFindByEmail(), testConvertEntityToLoginDto() |             
+| UC4, UC5, UC6 | FR3                       | testGasStation(), testGasStationDto() |             
+|UC4, UC5       |FR3.1                      | test_saveGasStation_existing(), test_saveGasStation_invalidGPS(), test_saveGasStation_notExisting(), test_saveGasStation_nullPriceReportDtos(), test_findById(), testConvertDtoToEntity(), testConvertEntityToDto(), test_save_existing(), test_save_notExisting() |
+|UC6            |FR3.2                      | test_deleteGasStation_existing(), test_deleteGasStation_notExisting(), test_findById(), test_delete_existing(), test_delete_notExisting()|
+|               |FR3.3                      | test_getAllGasStations(), test_findAll(), testConvertEntityToDto()|
+|  SC8.1, SC8.2, SC8.3, SC8.4          | FR4                       | testGasStation(), testGasStationDto()|           
+| SC8.3          |FR4.1, FR4.2               | test_getGasStationsByProximity_invalidGPS(), test_findAll(), test_distance_far(), test_distance_furthest(), test_distance_near(), test_distance_nearest(), testConvertEntityToDto()|
+| SC8.1, SC8.2, SC8.3, SC8.4             |FR4.5                      | test_getGasStationsWithCoordinates_existing(), test_getGasStationsWithCoordinates_invalidGasType(), test_getGasStationsWithCoordinates_invalidGPS(), test_getGasStationsWithCoordinates_notExisting(), test_getGasStationsWithoutCoordinates_existing(), test_getGasStationsWithoutCoordinates_invalidGasType(), test_getGasStationByCarSharing_existing(), test_getGasStationByCarSharing_notExisting(), test_getGasStationsByGasolineType_InvalidGasType(), test_getGasStationsByGasolineType_validGasType()|
+|UC7, UC9, UC10 |FR5                        | testPriceReport(), testPriceReportDto()|
+| SC9.1         |FR5.1,  FR5.2              | test_findOne(), test_findById(), test_setReport(), test_setReport_invalidGasStation(), test_setReport_invalidPrice(), test_setReport_invalidUser(), test_reportDependability_notObsolescent()|
+| SC9.2         |FR5.1,  FR5.2              | test_findOne(), test_findById(), test_setReport(), test_setReport_invalidGasStation(), test_setReport_invalidPrice(), test_setReport_invalidUser(),, test_reportDependability_obsolescent()|
+| SC10.1        |FR5.3                      | testIncreaseUserReputation(), testUser() |
+| SC10.2        |FR5.3                      | testDecreaseUserReputation(), testUser() |
 
 
 
