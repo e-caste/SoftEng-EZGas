@@ -94,9 +94,7 @@ Version: 1
 |                      | test_delete_existing |
 |                      | test_delete_notExisting |
 |                      | test_findOne |
-| UserRepository | selectAll |
-|                | selectById |
-|                | testFindById |
+| UserRepository | testFindById |
 |                | testFindByEmail |
 |                | testFindAll |
 |                | testSave |
