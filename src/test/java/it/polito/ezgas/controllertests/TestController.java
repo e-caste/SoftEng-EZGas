@@ -21,6 +21,10 @@ public class TestController {
 
     static Integer existingAdminUserId = 1, existingUserId = 2, nonExistingUserId = 1000;
 
+    private HttpResponse getResponseFromRequest(HttpUriRequest request) throws IOException {
+        return HttpClientBuilder.create().build().execute(request);
+    }
+
     private String getJsonFromResponse(HttpResponse response) throws IOException {
         return EntityUtils.toString(response.getEntity());
     }
@@ -34,23 +38,24 @@ public class TestController {
     public void testGetUserById() throws IOException {
         // user exists and is admin
         HttpUriRequest request = new HttpGet(url + apiPrefixUser + GET_USER_BY_ID.replace("{userId}", String.valueOf(existingAdminUserId)));
-        HttpResponse response = HttpClientBuilder.create().build().execute(request);
+        HttpResponse response = getResponseFromRequest(request);
         assert response.getStatusLine().getStatusCode() == 200;
 
         // user exists and is not admin
         request = new HttpGet(url + apiPrefixUser + GET_USER_BY_ID.replace("{userId}", String.valueOf(existingUserId)));
-        response = HttpClientBuilder.create().build().execute(request);
+        response = getResponseFromRequest(request);
         assert response.getStatusLine().getStatusCode() == 200;
 
         // user does not exist
         request = new HttpGet(url + apiPrefixUser + GET_USER_BY_ID.replace("{userId}", String.valueOf(nonExistingUserId)));
-        response = HttpClientBuilder.create().build().execute(request);
+        response = getResponseFromRequest(request);
         assert response.getStatusLine().getStatusCode() == 404;
     }
 
     @Test
-    public void testGetAllUsers() {
-
+    public void testGetAllUsers() throws IOException {
+        HttpUriRequest request = new HttpGet(url + apiPrefixUser + GET_ALL_USERS);
+        HttpResponse response = getResponseFromRequest(request);
     }
 
     // GasStationController tests
