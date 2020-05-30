@@ -108,9 +108,15 @@ public class TestController {
 
     @Test
     public void testDeleteUser() throws IOException {
+        // existing user
         HttpDelete request = new HttpDelete(url + apiPrefixUser + DELETE_USER.replace("{userId}", String.valueOf(existingUserId)));
         HttpResponse response = getResponseFromRequest(request);
         assert response.getStatusLine().getStatusCode() == 200;
+
+        // non-existing user
+        request = new HttpDelete(url + apiPrefixUser + DELETE_USER.replace("{userId}", String.valueOf(nonExistingUserId)));
+        response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 404;
     }
 
     @Test
