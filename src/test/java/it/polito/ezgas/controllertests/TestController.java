@@ -16,8 +16,8 @@ import java.io.IOException;
 public class TestController {
 
     static String url = "http://localhost:8080/";
-    static String apiPrefixUser = "user/";
-    static String apiPrefixGasStation = "gasstation/";
+    static String apiPrefixUser = "user";
+    static String apiPrefixGasStation = "gasstation";
 
     static Integer existingAdminUserId = 1, existingUserId = 2, nonExistingUserId = 1000;
 
