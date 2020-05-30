@@ -23,7 +23,10 @@ public class TestController {
     private final String apiPrefixUser = "user";
     private final String apiPrefixGasStation = "gasstation";
 
-    private final Integer existingAdminUserId = 1, existingUserId = 2, nonExistingUserId = 1000;
+    private final Integer existingAdminUserId = 1,
+                          existingUserId = 2,
+                          nonExistingUserId = 1000,
+                          addedUserId = 10;
     private final String newUserJson = "{\"userId\":10,\"userName\":\"newUser\",\"password\":\"password\",\"email\":\"new@new.new\",\"reputation\":0,\"admin\":false}";
     private final String existingModifiedUserJson = "{\"userId\":2,\"userName\":\"asd\",\"password\":\"newPassword\",\"email\":\"asd@asd.asd\",\"reputation\":0,\"admin\":false}";
 
@@ -106,6 +109,39 @@ public class TestController {
         HttpDelete request = new HttpDelete(url + apiPrefixUser + DELETE_USER.replace("{userId}", String.valueOf(existingUserId)));
         HttpResponse response = getResponseFromRequest(request);
         assert response.getStatusLine().getStatusCode() == 200;
+    }
+
+    @Test
+    public void testIncreaseUserReputation() throws IOException {
+        // increase from 0 -> return 1
+        HttpPost request = new HttpPost(url + apiPrefixUser + INCREASE_REPUTATION.replace("{userId}", String.valueOf(existingUserId)));
+        HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        String json = getJsonFromResponse(response);
+        ObjectMapper mapper = getMapper();
+        Integer updatedReputation = mapper.readValue(json, Integer.class);
+        assert updatedReputation == 1;
+
+        // increase from 5 -> return 5
+        request = new HttpPost(url + apiPrefixUser + INCREASE_REPUTATION.replace("{userId}", String.valueOf(existingAdminUserId)));
+        response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        json = getJsonFromResponse(response);
+        mapper = getMapper();
+        updatedReputation = mapper.readValue(json, Integer.class);
+        assert updatedReputation == 5;
+
+        // user doesn't exist -> return 0
+        request = new HttpPost(url + apiPrefixUser + INCREASE_REPUTATION.replace("{userId}", String.valueOf(nonExistingUserId)));
+        response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        json = getJsonFromResponse(response);
+        mapper = getMapper();
+        updatedReputation = mapper.readValue(json, Integer.class);
+        assert updatedReputation == 0;
     }
 
     // GasStationController tests
