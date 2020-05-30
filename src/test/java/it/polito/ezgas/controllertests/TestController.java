@@ -16,11 +16,11 @@ import java.io.IOException;
 
 public class TestController {
 
-    static String url = "http://localhost:8080/";
-    static String apiPrefixUser = "user";
-    static String apiPrefixGasStation = "gasstation";
+    private final String url = "http://localhost:8080/";
+    private final String apiPrefixUser = "user";
+    private final String apiPrefixGasStation = "gasstation";
 
-    static Integer existingAdminUserId = 1, existingUserId = 2, nonExistingUserId = 1000;
+    private final Integer existingAdminUserId = 1, existingUserId = 2, nonExistingUserId = 1000;
 
     private HttpResponse getResponseFromRequest(HttpUriRequest request) throws IOException {
         return HttpClientBuilder.create().build().execute(request);
@@ -63,6 +63,11 @@ public class TestController {
         ObjectMapper mapper = getMapper();
         UserDto[] users = mapper.readValue(json, UserDto[].class);
         assert users.length == 2;
+    }
+
+    @Test
+    public void testSaveUser() {
+
     }
 
     // GasStationController tests
