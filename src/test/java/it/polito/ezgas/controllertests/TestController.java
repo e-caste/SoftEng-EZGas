@@ -4,6 +4,7 @@ import static it.polito.ezgas.utils.Constants.*;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polito.ezgas.dto.GasStationDto;
 import it.polito.ezgas.dto.LoginDto;
 import it.polito.ezgas.dto.UserDto;
 import org.apache.http.HttpResponse;
@@ -33,6 +34,14 @@ public class TestController {
                           addedUserId = 10;
     private final String newUserJson = "{\"userId\":10,\"userName\":\"newUser\",\"password\":\"password\",\"email\":\"new@new.new\",\"reputation\":0,\"admin\":false}";
     private final String existingModifiedUserJson = "{\"userId\":2,\"userName\":\"asd\",\"password\":\"newPassword\",\"email\":\"asd@asd.asd\",\"reputation\":0,\"admin\":false}";
+
+
+    private final Integer existingGasStationId = 1,
+                          nonExistingGasStationId = 10;
+    private final String newGasStationJson = "{\"gasStationId\":50,\"gasStationName\":\"Eni\",\"gasStationAddress\":\"via Spagna, 32, Torino\",\"hasDiesel\":true,\"hasSuper\":false,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.431,\"superPrice\":0.0,\"superPlusPrice\":0.0,\"gasPrice\":1.658,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-31 00:12:09\",\"reportDependability\":0,\"}]";
+    private final String existingModifiedGasStationJson = "[{\"gasStationId\":1,\"gasStationName\":\"Esso1234\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.400,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0}]";
+
+
 
     private HttpResponse getResponseFromRequest(HttpUriRequest request) throws IOException {
         return HttpClientBuilder.create().build().execute(request);
@@ -227,4 +236,158 @@ public class TestController {
     }
 
     // GasStationController tests
+
+    @Test
+    public void test6GetGasStationById() throws IOException {
+        // gas station exists
+        HttpUriRequest request = new HttpGet(url + apiPrefixGasStation + GET_GASSTATION_BY_ID.replace("{gasStationId}", String.valueOf(existingGasStationId)));
+        HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+
+        // gas station does not exist
+        request = new HttpGet(url + apiPrefixGasStation + GET_GASSTATION_BY_ID.replace("{gasStationId}", String.valueOf(nonExistingGasStationId)));
+        response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 404;
+    }
+
+    @Test
+    public void test7GetAllGasStations() throws IOException {
+        HttpUriRequest request = new HttpGet(url + apiPrefixGasStation + GET_ALL_GASSTATIONS);
+        HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        String json = getJsonFromResponse(response);
+        ObjectMapper mapper = getMapper();
+        GasStationDto[] gasStations = mapper.readValue(json, UserDto[].class);
+        assert gasStations.length == 2;
+    }
+
+
+    @Test
+    public void test8SaveGasStation() throws IOException {
+        // save new gas station
+        HttpPost request = new HttpPost(url + apiPrefixGasStation + SAVE_GASSTATION);
+        StringEntity params = new StringEntity(newGasStationJson);
+        request.addHeader("content-type", "application/json");
+        request.setEntity(params);
+        HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        String json = getJsonFromResponse(response);
+        ObjectMapper mapper = getMapper();
+        GasStationDto gasStation = mapper.readValue(json, GasStationDto.class);
+        GasStationDto newGasStation = new GasStationDto("Eni","via Spagna, 32, Torino", true, false, false, true, false,"Enjoy", 45.048903, 7.659812, 1.431, 0.0, 0.0, 1.658, 0.0, -1, null, "2020-05-23 15:32:09",0);
+        assert gasStation.equals(newGasStation);
+
+        // save existing GasStation
+        request = new HttpPost(url + apiPrefixGasStation + SAVE_GASSTATION);
+        params = new StringEntity(existingModifiedGasStationJson);
+        request.addHeader("content-type", "application/json");
+        request.setEntity(params);
+        response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        json = getJsonFromResponse(response);
+        mapper = getMapper();
+        gasStation = mapper.readValue(json, GasStationDto.class);
+        newGasStation = new GasStationDto("Esso1234", "via Olanda, 12, Torino", true, true, false, true,false,"Enjoy",45.048903,7.659812,1.400,1.846,0.0,1.753,0.0,-1,null,"2020-05-24 19:54:07",0);
+        assert gasStation.equals(newGasStation);
+    }
+
+    @Test
+    public void test9DeleteGasStation() throws IOException {
+        // existing gasStation
+        HttpDelete request = new HttpDelete(url + apiPrefixGasStation + DELETE_GASSTATION.replace("{gasStationId}", String.valueOf(existingGasStationId)));
+        HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        // non-existing user
+        request = new HttpDelete(url + apiPrefixGasStation + DELETE_GASSTATION.replace("{gasStationId}", String.valueOf(nonExistingGasStationId)));
+        response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 404;
+    }
+
+    @Test
+    public void test10GetGasStationsByGasolineType() throws IOException {
+
+        HttpGet request = new HttpGet(url + apiPrefixGasStation + GET_GASSTATIONS_BY_GASOLINETYPE.replace("{gasolinetype}", String.valueOf("Diesel")));
+        HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        String json = getJsonFromResponse(response);
+        ObjectMapper mapper = getMapper();
+        GasStationDto[] gasStations = mapper.readValue(json, GasStationDto[].class);
+        assert gasStations.length == 2;
+    }
+
+    @Test
+    public void test11GetGasStationsByProximity()throws IOException{
+        //invalid value of coordinates
+        HttpGet request = new HttpGet(url + apiPrefixGasStation + GET_GASSTATIONS_BY_PROXIMITY.replace("{myLat}","-91")
+                .replace("{myLon}","45"));
+        HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        String json = getJsonFromResponse(response);
+        ObjectMapper mapper = getMapper();
+        GasStationDto[] gasStations = mapper.readValue(json, GasStationDto[].class);
+        assert gasStations.length == 0;
+
+    }
+
+    @Test
+    public void test12GetGasStationsWithCoordinates()throws IOException{
+        //valid values
+        HttpGet request = new HttpGet(url + apiPrefixGasStation + GET_GASSTATIONS_WITH_COORDINATES.replace("{myLat}","45.048903")
+                .replace("{myLon}","7.659812")
+                .replace("{gasolineType}","Super").replace("{carSharing}","Enjoy"));
+        HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        String json = getJsonFromResponse(response);
+        ObjectMapper mapper = getMapper();
+        GasStationDto[] gasStations = mapper.readValue(json, GasStationDto[].class);
+        assert gasStations.length == 1;
+
+    //invalid car sharing
+        HttpGet request = new HttpGet(url + apiPrefixGasStation + GET_GASSTATIONS_WITH_COORDINATES.replace("{myLat}","45.048903")
+                .replace("{myLon}","7.659812")
+                .replace("{gasolineType}","Super").replace("{carSharing}","Enjoyyyy"));
+        HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        String json = getJsonFromResponse(response);
+        ObjectMapper mapper = getMapper();
+        GasStationDto[] gasStations = mapper.readValue(json, GasStationDto[].class);
+        assert gasStations.length == 0;
+
+
+        //invalid coordinates
+        HttpGet request = new HttpGet(url + apiPrefixGasStation + GET_GASSTATIONS_WITH_COORDINATES.replace("{myLat}","91")
+                .replace("{myLon}","45")
+                .replace("{gasolineType}","Super").replace("{carSharing}","Enjoy"));
+        HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        String json = getJsonFromResponse(response);
+        ObjectMapper mapper = getMapper();
+        GasStationDto[] gasStations = mapper.readValue(json, GasStationDto[].class);
+        assert gasStations.length == 0;
+
+    }
+
+    @Test
+    public void test12SetGasStationReport() throws IOException {
+
+        HttpPost request = new HttpPost(url + apiPrefixGasStation + SET_GASSTATION_REPORT.replace("{gasStationId}",String.valueOf(existingGasStationId))
+                .replace("{dieselPrice}","1.452").replace("{superPrice}","1.764")
+                .replace("{superPlusPrice}", "0").replace("{gasPrice}","1.812")
+                .replace("{methanePrice}", "0").replace("{userId}", "1"));
+        HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+    }
+
+
 }
