@@ -4,6 +4,7 @@ import static it.polito.ezgas.utils.Constants.*;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polito.ezgas.dto.UserDto;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -56,6 +57,12 @@ public class TestController {
     public void testGetAllUsers() throws IOException {
         HttpUriRequest request = new HttpGet(url + apiPrefixUser + GET_ALL_USERS);
         HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        String json = getJsonFromResponse(response);
+        ObjectMapper mapper = getMapper();
+        UserDto[] users = mapper.readValue(json, UserDto[].class);
+        assert users.length == 2;
     }
 
     // GasStationController tests
