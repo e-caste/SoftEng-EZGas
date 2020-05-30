@@ -4,6 +4,7 @@ import static it.polito.ezgas.utils.Constants.*;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import it.polito.ezgas.dto.LoginDto;
 import it.polito.ezgas.dto.UserDto;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
@@ -16,6 +17,7 @@ import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 public class TestController {
 
@@ -175,6 +177,45 @@ public class TestController {
         mapper = getMapper();
         updatedReputation = mapper.readValue(json, Integer.class);
         assert updatedReputation == 0;
+    }
+
+    @Test
+    public void testLogin() throws IOException {
+        // login existing admin user
+        HttpPost request = new HttpPost(url + apiPrefixUser + LOGIN);
+        StringEntity params = new StringEntity("{\"user\":\"admin\",\"pw\":\"admin\"}");
+        request.addHeader("content-type", "application/json");
+        request.setEntity(params);
+        HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        String json = getJsonFromResponse(response);
+        ObjectMapper mapper = getMapper();
+        LoginDto loginDto = mapper.readValue(json, LoginDto.class);
+        LoginDto adminLoginDto = new LoginDto(1, "admin", "token", "admin@ezgas.com", 5);
+        assert loginDto.equals(adminLoginDto);
+
+        // login existing non-admin user
+        request = new HttpPost(url + apiPrefixUser + LOGIN);
+        params = new StringEntity("{\"user\":\"asd\",\"pw\":\"asd\"}");
+        request.addHeader("content-type", "application/json");
+        request.setEntity(params);
+        response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        json = getJsonFromResponse(response);
+        mapper = getMapper();
+        loginDto = mapper.readValue(json, LoginDto.class);
+        LoginDto userLoginDto = new LoginDto(2, "asd", "token", "asd@asd.asd", 0);
+        assert loginDto.equals(userLoginDto);
+
+        // login non-existing user
+        request = new HttpPost(url + apiPrefixUser + LOGIN);
+        params = new StringEntity("{\"user\":\"nonExisting\",\"pw\":\"nonExisting\"}");
+        request.addHeader("content-type", "application/json");
+        request.setEntity(params);
+        response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 404;
     }
 
     // GasStationController tests
