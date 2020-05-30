@@ -14,11 +14,13 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestController {
 
     private final String url = "http://localhost:8080/";
@@ -46,7 +48,7 @@ public class TestController {
 
     // UserController tests
     @Test
-    public void testGetUserById() throws IOException {
+    public void test0GetUserById() throws IOException {
         // user exists and is admin
         HttpUriRequest request = new HttpGet(url + apiPrefixUser + GET_USER_BY_ID.replace("{userId}", String.valueOf(existingAdminUserId)));
         HttpResponse response = getResponseFromRequest(request);
@@ -64,7 +66,7 @@ public class TestController {
     }
 
     @Test
-    public void testGetAllUsers() throws IOException {
+    public void test1GetAllUsers() throws IOException {
         HttpUriRequest request = new HttpGet(url + apiPrefixUser + GET_ALL_USERS);
         HttpResponse response = getResponseFromRequest(request);
         assert response.getStatusLine().getStatusCode() == 200;
@@ -76,7 +78,7 @@ public class TestController {
     }
 
     @Test
-    public void testSaveUser() throws IOException {
+    public void test2SaveUser() throws IOException {
         // save new user
         HttpPost request = new HttpPost(url + apiPrefixUser + SAVE_USER);
         StringEntity params = new StringEntity(newUserJson);
@@ -107,7 +109,7 @@ public class TestController {
     }
 
     @Test
-    public void testDeleteUser() throws IOException {
+    public void test6DeleteUser() throws IOException {
         // existing user
         HttpDelete request = new HttpDelete(url + apiPrefixUser + DELETE_USER.replace("{userId}", String.valueOf(existingUserId)));
         HttpResponse response = getResponseFromRequest(request);
@@ -120,7 +122,7 @@ public class TestController {
     }
 
     @Test
-    public void testIncreaseUserReputation() throws IOException {
+    public void test3IncreaseUserReputation() throws IOException {
         // increase from 0 -> return 1
         HttpPost request = new HttpPost(url + apiPrefixUser + INCREASE_REPUTATION.replace("{userId}", String.valueOf(existingUserId)));
         HttpResponse response = getResponseFromRequest(request);
@@ -153,7 +155,7 @@ public class TestController {
     }
 
     @Test
-    public void testDecreaseUserReputation() throws IOException {
+    public void test4DecreaseUserReputation() throws IOException {
         // decrease from 1 -> return 0
         HttpPost request = new HttpPost(url + apiPrefixUser + DECREASE_REPUTATION.replace("{userId}", String.valueOf(existingUserId)));
         HttpResponse response = getResponseFromRequest(request);
@@ -186,7 +188,7 @@ public class TestController {
     }
 
     @Test
-    public void testLogin() throws IOException {
+    public void test5Login() throws IOException {
         // login existing admin user
         HttpPost request = new HttpPost(url + apiPrefixUser + LOGIN);
         StringEntity params = new StringEntity("{\"user\":\"admin\",\"pw\":\"admin\"}");
