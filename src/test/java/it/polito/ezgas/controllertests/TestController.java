@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.polito.ezgas.dto.UserDto;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -98,6 +99,13 @@ public class TestController {
         user = mapper.readValue(json, UserDto.class);
         addedUser = new UserDto(2, "asd", "newPassword", "asdasd.asd", 0, false);
         assert user.equals(addedUser);
+    }
+
+    @Test
+    public void testDeleteUser() throws IOException {
+        HttpDelete request = new HttpDelete(url + apiPrefixUser + DELETE_USER.replace("{userId}", String.valueOf(existingUserId)));
+        HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
     }
 
     // GasStationController tests
