@@ -86,7 +86,7 @@ public class TestController {
         String json = getJsonFromResponse(response);
         ObjectMapper mapper = getMapper();
         UserDto user = mapper.readValue(json, UserDto.class);
-        UserDto addedUser = new UserDto(10, "newUser", "password", "new@new.new", 0, false);
+        UserDto addedUser = new UserDto(10, "newUser", "password", "new@new.new", -5, false);
         assert user.equals(addedUser);
 
         // save existing user
@@ -135,6 +135,39 @@ public class TestController {
 
         // user doesn't exist -> return 0
         request = new HttpPost(url + apiPrefixUser + INCREASE_REPUTATION.replace("{userId}", String.valueOf(nonExistingUserId)));
+        response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        json = getJsonFromResponse(response);
+        mapper = getMapper();
+        updatedReputation = mapper.readValue(json, Integer.class);
+        assert updatedReputation == 0;
+    }
+
+    @Test
+    public void testDecreaseUserReputation() throws IOException {
+        // decrease from 1 -> return 0
+        HttpPost request = new HttpPost(url + apiPrefixUser + DECREASE_REPUTATION.replace("{userId}", String.valueOf(existingUserId)));
+        HttpResponse response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        String json = getJsonFromResponse(response);
+        ObjectMapper mapper = getMapper();
+        Integer updatedReputation = mapper.readValue(json, Integer.class);
+        assert updatedReputation == 0;
+
+        // decrease from -5 -> return -5
+        request = new HttpPost(url + apiPrefixUser + DECREASE_REPUTATION.replace("{userId}", String.valueOf(addedUserId)));
+        response = getResponseFromRequest(request);
+        assert response.getStatusLine().getStatusCode() == 200;
+
+        json = getJsonFromResponse(response);
+        mapper = getMapper();
+        updatedReputation = mapper.readValue(json, Integer.class);
+        assert updatedReputation == -5;
+
+        // user doesn't exist -> return 0
+        request = new HttpPost(url + apiPrefixUser + DECREASE_REPUTATION.replace("{userId}", String.valueOf(nonExistingUserId)));
         response = getResponseFromRequest(request);
         assert response.getStatusLine().getStatusCode() == 200;
 
