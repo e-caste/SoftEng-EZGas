@@ -48,12 +48,14 @@ public class UserServiceimpl implements UserService {
 
 			userRepository.save(user);
 			uDto = UserConverter.convertEntityToDto(user);
-		} else {
+		} else if(userRepository.findByEmail(userDto.getEmail()) == null){
 			user = UserConverter.convertDtoToEntity(userDto);
 			if(!user.getAdmin()){
 				userRepository.save(user);
 				uDto = UserConverter.convertEntityToDto(user);
 			}
+		} else {
+			uDto = UserConverter.convertEntityToDto(userRepository.findById(userDto.getUserId()));
 		}
 
 		return uDto;

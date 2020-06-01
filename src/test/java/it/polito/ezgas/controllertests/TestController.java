@@ -29,18 +29,17 @@ public class TestController {
     private final String apiPrefixGasStation = "gasstation";
 
     private final Integer existingAdminUserId = 1,
-                          existingUserId = 2,
-                          nonExistingUserId = 1000,
-                          addedUserId = 10;
+            existingUserId = 2,
+            nonExistingUserId = 1000,
+            addedUserId = 10;
     private final String newUserJson = "{\"userId\":10,\"userName\":\"newUser\",\"password\":\"password\",\"email\":\"new@new.new\",\"reputation\":0,\"admin\":false}";
     private final String existingModifiedUserJson = "{\"userId\":2,\"userName\":\"asd\",\"password\":\"newPassword\",\"email\":\"asd@asd.asd\",\"reputation\":0,\"admin\":false}";
 
 
     private final Integer existingGasStationId = 1,
-                          nonExistingGasStationId = 10;
+            nonExistingGasStationId = 10;
     private final String newGasStationJson = "{\"gasStationId\":50,\"gasStationName\":\"Eni\",\"gasStationAddress\":\"via Spagna, 32, Torino\",\"hasDiesel\":true,\"hasSuper\":false,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.431,\"superPrice\":0.0,\"superPlusPrice\":0.0,\"gasPrice\":1.658,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-31 00:12:09\",\"reportDependability\":0,\"}]";
     private final String existingModifiedGasStationJson = "[{\"gasStationId\":1,\"gasStationName\":\"Esso1234\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.400,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0}]";
-
 
 
     private HttpResponse getResponseFromRequest(HttpUriRequest request) throws IOException {
@@ -235,6 +234,7 @@ public class TestController {
         assert response.getStatusLine().getStatusCode() == 404;
     }
 
+/*
     // GasStationController tests
 
     @Test
@@ -389,5 +389,5 @@ public class TestController {
 
     }
 
-
+*/
 }
