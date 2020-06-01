@@ -33,6 +33,72 @@ type("1590959116507.png", "name3@name3.it")
 type("1590959124355.png", "name3name3")
 click("1590959139011.png")
 
+''' Test Use Case 2'''
+#User modifies his own profile details
+click("1591035290994.png")
+wait("1591035331936.png")
+type("1591035362673.png", "lupo@che.balla")
+type("1591035383071.png", "balla")
+click("1591035397228.png")
+click("1591035546349.png")
+click("1591037508661.png")
+type("a", KEY_CTRL)
+type("lupoModifiedBySelf")
+type("1591035383071.png", "balla")
+click("1591035641079.png")
+if not exists("1591037176492.png"):
+       popup("TEST FAILED: name in welcome quote is not up to date")
+    else:
+       popup("TEST PASSED: name in welcome quote is up to date")      
+click("1591037768723.png")
+#Admin modifies his own details
+click("1591035290994.png")
+wait("1591035331936.png")
+type("1591035362673.png", "admin@ezgas.com")
+type("1591035383071.png", "admin")
+click("1591035397228.png")
+click("1591035546349.png")
+click("1591037984394.png")
+type("a", KEY_CTRL)
+type("adminModifiedBySelf")
+type("1591035383071.png", "admin")
+click("1591035641079.png")
+if not exists("1591038097189.png"):
+       popup("TEST FAILED: name in welcome quote is not up to date")
+else:
+       popup("TEST PASSED: name in welcome quote is up to date")
+click("1591037768723.png")
+#Admin modifies user details
+click("1591035290994.png")
+wait("1591035331936.png")
+type("1591035362673.png", "admin@ezgas.com")
+type("1591035383071.png", "admin")
+click("1591035397228.png")
+wait("1591039448604.png")
+click("1591038446179.png")
+wait("1591038469116.png")
+r = Region(Region(303,549,1887,61))
+r.click("1591039239716.png")
+r = Region(Region(276,134,1987,244))
+r.click("1591039632396.png")
+type("a", KEY_CTRL)
+type("lupoModifiedByAdmin")
+r.click("1591039662394.png")
+r = Region(Region(303,549,1887,61))
+r.click("1591039239716.png")
+r = Region(Region(276,134,1987,244))
+r.click("1591039902447.png")
+type("a", KEY_CTRL)
+type("ballaConAdmin")
+r.click("1591039662394.png")
+
+r = Region(Region(303,549,1887,61))
+r.click("1591039239716.png")
+r = Region(Region(276,134,1987,244))
+r.click("1591040140384.png")
+type("a", KEY_CTRL)
+type("lupo@cheforse.balla")
+r.click("1591039662394.png")
 
 ''' Test Use Case 3 '''
 ''' Administrator can delete any account'''
@@ -69,6 +135,20 @@ click("1590965633199.png")
 
 click("1590964589955.png")
 
+''' Test Use Case 6'''
+#Delete Gas Station
+click("1591035290994.png")
+wait("1591035331936.png")
+type("1591035362673.png", "admin@ezgas.com")
+type("1591035383071.png", "admin")
+click("1591035397228.png")
+wait("1591039448604.png")
+click("1591038446179.png")
+
+wait("1591041778064.png")
+type(Key.PAGE_DOWN)
+r = Region(Region(260,338,2024,176))
+r.click("1591042147033.png")
 
 ''' Test Use Case 7 '''
 '''Report fuel price for a gas station'''
@@ -98,3 +178,21 @@ type("1590968190478.png","1.7")
 type("1590968198882.png","1.3")
 click("1590968134047.png")
 click(Pattern("1590967389792.png").exact())
+
+
+''' Test Use Case 8 '''
+#Obtain price of fuel for gas stations in a certain geographic area
+type("1591045945025.png", "Corso Duca degli Abruzzi Turin Piemont Italy")
+click("1591046398385.png")
+click("1591046172918.png")
+click(Pattern("1591047242981.png").targetOffset(-37,6))
+click("1591046267171.png")
+click("1591046201559.png")
+click(Pattern("1591047089882.png").targetOffset(-69,5))
+click("1591046267171.png")
+sleep(3)
+click(Pattern("1591047363619.png").targetOffset(-251,-8))
+''' Test Use Case 10 '''
+#Evaluate price
+click(Pattern("1591047715063.png").targetOffset(881,-4))
+click(Pattern("1591047774576.png").targetOffset(955,-1))
