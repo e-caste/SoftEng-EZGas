@@ -8,10 +8,7 @@ import it.polito.ezgas.dto.GasStationDto;
 import it.polito.ezgas.dto.LoginDto;
 import it.polito.ezgas.dto.UserDto;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
@@ -20,6 +17,10 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
+
+
+// TODO: in order to run these tests rename the testController.mv.db in memo.mv.db
+//We have also done the controllerTests in MockMvc, their are in the package test/java/it.polito.ezgas/controller
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestController {
@@ -36,10 +37,10 @@ public class TestController {
     private final String existingModifiedUserJson = "{\"userId\":2,\"userName\":\"asd\",\"password\":\"newPassword\",\"email\":\"asd@asd.asd\",\"reputation\":0,\"admin\":false}";
 
 
-    private final Integer existingGasStationId = 138,
-            nonExistingGasStationId = 50;
+    private final Integer existingGasStationId = 1,
+                   nonExistingGasStationId = 55;
     private final String newGasStationJson = "{\"gasStationId\":50,\"gasStationName\":\"Eni\",\"gasStationAddress\":\"via Spagna, 32, Torino\",\"hasDiesel\":true,\"hasSuper\":false,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.431,\"superPrice\":0.0,\"superPlusPrice\":0.0,\"gasPrice\":1.658,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-31 00:12:09\",\"reportDependability\":0}";
-    private final String existingModifiedGasStationJson = "{\"gasStationId\":138,\"gasStationName\":\"Eni1234\",\"gasStationAddress\":\"Piazza Gian Lorenzo Bernini Turin Piemont Italy \",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.0757003,\"lon\":7.6562299,\"dieselPrice\":1.400,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0}";
+    private final String existingModifiedGasStationJson = "{\"gasStationId\":1,\"gasStationName\":\"Eni1234\",\"gasStationAddress\":\"Piazza Gian Lorenzo Bernini Turin Piemont Italy \",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.0757003,\"lon\":7.6562299,\"dieselPrice\":1.400,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0}";
 
 
     private HttpResponse getResponseFromRequest(HttpUriRequest request) throws IOException {
@@ -241,7 +242,7 @@ public class TestController {
     @Test
     public void test6GetGasStationById() throws IOException {
         // gas station exists
-        HttpUriRequest request = new HttpGet(url + apiPrefixGasStation + GET_GASSTATION_BY_ID.replace("{gasStationId}", String.valueOf(74)));
+        HttpUriRequest request = new HttpGet(url + apiPrefixGasStation + GET_GASSTATION_BY_ID.replace("{gasStationId}", String.valueOf(existingGasStationId)));
         HttpResponse response = getResponseFromRequest(request);
         assert response.getStatusLine().getStatusCode() == 200;
 
@@ -263,8 +264,10 @@ public class TestController {
         String json = getJsonFromResponse(response);
         ObjectMapper mapper = getMapper();
         GasStationDto[] gasStations = mapper.readValue(json, GasStationDto[].class);
-        assert gasStations.length == 2;     //in my db I have 2 gas stations
+        assert gasStations.length == 2;
     }
+
+
 
 
     @Test
@@ -279,8 +282,8 @@ public class TestController {
 
 
 
-        // save existing GasStation
-      request = new HttpPost(url + apiPrefixGasStation + SAVE_GASSTATION);
+        // update existing GasStation
+        request = new HttpPost(url + apiPrefixGasStation + SAVE_GASSTATION);
         params = new StringEntity(existingModifiedGasStationJson);
         request.addHeader("content-type", "application/json");
         request.setEntity(params);
@@ -293,7 +296,7 @@ public class TestController {
     @Test
     public void test9DeleteGasStation() throws IOException {
         // existing gasStation
-        HttpDelete request = new HttpDelete(url + apiPrefixGasStation + DELETE_GASSTATION.replace("{gasStationId}", String.valueOf(139)));
+        HttpDelete request = new HttpDelete(url + apiPrefixGasStation + DELETE_GASSTATION.replace("{gasStationId}", String.valueOf(existingGasStationId)));
         HttpResponse response = getResponseFromRequest(request);
         assert response.getStatusLine().getStatusCode() == 200;
 
@@ -301,7 +304,19 @@ public class TestController {
         request = new HttpDelete(url + apiPrefixGasStation + DELETE_GASSTATION.replace("{gasStationId}", String.valueOf(nonExistingGasStationId)));
         response = getResponseFromRequest(request);
         assert response.getStatusLine().getStatusCode() == 200;
+
+
+        //reAdding the deleted gasStation for the following tests
+        HttpPost request1 = new HttpPost(url + apiPrefixGasStation + SAVE_GASSTATION);
+        StringEntity params = new StringEntity(existingModifiedGasStationJson);
+        request1.addHeader("content-type", "application/json");
+        request1.setEntity(params);
+        response = getResponseFromRequest(request1);
+        assert response.getStatusLine().getStatusCode() == 200;
+
     }
+
+
 
     @Test
     public void test10GetGasStationsByGasolineType() throws IOException {
@@ -313,7 +328,7 @@ public class TestController {
         String json = getJsonFromResponse(response);
         ObjectMapper mapper = getMapper();
         GasStationDto[] gasStations = mapper.readValue(json, GasStationDto[].class);
-        assert gasStations.length == 1;         //1 gas station because i have deleted one gas station in the previous test
+        assert gasStations.length == 2;
     }
 
 
@@ -378,7 +393,7 @@ public class TestController {
 
 
     @Test
-    public void test12SetGasStationReport() throws IOException {
+    public void test13SetGasStationReport() throws IOException {
 
         HttpPost request = new HttpPost(url + apiPrefixGasStation + SET_GASSTATION_REPORT.replace("{gasStationId}",String.valueOf(existingGasStationId))
                 .replace("{dieselPrice}","1.452").replace("{superPrice}","1.764")
