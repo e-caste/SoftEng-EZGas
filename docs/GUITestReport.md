@@ -20,15 +20,15 @@ This part of the document reports about testing at the GUI level. Tests are end 
 
 | Scenario ID | Functional Requirements covered | GUI Test(s) |
 | ----------- | ------------------------------- | ----------- | 
-| 1           | FR1, FR1.1                      |             |             
-| 2           | FR1, FR1.1, FR1.3, FR1.4        |             |             
-| 3           | FR1, FR1.2, FR1.3, FR1.4        |             |         
-| 4           | FR3, FR3.1                      |             |             
-| 5           | FR3, FR3.1                      |             |             
-| 6           | FR3, FR3.2                      |             |             
-| 7           | FR5, FR5.1                      |             |
-| 8           | FR4, FR4.1, FR4.2, FR4.3, FR4.4, FR4.5|       |
-| 10, 10.1, 10.2| FR5, FR5.3                    |             |
+| 1           | FR1, FR1.1                      |     TestUseCase1.py        |             
+| 2           | FR1, FR1.1, FR1.3, FR1.4        |     TestUseCase2.py        |             
+| 3           | FR1, FR1.2, FR1.3, FR1.4        |     TestUseCase3.py        |         
+| 4           | FR3, FR3.1                      |     TestUseCase4.py        |             
+| 5           | FR3, FR3.1                      |     TestUseCase5.py        |             
+| 6           | FR3, FR3.2                      |     TestUseCase6.py        |             
+| 7           | FR5, FR5.1                      |     TestUseCase7.py        |
+| 8           | FR4, FR4.1, FR4.2, FR4.3, FR4.4, FR4.5|TestUseCase8.py       |
+| 10, 10.1, 10.2| FR5, FR5.3                    |     TestUseCase10.py        |
 
 # REST  API  Testing
 
