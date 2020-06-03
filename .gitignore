@@ -19,6 +19,8 @@ test/secret.py
 test/GetterSetterTests.java
 test/__pycache__
 
+data/testController.mv.db
+
 # External tool builders
 .externalToolBuilders/
 
