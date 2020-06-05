@@ -4,11 +4,11 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -57,32 +57,28 @@ public class GasStationServiceimpl implements GasStationService {
 		double difference;
 		double obsolescence;
 
-		try {
-			DateFormat formatter = new SimpleDateFormat("MM-dd-YYYY");
-			Date lastDate = formatter.parse(lastTimeStamp);
-			Date newDate = formatter.parse(newTimeStamp);
-			Timestamp lastTS = new Timestamp(lastDate.getTime());
-			Timestamp newTS = new Timestamp(newDate.getTime());
-			// values in milliseconds
-			long lastMS = lastTS.getTime();
-			long newMS = newTS.getTime();
-			long lastDay = TimeUnit.MILLISECONDS.toDays(lastMS);
-			long newDay = TimeUnit.MILLISECONDS.toDays(newMS);
+		DateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+		LocalDate lastDate = LocalDate.parse(lastTimeStamp, DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+		LocalDate newDate = LocalDate.parse(newTimeStamp, DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+		Timestamp lastTS = Timestamp.valueOf(lastDate.atTime(LocalTime.MIDNIGHT));
+		Timestamp newTS = Timestamp.valueOf(newDate.atTime(LocalTime.MIDNIGHT));
+		// values in milliseconds
+		long lastMS = lastTS.getTime();
+		long newMS = newTS.getTime();
+		long lastDay = TimeUnit.MILLISECONDS.toDays(lastMS);
+		long newDay = TimeUnit.MILLISECONDS.toDays(newMS);
 
-			// difference in ms converted in days
-			difference = newDay - lastDay;
+		// difference in ms converted in days
+		difference = newDay - lastDay;
 
-			if (difference > 7) {
-				obsolescence = 0;
-			}
-			else {
-				obsolescence = 1 - (difference / 7);
-			}
-
-			dependability = 50 * (userTrustLevel + 5) / 10 + 50 * obsolescence;
-		} catch (ParseException e) {
-			System.out.println("Exception :" + e);
+		if (difference > 7) {
+			obsolescence = 0;
 		}
+		else {
+			obsolescence = 1 - (difference / 7);
+		}
+
+		dependability = 50 * (userTrustLevel + 5) / 10 + 50 * obsolescence;
 
 		return dependability;
 	}

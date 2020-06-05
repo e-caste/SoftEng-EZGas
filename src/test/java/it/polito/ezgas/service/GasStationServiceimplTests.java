@@ -6,11 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import javax.annotation.PostConstruct;
 
@@ -85,8 +83,8 @@ public class GasStationServiceimplTests {
     
     static List<String> sqlInsertGSs = Arrays.asList(
 																			//id|car|dies_pr|gas_pr|gas_station_address|station_name|has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|r_dep|time|r_user|s_pr|s_p_pr|user_id
-											"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, '2020-05-24 19:54:07', -1, 1.864, 0, NULL)",
-            								"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  '2020-05-23 15:32:09', -1, 1.854, 0, NULL)"
+											"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, '05-24-2020', -1, 1.864, 0, NULL)",
+            								"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  '05-23-2020', -1, 1.854, 0, NULL)"
 
     );
 	
@@ -171,13 +169,13 @@ public class GasStationServiceimplTests {
 		GS1.setGasStationId(GS1id);
 		GS1.setLat(45.048903);
 		GS1.setLon(7.659812);
-		GS1.setReportTimestamp("2020-05-24 19:54:07");
+		GS1.setReportTimestamp("05-24-2020");
 		GS1.setCarSharing(GS1carSharing);
 		//GS1Dto = GasStationConverter.convertEntityToDto(GS1);
 		gasStationRepository.save(GS1);
 		
-		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, "bah", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, -1, "2020-05-24 19:54:07", 0);
-		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0, 1.753, 0, -1, "2020-05-26 10:44:04", 0);
+		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, "bah", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, -1, "05-24-2020", 0);
+		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0, 1.753, 0, -1, "05-25-2020", 0);
 	}
 
 	@Test
@@ -394,60 +392,51 @@ public class GasStationServiceimplTests {
 	@Test
 	public void test_reportDependability_obsolescent() {
 		//GasStationServiceimpl gasStationServiceimpl = new GasStationServiceimpl();
-		Timestamp lastTimeStamp = new Timestamp(2019, 12, 11, 18, 20, 32, 0);
-		Timestamp newTimeStamp = new Timestamp(2019, 12, 19, 22, 10, 32, 0);
 		int userTrustLevel = 2;
 		double expectedRes = 35;
 		
-		assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
+		assertEquals(expectedRes, gasStationServiceimpl.reportDependability("12-11-2019", "12-19-2019", userTrustLevel), 0.01);
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Test
 	public void test_reportDependability_notObsolescent() {
 		//GasStationServiceimpl gasStationServiceimpl = new GasStationServiceimpl();
-		Timestamp lastTimeStamp = new Timestamp(2019, 12, 11, 18, 20, 32, 0);
-		Timestamp newTimeStamp = new Timestamp(2019, 12, 12, 20, 40, 32, 0);
+
 		int userTrustLevel = 2;
 		double expectedRes = 77.857;
 		
-		assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
+		assertEquals(expectedRes, gasStationServiceimpl.reportDependability("12-11-2019", "12-12-2019", userTrustLevel), 0.01);
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Test
 	public void test_reportDependability_sameDay_perfectUser() {
 		//GasStationServiceimpl gasStationServiceimpl = new GasStationServiceimpl();
-		Timestamp lastTimeStamp = new Timestamp(2019, 12, 12, 18, 20, 32, 0);
-		Timestamp newTimeStamp = new Timestamp(2019, 12, 12, 19, 22, 32, 0);
 		int userTrustLevel = 5;
 		double expectedRes = 100;
 		
-		assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
+		assertEquals(expectedRes, gasStationServiceimpl.reportDependability("12-12-2019", "12-12-2019", userTrustLevel), 0.01);
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Test
 	public void test_reportDependability_sameDay_worstUser() {
 		//GasStationServiceimpl gasStationServiceimpl = new GasStationServiceimpl();
-		Timestamp lastTimeStamp = new Timestamp(2019, 12, 12, 18, 20, 32, 0);
-		Timestamp newTimeStamp = new Timestamp(2019, 12, 12, 21, 30, 32, 0);
 		int userTrustLevel = -5;
 		double expectedRes = 50;
 		
-		assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
+		assertEquals(expectedRes, gasStationServiceimpl.reportDependability("12-12-2019", "12-12-2019", userTrustLevel), 0.01);
 	}
 	
 	@SuppressWarnings("deprecation")
 	@Test
 	public void test_reportDependability_obsolescent_worstUser() {
 		//GasStationServiceimpl gasStationServiceimpl = new GasStationServiceimpl();
-		Timestamp lastTimeStamp = new Timestamp(2019, 12, 11, 18, 20, 32, 0);
-		Timestamp newTimeStamp = new Timestamp(2019, 12, 19, 22, 10, 32, 0);
 		int userTrustLevel = -5;
 		double expectedRes = 0;
 		
-		assertEquals(expectedRes, gasStationServiceimpl.reportDependability(lastTimeStamp.toString(), newTimeStamp.toString(), userTrustLevel), 0.01);
+		assertEquals(expectedRes, gasStationServiceimpl.reportDependability("12-11-2019", "12-19-2019", userTrustLevel), 0.01);
 	}
 	
 	@Test
