@@ -99,7 +99,7 @@ public class GasStationServiceimpl implements GasStationService {
 			throw new PriceException("Wrong Exception");
 		}
 
-		String currentTimeStamp = new SimpleDateFormat("mm-dd-yyyy").format(new Date());
+		String currentTimeStamp = new SimpleDateFormat("MM-dd-YYYY").format(new Date(System.currentTimeMillis()));
 		gasStationDto.setReportTimestamp(currentTimeStamp);
 
 		GasStation gasStation = gasStationRepository.findById(gasStationDto.getGasStationId());
@@ -146,7 +146,7 @@ public class GasStationServiceimpl implements GasStationService {
 			if(gasStation.getCarSharing().equals("null")){
 				gasStation.setCarSharing(null);
 			}
-			gasStation.setReportTimestamp(new SimpleDateFormat("mm-dd-yyyy").format(new Date()));
+			gasStation.setReportTimestamp(new SimpleDateFormat("MM-dd-YYYY").format(new Date(System.currentTimeMillis())));
 			gasStationRepository.save(gasStation);
 			gsDTo = GasStationConverter.convertEntityToDto(gasStation);
 		}
@@ -343,7 +343,7 @@ public class GasStationServiceimpl implements GasStationService {
 		}
 
 		String oldTimeStamp = gasStation.getReportTimestamp();
-		String newTimeStamp = new SimpleDateFormat("mm-dd-yyyy").format(new Date());
+		String newTimeStamp = new SimpleDateFormat("MM-dd-YYYY").format(new Date(System.currentTimeMillis()));
 		gasStation.setReportTimestamp(newTimeStamp);
 
 		double repDependability = reportDependability(oldTimeStamp,newTimeStamp,user.getReputation());
