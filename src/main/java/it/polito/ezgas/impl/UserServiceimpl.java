@@ -77,14 +77,10 @@ public class UserServiceimpl implements UserService {
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
-		if(!user.getAdmin()){
-			try {
-				userRepository.delete(userId);
-			} catch (EmptyResultDataAccessException e) {
-				return false;
-			}
+		try {
+			userRepository.delete(userId);
 			return true;
-		} else {
+		} catch (EmptyResultDataAccessException e) {
 			return false;
 		}
 	}

@@ -1,6 +1,8 @@
 package it.polito.ezgas.impl;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -50,30 +52,38 @@ public class GasStationServiceimpl implements GasStationService {
 		return GasStationConverter.convertEntityToDto(gasStation);
 	}
 	
-	public double reportDependability(String lastTimeStamp, String newTimeStamp, int userTrustLevel) {
-		double dependability;
+	public double reportDependability(String lastTimeStamp, String newTimeStamp, int userTrustLevel){
+		double dependability=0;
 		double difference;
 		double obsolescence;
-		
-		// values in milliseconds
-		Timestamp lastTS = Timestamp.valueOf(lastTimeStamp);
-		Timestamp newTS = Timestamp.valueOf(newTimeStamp);
-		long lastMS = lastTS.getTime();
-		long newMS = newTS.getTime();
-		long lastDay = TimeUnit.MILLISECONDS.toDays(lastMS);
-		long newDay = TimeUnit.MILLISECONDS.toDays(newMS);
 
-		// difference in ms converted in days
-		difference = newDay - lastDay;
-		if (difference > 7) {
-			obsolescence = 0;
+		try {
+			DateFormat formatter = new SimpleDateFormat("MM-dd-YYYY");
+			Date lastDate = formatter.parse(lastTimeStamp);
+			Date newDate = formatter.parse(newTimeStamp);
+			Timestamp lastTS = new Timestamp(lastDate.getTime());
+			Timestamp newTS = new Timestamp(newDate.getTime());
+			// values in milliseconds
+			long lastMS = lastTS.getTime();
+			long newMS = newTS.getTime();
+			long lastDay = TimeUnit.MILLISECONDS.toDays(lastMS);
+			long newDay = TimeUnit.MILLISECONDS.toDays(newMS);
+
+			// difference in ms converted in days
+			difference = newDay - lastDay;
+
+			if (difference > 7) {
+				obsolescence = 0;
+			}
+			else {
+				obsolescence = 1 - (difference / 7);
+			}
+
+			dependability = 50 * (userTrustLevel + 5) / 10 + 50 * obsolescence;
+		} catch (ParseException e) {
+			System.out.println("Exception :" + e);
 		}
-		else {
-			obsolescence = 1 - (difference / 7);
-		}
-		
-		dependability = 50 * (userTrustLevel + 5) / 10 + 50 * obsolescence;
-		
+
 		return dependability;
 	}
 
@@ -89,13 +99,11 @@ public class GasStationServiceimpl implements GasStationService {
 			throw new PriceException("Wrong Exception");
 		}
 
-		String currentTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		String currentTimeStamp = new SimpleDateFormat("mm-dd-yyyy").format(new Date());
 		gasStationDto.setReportTimestamp(currentTimeStamp);
 
 		GasStation gasStation = gasStationRepository.findById(gasStationDto.getGasStationId());
 		if(gasStation != null) {
-			
-
 			gasStation.setGasStationId(gasStationDto.getGasStationId());
 			gasStation.setGasStationName(gasStationDto.getGasStationName());
 			gasStation.setGasStationAddress(gasStationDto.getGasStationAddress());
@@ -104,7 +112,9 @@ public class GasStationServiceimpl implements GasStationService {
 			gasStation.setHasSuperPlus(gasStationDto.getHasSuperPlus());
 			gasStation.setHasGas(gasStationDto.getHasGas());
 			gasStation.setHasMethane(gasStationDto.getHasMethane());
-			gasStation.setCarSharing(gasStationDto.getCarSharing());
+			if(gasStationDto.getCarSharing().equals("null")){
+				gasStation.setCarSharing(null);
+			}
 			gasStation.setLat(gasStationDto.getLat());
 			gasStation.setLon(gasStationDto.getLon());
 			
@@ -133,7 +143,10 @@ public class GasStationServiceimpl implements GasStationService {
 		}
 		else {
 			gasStation = GasStationConverter.convertDtoToEntity(gasStationDto);
-			gasStation.setReportTimestamp(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+			if(gasStation.getCarSharing().equals("null")){
+				gasStation.setCarSharing(null);
+			}
+			gasStation.setReportTimestamp(new SimpleDateFormat("mm-dd-yyyy").format(new Date()));
 			gasStationRepository.save(gasStation);
 			gsDTo = GasStationConverter.convertEntityToDto(gasStation);
 		}
@@ -326,10 +339,11 @@ public class GasStationServiceimpl implements GasStationService {
 			throw new InvalidUserException("User not found");
 		} else {
 			gasStation.setReportUser(userId);
+			gasStation.setUser(user);
 		}
 
 		String oldTimeStamp = gasStation.getReportTimestamp();
-		String newTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
+		String newTimeStamp = new SimpleDateFormat("mm-dd-yyyy").format(new Date());
 		gasStation.setReportTimestamp(newTimeStamp);
 
 		double repDependability = reportDependability(oldTimeStamp,newTimeStamp,user.getReputation());
