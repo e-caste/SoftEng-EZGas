@@ -2,9 +2,17 @@
 
 Authors: Riccardo Coppola, Luca Ardito, Maurizio Morisio 
 
-Date: 13 april 2020
+Date: 5 june 2020
 
-Version: 1.0
+Version: 2.0  
+List of changes
+
+| | |
+|--|---|
+|Issue12 | Added unit of measure for geo coordinates as NFR6| 
+|Issue33 or CR4 | Modified UC7  |
+
+
 
 # Contents
 
@@ -135,6 +143,7 @@ Emma is 35 and she has always had a lifelong passion for sport cars. She owns tw
 |  NFR3     | Portability | The application should be accessed by Chrome (version 81 and more recent), and Safari (version 13 and more recent) (this covers around 80% of installed browsers); and from the operating systems where these browsers are available (Android, IoS, Windows, MacOS, Unix). As for devices, the application should be usable on smartphones (portrait) and PCs (landscape). | All FR |
 |  NFR4     |                     Privacy                     | The data of one user should not be disclosed to other users. The identity of the user who signaled or assessed a price report should not be visible to other users. | All FR |
 |  NFR5     | Localisation | Decimal numbers use . (dot) as decimal separator |All FR|
+| NFR6      | Localisation | Unit of measure for geo coordinates is degrees, longitude range [-180 + 180[   latitude [-90 +90[ <br> Unit of measure for distance is km  | All FR, notably FR4|
 
 
 
@@ -244,8 +253,9 @@ a --> (Manage gas station)
 |                  |   P.time_tag is set to the current timestamp of the system   |
 |                  |                     P is attached to G                  |
 |                  |                     U is attached to P (needed later to update trust level of U)                 |
-| Nominal Scenario | The user U selects a gas station G for which he/she wants to insert a price report; the system prompts the user with the list of possible fuels provided by the gas station; the user inserts the prices for the fuels |
-| Variants         |         a price list is already attached to G, the previous price list is overwritten                                 |
+| Nominal Scenario | The user U selects a gas station G for which he/she wants to insert a price report; no price list is attached to G; the system prompts the user with the list of possible fuels provided by the gas station;      the user inserts the prices for the fuels; the price list is attached to G |
+| Variants         |         a price list is already  attached to G, previously inserted by U2, <br>  U.trust_level >= U2.trust_level, the previous price list is overwritten                  |
+| |   a price list is already  attached to G, previously inserted by U2, <br> U.trust_level < U2.trust_level, the previous price list is overwritten only if (today - P.time_tag ) > 4 days      |
 
 
 
