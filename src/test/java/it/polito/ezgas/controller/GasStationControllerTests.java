@@ -77,8 +77,8 @@ public class GasStationControllerTests {
 
     static List<String> sqlInsertGSs = Arrays.asList(
             //id|car|dies_pr|gas_pr|gas_station_address|station_name|                                 has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|  r_dep|time|               r_user|s_pr|s_p_pr|user_id
-            "INSERT INTO GAS_STATION VALUES (1, 'Enjoy', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE,  TRUE,  FALSE, 45.048903, 7.659812, 0,  		0, '2020-05-24 19:54:07', -1,  1.864, 0,    NULL)",
-            "INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE,  FALSE,  FALSE, 45.048903, 7.659812, 0, 		0,  '2020-05-23 15:32:09', -1, 0, 0,    NULL)"
+            "INSERT INTO GAS_STATION VALUES (1, 'Enjoy', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE,  TRUE,  FALSE, 45.048903, 7.659812, 0,  		0, '05-24-2020', -1,  1.864, 0,    NULL)",
+            "INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE,  FALSE,  FALSE, 45.048903, 7.659812, 0, 		0,  '05-23-2020', -1, 0, 0,    NULL)"
 
     );
     static String apiPrefix = "/gasstation";
@@ -91,12 +91,12 @@ public class GasStationControllerTests {
     public void setUp() throws SQLException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         //Gas station with existing id in the database
-        GS1_existing = new GasStation("Esso", "via Olanda, 12, Torino", true, true, false, true, false, "Enjoy", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, -1, "2020-05-24 19:54:07", 0);
+        GS1_existing = new GasStation("Esso", "via Olanda, 12, Torino", true, true, false, true, false, "Enjoy", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, -1, "05-24-2020", 0);
         GS1_id = 1;
         GS1_existing.setGasStationId(GS1_id);
         GS1dto = GasStationConverter.convertEntityToDto(GS1_existing);
 
-        GS10_nonExisting = new GasStation("Repsol", "via Olanda, 12, Torino", true, false, false, false, false, "Enjoy", 45.048903, 7.659812, 1.375, 0, 0, 0, 0, -1, "2020-05-26 19:54:07", 0);
+        GS10_nonExisting = new GasStation("Repsol", "via Olanda, 12, Torino", true, false, false, false, false, "Enjoy", 45.048903, 7.659812, 1.375, 0, 0, 0, 0, -1, "05-26-2020", 0);
         GS10_id = 10;
         GS10_nonExisting.setGasStationId(GS10_id);
         GS10dto = GasStationConverter.convertEntityToDto(GS10_nonExisting);
@@ -168,7 +168,7 @@ public class GasStationControllerTests {
         //existing gas station
         mockMvc.perform(get(apiPrefix + GET_GASSTATION_BY_ID.replace("{gasStationId}", String.valueOf(GS1_id)))
                 .accept(MediaType.APPLICATION_JSON)
-                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"05-24-2020\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
                 .andExpect(status().isOk())
                 .andDo(print());
 
@@ -186,8 +186,8 @@ public class GasStationControllerTests {
     public void test_getAllGasStations() throws Exception {
         mockMvc.perform(get(apiPrefix + GET_ALL_GASSTATIONS)
                 .accept(MediaType.APPLICATION_JSON)
-                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}" +
-                        "{\"gasStationId\":2,\"gasStationName\":\"Eni\",\"gasStationAddress\":\"via Spagna, 32, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.431,\"superPrice\":1.854,\"superPlusPrice\":0.0,\"gasPrice\":1.658,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-23 15:32:09\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"05-24-2020\",\"reportDependability\":0,\"priceReportDtos\":[]}" +
+                        "{\"gasStationId\":2,\"gasStationName\":\"Eni\",\"gasStationAddress\":\"via Spagna, 32, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.431,\"superPrice\":1.854,\"superPlusPrice\":0.0,\"gasPrice\":1.658,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"05-23-2020\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andDo(print());
@@ -254,7 +254,7 @@ public class GasStationControllerTests {
 
         mockMvc.perform(get(apiPrefix + GET_GASSTATIONS_BY_GASOLINETYPE.replace("{gasolinetype}", String.valueOf("Super")))
                 .accept(MediaType.APPLICATION_JSON)
-                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"05-24-2020\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andDo(print());
@@ -270,7 +270,7 @@ public class GasStationControllerTests {
        /* mockMvc.perform(get(apiPrefix + GET_GASSTATIONS_BY_PROXIMITY.replace("{myLat}",String.valueOf("45.048903"))
                 .replace("{myLon}",String.valueOf("7.659812")))
                 .accept(MediaType.APPLICATION_JSON)
-                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"05-24-2020\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andDo(print());*/
@@ -280,7 +280,7 @@ public class GasStationControllerTests {
         mockMvc.perform(get(apiPrefix + GET_GASSTATIONS_BY_PROXIMITY.replace("{myLat}","-91")
                 .replace("{myLon}","45"))
                 .accept(MediaType.APPLICATION_JSON)
-                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"05-24-2020\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)))
                 .andDo(print());
@@ -294,7 +294,7 @@ public class GasStationControllerTests {
                 .replace("{myLon}","7.659812")
                 .replace("{gasolineType}","Super").replace("{carSharing}","Enjoy"))
                 .accept(MediaType.APPLICATION_JSON)
-                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"05-24-2020\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andDo(print());
@@ -305,7 +305,7 @@ public class GasStationControllerTests {
                 .replace("{myLon}","7.659812")
                 .replace("{gasolineType}","Super").replace("{carSharing}","boh"))
                 .accept(MediaType.APPLICATION_JSON)
-                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"05-24-2020\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)))
                 .andDo(print());
@@ -316,7 +316,7 @@ public class GasStationControllerTests {
                 .replace("{myLon}","45")
                 .replace("{gasolineType}","Super").replace("{carSharing}","Enjoy"))
                 .accept(MediaType.APPLICATION_JSON)
-                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"2020-05-24 19:54:07\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
+                .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"05-24-2020\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(0)))
                 .andDo(print());
