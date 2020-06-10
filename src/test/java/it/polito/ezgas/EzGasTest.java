@@ -194,7 +194,7 @@ public class EzGasTest extends TestCase {
         assertEquals(testName, res.getUserName());
         assertEquals(new Integer(0), res.getReputation());
         assertFalse(res.getAdmin());
-    }
+   }
 
   
 

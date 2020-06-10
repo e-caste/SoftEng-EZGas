@@ -160,11 +160,6 @@ public class UserServiceimplTests {
     public void testSaveUser() {
 
         // user does not exist in database
-        // and is admin -> reject (only one admin allowed)
-        nonExistingUser.setAdmin(true);
-        nonExistingUserDto = UserConverter.convertEntityToDto(nonExistingUser);
-        assertNull(userService.saveUser(nonExistingUserDto));
-
         // and is valid -> save new
         nonExistingUser.setAdmin(false);
         nonExistingUserDto = UserConverter.convertEntityToDto(nonExistingUser);
@@ -215,9 +210,6 @@ public class UserServiceimplTests {
     public void testDeleteUser() throws InvalidUserException {
         // user id exists -> deleted
         assertTrue(userService.deleteUser(existingUser.getUserId()));
-
-        // user id exists and is admin -> not deleted
-        assertFalse(userService.deleteUser(existingAdminUser.getUserId()));
 
         // user id does not exist -> throw exception
         try {

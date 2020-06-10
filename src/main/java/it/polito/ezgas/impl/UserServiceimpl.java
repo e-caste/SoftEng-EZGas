@@ -48,17 +48,17 @@ public class UserServiceimpl implements UserService {
 
 			userRepository.save(user);
 			uDto = UserConverter.convertEntityToDto(user);
-		} else if(userRepository.findByEmail(userDto.getEmail()) == null){
+		} else {
 			user = UserConverter.convertDtoToEntity(userDto);
-			if(!user.getAdmin()){
+			if(userRepository.findByEmail(userDto.getEmail()) == null){
 				userRepository.save(user);
 				uDto = UserConverter.convertEntityToDto(user);
+			} else {
+				uDto = UserConverter.convertEntityToDto(userRepository.findByEmail(userDto.getEmail()));
 			}
-		} else {
-			uDto = UserConverter.convertEntityToDto(userRepository.findById(userDto.getUserId()));
 		}
 
-		return uDto;
+	return uDto;
 	}
 
 	@Override
@@ -77,14 +77,10 @@ public class UserServiceimpl implements UserService {
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
-		if(!user.getAdmin()){
-			try {
-				userRepository.delete(userId);
-			} catch (EmptyResultDataAccessException e) {
-				return false;
-			}
+		try {
+			userRepository.delete(userId);
 			return true;
-		} else {
+		} catch (EmptyResultDataAccessException e) {
 			return false;
 		}
 	}
