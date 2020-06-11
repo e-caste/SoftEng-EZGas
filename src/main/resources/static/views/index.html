@@ -57,7 +57,7 @@ $(function() {
 		minLength : 3,
 	});
 });
-
+var NA = "NA";
 function reverseLocation2(streetName, lat, lon) {
 
 	$.get('https://photon.komoot.de/api/?q=' + streetName + '&lat=' + lat
@@ -109,9 +109,9 @@ function reverseLocation2(streetName, lat, lon) {
                        
                       <div class="row">
                           <div class="form-group col-md-12">
-                              <label class="col-md-2 control-lable" for="address">Password</label>
+                              <label class="col-md-2 control-lable" for="pwd">Password</label>
                               <div class="col-md-7">
-                                  <input type="text" ng-model="userDto.password" id="address" class="form-control input-sm" placeholder="Enter user's password" required ng-minlength="3"/>
+                                  <input type="text" ng-model="userDto.password" id="pwd" class="form-control input-sm" placeholder="Enter user's password" required ng-minlength="3"/>
                                                                     <div class="has-error" ng-show="myForm.$dirty">
                                       <span ng-show="myForm.uname.$error.required">This is a required field</span>
                                       <span ng-show="myForm.uname.$error.minlength">Minimum length required is 8</span>
@@ -225,7 +225,7 @@ function reverseLocation2(streetName, lat, lon) {
 						<div class="form-group col-md-12">
 
 
-							<label class="col-md-2 control-lable" for="lat">addr</label>
+							<label class="col-md-2 control-lable" for="add1">addr</label>
 							<div class="col-md-7">
 								<input type="text"
 									id="add1" class="form-control input-sm"
@@ -263,7 +263,7 @@ function reverseLocation2(streetName, lat, lon) {
                       	<div class="form-group col-md-12">
                       
                      
-                      		<label class="col-md-2 control-lable" for="lon">Longitude</label>
+                      		<label class="col-md-2 control-lable" for="lng">Longitude</label>
                       		<div class="col-md-7">
                                   <input type="text" ng-model="gasStationDto.lon" id="lng" class="form-control input-sm" placeholder="Enter longitude" required ng-minlength="3"/>
                                       <div class="has-error" ng-show="myForm.$dirty">
@@ -288,7 +288,8 @@ function reverseLocation2(streetName, lat, lon) {
 	  								</div>
 	  								
 	                      </div>
-                       
+                            <!---------------------------------->
+                        </div>
                       <div class="row">
                       <div class="form-group col-md-12">
                       <div class="col-md-7">
@@ -361,10 +362,21 @@ function reverseLocation2(streetName, lat, lon) {
 					   </div>
 					   </div>
                       </div>
-					   
-					
+<!------------------------------------------------------------>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <div class="col-md-7">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" ng-model="gasStationDto.hasPremiumDiesel">Has Premium Diesel
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
                     
-                      </div>
+                      <!--</div>-->
  
  
                       <div class="row">
@@ -398,6 +410,8 @@ function reverseLocation2(streetName, lat, lon) {
                               <th>Premium Gasoline</th>
                               <th>LPG</th>
                               <th>Methane</th>
+                              <!-------------->
+                              <th>Premium Diesel</th>
                               <th>Car Sharing</th>
                               <th>Reporter</th>
                               <th>Timestamp</th>
@@ -412,13 +426,15 @@ function reverseLocation2(streetName, lat, lon) {
                               <td><span ng-bind="g.gasStationAddress"></span></td>
                               <td><span ng-bind="g.lat"></span></td>
                               <td><span ng-bind="g.lon"></span></td>
-                              <td><span ng-bind="g.dieselPrice"></span></td>
-                              <td><span ng-bind="g.superPrice"></span></td>
-                              <td><span ng-bind="g.superPlusPrice"></span></td>
-                              <td><span ng-bind="g.gasPrice"></span></td>
-                              <td><span ng-bind="g.methanePrice"></span></td>
-                              <td><span ng-bind="g.carSharing"></span></td>
-                              <td><span ng-bind="g.reportUser"></span></td>
+                              <td><span ng-bind="{{g.dieselPrice==null ? NA : g.dieselPrice}}"></span></td>
+                              <td><span ng-bind="{{g.superPrice==null ? NA : g.superPrice}}"></span></td>
+                              <td><span ng-bind="{{g.superPlusPrice==null ? NA : g.superPlusPrice}}"></span></td>
+                              <td><span ng-bind="{{g.gasPrice==null ? NA : g.gasPrice}}"></span></td>
+                              <td><span ng-bind="{{g.methanePrice==null ? NA : g.methanePrice}}"></span></td>
+                              <!-------------------------------------------->
+                              <td><span ng-bind="{{g.premiumDieselPrice==null ? NA : g.premiumDieselPrice}}"></span></td>
+                              <td><span ng-bind="{{g.carSharing==null ? NA : g.carSharing}}"></span></td>
+                              <td><span ng-bind="{{g.reportUser==-1 ? NA : g.reportUser}}"></span></td>
                               <td><span ng-bind="g.reportTimestamp"></span></td>
                               <td><span ng-bind="g.reportDependability"></span></td>
                               <td>
@@ -519,7 +535,18 @@ function reverseLocation2(streetName, lat, lon) {
                                   
                               </div>
                           </div>
-                      </div>   
+                      </div>
+                        <!--------------------------------------------------->
+
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-2 control-lable" for="uname">Premium Diesel Price</label>
+                                <div class="col-md-7">
+                                    <input type="text" ng-model="tmppricereport.premiumDieselPrice" id="tmppricereport-premiumDiesel" ng-disabled="premiumDieselreportdisabled"/>
+
+                                </div>
+                            </div>
+                        </div>
                        
                      
  
@@ -584,7 +611,20 @@ function reverseLocation2(streetName, lat, lon) {
 
 						</div>
 					</div>
-                         
+
+                        <div class="row">
+                            <div class="form-group col-md-12">
+                                <label class="col-md-2 control-lable" for="uname">
+                                    Radius (km)
+                                </label>
+                                <div class="col-md-7">
+                                    <input id="radius" type="number"
+                                           ng-model="searchParameters.myRadius"
+                                           class="username form-control input-sm"
+                                           placeholder="--" ng-minlength="1" min="0" step="1"  />
+                                </div>
+                            </div>
+                        </div>
                        
                       <div class="row">
 							 <div class="form-group col-md-12">
@@ -598,6 +638,8 @@ function reverseLocation2(streetName, lat, lon) {
 										<option value="SuperPlus">Premium Gasoline</option>
 										<option value="Gas">LPG</option>
 										<option value="Methane">Methane</option>
+                                        <!--***********************************************-->
+                                        <option value="PremiumDiesel">Premium Diesel</option>
   									</select>
                       			</div>
                       		</div>
@@ -646,6 +688,9 @@ function reverseLocation2(streetName, lat, lon) {
                               <th>Premium Gasoline</th>
                               <th>LPG</th>
                               <th>Methane</th>
+                              <!--*****************************-->
+                              <th>Premium Diesel</th>
+                              <!--*****************************-->
                               <th>Car Sharing</th>
                               <th width="20%"></th>
                           </tr>
@@ -657,12 +702,15 @@ function reverseLocation2(streetName, lat, lon) {
                               <td><span ng-bind="g.gasStationAddress"></span></td>
                               <td><span ng-bind="g.lat"></span></td>
                               <td><span ng-bind="g.lon"></span></td>
-                              <td><span ng-bind="g.dieselPrice"></span></td>
-                              <td><span ng-bind="g.superPrice"></span></td>
-                              <td><span ng-bind="g.superPlusPrice"></span></td>
-                              <td><span ng-bind="g.gasPrice"></span></td>
-                              <td><span ng-bind="g.methanePrice"></span></td>
-                              <td><span ng-bind="g.carSharing"></span></td>
+                              <td><span ng-bind="{{g.dieselPrice==null ? NA : g.dieselPrice}}"></span></td>
+                              <td><span ng-bind="{{g.superPrice==null ? NA : g.superPrice}}"></span></td>
+                              <td><span ng-bind="{{g.superPlusPrice==null ? NA : g.superPlusPrice}}"></span></td>
+                              <td><span ng-bind="{{g.gasPrice==null ? NA : g.gasPrice}}"></span></td>
+                              <td><span ng-bind="{{g.methanePrice==null ? NA : g.methanePrice}}"></span></td>
+                              <!-------------------------------------------->                                            
+                              <td><span ng-bind="{{g.premiumDieselPrice==null ? NA : g.premiumDieselPrice}}"></span></td>
+                              <!--*****************************-->
+                              <td><span ng-bind="{{g.carSharing == null ? NA : g.carSharing}}"></span></td>
                               
                               <td><button type="button" ng-click="selectGasStationForReport(g.gasStationId)" class="btn btn-danger custom-width">New Report</button></td>
                               <td><button type="button" ng-click="signalRightPrice(g.gasStationId)"  class="equalButton"><img src="http://softeng.polito.it/coppola/thumbup_ezgas2.png" /></button></td>
@@ -670,7 +718,7 @@ function reverseLocation2(streetName, lat, lon) {
                           </tr>
                       </tbody>
                   </table>
-                  <table id="address" hidden>
+                  <table id="address_tbl" hidden>
       <tr>
         <td class="label">Street address</td>
         <td class="slimField"><input class="field" id="street_number" disabled="true"/></td>

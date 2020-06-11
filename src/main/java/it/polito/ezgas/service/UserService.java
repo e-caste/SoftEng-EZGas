@@ -4,12 +4,19 @@ import java.util.List;
 
 import exception.InvalidLoginDataException;
 import exception.InvalidUserException;
-import it.polito.ezgas.dto.IdPw;
 import it.polito.ezgas.dto.LoginDto;
 import it.polito.ezgas.dto.UserDto;
+import it.polito.ezgas.dto.IdPw;
 
 /**
  * Created by softeng on 27/4/2020.
+ *
+ * Update V2 :
+ * 1) issue 22/23	--->		InvalidUserException must be thrown when a non existing userId is set for
+ *                              "increaseUserReputation" and "decreaseUserReputation" APIs.
+ *                              For the API "deleteUser" the behaviour should be :
+ *                                  - negative Id : InvalidUserException
+ *                                  - non existing user Id : false as returned value
  */
 public interface UserService {
 	
@@ -34,7 +41,7 @@ public interface UserService {
     /*
      * Deletes the user with the given Id from the database.
      * Throws an exception in case of invalid (negative) userId
-   	 * Returns true if the user is deleted
+   	 * Returns true if the user is deleted, false otherwise
      */
     Boolean deleteUser(Integer userId) throws InvalidUserException;
     
@@ -46,7 +53,7 @@ public interface UserService {
     
     /*
      * Increases by 1 the user Reputation (until maximum value equal to 5)
-     * Throws an exception in case of invalid (negative) userId
+     * Throws an exception in case of invalid (negative) userId or in case of non existing user with the given userId
      * Returns the current value of user reputation
      */
     Integer increaseUserReputation(Integer userId) throws InvalidUserException;
@@ -54,7 +61,7 @@ public interface UserService {
     
     /*
      * Decreases by 1 the user Reputation (until minimum value equal to -5)
-     * Throws an exception in case of invalid (negative) userId
+     * Throws an exception in case of invalid (negative) userId or in case of non existing user with the given userId
      * Returns the current value of user reputation
      */  
     Integer decreaseUserReputation(Integer userId) throws InvalidUserException;

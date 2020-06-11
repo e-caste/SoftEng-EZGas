@@ -46,6 +46,7 @@
 	<script>
 		showName('name');
 		checkSession();
+		var NA = "NA";
 		//showName();
 	</script>
 
@@ -59,11 +60,13 @@
 					class="form-horizontal">
 					<div class="row">
 						<div class="form-group col-md-12">
-							<label class="col-md-2 control-lable" for="uname">Proximity
-								(< 1km) </label>
+							<label class="col-md-2 control-lable" for="uname">
+								Proximity (< 1km)
+							</label>
 							<div class="form-group col-md-12" hidden>
-								<label class="col-md-2 control-lable" for="uname">Proximity
-									(< 1km) </label>
+								<label class="col-md-2 control-lable" for="uname">
+									Proximity (< 1km)
+								</label>
 								<div class="col-md-7">
 									<input type="text" id="lat" ng-model="searchParameters.myLat"></input>
 									<input type="text" id="lng" ng-model="searchParameters.myLon"></input>
@@ -80,18 +83,21 @@
 					
 					<div hidden class="row">
 						<div class="form-group col-md-12">
-
-
 							<label class="col-md-2 control-lable" for="lat">addr</label>
 							<div class="col-md-7">
 								<input type="text" ng-model="searchParameters.myAddress"
 									id="add1" class="form-control input-sm"
 									placeholder="Enter latitude" required ng-minlength="3" />
 								<div class="has-error" ng-show="myForm.$dirty">
-									<span ng-show="myForm.uname.$error.required">This is a
-										required field</span> <span ng-show="myForm.uname.$error.minlength">Minimum
-										length required is 8</span> <span ng-show="myForm.uname.$invalid">This
-										field is invalid </span>
+									<span ng-show="myForm.uname.$error.required">
+										This is a required field
+									</span>
+									<span ng-show="myForm.uname.$error.minlength">
+										Minimum length required is 8
+									</span>
+									<span ng-show="myForm.uname.$invalid">
+										This field is invalid
+									</span>
 								</div>
 							</div>
 
@@ -100,8 +106,24 @@
 
 					<div class="row">
 						<div class="form-group col-md-12">
-							<label class="col-md-2 control-lable" for="uname">Type of
-								gasoline</label>
+							<label class="col-md-2 control-lable" for="uname">
+								Radius (km)
+							</label>
+							<div class="col-md-7">
+								<input id="radius" type="number"
+									   ng-model="searchParameters.myRadius"
+									   class="username form-control input-sm"
+									   placeholder="--" ng-minlength="1" min="0" step="1"  />
+							</div>
+						</div>
+					</div>
+
+
+					<div class="row">
+						<div class="form-group col-md-12">
+							<label class="col-md-2 control-lable" for="uname">
+								Type of gasoline
+							</label>
 							<div class="col-md-7">
 								<select class="browser-default custom-select"
 									ng-model="searchParameters.gasolineType">
@@ -111,6 +133,8 @@
 									<option value="SuperPlus">Premium Gasoline</option>
 									<option value="Gas">LPG</option>
 									<option value="Methane">Methane</option>
+									<!--***********************************************-->
+									<option value="PremiumDiesel">Premium Diesel</option>
 								</select>
 							</div>
 						</div>
@@ -120,8 +144,9 @@
 
 					<div class="row">
 						<div class="form-group col-md-12">
-							<label class="col-md-2 control-lable" for="uname">Has car
-								sharing</label>
+							<label class="col-md-2 control-lable" for="uname">
+								Has car sharing
+							</label>
 							<div class="col-md-7">
 								<select class="browser-default custom-select" ng-model="searchParameters.carSharing">
 	  										<option selected value="null">Select car sharing feature</option>
@@ -165,6 +190,9 @@
                               <th>Premium Gasoline</th>
                               <th>LPG</th>
                               <th>Methane</th>
+							<!--*****************************-->
+							<th>Premium Diesel</th>
+							<!--*****************************-->
 							<th>Car Sharing</th>
 							<th>Timestamp</th>
                             <th>Trust</th>
@@ -180,15 +208,18 @@
 							<!--<td><span ng-bind="g.lat"></span></td>-->
 							<!--<td><span ng-bind="g.lon"></span></td>-->
 							<td><span
-								ng-bind="{{g.dieselPrice==-1 ? '' : g.dieselPrice}}"></span></td>
-							<td><span ng-bind="{{g.superPrice==-1 ? '' : g.superPrice}}"></span></td>
+								ng-bind="{{g.dieselPrice==null ? NA : g.dieselPrice}}"></span></td>
+							<td><span ng-bind="{{g.superPrice==null ? NA : g.superPrice}}"></span></td>
 							<td><span
-								ng-bind="{{g.superPlusPrice==-1 ? '' : g.superPlusPrice}}"></span></td>
-							<td><span ng-bind="{{g.gasPrice==-1 ? '' : g.gasPrice}}"></span></td>
-							<td><span ng-bind="{{g.methanePrice==-1 ? '' : g.methanePrice}}"></span></td>
-							<td><span ng-bind="g.carSharing"></span></td>
+								ng-bind="{{g.superPlusPrice==null ? NA : g.superPlusPrice}}"></span></td>
+							<td><span ng-bind="{{g.gasPrice==null ? NA : g.gasPrice}}"></span></td>
+							<td><span ng-bind="{{g.methanePrice==null ? NA : g.methanePrice}}"></span></td>
+							<!--*****************************-->
+							<td><span ng-bind="{{g.premiumDieselPrice==null ? NA : g.premiumDieselPrice}}"></span></td>
+							<!--*****************************-->
+							<td><span ng-bind="{{g.carSharing==null ? NA : g.carSharing}}"></span></td>
 							<td><span ng-bind="g.reportTimestamp"></span></td>
-                              <td><span ng-bind="{{g.reportDependability==0?'':g.reportDependability}}"></span></td>
+                              <td><span ng-bind="{{g.reportDependability==0?NA:g.reportDependability}}"></span></td>
 							<td id="btr"><button type="buttonreport"
 									ng-click="selectGasStationForReport(g.gasStationId)"
 									class="btn btn-danger custom-width edited">New Report</button></td>
@@ -223,9 +254,12 @@
 									ng-click="sortGas()"
 									class="btn btn-danger custom-width edited">SORT</button></td>
 					<td><button type="buttonreport"
-									ng-click="sortMethane()"
-									class="btn btn-danger custom-width edited">SORT</button></td>
-					
+								ng-click="sortMethane()"
+								class="btn btn-danger custom-width edited">SORT</button></td>
+					<td><button type="buttonreport"
+								ng-click="sortPremiumDiesel()"
+								class="btn btn-danger custom-width edited">SORT</button></td>
+
 					</tfoot>
 				</table>
 
@@ -357,6 +391,18 @@
 							<div class="col-md-7">
 								<input type="text" ng-model="tmppricereport.methanePrice"
 									id="tmppricereport-methane" ng-disabled="methanereportdisabled" />
+
+							</div>
+						</div>
+					</div>
+
+					<div id="premiumDiesel" class="row">
+						<div class="form-group col-md-12">
+							<label class="col-md-2 control-lable" for="uname">Premium Diesel
+								Price</label>
+							<div class="col-md-7">
+								<input type="text" ng-model="tmppricereport.premiumDieselPrice"
+									   id="tmppricereport-premiumDiesel" ng-disabled="premiumDieselreportdisabled" />
 
 							</div>
 						</div>

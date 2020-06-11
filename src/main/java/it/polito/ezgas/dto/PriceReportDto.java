@@ -1,91 +1,58 @@
 package it.polito.ezgas.dto;
 
-import it.polito.ezgas.entity.User;
 
 public class PriceReportDto {
-	
-	Integer priceReportId;
-	User user;
-	double dieselPrice;
-	double superPrice;
-	double superPlusPrice;
-	double gasPrice;
+    Integer gasStationId;
+    Double dieselPrice;
+    Double superPrice;
+    Double superPlusPrice;
+    Double gasPrice;
+    Double methanePrice;
+    Double premiumDieselPrice;
+    Integer userId;
 
-	public PriceReportDto() {}
-	
-	public PriceReportDto(Integer priceReportId, User user, double dieselPrice, double superPrice,
-			double superPlusPrice, double gasPrice) {
-		this.priceReportId = priceReportId;
-		this.user = user;
-		this.dieselPrice = dieselPrice;
-		this.superPrice = superPrice;
-		this.superPlusPrice = superPlusPrice;
-		this.gasPrice = gasPrice;
-	}
+    public PriceReportDto(Integer gasStationId, Double dieselPrice, Double superPrice, Double superPlusPrice, Double gasPrice, Double methanePrice, Double premiumDieselPrice, Integer userId) {
+        this.gasStationId = gasStationId;
+        this.dieselPrice = dieselPrice;
+        this.superPrice = superPrice;
+        this.superPlusPrice = superPlusPrice;
+        this.gasPrice = gasPrice;
+        this.methanePrice = methanePrice;
+        this.premiumDieselPrice = premiumDieselPrice;
+        this.userId = userId;
+    }
 
-	public boolean equals(PriceReportDto other) {
-		return this.priceReportId.equals(other.getPriceReportId()) &&
-				this.user.equals(other.getUser()) &&
-				this.dieselPrice == other.getDieselPrice() &&
-				this.superPrice == other.getSuperPrice() &&
-				this.superPlusPrice == other.getSuperPlusPrice() &&
-				this.gasPrice == other.getGasPrice();
-	}
+    public PriceReportDto() { }
 
-	public String toString() {
-		return this.priceReportId + " " +
-				this.user + " " +
-				this.dieselPrice + " " +
-				this.superPrice + " " +
-				this.superPlusPrice + " " +
-				this.gasPrice;
-	}
+    public Integer getGasStationId() { return gasStationId; }
 
-	public Integer getPriceReportId() {
-		return priceReportId;
-	}
+    public void setGasStationId(Integer gasStationId) { this.gasStationId = gasStationId; }
 
-	public void setPriceReportId(Integer priceReportId) {
-		this.priceReportId = priceReportId;
-	}
+    public Double getDieselPrice() { return dieselPrice; }
 
-	public User getUser() {
-		return user;
-	}
+    public void setDieselPrice(Double dieselPrice) { this.dieselPrice = dieselPrice; }
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public Double getSuperPrice() { return superPrice; }
 
-	public double getDieselPrice() {
-		return dieselPrice;
-	}
+    public void setSuperPrice(Double superPrice) { this.superPrice = superPrice; }
 
-	public void setDieselPrice(double dieselPrice) {
-		this.dieselPrice = dieselPrice;
-	}
+    public Double getSuperPlusPrice() { return superPlusPrice; }
 
-	public double getSuperPrice() {
-		return superPrice;
-	}
+    public void setSuperPlusPrice(Double superPlusPrice) { this.superPlusPrice = superPlusPrice; }
 
-	public void setSuperPrice(double superPrice) {
-		this.superPrice = superPrice;
-	}
+    public Double getGasPrice() { return gasPrice; }
 
-	public double getSuperPlusPrice() {
-		return superPlusPrice;
-	}
+    public void setGasPrice(Double gasPrice) { this.gasPrice = gasPrice; }
 
-	public void setSuperPlusPrice(double superPlusPrice) {
-		this.superPlusPrice = superPlusPrice;
-	}
+    public Double getMethanePrice() { return methanePrice; }
 
-	public double getGasPrice() {
-		return gasPrice;
-	}
+    public void setMethanePrice(Double methanePrice) { this.methanePrice = methanePrice; }
 
-	public void setGasPrice(double gasPrice) {
-		this.gasPrice = gasPrice;
-	}
+    public Double getPremiumDieselPrice() { return premiumDieselPrice; }
+
+    public void setPremiumDieselPrice(Double premiumDieselPrice) { this.premiumDieselPrice = premiumDieselPrice; }
+
+    public Integer getUserId() { return userId; }
+
+    public void setUserId(Integer userId) { this.userId = userId; }
 }

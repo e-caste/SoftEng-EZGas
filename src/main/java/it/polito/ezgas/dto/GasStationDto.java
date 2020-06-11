@@ -3,6 +3,11 @@ package it.polito.ezgas.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.ManyToOne;
+
+import it.polito.ezgas.entity.User;
+
 public class GasStationDto {
 
 	Integer gasStationId;
@@ -13,23 +18,28 @@ public class GasStationDto {
     boolean hasSuperPlus;
     boolean hasGas;
     boolean hasMethane;
+    //****************************
+	boolean hasPremiumDiesel;
     private String carSharing;
     double lat;
     double lon;
-    double dieselPrice;
-    double superPrice;
-    double superPlusPrice;
-    double gasPrice; 
-    double methanePrice;
+    Double dieselPrice;
+    Double superPrice;
+    Double superPlusPrice;
+    Double gasPrice;
+    Double methanePrice;
+    //****************************************
+	Double premiumDieselPrice;
+
     Integer reportUser;
     UserDto userDto;
     String reportTimestamp;
     double reportDependability;
 
-    List<PriceReportDto> priceReportDtos = new ArrayList<>();;
 
-	public GasStationDto() {}
+ 
 	
+	/*
 	public GasStationDto(Integer gasStationId, String gasStationName, String gasStationAddress, 
 			boolean hasDiesel, boolean hasSuper, boolean hasSuperPlus, boolean hasGas, boolean hasMethane, String carSharing, 
 			double lat, double lon, 
@@ -55,29 +65,38 @@ public class GasStationDto {
 		this.userDto = null;
 		this.reportTimestamp = reportTimestamp;
 		this.reportDependability = reportDependability;
-	}
-
-	public boolean equals(GasStationDto other) {
-		return this.gasStationId.equals(other.getGasStationId()) &&
-				this.gasStationName.equals(other.getGasStationName()) &&
-				this.gasStationAddress.equals(other.getGasStationAddress()) &&
-				(this.carSharing == null || this.carSharing.equals(other.getCarSharing())) &&
-				this.hasDiesel == other.getHasDiesel() &&
-				this.hasGas == other.getHasGas() &&
-				this.hasMethane == other.getHasMethane() &&
-				this.hasSuper == other.getHasSuper() &&
-				this.hasSuperPlus == other.getHasSuperPlus() &&
-				this.lat == other.getLat() &&
-				this.lon == other.getLon() &&
-				this.dieselPrice == other.getDieselPrice() &&
-				this.superPrice == other.getSuperPrice() &&
-				this.superPlusPrice == other.getSuperPlusPrice() &&
-				this.gasPrice == other.getGasPrice() &&
-				this.methanePrice == other.getMethanePrice() &&
-				(this.reportUser == null || this.reportUser.equals(other.getReportUser())) &&
-//				this.userDto.equals(other.getUserDto()) &&
-				(this.reportTimestamp == null || this.reportTimestamp.equals(other.getReportTimestamp())) &&
-				this.reportDependability == other.getReportDependability();
+		
+		
+	}*/
+	
+	//***********************************************************************
+	public GasStationDto(Integer gasStationId, String gasStationName, String gasStationAddress,
+						 boolean hasDiesel, boolean hasSuper, boolean hasSuperPlus, boolean hasGas, boolean hasMethane,
+						 boolean hasPremiumDiesel, String carSharing, double lat, double lon,
+						 Double dieselPrice, Double superPrice, Double superPlusPrice, Double gasPrice, Double methanePrice,
+						 Double premiumDieselPrice, Integer reportUser, String reportTimestamp, double reportDependability) {
+		this.gasStationId = gasStationId;
+		this.gasStationName = gasStationName;
+		this.gasStationAddress = gasStationAddress;
+		this.carSharing = carSharing;
+		this.hasDiesel = hasDiesel;
+		this.hasGas = hasGas;
+		this.hasMethane = hasMethane;
+		this.hasSuper = hasSuper;
+		this.hasSuperPlus = hasSuperPlus;
+		this.hasPremiumDiesel = hasPremiumDiesel;
+		this.lat = lat;
+		this.lon = lon;
+		this.dieselPrice = dieselPrice;
+		this.superPrice = superPrice;
+		this.superPlusPrice = superPlusPrice;
+		this.gasPrice = gasPrice;
+		this.methanePrice = methanePrice;
+		this.premiumDieselPrice = premiumDieselPrice;
+		this.reportUser = reportUser;
+		this.userDto = null;
+		this.reportTimestamp = reportTimestamp;
+		this.reportDependability = reportDependability;
 	}
 
 	public double getReportDependability() {
@@ -87,6 +106,8 @@ public class GasStationDto {
 	public void setReportDependability(double reportDependability) {
 		this.reportDependability = reportDependability;
 	}
+
+	public GasStationDto() { }
 
 	public Integer getGasStationId() {
 		return gasStationId;
@@ -143,6 +164,12 @@ public class GasStationDto {
 	public void setHasGas(Boolean hasGas) {
 		this.hasGas = hasGas;
 	}
+//*************************************************************************
+	public boolean getHasPremiumDiesel() { return hasPremiumDiesel; }
+
+	public void setHasPremiumDiesel(boolean hasPremiumDiesel) {
+		this.hasPremiumDiesel = hasPremiumDiesel;
+	}
 
 	public double getLat() {
 		return lat;
@@ -160,44 +187,44 @@ public class GasStationDto {
 		this.lon = lon;
 	}
 
-	public double getDieselPrice() {
+	public Double getDieselPrice() {
 		return dieselPrice;
 	}
 
-	public void setDieselPrice(double dieselPrice) {
+	public void setDieselPrice(Double dieselPrice) {
 		this.dieselPrice = dieselPrice;
 	}
 
-	public double getSuperPrice() {
+	public Double getSuperPrice() {
 		return superPrice;
 	}
 
-	public void setSuperPrice(double superPrice) {
+	public void setSuperPrice(Double superPrice) {
 		this.superPrice = superPrice;
 	}
 
-	public double getSuperPlusPrice() {
+	public Double getSuperPlusPrice() {
 		return superPlusPrice;
 	}
 
-	public void setSuperPlusPrice(double superPlusPrice) {
+	public void setSuperPlusPrice(Double superPlusPrice) {
 		this.superPlusPrice = superPlusPrice;
 	}
 
-	public double getGasPrice() {
+	public Double getGasPrice() {
 		return gasPrice;
 	}
 
-	public void setGasPrice(double gasPrice) {
+	public void setGasPrice(Double gasPrice) {
 		this.gasPrice = gasPrice;
 	}
-
-	public List<PriceReportDto> getPriceReportDtos() {
-		return priceReportDtos;
+//****************************************************************************
+	public Double getPremiumDieselPrice() {
+		return premiumDieselPrice;
 	}
 
-	public void setPriceReportDtos(List<PriceReportDto> priceReportDtos) {
-		this.priceReportDtos = priceReportDtos;
+	public void setPremiumDieselPrice(Double premiumDieselPrice) {
+		this.premiumDieselPrice = premiumDieselPrice;
 	}
 
 	public Integer getReportUser() {
@@ -232,11 +259,11 @@ public class GasStationDto {
 		this.hasMethane = hasMethane;
 	}
 
-	public double getMethanePrice() {
+	public Double getMethanePrice() {
 		return methanePrice;
 	}
 
-	public void setMethanePrice(double methanePrice) {
+	public void setMethanePrice(Double methanePrice) {
 		this.methanePrice = methanePrice;
 	}
 

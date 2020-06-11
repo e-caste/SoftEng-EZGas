@@ -13,15 +13,19 @@ module.controller("HomeController", [ "$scope", "HomeService",
 			$scope.superplusreportdisabled = true;
 			$scope.gasreportdisabled = true;
 			$scope.methanereportdisabled = true;
-
+//***************************************************
+			$scope.premiumDieselreportdisabled = true;
+			//**********************************
 			$scope.tmppricereport = {
 					userId : null,
 					reportingStation : null,
-					dieselPrice : "-1.0",
-					superPrice : "-1.0",
-					superPlusPrice : "-1.0",
-					gasPrice: "-1.0",
-					methanePrice: "-1.0"
+					dieselPrice : null,
+					superPrice : null,
+					superPlusPrice : null,
+					gasPrice: null,
+					methanePrice: null,
+				//*******************************
+					premiumDieselPrice: null
 			}
 
 			$scope.idpw = {
@@ -47,12 +51,16 @@ module.controller("HomeController", [ "$scope", "HomeService",
 				"hasSuperPlus": false,
 				"hasGas": false,
 				"hasMethane": false,
+				//************************
+				"hasPremiumDiesel": false,
 				carSharing: null,
-				dieselPrice: -1.0,
-				superPrice: -1.0,
-				superPlusPrice: -1.0,
-				gasPrice: -1.0,
-				methanePrice: -1.0,
+				dieselPrice: null,
+				superPrice: null,
+				superPlusPrice: null,
+				gasPrice: null,
+				methanePrice: null,
+				//************************
+				premiumDieselPrice: null,
 				reportUser: -1,
 				reportTimestamp: null
 			};
@@ -61,7 +69,9 @@ module.controller("HomeController", [ "$scope", "HomeService",
 					myLat: null,
 					myLon: null,
 					gasolineType : null,
-					carSharing : null
+					carSharing : null,
+				//****************************************
+					myRadius: null
 			}
 			
 			
@@ -120,13 +130,17 @@ module.controller("HomeController", [ "$scope", "HomeService",
 						"hasSuper": false,
 						"hasSuperPlus": false,
 						"hasGas": false,
-						"methanePrice": false,
+						"hasMethane": false,
+					//**************************
+						"hasPremiumDiesel": false,
 						carSharing: null,
-						dieselPrice: -1.0,
-						superPrice: -1.0,
-						superPlusPrice: -1.0,
-						gasPrice: -1.0,
-						methanePrice: -1.0,
+						dieselPrice: null,
+						superPrice: null,
+						superPlusPrice: null,
+						gasPrice: null,
+						methanePrice: null,
+					//*************************
+						premiumDieselPrice: null,
 						reportUser: -1,
 						reportTimestamp: null
 					};
@@ -205,12 +219,16 @@ module.controller("HomeController", [ "$scope", "HomeService",
 						"hasSuper": false,
 						"hasSuperPlus": false,
 						"hasGas": false,
-						"methanePrice": false,
-						dieselPrice: -1.0,
-						superPrice: -1.0,
-						superPlusPrice: -1.0,
-						gasPrice: -1.0,
-						methanePrice: -1.0,
+						"hasMethane": false,
+						//**************************
+						"hasPremiumDiesel": false,
+						dieselPrice: null,
+						superPrice: null,
+						superPlusPrice: null,
+						gasPrice: null,
+						methanePrice: null,
+						//**************************
+						premiumDieselPrice: null,
 						reportUser: -1,
 						reportTimestamp: null
 					};
@@ -223,6 +241,8 @@ module.controller("HomeController", [ "$scope", "HomeService",
 				$scope.searchParameters = {
 						myLat: null,
 						myLon: null,
+					//************************************
+						myRadius: null,
 						gasolineType : null,
 						carSharing : null,
 				}
@@ -241,15 +261,19 @@ module.controller("HomeController", [ "$scope", "HomeService",
 				$scope.superplusreportdisabled = true;
 				$scope.gasreportdisabled = true;
 				$scope.methanereportdisabled = true;
+				//**************************
+				$scope.premiumDieselreportdisabled = true;
 
 				$scope.tmppricereport = {
 						userId : null,
 						reportingStation : null,
-						dieselPrice : "-1.0",
-						superPrice : "-1.0",
-						superPlusPrice : "-1.0",
-						gasPrice: "-1.0",
-						methanePrice: "-1.0"
+						dieselPrice : null,
+						superPrice : null,
+						superPlusPrice : null,
+						gasPrice: null,
+						methanePrice: null,
+						//**************************
+						premiumDieselPrice: null
 				}
 				
 				
@@ -440,7 +464,14 @@ module.controller("HomeController", [ "$scope", "HomeService",
 						} else {
 							$scope.elementVisibility('methane', false);
 						}
-
+						//********************************************
+						if (value.data.hasPremiumDiesel) {
+							$scope.premiumDieselreportdisabled = false;
+							$scope.tmppricereport.premiumDieselPrice = "";
+							$scope.elementVisibility('premiumDiesel', true);
+						} else {
+							$scope.elementVisibility('premiumDiesel', false);
+						}
 						
 					});
 				} else {
@@ -472,14 +503,27 @@ module.controller("HomeController", [ "$scope", "HomeService",
 				
 				
 
-				
-				if ($scope.searchParameters.myLat && $scope.searchParameters.myLon) {
+				//**************************************************************************
+				/*if ($scope.searchParameters.myLat && $scope.searchParameters.myLon) {
 						
 						HomeService.getGasStationsWithCoordinates($scope.searchParameters.myLat, $scope.searchParameters.myLon, $scope.searchParameters.gasolineType, $scope.searchParameters.carSharing).then(function(value) {
 							$scope.searchGasStationResults = value.data;
 							
 						});
 					
+				}*/
+				if ($scope.searchParameters.myLat && $scope.searchParameters.myLon) {
+					if($scope.searchParameters.myRadius){
+						HomeService.getGasStationsWithCoordinates($scope.searchParameters.myLat, $scope.searchParameters.myLon, $scope.searchParameters.myRadius, $scope.searchParameters.gasolineType, $scope.searchParameters.carSharing).then(function(value) {
+							$scope.searchGasStationResults = value.data;
+
+						});
+					} else {
+						HomeService.getGasStationsWithCoordinates($scope.searchParameters.myLat, $scope.searchParameters.myLon, 0, $scope.searchParameters.gasolineType, $scope.searchParameters.carSharing).then(function (value) {
+							$scope.searchGasStationResults = value.data;
+
+						});
+					}
 				}
 				
 				else if ($scope.searchParameters.gasolineType) {
@@ -513,29 +557,35 @@ module.controller("HomeController", [ "$scope", "HomeService",
 							"hasSuperPlus": false,
 							"hasGas": false,
 							"hasMethane": false,
+							//************************
+							"hasPremiumDiesel": false,
 							carSharing: null,
-							dieselPrice: -1.0,
-							superPrice: -1.0,
-							superPlusPrice: -1.0,
-							gasPrice: -1.0,
-							methanePrice: -1.0,
+							dieselPrice: null,
+							superPrice: null,
+							superPlusPrice: null,
+							gasPrice: null,
+							methanePrice: null,
+							//************************
+							premiumDieselPrice: null,
 							reportUser: -1,
 							reportTimestamp: null
 						};
 					
 					
-					HomeService.setReport($scope.tmppricereport.reportingStation, $scope.tmppricereport.dieselPrice, $scope.tmppricereport.superPrice, $scope.tmppricereport.superPlusPrice, $scope.tmppricereport.gasPrice, $scope.tmppricereport.methanePrice, $scope.tmppricereport.userId).then(function() {
+					HomeService.setReport($scope.tmppricereport.reportingStation, $scope.tmppricereport.dieselPrice, $scope.tmppricereport.superPrice, $scope.tmppricereport.superPlusPrice, $scope.tmppricereport.gasPrice, $scope.tmppricereport.methanePrice, $scope.tmppricereport.premiumDieselPrice ,$scope.tmppricereport.userId).then(function() {
 						HomeService.getAllGasStations().then(function(value) {
 							$scope.allGasStations= value.data;
 							
 							$scope.tmppricereport = {
 									userId : null,
 									reportingStation : null,
-									dieselPrice : "-1.0",
-									superPrice : "-1.0",
-									superPlusPrice : "-1.0",
-									gasPrice: "-1.0",
-									methanePrice: "-1.0"
+									dieselPrice : null,
+									superPrice : null,
+									superPlusPrice : null,
+									gasPrice: null,
+									methanePrice: null,
+									//************************
+									premiumDieselPrice: null
 							}
 						});
 					});
@@ -696,6 +746,16 @@ $scope.sortMethane = function() {
 	}
 
 }
+
+//******************************************
+			$scope.sortPremiumDiesel = function() {
+
+				$scope.searchGasStationResults.sort((a, b) => (b.premiumDieselPrice > a.premiumDieselPrice) ? -1 : 0);
+				while($scope.searchGasStationResults[0].premiumDieselPrice < 0) {
+					$scope.searchGasStationResults.push($scope.searchGasStationResults.splice(0, 1)[0]);
+				}
+
+			}
 			
 			
 

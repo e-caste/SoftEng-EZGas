@@ -18,8 +18,13 @@ angular.module('home.services', []).factory('HomeService',
 				var url = CONSTANTS.getGasStationByIdUrl + gasStationId;
 				return $http.get(url);
 			}
-			service.getGasStationByProximity = function(myLat,myLon) {
+			//*****************************************************************
+			/*service.getGasStationByProximity = function(myLat,myLon) {
 				var url = CONSTANTS.getGasStationByProximityUrl + myLat + '/' + myLon + '/';
+				return $http.get(url);
+			}*/
+			service.getGasStationByProximity = function(myLat,myLon,myRadius) {
+				var url = CONSTANTS.getGasStationByProximityUrl + myLat + '/' + myLon + '/' + myRadius + '/';
 				return $http.get(url);
 			}
 			service.getAllGasStations = function() {
@@ -44,10 +49,28 @@ angular.module('home.services', []).factory('HomeService',
 				var url = CONSTANTS.searchGasStationsByGasolineType + gasolinetype;
 				return $http.get(url);
 			}
-			service.setReport = function(gasStationId, dieselPrice, superPrice, superPlusPrice, gasPrice, methanePrice, userId) {
+			//******************************************************************
+			/*service.setReport = function(gasStationId, dieselPrice, superPrice, superPlusPrice, gasPrice, methanePrice, userId) {
 				var url = CONSTANTS.setReport + gasStationId + '/' + dieselPrice + '/' + superPrice + '/' + superPlusPrice + '/' + gasPrice + '/' + methanePrice + '/' + userId + '/';
 				return $http.post(url);
-			}			
+			}		*/
+			service.setReport = function(gasStationId, dieselPrice, superPrice, superPlusPrice, gasPrice, methanePrice, premiumDieselPrice, userId) {
+				//var url = CONSTANTS.setReport + gasStationId + '/' + ( dieselPrice!=null ? dieselPrice : '' ) + '/' + ( superPrice!=null ? superPrice : '' ) + '/' + (superPlusPrice!=null?superPlusPrice:'') + '/' + (gasPrice!=null?gasPrice:'') + '/' + (methanePrice!=null?methanePrice:'') + '/' + (premiumDieselPrice!=null?premiumDieselPrice:'') + '/' + userId + '/';
+				//return $http.post(url);
+
+				var report = {
+					gasStationId:gasStationId,
+					dieselPrice:dieselPrice,
+					superPrice:superPrice,
+					superPlusPrice:superPlusPrice,
+					gasPrice:gasPrice,
+					methanePrice:methanePrice,
+					premiumDieselPrice:premiumDieselPrice,
+					userId:userId
+				}
+				return $http.post(CONSTANTS.setReport,report)
+			}
+			//*******************************************************************
 			service.increaseUserReputation = function(userId) {
 				var url = CONSTANTS.increaseUserReputation + '/' + userId;
 				return $http.post(url);
@@ -60,12 +83,15 @@ angular.module('home.services', []).factory('HomeService',
 				var url = CONSTANTS.login;
 				return $http.post(url, idpw);
 			}
-			
-			service.getGasStationsWithCoordinates = function(myLat, myLon, gasolineType, carSharing) {
+			//*******************************************************************************
+			/*service.getGasStationsWithCoordinates = function(myLat, myLon, gasolineType, carSharing) {
 				var url = CONSTANTS.getGasStationsWithCoordinates + myLat + "/" + myLon + "/" + gasolineType + "/" + carSharing + "/";
 				return $http.get(url);		
+			}*/
+			service.getGasStationsWithCoordinates = function(myLat, myLon, myRadius, gasolineType, carSharing) {
+				var url = CONSTANTS.getGasStationsWithCoordinates + myLat + "/" + myLon + "/" + myRadius + "/" + gasolineType + "/" + carSharing + "/";
+				return $http.get(url);
 			}
-			
 			service.getGasStationsWithoutCoordinates = function(gasolineType, carSharing) {
 				var url = CONSTANTS.getGasStationsWithoutCoordinates + gasolineType + "/" + carSharing + "/";
 				return $http.get(url);		
