@@ -82,7 +82,7 @@ public class GasStationServiceimpl implements GasStationService {
 	public GasStationDto saveGasStation(GasStationDto gasStationDto) throws PriceException, GPSDataException {
 		GasStationDto gsDTo = null;
 		
-		if(gasStationDto.getLat() > 90 || gasStationDto.getLat() < -90 || gasStationDto.getLon() > 180 || gasStationDto.getLon() < -180) {
+		if(gasStationDto.getLat() > 90 || gasStationDto.getLat() <= -90 || gasStationDto.getLon() > 180 || gasStationDto.getLon() <= -180) {
 			throw new GPSDataException("Invalid GPS Data");
 		}
 
