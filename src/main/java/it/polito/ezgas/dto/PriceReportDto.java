@@ -1,6 +1,11 @@
 package it.polito.ezgas.dto;
 
 
+import it.polito.ezgas.entity.User;
+import it.polito.ezgas.repository.GasStationRepository;
+import it.polito.ezgas.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class PriceReportDto {
     Integer gasStationId;
     Double dieselPrice;
