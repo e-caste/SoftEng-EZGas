@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
+import exception.*;
 import it.polito.ezgas.repository.GasStationRepository;
 import it.polito.ezgas.repository.UserRepository;
 import it.polito.ezgas.converter.GasStationConverter;
@@ -21,12 +22,6 @@ import it.polito.ezgas.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-
-import exception.GPSDataException;
-import exception.InvalidGasStationException;
-import exception.InvalidGasTypeException;
-import exception.InvalidUserException;
-import exception.PriceException;
 
 import it.polito.ezgas.dto.GasStationDto;
 import it.polito.ezgas.service.GasStationService;
@@ -89,10 +84,6 @@ public class GasStationServiceimpl implements GasStationService {
 		
 		if(gasStationDto.getLat() > 90 || gasStationDto.getLat() < -90 || gasStationDto.getLon() > 180 || gasStationDto.getLon() < -180) {
 			throw new GPSDataException("Invalid GPS Data");
-		}
-
-		if(gasStationDto.getPriceReportDtos() == null){
-			throw new PriceException("Wrong Exception");
 		}
 
 		String currentTimeStamp = new SimpleDateFormat("MM-dd-YYYY").format(new Date(System.currentTimeMillis()));
@@ -231,7 +222,28 @@ public class GasStationServiceimpl implements GasStationService {
 		}
 		return gasStationDtos;
 	}
-	
+
+	@Override
+	public List<GasStationDto> getGasStationsByProximity(double lat, double lon, int radius) throws GPSDataException {
+		List<GasStation> gasStations = gasStationRepository.findAll();
+		List<GasStationDto> gasStationDtos = new ArrayList<>();
+
+		if (lat > 90 || lat < -90 || lon > 180 || lon < -180) {
+			throw new GPSDataException("Invalid GPS Data");
+		}
+
+		if(radius <= 0){
+			radius = 1;
+		}
+
+		for(GasStation gs : gasStations) {
+			if(distance(lat,lon,gs.getLat(),gs.getLon())<=radius) {
+				gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
+			}
+		}
+		return gasStationDtos;
+	}
+
 	//Ref: https://www.geeksforgeeks.org/haversine-formula-to-find-distance-between-two-points-on-a-sphere/
 	public double distance(double sLat, double sLon, double eLat, double eLon){
 		double r = 6371;
@@ -250,32 +262,37 @@ public class GasStationServiceimpl implements GasStationService {
 		return result;
 	}
 
+
 	@Override
-	public List<GasStationDto> getGasStationsWithCoordinates(double lat, double lon, String gasolineType,
-			String carSharing) throws InvalidGasTypeException, GPSDataException {
+	public List<GasStationDto> getGasStationsWithCoordinates(double lat, double lon, int radius, String gasolinetype, String carsharing) throws InvalidGasTypeException, GPSDataException, InvalidCarSharingException{
 		if (lat > 90 || lat < -90 || lon > 180 || lon < -180){
 			throw new GPSDataException("Invalid GPS Data");
 		}
 
-		if (!GasolineTypes.contains(gasolineType) && gasolineType != null) {
+		if(!carsharing.equals("Enjoy") && !carsharing.equals("Car2Go") && carsharing != null){
+			throw new InvalidCarSharingException("Invalid CarSharing Type");
+		}
+
+		if (!GasolineTypes.contains(gasolinetype) && gasolinetype != null) {
 			throw new InvalidGasTypeException("Invalid Gasoline Type");
 		}
 
-		List<GasStationDto> gasStationDtos = getGasStationsByGasolineType(gasolineType);
+		List<GasStationDto> gasStationDtos = getGasStationsByGasolineType(gasolinetype);
 		List<GasStationDto> gsDtos = new ArrayList<>();
 
 		for(GasStationDto gs : gasStationDtos){
 			double dist = distance(lat, lon, gs.getLat(), gs.getLon());
 			if(dist <= 1){
-				if(carSharing.equals("null")){
+				if(carsharing.equals("null")){
 					gsDtos.add(gs);
-				} else if (gs.getCarSharing().equals(carSharing)){
+				} else if (gs.getCarSharing().equals(carsharing)){
 					gsDtos.add(gs);
 				}
 			}
 		}
 
 		return gsDtos;
+
 	}
 
 	@Override
@@ -299,9 +316,7 @@ public class GasStationServiceimpl implements GasStationService {
 	}
 
 	@Override
-	public void setReport(Integer gasStationId, double dieselPrice, double superPrice, double superPlusPrice,
-			double gasPrice, double methanePrice, Integer userId)
-			throws InvalidGasStationException, PriceException, InvalidUserException {
+	public void setReport(Integer gasStationId, Double dieselPrice, Double superPrice, Double superPlusPrice, Double gasPrice, Double methanePrice, Double premiumDieselPrice, Integer userId) throws InvalidGasStationException, PriceException, InvalidUserException {
 		GasStation gasStation = gasStationRepository.findOne(gasStationId);
 		if (gasStation == null)
 			throw new InvalidGasStationException("Gas Station not found");

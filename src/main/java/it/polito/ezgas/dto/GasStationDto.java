@@ -286,4 +286,5 @@ public class GasStationDto {
 	public void setCarSharing(String carSharing) {
 		this.carSharing = carSharing;
 	}
+
 }

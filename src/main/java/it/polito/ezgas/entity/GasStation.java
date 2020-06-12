@@ -140,12 +140,6 @@ public class GasStation implements Serializable {
     public void setGasStationAddress(String gasStationAddress) {
     	this.gasStationAddress = gasStationAddress;
     }
-
-    
-    
-    public GasStation() {
-    	
-    }
     
     /*public GasStation(String gasStationName, String gasStationAddress, boolean hasDiesel, boolean hasSuper, boolean hasSuperPlus, boolean hasGas, boolean hasMethane, String carSharing, double lat, double lon, double dieselPrice, double superPrice, double superPlusPrice, double gasPrice, double methanePrice, Integer reportUser, String reportTimestamp, double reportDependability) {
         this.gasStationName = gasStationName;
