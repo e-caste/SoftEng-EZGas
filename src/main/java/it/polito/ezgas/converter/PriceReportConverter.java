@@ -15,27 +15,37 @@ public class PriceReportConverter {
 	@Autowired
 	UserRepository userRepository;
 
+
+
 	public PriceReportDto convertEntityToDto(PriceReport pr) {
 		PriceReportDto pdto = new PriceReportDto();
 		pdto.setUserId(pr.getUser().getUserId());
+		//missing getGSid in price report entity
+		//pdto.setGasStationId(pr.getGasStationId());
 		pdto.setDieselPrice(pr.getDieselPrice());
 		pdto.setGasPrice(pr.getGasPrice());
 		pdto.setSuperPlusPrice(pr.getSuperPlusPrice());
 		pdto.setSuperPrice(pr.getSuperPrice());
-				
+		//missing getMethanePrice
+		//pdto.setMethanePrice(pr.getMethanePrice());
+		//missing getPremiumDieselPrice in entity
+		//pdto.setPremiumDieselPrice(pr.getPremiumDieselPrice());
 		return pdto;
 		
 	}
 	
 	public PriceReport convertDtoToEntity(PriceReportDto pr) {
-		PriceReport pr_entity = new PriceReport();
-		pr_entity.setUser(userRepository.findOne(pr.getUserId()));
+		PriceReport prEntity = new PriceReport();
+		prEntity.setUser(userRepository.findOne(pr.getUserId()));
 		//PriceReport Repository??
-		pr_entity.setDieselPrice(pr.getDieselPrice());
-		pr_entity.setGasPrice(pr.getGasPrice());
-		pr_entity.setSuperPlusPrice(pr.getSuperPrice());
-		pr_entity.setSuperPrice(pr.getSuperPrice());
-		return pr_entity;
+		//missing setGSid in entity
+		prEntity.setDieselPrice(pr.getDieselPrice());
+		prEntity.setGasPrice(pr.getGasPrice());
+		prEntity.setSuperPlusPrice(pr.getSuperPrice());
+		prEntity.setSuperPrice(pr.getSuperPrice());
+		//missing setPremiumDieselPrice in entity
+
+		return prEntity;
 		
 	}
 }

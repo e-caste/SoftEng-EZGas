@@ -36,6 +36,7 @@ public class GasStationServiceimpl implements GasStationService {
 	@Autowired
 	UserRepository userRepository;
 
+
 	List<String> GasolineTypes = Arrays.asList("Diesel", "Super", "SuperPlus", "LPG", "Methane");
 
 	@Override
@@ -99,6 +100,7 @@ public class GasStationServiceimpl implements GasStationService {
 			gasStation.setHasSuperPlus(gasStationDto.getHasSuperPlus());
 			gasStation.setHasGas(gasStationDto.getHasGas());
 			gasStation.setHasMethane(gasStationDto.getHasMethane());
+			gasStation.setHasPremiumDiesel(gasStationDto.getHasPremiumDiesel());
 			if(gasStationDto.getCarSharing().equals("null")){
 				gasStation.setCarSharing(null);
 			}
@@ -113,7 +115,7 @@ public class GasStationServiceimpl implements GasStationService {
 				gasStation.setSuperPrice(gasStationDto.getSuperPrice());
 			}
 			
-			if (gasStationDto.getHasSuper()) {
+			if (gasStationDto.getHasSuperPlus()) {
 				gasStation.setSuperPlusPrice(gasStationDto.getSuperPlusPrice());
 			}
 			
@@ -123,6 +125,9 @@ public class GasStationServiceimpl implements GasStationService {
 			
 			if (gasStationDto.getHasMethane()) {
 				gasStation.setMethanePrice(gasStationDto.getMethanePrice());
+			}
+			if(gasStationDto.getHasPremiumDiesel()){
+				gasStation.setPremiumDieselPrice(gasStationDto.getPremiumDieselPrice());
 			}
 
 			gasStationRepository.save(gasStation);
@@ -201,6 +206,7 @@ public class GasStationServiceimpl implements GasStationService {
 						gasStationsDto.add(GasStationConverter.convertEntityToDto(gs));
 					}
 				break;
+					// TODO: 12/06/2020  add case premiumDiesel
 			}
 		}
 		return gasStationsDto;
@@ -280,9 +286,13 @@ public class GasStationServiceimpl implements GasStationService {
 		List<GasStationDto> gasStationDtos = getGasStationsByGasolineType(gasolinetype);
 		List<GasStationDto> gsDtos = new ArrayList<>();
 
+		if(radius<=0){
+			radius = 1;
+		}
+
 		for(GasStationDto gs : gasStationDtos){
 			double dist = distance(lat, lon, gs.getLat(), gs.getLon());
-			if(dist <= 1){
+			if(dist <= radius){
 				if(carsharing.equals("null")){
 					gsDtos.add(gs);
 				} else if (gs.getCarSharing().equals(carsharing)){
@@ -344,6 +354,9 @@ public class GasStationServiceimpl implements GasStationService {
 		if(gasStation.getHasMethane()){
 			gasStation.setMethanePrice(methanePrice);
 		}
+		if(gasStation.getHasPremiumDiesel()){
+			gasStation.setPremiumDieselPrice(premiumDieselPrice);
+		}
 
 		User user = userRepository.findById(userId);
 		if (user == null){
@@ -352,13 +365,25 @@ public class GasStationServiceimpl implements GasStationService {
 			gasStation.setReportUser(userId);
 			gasStation.setUser(user);
 		}
+		;
+
 
 		String oldTimeStamp = gasStation.getReportTimestamp();
 		String newTimeStamp = new SimpleDateFormat("MM-dd-YYYY").format(new Date(System.currentTimeMillis()));
-		gasStation.setReportTimestamp(newTimeStamp);
+		LocalDate lastDate = LocalDate.parse(oldTimeStamp,DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+		LocalDate newDate = LocalDate.parse(newTimeStamp,DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+		long lastDay = TimeUnit.MILLISECONDS.toDays(Timestamp.valueOf(lastDate.atTime(LocalTime.MIDNIGHT)).getTime());
+		long toDay = TimeUnit.MILLISECONDS.toDays(Timestamp.valueOf(newDate.atTime(LocalTime.MIDNIGHT)).getTime());
 
-		double repDependability = reportDependability(oldTimeStamp,newTimeStamp,user.getReputation());
-		gasStation.setReportDependability(repDependability);
+
+		if((user.getReputation()>gasStation.getUser().getReputation()) || ((user.getReputation()<=gasStation.getUser().getReputation()) && (toDay-lastDay)>4)){
+			gasStation.setReportTimestamp(newTimeStamp);
+			double repDependability = reportDependability(oldTimeStamp,newTimeStamp,user.getReputation());
+			gasStation.setReportDependability(repDependability);
+			//TODO create report dto and attach it to the GS (in GS the priceReport doesn't exist)
+		}
+
+
 
 		gasStationRepository.save(gasStation);
 	}
