@@ -20,7 +20,7 @@ public class PriceReportConverter {
 	public PriceReportDto convertEntityToDto(PriceReport pr) {
 		PriceReportDto pdto = new PriceReportDto();
 		pdto.setUserId(pr.getUser().getUserId());
-		//missing getGSid in price report entity
+		//missing getGasStationid in price report entity
 		//pdto.setGasStationId(pr.getGasStationId());
 		pdto.setDieselPrice(pr.getDieselPrice());
 		pdto.setGasPrice(pr.getGasPrice());
