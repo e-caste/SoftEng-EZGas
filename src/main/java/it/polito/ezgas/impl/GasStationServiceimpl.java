@@ -41,7 +41,14 @@ public class GasStationServiceimpl implements GasStationService {
 
 	@Override
 	public GasStationDto getGasStationById(Integer gasStationId) throws InvalidGasStationException {
-		GasStation gasStation = gasStationRepository.findById(gasStationId);
+		//GasStation gasStation = gasStationRepository.findOne(gasStationId);
+		List <GasStation> allGS = gasStationRepository.findAll();
+		GasStation gasStation = null;
+		for(GasStation g : allGS){
+			if(g.getGasStationId()==gasStationId){
+				gasStation = g;
+			}
+		}
 		if (gasStation == null) {
 			throw new InvalidGasStationException("GasStation not found");
 		}
@@ -90,7 +97,14 @@ public class GasStationServiceimpl implements GasStationService {
 		String currentTimeStamp = new SimpleDateFormat("MM-dd-YYYY").format(new Date(System.currentTimeMillis()));
 		gasStationDto.setReportTimestamp(currentTimeStamp);
 
-		GasStation gasStation = gasStationRepository.findById(gasStationDto.getGasStationId());
+		//GasStation gasStation = gasStationRepository.findOne(gasStationDto.getGasStationId());
+		List <GasStation> allGS = gasStationRepository.findAll();
+		GasStation gasStation = null;
+		for(GasStation g : allGS){
+			if(g.getGasStationId()==gasStationDto.getGasStationId()){
+				gasStation = g;
+			}
+		}
 		if(gasStation != null) {
 			gasStation.setGasStationId(gasStationDto.getGasStationId());
 			gasStation.setGasStationName(gasStationDto.getGasStationName());
@@ -138,6 +152,7 @@ public class GasStationServiceimpl implements GasStationService {
 			if(gasStation.getCarSharing().equals("null")){
 				gasStation.setCarSharing(null);
 			}
+
 			gasStation.setReportTimestamp(new SimpleDateFormat("MM-dd-YYYY").format(new Date(System.currentTimeMillis())));
 			gasStationRepository.save(gasStation);
 			gsDTo = GasStationConverter.convertEntityToDto(gasStation);
@@ -158,7 +173,15 @@ public class GasStationServiceimpl implements GasStationService {
 
 	@Override
 	public Boolean deleteGasStation(Integer gasStationId) throws InvalidGasStationException {
-		GasStation gasStation = gasStationRepository.findById(gasStationId);
+		//GasStation gasStation = gasStationRepository.findOne(gasStationId);
+		List <GasStation> allGS = gasStationRepository.findAll();
+		GasStation gasStation = null;
+		for(GasStation g : allGS){
+			if(g.getGasStationId()==gasStationId){
+				gasStation = g;
+			}
+		}
+
 		if(gasStation == null) {
 			throw new InvalidGasStationException("GasStation not found");
 		}
@@ -327,7 +350,14 @@ public class GasStationServiceimpl implements GasStationService {
 
 	@Override
 	public void setReport(Integer gasStationId, Double dieselPrice, Double superPrice, Double superPlusPrice, Double gasPrice, Double methanePrice, Double premiumDieselPrice, Integer userId) throws InvalidGasStationException, PriceException, InvalidUserException {
-		GasStation gasStation = gasStationRepository.findOne(gasStationId);
+		//GasStation gasStation = gasStationRepository.findOne(gasStationId);
+		List <GasStation> allGS = gasStationRepository.findAll();
+		GasStation gasStation = null;
+		for(GasStation g : allGS){
+			if(g.getGasStationId()==gasStationId){
+				gasStation = g;
+			}
+		}
 		if (gasStation == null)
 			throw new InvalidGasStationException("Gas Station not found");
 
@@ -358,7 +388,7 @@ public class GasStationServiceimpl implements GasStationService {
 			gasStation.setPremiumDieselPrice(premiumDieselPrice);
 		}
 
-		User user = userRepository.findById(userId);
+		User user = userRepository.findOne(userId);
 		if (user == null){
 			throw new InvalidUserException("User not found");
 		} else {
@@ -390,11 +420,15 @@ public class GasStationServiceimpl implements GasStationService {
 
 	@Override
 	public List<GasStationDto> getGasStationByCarSharing(String carSharing) {
-		List<GasStation> gasStations = gasStationRepository.findByCarSharing(carSharing);
+		//List<GasStation> gasStations = gasStationRepository.findByCarSharing(carSharing);
+		List<GasStation> gasStations = gasStationRepository.findAll();
 		List<GasStationDto> gasStationDtos = new ArrayList<>();
 
 		for (GasStation gs : gasStations){
-			gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
+			if(carSharing.equals(gs.getCarSharing())){
+				gasStationDtos.add(GasStationConverter.convertEntityToDto(gs));
+			}
+
 		}
 
 		return gasStationDtos;
