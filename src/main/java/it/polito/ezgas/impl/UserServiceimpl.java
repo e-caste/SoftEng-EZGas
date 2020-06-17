@@ -27,14 +27,8 @@ public class UserServiceimpl implements UserService {
 
 	@Override
 	public UserDto getUserById(Integer userId) throws InvalidUserException {
-		//User user = userRepository.findOne(userId);
-		User user = null;
-		List <User> allU= userRepository.findAll();
-		for (User u : allU){
-			if(u.getUserId() == userId){
-				user = u;
-			}
-		}
+		User user = userRepository.findOne(userId);
+
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
@@ -43,14 +37,8 @@ public class UserServiceimpl implements UserService {
 
 	@Override
 	public UserDto saveUser(UserDto userDto) {
-		//User user = userRepository.findOne(userDto.getUserId());
-		User user = null;
-		List <User> allU= userRepository.findAll();
-		for (User u : allU){
-			if(u.getUserId() == userDto.getUserId()){
-				user = u;
-			}
-		}
+		User user = userRepository.findOne(userDto.getUserId());
+
 		UserDto uDto = null;
 
 		// update existing user
@@ -64,27 +52,11 @@ public class UserServiceimpl implements UserService {
 			uDto = UserConverter.convertEntityToDto(user);
 		} else {
 			user = UserConverter.convertDtoToEntity(userDto);
-			boolean existingEmail = false;
-			List<User> allUsers =userRepository.findAll();
-			for(User u : allUsers){
-				if((u.getEmail().equals(userDto.getEmail()))){
-					existingEmail = true;
-				}
-			}
-			//if(userRepository.findByEmail(userDto.getEmail()) == null){
-			if(existingEmail == false){
+			if(userRepository.findByEmail(userDto.getEmail()) == null){
 				userRepository.save(user);
 				uDto = UserConverter.convertEntityToDto(user);
 			} else {
-				User userByEmail = null;
-
-				for(User u : allUsers){
-					if((u.getEmail().equals(userDto.getEmail()))){
-						userByEmail = u;
-					}
-				}
-				//uDto = UserConverter.convertEntityToDto(userRepository.findByEmail(userDto.getEmail()));
-				uDto = UserConverter.convertEntityToDto(userByEmail);
+				uDto = UserConverter.convertEntityToDto(userRepository.findByEmail(userDto.getEmail()));
 			}
 		}
 
@@ -103,14 +75,8 @@ public class UserServiceimpl implements UserService {
 
 	@Override
 	public Boolean deleteUser(Integer userId) throws InvalidUserException {
-		//User user = userRepository.findOne(userId);
-		User user = null;
-		List <User> allU= userRepository.findAll();
-		for (User u : allU){
-			if(u.getUserId() == userId){
-				user = u;
-			}
-		}
+		User user = userRepository.findOne(userId);
+
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
@@ -126,15 +92,8 @@ public class UserServiceimpl implements UserService {
 	public LoginDto login(IdPw credentials) throws InvalidLoginDataException {
 		String email = credentials.getUser();
 		String password = credentials.getPw();
-		User user = null;
-		List<User> allUsers =userRepository.findAll();
-		for(User u : allUsers){
-			if((u.getEmail().equals(email))){
-				user = u;
-			}
-		}
 
-		//User user = userRepository.findByEmail(email);
+		User user = userRepository.findByEmail(email);
 		if (user == null) {
 			throw new InvalidLoginDataException("User does not exist.");
 		}
@@ -147,14 +106,8 @@ public class UserServiceimpl implements UserService {
 
 	@Override
 	public Integer increaseUserReputation(Integer userId) throws InvalidUserException {
-		//User user = userRepository.findOne(userId);
-		User user = null;
-		List <User> allU= userRepository.findAll();
-		for (User u : allU){
-			if(u.getUserId() == userId){
-				user = u;
-			}
-		}
+		User user = userRepository.findOne(userId);
+
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
@@ -172,14 +125,8 @@ public class UserServiceimpl implements UserService {
 
 	@Override
 	public Integer decreaseUserReputation(Integer userId) throws InvalidUserException {
-		//User user = userRepository.findOne(userId);
-		User user = null;
-		List <User> allU= userRepository.findAll();
-		for (User u : allU){
-			if(u.getUserId() == userId){
-				user = u;
-			}
-		}
+		User user = userRepository.findOne(userId);
+
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
