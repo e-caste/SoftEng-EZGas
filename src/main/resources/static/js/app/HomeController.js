@@ -2,11 +2,11 @@
 var module = angular.module('home.controllers', []);
 module.controller("HomeController", [ "$scope", "HomeService",
 		function($scope, HomeService) {
-	
+
 			$scope.editinguser = false;
 			$scope.editinggasstation = false;
-			
-			
+
+
 			$scope.gasstationreportdisabled = true;
 			$scope.dieselreportdisabled = true;
 			$scope.superreportdisabled = true;
@@ -32,7 +32,7 @@ module.controller("HomeController", [ "$scope", "HomeService",
 				user: null,
 				pw: null
 			};
-	
+
 			$scope.userDto = {
 				userId : null,
 				userName : null,
@@ -64,7 +64,7 @@ module.controller("HomeController", [ "$scope", "HomeService",
 				reportUser: -1,
 				reportTimestamp: null
 			};
-							
+
 			$scope.searchParameters = {
 					myLat: null,
 					myLon: null,
@@ -73,10 +73,10 @@ module.controller("HomeController", [ "$scope", "HomeService",
 				//****************************************
 					myRadius: null
 			}
-			
-			
+
+
 			$scope.saveGasStation = function() {
-				
+
 				if ($scope.editinggasstation) {
 					$scope.editinggasstation = false;
 					HomeService.saveGasStation($scope.gasStationDto).then(function() {
@@ -90,16 +90,16 @@ module.controller("HomeController", [ "$scope", "HomeService",
 
 				});
 				}
-				
 
-				
+
+
 				else {
-					
+
 
 					if (!$scope.gasStationDto.carSharing) {
 						$scope.gasStationDto.carSharing = 'null';
 					}
-					
+
 				HomeService.saveGasStation($scope.gasStationDto).then(function() {
 					HomeService.getAllGasStations().then(function(value) {
 						$scope.allGasStations= value.data;
@@ -109,19 +109,19 @@ module.controller("HomeController", [ "$scope", "HomeService",
 						console.log("no callback");
 					});
 
-					
-					
-						
-					
+
+
+
+
 				}, function(reason) {
 					console.log("error occured");
 				}, function(value) {
 					console.log("no callback");
 				});
-				
-				
+
+
 				}
-				
+
 				$scope.gasStationDto = {
 						gasStationId : null,
 						gasStationName : null,
@@ -174,8 +174,8 @@ module.controller("HomeController", [ "$scope", "HomeService",
 			}
 
 			$scope.saveUser = function() {
-				
-				
+
+
 				HomeService.saveUser($scope.userDto).then(function() {
 					HomeService.getAllUsers().then(function(value) {
 						$scope.allUsers= value.data;
@@ -192,7 +192,7 @@ module.controller("HomeController", [ "$scope", "HomeService",
 						email : null,
 						reputation: 0
 					};
-					
+
 					if ($scope.editinguser) {
 						$scope.editinguser = false;
 					}
@@ -202,15 +202,15 @@ module.controller("HomeController", [ "$scope", "HomeService",
 					console.log("no callback");
 				});
 			}
-			
-			
+
+
 			$scope.resetGasStationForm = function() {
-				
+
 				if ( $scope.editinggasstation ) {
 					$scope.editinggasstation = false;
 				}
 
-				
+
 				$scope.gasStationDto = {
 						gasStationId : null,
 						gasStationName : null,
@@ -232,12 +232,12 @@ module.controller("HomeController", [ "$scope", "HomeService",
 						reportUser: -1,
 						reportTimestamp: null
 					};
-					
-				
+
+
 			}
-			
+
 			$scope.resetGasStationSearchForm = function() {
-				
+
 				$scope.searchParameters = {
 						myLat: null,
 						myLon: null,
@@ -246,15 +246,15 @@ module.controller("HomeController", [ "$scope", "HomeService",
 						gasolineType : null,
 						carSharing : null,
 				}
-				
+
 				$scope.formSearchGasStations.$setPristine(); //reset Form
 
 			}
-			
-			
+
+
 			$scope.resetAddPriceReportForm = function() {
-				
-				
+
+
 				$scope.gasstationreportdisabled = true;
 				$scope.dieselreportdisabled = true;
 				$scope.superreportdisabled = true;
@@ -275,18 +275,18 @@ module.controller("HomeController", [ "$scope", "HomeService",
 						//**************************
 						premiumDieselPrice: null
 				}
-				
-				
+
+
 				$scope.formAddPriceReport.$setPristine();
 			}
-			
-			
+
+
 			$scope.reset = function(){
-				
+
 				if ($scope.editinguser) {
 					$scope.editinguser = null;
 				}
-				
+
 				$scope.userDto = {
 						userId : null,
 						userName : null,
@@ -295,32 +295,36 @@ module.controller("HomeController", [ "$scope", "HomeService",
 						reputation: 0,
 						admin: false
 					};
-					
-				
+
+
 				$scope.myForm.$setPristine(); //reset Form
-				
-				
+
+
 		    }
-			
+
 			$scope.initGasStationList = function() {
-				
+
 				HomeService.getAllGasStations().then(function(value) {
+					value.data.forEach(gs => {
+						if(gs.carSharing === "null")
+							gs.carSharing = null;
+					});
 					$scope.allGasStations= value.data;
 				});
 			}
-			
-			
+
+
 			$scope.initUserList = function() {
-				
-				
+
+
 				HomeService.getAllUsers().then(function(value) {
 					$scope.allUsers= value.data;
 				});
-				
+
 			}
-			
+
 			$scope.deleteUser = function(id) {
-				
+
 				HomeService.deleteUser(id).then(function() {
 					HomeService.getAllUsers().then(function(value) {
 						$scope.allUsers= value.data;
@@ -342,25 +346,25 @@ module.controller("HomeController", [ "$scope", "HomeService",
 				}, function(value) {
 					console.log("no callback");
 				});
-				
+
 			}
-			
-			
+
+
 			$scope.editUser = function(id) {
-				
+
 				$scope.editinguser= id;
-				
+
 				HomeService.getUserById(id).then(function(value) {
 					$scope.userDto=value.data;
 				});
-				
-				
-				
-				
+
+
+
+
 			}
-			
+
 			$scope.deleteGasStation = function(id) {
-				
+
 				HomeService.deleteGasStation(id).then(function() {
 					HomeService.getAllGasStations().then(function(value) {
 						$scope.allGasStations= value.data;
@@ -381,25 +385,25 @@ module.controller("HomeController", [ "$scope", "HomeService",
 				}, function(value) {
 					console.log("no callback");
 				});
-				
+
 			}
 
-			
+
 			$scope.editGasStation = function(id) {
-				
-				
+
+
 
 				$scope.editinggasstation = id;
 
 				HomeService.getGasStationById(id).then(function(value) {
 					$scope.gasStationDto=value.data;
 				});
-				
-				
-				
-				
+
+
+
+
 			}
-			
+
 			$scope.elementVisibility = function (id, visible) {
 				var f1 = document.getElementById(id);
 					if (f1) {
@@ -412,54 +416,54 @@ module.controller("HomeController", [ "$scope", "HomeService",
 			}
 
 			$scope.selectGasStationForReport = function(id) {
-				
+
 				if (sessionStorage.getItem('username')) {
 					var f2 = document.getElementById('reportAdded');
 					if (f2) {
 						f2.innerHTML = "";
 					}
 					$scope.elementVisibility('addReport', true);
-					
+
 					tmpGasStation = HomeService.getGasStationById(id).then(function(value) {
-						
-					
+
+
 						$scope.tmppricereport.reportingStation = id;
 						$scope.gasstationreportdisabled = false;
 
-						if (sessionStorage.getItem('userid')) { 
+						if (sessionStorage.getItem('userid')) {
 							$scope.tmppricereport.userId = sessionStorage.getItem('userid');
 						}
-						if (value.data.hasDiesel) { 
-							$scope.dieselreportdisabled = false; 
+						if (value.data.hasDiesel) {
+							$scope.dieselreportdisabled = false;
 							$scope.tmppricereport.dieselPrice = "";
-							$scope.elementVisibility('diesel', true); 
+							$scope.elementVisibility('diesel', true);
 						} else {
 							$scope.elementVisibility('diesel', false);
 						}
-						if (value.data.hasSuper) { 
-							$scope.superreportdisabled = false; 
+						if (value.data.hasSuper) {
+							$scope.superreportdisabled = false;
 							$scope.tmppricereport.superPrice = "";
-							$scope.elementVisibility('super', true); 
+							$scope.elementVisibility('super', true);
 						} else {
 							$scope.elementVisibility('super', false);
 						}
-						if (value.data.hasSuperPlus) { 
-							$scope.superplusreportdisabled = false; 
-							$scope.tmppricereport.superPlusPrice = ""; 
+						if (value.data.hasSuperPlus) {
+							$scope.superplusreportdisabled = false;
+							$scope.tmppricereport.superPlusPrice = "";
 							$scope.elementVisibility('superPlus', true);
 						} else {
 							$scope.elementVisibility('superPlus', false);
 						}
-						if (value.data.hasGas) { 
-							$scope.gasreportdisabled = false; 
-							$scope.tmppricereport.gasPrice = ""; 
+						if (value.data.hasGas) {
+							$scope.gasreportdisabled = false;
+							$scope.tmppricereport.gasPrice = "";
 							$scope.elementVisibility('gas', true);
 						} else {
 							$scope.elementVisibility('gas', false);
 						}
-						if (value.data.hasMethane) { 
-							$scope.methanereportdisabled = false; 
-							$scope.tmppricereport.methanePrice = ""; 
+						if (value.data.hasMethane) {
+							$scope.methanereportdisabled = false;
+							$scope.tmppricereport.methanePrice = "";
 							$scope.elementVisibility('methane', true);
 						} else {
 							$scope.elementVisibility('methane', false);
@@ -472,12 +476,12 @@ module.controller("HomeController", [ "$scope", "HomeService",
 						} else {
 							$scope.elementVisibility('premiumDiesel', false);
 						}
-						
+
 					});
 				} else {
 					window.location.href = '/login';
 				}
-				
+
 			}
 
 			$scope.login = function() {
@@ -491,63 +495,73 @@ module.controller("HomeController", [ "$scope", "HomeService",
 			}
 
 			$scope.searchGasStations = function() {
-				
+
 				if (window.clearMap) {
 					window.clearMap();
 				}
-				
-				
+
+
 				if (!$scope.searchParameters.gasolineType) $scope.searchParameters.gasolineType = "null";
 				if (!$scope.searchParameters.carSharing) $scope.searchParameters.carSharing = "null";
 
-				
-				
+
+
 
 				//**************************************************************************
 				/*if ($scope.searchParameters.myLat && $scope.searchParameters.myLon) {
-						
+
 						HomeService.getGasStationsWithCoordinates($scope.searchParameters.myLat, $scope.searchParameters.myLon, $scope.searchParameters.gasolineType, $scope.searchParameters.carSharing).then(function(value) {
 							$scope.searchGasStationResults = value.data;
-							
+
 						});
-					
+
 				}*/
 				if ($scope.searchParameters.myLat && $scope.searchParameters.myLon) {
 					if($scope.searchParameters.myRadius){
 						HomeService.getGasStationsWithCoordinates($scope.searchParameters.myLat, $scope.searchParameters.myLon, $scope.searchParameters.myRadius, $scope.searchParameters.gasolineType, $scope.searchParameters.carSharing).then(function(value) {
+							value.data.forEach(gs => {
+								if(gs.carSharing === "null")
+									gs.carSharing = null;
+							});
 							$scope.searchGasStationResults = value.data;
-
 						});
 					} else {
 						HomeService.getGasStationsWithCoordinates($scope.searchParameters.myLat, $scope.searchParameters.myLon, 0, $scope.searchParameters.gasolineType, $scope.searchParameters.carSharing).then(function (value) {
+							value.data.forEach(gs => {
+								if(gs.carSharing === "null")
+									gs.carSharing = null;
+							});
 							$scope.searchGasStationResults = value.data;
-
 						});
 					}
 				}
-				
+
 				else if ($scope.searchParameters.gasolineType) {
-					
-					
+
+
 						HomeService.searchGasStationsWithoutCoordinates($scope.searchParameters.gasolineType).then(function(value) {
+							value.data.forEach(gs => {
+								if(gs.carSharing === "null")
+									gs.carSharing = null;
+							});
 							$scope.searchGasStationResults = value.data;
 						});
-					
-					
+
+
 				}
-				
-				
+
+
 			}
-			
-			
+
+
 			$scope.addPriceReport = function() {
-				
-				
-				
+
+
+
 				//must find user
 				HomeService.getUserById($scope.tmppricereport.userId).then(function(value) {
-					
-					
+
+
 					$scope.gasStationDto = {
 							gasStationId : null,
 							gasStationName : null,
@@ -570,12 +584,12 @@ module.controller("HomeController", [ "$scope", "HomeService",
 							reportUser: -1,
 							reportTimestamp: null
 						};
-					
-					
+
+
 					HomeService.setReport($scope.tmppricereport.reportingStation, $scope.tmppricereport.dieselPrice, $scope.tmppricereport.superPrice, $scope.tmppricereport.superPlusPrice, $scope.tmppricereport.gasPrice, $scope.tmppricereport.methanePrice, $scope.tmppricereport.premiumDieselPrice ,$scope.tmppricereport.userId).then(function() {
 						HomeService.getAllGasStations().then(function(value) {
 							$scope.allGasStations= value.data;
-							
+
 							$scope.tmppricereport = {
 									userId : null,
 									reportingStation : null,
@@ -597,21 +611,21 @@ module.controller("HomeController", [ "$scope", "HomeService",
   						console.log($scope.searchGasStationResults[i]);
   					}
 				}*/
-				
+
 				$scope.elementVisibility('addReport', false);
 
 				var f2 = document.getElementById('reportAdded');
 				if (f2) {
 					f2.innerHTML = "Report added successfully";
 				}
-				
+
 			}
 
 			$scope.getUserById = function() {
-				
+
 				if (window.userid) {
 					$scope.editinguser= window.userid;
-				
+
 					HomeService.getUserById(window.userid).then(function(value) {
 						if (window.currentPage === 'map') {
 							window.reputation = value.data.reputation;
@@ -623,7 +637,7 @@ module.controller("HomeController", [ "$scope", "HomeService",
 							value.data.password = '';
 							$scope.userDto=value.data;
 							window.updateData(value.data);
-						} 
+						}
 					});
 				}
 			}
@@ -641,58 +655,58 @@ module.controller("HomeController", [ "$scope", "HomeService",
 				window.markers.push(marker);
 				*/
 				window.addMarker(window.map, result.lat, result.lon, result.gasStationName)
-				
-				
-				
+
+
+
 
 			}
-			
+
 			$scope.signalRightPrice = function(gasStationId, pIndex, index) {
-				
-				
-				
+
+
+
 				HomeService.getGasStationById(gasStationId).then( function(value) {
-					
+
 					HomeService.getUserById(value.data.reportUser).then( function(value) {
-						
+
 						HomeService.increaseUserReputation(value.data.userId).then (function() {
-							
+
 							HomeService.getAllUsers().then(function(value) {
 								$scope.allUsers = value.data;
 							});
-							
+
 						});
-						
+
 					});
-					
+
 				});
-				
+
 				var elementId = "buttonthumbsup_" + index;
-				
+
 				angular.element(document.getElementById(elementId))[0].disabled = true;
 				angular.element(document.getElementById(elementId))[0].style.opacity = "0.5";
 
 
 			}
-			
+
 			$scope.signalWrongPrice = function(gasStationId, pIndex, index) {
-				
+
 				HomeService.getGasStationById(gasStationId).then( function(value) {
-					
+
 					HomeService.getUserById(value.data.reportUser).then( function(value) {
-						
+
 						HomeService.decreaseUserReputation(value.data.userId).then (function() {
-							
+
 							HomeService.getAllUsers().then(function(value) {
 								$scope.allUsers = value.data;
 							});
-							
+
 						});
-						
+
 					});
-					
+
 				});
-				
+
 
 				var elementId = "buttonthumbsdown_" + index;
 
@@ -700,19 +714,19 @@ module.controller("HomeController", [ "$scope", "HomeService",
 				angular.element(document.getElementById(elementId))[0].style.opacity = "0.5";
 
 			}
-			
-			
+
+
 			$scope.sortDiesel = function() {
-				
+
 				$scope.searchGasStationResults.sort((a, b) => (b.dieselPrice > a.dieselPrice) ? -1 : 0);
 				while($scope.searchGasStationResults[0].dieselPrice < 0) {
 					$scope.searchGasStationResults.push($scope.searchGasStationResults.splice(0, 1)[0]);
 				}
 
 			}
-			
+
 			$scope.sortSuper = function() {
-				
+
 				$scope.searchGasStationResults.sort((a, b) => (b.superPrice > a.superPrice) ? -1 : 0);
 				while($scope.searchGasStationResults[0].superPrice < 0) {
 					$scope.searchGasStationResults.push($scope.searchGasStationResults.splice(0, 1)[0]);
@@ -721,7 +735,7 @@ module.controller("HomeController", [ "$scope", "HomeService",
 			}
 
 $scope.sortSuperPlus = function() {
-	
+
 	$scope.searchGasStationResults.sort((a, b) => (b.superPlusPrice > a.superPlusPrice) ? -1 : 0);
 	while($scope.searchGasStationResults[0].superPlusPrice < 0) {
 		$scope.searchGasStationResults.push($scope.searchGasStationResults.splice(0, 1)[0]);
@@ -730,7 +744,7 @@ $scope.sortSuperPlus = function() {
 }
 
 $scope.sortGas = function() {
-	
+
 	$scope.searchGasStationResults.sort((a, b) => (b.gasPrice > a.gasPrice) ? -1 : 0);
 	while($scope.searchGasStationResults[0].gasPrice < 0) {
 		$scope.searchGasStationResults.push($scope.searchGasStationResults.splice(0, 1)[0]);
@@ -739,7 +753,7 @@ $scope.sortGas = function() {
 }
 
 $scope.sortMethane = function() {
-	
+
 	$scope.searchGasStationResults.sort((a, b) => (b.methanePrice > a.methanePrice) ? -1 : 0);
 	while($scope.searchGasStationResults[0].methanePrice < 0) {
 		$scope.searchGasStationResults.push($scope.searchGasStationResults.splice(0, 1)[0]);
@@ -756,8 +770,8 @@ $scope.sortMethane = function() {
 				}
 
 			}
-			
-			
 
-			
+
+
+
 		} ]);

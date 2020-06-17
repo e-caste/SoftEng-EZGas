@@ -105,8 +105,8 @@ function reverseLocation2(streetName, lat, lon) {
                               </div>
                           </div>
                       </div>
-                         
-                       
+
+
                       <div class="row">
                           <div class="form-group col-md-12">
                               <label class="col-md-2 control-lable" for="pwd">Password</label>
@@ -117,11 +117,11 @@ function reverseLocation2(streetName, lat, lon) {
                                       <span ng-show="myForm.uname.$error.minlength">Minimum length required is 8</span>
                                       <span ng-show="myForm.uname.$invalid">This field is invalid </span>
                                   </div>
-                                  
+
                               </div>
                           </div>
                       </div>
- 
+
                       <div class="row">
                           <div class="form-group col-md-12">
                               <label class="col-md-2 control-lable" for="email">Email</label>
@@ -134,14 +134,14 @@ function reverseLocation2(streetName, lat, lon) {
                               </div>
                           </div>
                       </div>
- 
+
                       <div class="row">
                           <div class="form-actions floatRight">
                               <input type="submit"  value="{{!editinguser ? 'Add' : 'Update'}}" class="btn btn-primary btn-sm" ng-disabled="myForm.$invalid">
                               <button type="button" ng-click="reset()" class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">Reset Form</button>
                           </div>
                       </div>
-    	
+
     		</form>
     	</div>
     </div>
@@ -174,18 +174,18 @@ function reverseLocation2(streetName, lat, lon) {
                       </tbody>
                   </table>
               </div>
-          </div>	
-    	
-    	
-    	
-    	
+          </div>
+
+
+
+
 
 
 
     <hr/>
     <hr/>
     <hr/>
-    
+
     	<div class="panel panel-default">
     	<div class="panel-heading"><span class="lead">Gas Station Registration Form</span></div>
     	<div class="formcontainer">
@@ -204,8 +204,8 @@ function reverseLocation2(streetName, lat, lon) {
                               </div>
                           </div>
                       </div>
-                         
-                       
+
+
                       <div class="row">
                           <div class="form-group col-md-12">
                               <label class="col-md-2 control-lable" for="address">Address</label>
@@ -216,11 +216,11 @@ function reverseLocation2(streetName, lat, lon) {
                                       <span ng-show="myForm.uname.$error.minlength">Minimum length required is 8</span>
                                       <span ng-show="myForm.uname.$invalid">This field is invalid </span>
                                   </div>
-                                  
+
                               </div>
                           </div>
                       </div>
-                      
+
                       <div hidden class="row">
 						<div class="form-group col-md-12">
 
@@ -240,12 +240,12 @@ function reverseLocation2(streetName, lat, lon) {
 
 						</div>
 					</div>
-                      
-                      
+
+
                       <div class="row">
                       	<div class="form-group col-md-12">
-                      
-                     
+
+
                       		<label class="col-md-2 control-lable" for="lat">Latitude</label>
                       		<div class="col-md-7">
                                   <input type="text" ng-model="gasStationDto.lat" id="lat" class="form-control input-sm" placeholder="Enter latitude" required ng-minlength="3"/>
@@ -253,16 +253,16 @@ function reverseLocation2(streetName, lat, lon) {
                                       	<span ng-show="myForm.uname.$error.required">This is a required field</span>
                                       	<span ng-show="myForm.uname.$error.minlength">Minimum length required is 8</span>
                                       	<span ng-show="myForm.uname.$invalid">This field is invalid </span>
-                                  	   </div>  
+                                  	   </div>
                             </div>
-                      
+
                       	</div>
                       </div>
-                      
+
                       <div class="row">
                       	<div class="form-group col-md-12">
-                      
-                     
+
+
                       		<label class="col-md-2 control-lable" for="lng">Longitude</label>
                       		<div class="col-md-7">
                                   <input type="text" ng-model="gasStationDto.lon" id="lng" class="form-control input-sm" placeholder="Enter longitude" required ng-minlength="3"/>
@@ -270,12 +270,12 @@ function reverseLocation2(streetName, lat, lon) {
                                       	<span ng-show="myForm.uname.$error.required">This is a required field</span>
                                       	<span ng-show="myForm.uname.$error.minlength">Minimum length required is 8</span>
                                       	<span ng-show="myForm.uname.$invalid">This field is invalid </span>
-                                  	   </div>  
+                                  	   </div>
                             </div>
-                      
+
                       	</div>
                       </div>
-                      
+
                         <div class="row">
 	                      <div class="form-group col-md-12">
 	                              <label class="col-md-2 control-lable" for="uname">Car Sharing Type</label>
@@ -286,32 +286,32 @@ function reverseLocation2(streetName, lat, lon) {
 	  										<option value="Car2Go">Car2Go</option>
 	  									</select>
 	  								</div>
-	  								
+
 	                      </div>
                             <!---------------------------------->
                         </div>
                       <div class="row">
                       <div class="form-group col-md-12">
                       <div class="col-md-7">
-                      
+
                       <div class="checkbox">
 						<label>
-						
-						
-						
+
+
+
     						<input type="checkbox" ng-model="gasStationDto.hasDiesel">Has Diesel
 						</label>
 					   </div>
-					   
+
 					   </div>
                       </div>
 					   </div>
-					   
-					   
+
+
 					  <div class="row">
                       <div class="form-group col-md-12">
 					     <div class="col-md-7">
-					   
+
 					    <div class="checkbox">
 						<label>
     						<input type="checkbox" ng-model="gasStationDto.hasSuper">Has Gasoline
@@ -320,8 +320,8 @@ function reverseLocation2(streetName, lat, lon) {
 					   </div>
 					   </div>
                       </div>
-					   
-					   
+
+
 					  <div class="row">
                       <div class="form-group col-md-12">
 					     <div class="col-md-7">
@@ -330,35 +330,35 @@ function reverseLocation2(streetName, lat, lon) {
     						<input type="checkbox" ng-model="gasStationDto.hasSuperPlus">Has Premium Gasoline
 						</label>
 					   </div>
-					   
+
 					   </div>
 					   </div>
                       </div>
-					   
+
 					   <div class="row">
                       <div class="form-group col-md-12">
 					     <div class="col-md-7">
-					   
+
 					    <div class="checkbox">
 						<label>
     						<input type="checkbox" ng-model="gasStationDto.hasGas">Has LPG
 						</label>
 					   </div>
-					   
+
 					   </div>
 					   </div>
                       </div>
-                      
+
                       <div class="row">
                       <div class="form-group col-md-12">
 					     <div class="col-md-7">
-					   
+
 					    <div class="checkbox">
 						<label>
     						<input type="checkbox" ng-model="gasStationDto.hasMethane">Has Methane
 						</label>
 					   </div>
-					   
+
 					   </div>
 					   </div>
                       </div>
@@ -375,24 +375,24 @@ function reverseLocation2(streetName, lat, lon) {
                                     </div>
                                 </div>
                             </div>
-                    
+
                       <!--</div>-->
- 
- 
+
+
                       <div class="row">
                           <div class="form-actions floatRight">
                               <input type="submit"  value="{{!editinggasstation ? 'Add' : 'Update'}}" class="btn btn-primary btn-sm" ng-disabled="formGasStations.$invalid">
                               <button type="button" ng-click="resetGasStationForm()" class="btn btn-warning btn-sm" ng-disabled="formGasStations.$pristine">Reset Form</button>
                           </div>
                       </div>
-    	
+
     		</form>
     	</div>
     </div>
-    
-    
-    
-    
+
+
+
+
     <div class="panel panel-default">
                 <!-- Default panel contents -->
               <div class="panel-heading"><span class="lead">List of Gas Stations</span></div>
@@ -433,45 +433,45 @@ function reverseLocation2(streetName, lat, lon) {
                               <td><span ng-bind="{{g.methanePrice==null ? NA : g.methanePrice}}"></span></td>
                               <!-------------------------------------------->
                               <td><span ng-bind="{{g.premiumDieselPrice==null ? NA : g.premiumDieselPrice}}"></span></td>
-                              <td><span ng-bind="{{g.carSharing==null ? NA : g.carSharing}}"></span></td>
+                              <td><span ng-bind="g.carSharing"></span></td>
                               <td><span ng-bind="{{g.reportUser==-1 ? NA : g.reportUser}}"></span></td>
                               <td><span ng-bind="g.reportTimestamp"></span></td>
                               <td><span ng-bind="g.reportDependability"></span></td>
                               <td>
-                              <button type="button" ng-click="editGasStation(g.gasStationId)" class="btn btn-success custom-width">Edit</button>  <button type="button" ng-click="deleteGasStation(g.gasStationId)" class="btn btn-danger custom-width">Remove</button> 
-                              
+                              <button type="button" ng-click="editGasStation(g.gasStationId)" class="btn btn-success custom-width">Edit</button>  <button type="button" ng-click="deleteGasStation(g.gasStationId)" class="btn btn-danger custom-width">Remove</button>
+
                               </td>
                           </tr>
                       </tbody>
                   </table>
               </div>
-          </div>	
-    
-    
-    
+          </div>
+
+
+
             <hr/>
             <hr/>
             <hr/>
-    
-    
+
+
             <div class="panel panel-default">
         		<div class="panel-heading"><span class="lead">Add price report form</span></div>
-        
-        
-        
+
+
+
             	<div class="formcontainer">
-        
+
             		<form ng-submit="addPriceReport()" name="formAddPriceReport" class="form-horizontal">
 <!--     		 <input type="hidden" ng-model="userDto.userId" /> -->
-                      
-                      
-                      
+
+
+
                       <div class="row">
                           <div class="form-group col-md-12">
                               <label class="col-md-2 control-lable" for="uname">User Id</label>
                               <div class="col-md-7">
                                   <input type="text" ng-model="tmppricereport.userId" id="tmppricereport-uid"/>
-                                  
+
                               </div>
                           </div>
                       </div>
@@ -481,58 +481,58 @@ function reverseLocation2(streetName, lat, lon) {
                               <label class="col-md-2 control-lable" for="uname">Gas Station Id</label>
                               <div class="col-md-7">
                                   <input type="text" ng-model="tmppricereport.reportingStation" id="tmppricereport-gid" ng-disabled="gasstationreportdisabled"/>
-                                  
+
                               </div>
                           </div>
                       </div>
-                      
+
                       <div class="row">
                           <div class="form-group col-md-12">
                               <label class="col-md-2 control-lable" for="uname">Diesel Price</label>
                               <div class="col-md-7">
                                   <input type="text" ng-model="tmppricereport.dieselPrice" id="tmppricereport-diesel" ng-disabled="dieselreportdisabled"/>
-                                  
+
                               </div>
                           </div>
                       </div>
-                      
+
                       <div class="row">
                           <div class="form-group col-md-12">
                               <label class="col-md-2 control-lable" for="uname">Gasoline Price</label>
                               <div class="col-md-7">
                                   <input type="text" ng-model="tmppricereport.superPrice" id="tmppricereport-super" ng-disabled="superreportdisabled"/>
-                                  
+
                               </div>
                           </div>
                       </div>
-                      
+
                       <div class="row">
                           <div class="form-group col-md-12">
                               <label class="col-md-2 control-lable" for="uname">Premium Gasoline Price</label>
                               <div class="col-md-7">
                                   <input type="text" ng-model="tmppricereport.superPlusPrice" id="tmppricereport-superplus" ng-disabled="superplusreportdisabled"/>
-                                  
+
                               </div>
                           </div>
                       </div>
-                      
+
                       <div class="row">
                           <div class="form-group col-md-12">
                               <label class="col-md-2 control-lable" for="uname">LPG Price</label>
                               <div class="col-md-7">
                                   <input type="text" ng-model="tmppricereport.gasPrice" id="tmppricereport-gas" ng-disabled="gasreportdisabled"/>
-                                  
+
                               </div>
                           </div>
-                      </div>   
-                      
-                      
+                      </div>
+
+
                       <div class="row">
                           <div class="form-group col-md-12">
                               <label class="col-md-2 control-lable" for="uname">Methane Price</label>
                               <div class="col-md-7">
                                   <input type="text" ng-model="tmppricereport.methanePrice" id="tmppricereport-methane" ng-disabled="methanereportdisabled"/>
-                                  
+
                               </div>
                           </div>
                       </div>
@@ -547,31 +547,31 @@ function reverseLocation2(streetName, lat, lon) {
                                 </div>
                             </div>
                         </div>
-                       
-                     
- 
+
+
+
                       <div class="row">
                           <div class="form-actions floatRight">
                               <input type="submit"  value="Add Price Report" class="btn btn-primary btn-sm" ng-disabled="formAddPriceReport.$pristine">
                               <button type="button" ng-click="resetAddPriceReportForm()" class="btn btn-warning btn-sm" ng-disabled="gasstationreportdisabled">Reset Form</button>
                           </div>
                       </div>
-    	
+
     		</form>
-        
-        </div>         
+
+        </div>
     	</div>
-    	
+
     	<div id="reportAdded"></div>
-    
-    
+
+
         <div class="panel panel-default">
         <div class="panel-heading"><span class="lead">Search gas stations</span></div>
-        
-        
-        
+
+
+
             	<div class="formcontainer">
-        
+
             		<form ng-submit="searchGasStations()" name="formSearchGasStations" class="form-horizontal">
 <!--     		 <input type="hidden" ng-model="userDto.userId" /> -->
                       <div class="row">
@@ -582,16 +582,16 @@ function reverseLocation2(streetName, lat, lon) {
                               	<input type="text" id="myLon" ng-model="searchParameters.myLon"></input>
 							   </div>
 						  </div>
-						  
+
 						  <div class="form-group col-md-12" >
                               <label class="col-md-2 control-lable" for="uname">Proximity (< 1km) </label>
                               <div class="col-md-7">
                               	<input id="autocomplete2" onFocus="geolocate()" type="text"  class="username form-control input-sm" placeholder="Enter your address" ng-minlength="2"/>
-                              	
+
 							   </div>
 						  </div>
                       </div>
-                      
+
                       <div hidden class="row">
 						<div class="form-group col-md-12">
 
@@ -625,14 +625,14 @@ function reverseLocation2(streetName, lat, lon) {
                                 </div>
                             </div>
                         </div>
-                       
+
                       <div class="row">
 							 <div class="form-group col-md-12">
                             	 <label class="col-md-2 control-lable" for="uname">Type of gasoline</label>
                            		 <div class="col-md-7">
 									<select class="browser-default custom-select" ng-model="searchParameters.gasolineType">
 										<option selected>Select gasoline type</option>
-									
+
 										<option value="Diesel">Diesel</option>
 										<option value="Super">Gasoline</option>
 										<option value="SuperPlus">Premium Gasoline</option>
@@ -644,9 +644,9 @@ function reverseLocation2(streetName, lat, lon) {
                       			</div>
                       		</div>
                       </div>
- 
-                     
-                      
+
+
+
                       <div class="row">
 							 <div class="form-group col-md-12">
                             	 <label class="col-md-2 control-lable" for="uname">Car Sharing Type</label>
@@ -659,17 +659,17 @@ function reverseLocation2(streetName, lat, lon) {
                       			</div>
                       		</div>
                       </div>
- 
+
                       <div class="row">
                           <div class="form-actions floatRight">
                               <input type="submit"  value="Search" class="btn btn-primary btn-sm" ng-disabled="formSearchGasStations.$pristine">
                               <button type="button" ng-click="resetGasStationSearchForm()" class="btn btn-warning btn-sm" ng-disabled="formSearchGasStations.$pristine">Reset Form</button>
                           </div>
                       </div>
-    	
+
     		</form>
-        
-        </div>         
+
+        </div>
     	</div>
     	    <div class="panel panel-default">
                 <!-- Default panel contents -->
@@ -707,11 +707,11 @@ function reverseLocation2(streetName, lat, lon) {
                               <td><span ng-bind="{{g.superPlusPrice==null ? NA : g.superPlusPrice}}"></span></td>
                               <td><span ng-bind="{{g.gasPrice==null ? NA : g.gasPrice}}"></span></td>
                               <td><span ng-bind="{{g.methanePrice==null ? NA : g.methanePrice}}"></span></td>
-                              <!-------------------------------------------->                                            
+                              <!-------------------------------------------->
                               <td><span ng-bind="{{g.premiumDieselPrice==null ? NA : g.premiumDieselPrice}}"></span></td>
                               <!--*****************************-->
-                              <td><span ng-bind="{{g.carSharing == null ? NA : g.carSharing}}"></span></td>
-                              
+                              <td><span ng-bind="g.carSharing"></span></td>
+
                               <td><button type="button" ng-click="selectGasStationForReport(g.gasStationId)" class="btn btn-danger custom-width">New Report</button></td>
                               <td><button type="button" ng-click="signalRightPrice(g.gasStationId)"  class="equalButton"><img src="http://softeng.polito.it/coppola/thumbup_ezgas2.png" /></button></td>
                               <td><button type="button" ng-click="signalWrongPrice(g.gasStationId)"  class="equalButton"><img src="http://softeng.polito.it/coppola/thumbdown_ezgas2.png" /></button></td>
@@ -740,17 +740,17 @@ function reverseLocation2(streetName, lat, lon) {
       </tr>
       </table>
               </div>
-          </div>	
+          </div>
 </div>
 
 
 <script>
 
 
-	
+
 
 	</script>
-	
+
 
 	</body>
 
