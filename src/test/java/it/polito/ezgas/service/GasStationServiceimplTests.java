@@ -161,12 +161,14 @@ public class GasStationServiceimplTests {
 		GS1.setHasMethane(false);
 		GS1.setHasSuper(true);
 		GS1.setHasSuperPlus(false);
-		GS1.setMethanePrice(0);
+		GS1.setHasPremiumDiesel(true);
+		GS1.setMethanePrice(0.0);
 		GS1.setReportDependability(0);
 		GS1.setReportTimestamp(null);
 		GS1.setReportUser(-1);
 		GS1.setSuperPrice(1.864);
-		GS1.setSuperPlusPrice(0);
+		GS1.setSuperPlusPrice(0.0);
+		GS1.setPremiumDieselPrice(1.43);
 		GS1.setGasStationId(GS1id);
 		GS1.setLat(45.048903);
 		GS1.setLon(7.659812);
@@ -174,9 +176,9 @@ public class GasStationServiceimplTests {
 		GS1.setCarSharing(GS1carSharing);
 		//GS1Dto = GasStationConverter.convertEntityToDto(GS1);
 		gasStationRepository.save(GS1);
-		
-		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, "bah", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, -1, "05-24-2020", 0);
-		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0, 1.753, 0, -1, "05-25-2020", 0);
+
+		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, true, "bah", 45.048903, 7.659812, 1.375, 1.864, 0.0, 1.753, 0.0, 1.43, -1, null, 0);
+		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0.0, 1.753, 0.0, 0.0, -1, "05-25-2020", 0);
 	}
 
 	@Test
