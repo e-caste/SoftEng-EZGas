@@ -2,19 +2,16 @@
 
 package it.polito.ezgas.nodependencies;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import org.junit.Test;
 
-import it.polito.ezgas.dto.UserDto;
-import it.polito.ezgas.dto.LoginDto;
-import it.polito.ezgas.entity.GasStation;
-import it.polito.ezgas.dto.GasStationDto;
-import it.polito.ezgas.entity.User;
 import it.polito.ezgas.entity.PriceReport;
+import it.polito.ezgas.dto.GasStationDto;
+import it.polito.ezgas.dto.LoginDto;
 import it.polito.ezgas.dto.IdPw;
+import it.polito.ezgas.entity.User;
+import it.polito.ezgas.dto.UserDto;
 import it.polito.ezgas.dto.PriceReportDto;
+import it.polito.ezgas.entity.GasStation;
 
 public class GetterSetterTests {
 /*
@@ -34,23 +31,11 @@ public class GetterSetterTests {
     public void testPriceReportDto() {
         PriceReportDto priceReportDto = new PriceReportDto();
 
-        priceReportDto.setPriceReportId(-984);
-        assert priceReportDto.getPriceReportId().equals(-984);
+        priceReportDto.setGasStationId(726);
+        assert priceReportDto.getGasStationId().equals(726);
 
-        priceReportDto.setUser(new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369));
-        assert priceReportDto.getUser().equals(new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369));
-
-        priceReportDto.setDieselPrice(3.14);
-        assert priceReportDto.getDieselPrice() == 3.14;
-
-        priceReportDto.setSuperPrice(-999999.999999);
-        assert priceReportDto.getSuperPrice() == -999999.999999;
-
-        priceReportDto.setSuperPlusPrice(2.76);
-        assert priceReportDto.getSuperPlusPrice() == 2.76;
-
-        priceReportDto.setGasPrice(2.76);
-        assert priceReportDto.getGasPrice() == 2.76;
+        priceReportDto.setUserId(863);
+        assert priceReportDto.getUserId().equals(863);
 
     }
 
@@ -61,8 +46,8 @@ public class GetterSetterTests {
         idPw.setUser("§tr1n9 w/ @ w3|rD cHaRacter");
         assert idPw.getUser().equals("§tr1n9 w/ @ w3|rD cHaRacter");
 
-        idPw.setPw("string with a space");
-        assert idPw.getPw().equals("string with a space");
+        idPw.setPw("test_string");
+        assert idPw.getPw().equals("test_string");
 
     }
 
@@ -70,20 +55,20 @@ public class GetterSetterTests {
     public void testLoginDto() {
         LoginDto loginDto = new LoginDto();
 
-        loginDto.setUserId(728);
-        assert loginDto.getUserId().equals(728);
+        loginDto.setUserId(594);
+        assert loginDto.getUserId().equals(594);
 
-        loginDto.setUserName("test_string");
-        assert loginDto.getUserName().equals("test_string");
+        loginDto.setUserName("PoliTo");
+        assert loginDto.getUserName().equals("PoliTo");
 
-        loginDto.setToken("test_string");
-        assert loginDto.getToken().equals("test_string");
+        loginDto.setToken("PoliTo");
+        assert loginDto.getToken().equals("PoliTo");
 
-        loginDto.setEmail("§tr1n9 w/ @ w3|rD cHaRacter");
-        assert loginDto.getEmail().equals("§tr1n9 w/ @ w3|rD cHaRacter");
+        loginDto.setEmail("PoliTo");
+        assert loginDto.getEmail().equals("PoliTo");
 
-        loginDto.setReputation(681);
-        assert loginDto.getReputation().equals(681);
+        loginDto.setReputation(727);
+        assert loginDto.getReputation().equals(727);
 
         loginDto.setAdmin(true);
         assert loginDto.getAdmin().equals(true);
@@ -94,23 +79,23 @@ public class GetterSetterTests {
     public void testUserDto() {
         UserDto userDto = new UserDto();
 
-        userDto.setUserId(-963);
-        assert userDto.getUserId().equals(-963);
+        userDto.setUserId(803);
+        assert userDto.getUserId().equals(803);
 
         userDto.setUserName("test_string");
         assert userDto.getUserName().equals("test_string");
 
-        userDto.setPassword("string with a space");
-        assert userDto.getPassword().equals("string with a space");
+        userDto.setPassword("§tr1n9 w/ @ w3|rD cHaRacter");
+        assert userDto.getPassword().equals("§tr1n9 w/ @ w3|rD cHaRacter");
 
-        userDto.setEmail("string with a space");
-        assert userDto.getEmail().equals("string with a space");
+        userDto.setEmail("§tr1n9 w/ @ w3|rD cHaRacter");
+        assert userDto.getEmail().equals("§tr1n9 w/ @ w3|rD cHaRacter");
 
-        userDto.setReputation(202);
-        assert userDto.getReputation().equals(202);
+        userDto.setReputation(60);
+        assert userDto.getReputation().equals(60);
 
-        userDto.setAdmin(false);
-        assert userDto.getAdmin().equals(false);
+        userDto.setAdmin(true);
+        assert userDto.getAdmin().equals(true);
 
     }
 
@@ -118,11 +103,11 @@ public class GetterSetterTests {
     public void testGasStationDto() {
         GasStationDto gasStationDto = new GasStationDto();
 
-        gasStationDto.setReportDependability(87348.58894);
-        assert gasStationDto.getReportDependability() == 87348.58894;
+        gasStationDto.setReportDependability(2.76);
+        assert gasStationDto.getReportDependability() == 2.76;
 
-        gasStationDto.setGasStationId(-326);
-        assert gasStationDto.getGasStationId().equals(-326);
+        gasStationDto.setGasStationId(946);
+        assert gasStationDto.getGasStationId().equals(946);
 
         gasStationDto.setGasStationName("test_string");
         assert gasStationDto.getGasStationName().equals("test_string");
@@ -130,11 +115,11 @@ public class GetterSetterTests {
         gasStationDto.setGasStationAddress("string with a space");
         assert gasStationDto.getGasStationAddress().equals("string with a space");
 
-        gasStationDto.setHasDiesel(true);
-        assert gasStationDto.getHasDiesel() == true;
+        gasStationDto.setHasDiesel(false);
+        assert gasStationDto.getHasDiesel() == false;
 
-        gasStationDto.setHasSuper(false);
-        assert gasStationDto.getHasSuper().equals(false);
+        gasStationDto.setHasSuper(true);
+        assert gasStationDto.getHasSuper().equals(true);
 
         gasStationDto.setHasSuperPlus(false);
         assert gasStationDto.getHasSuperPlus().equals(false);
@@ -142,50 +127,26 @@ public class GetterSetterTests {
         gasStationDto.setHasGas(true);
         assert gasStationDto.getHasGas().equals(true);
 
+        gasStationDto.setHasPremiumDiesel(true);
+        assert gasStationDto.getHasPremiumDiesel() == true;
+
         gasStationDto.setLat(-999999.999999);
         assert gasStationDto.getLat() == -999999.999999;
 
-        gasStationDto.setLon(87348.58894);
-        assert gasStationDto.getLon() == 87348.58894;
+        gasStationDto.setLon(-1.0);
+        assert gasStationDto.getLon() == -1.0;
 
-        gasStationDto.setDieselPrice(-1.0);
-        assert gasStationDto.getDieselPrice() == -1.0;
-
-        gasStationDto.setSuperPrice(3.14);
-        assert gasStationDto.getSuperPrice() == 3.14;
-
-        gasStationDto.setSuperPlusPrice(-999999.999999);
-        assert gasStationDto.getSuperPlusPrice() == -999999.999999;
-
-        gasStationDto.setGasPrice(87348.58894);
-        assert gasStationDto.getGasPrice() == 87348.58894;
-
-        System.out.println(new ArrayList<PriceReportDto>(Arrays.asList(new PriceReportDto(-568,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,2.76,-1.0,-1.0),new PriceReportDto(125,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),87348.58894,-999999.999999,3.14,3.14),new PriceReportDto(597,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,-1.0,-1.0,87348.58894))));
-        gasStationDto.setPriceReportDtos(new ArrayList<PriceReportDto>(Arrays.asList(new PriceReportDto(-568,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,2.76,-1.0,-1.0),new PriceReportDto(125,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),87348.58894,-999999.999999,3.14,3.14),new PriceReportDto(597,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,-1.0,-1.0,87348.58894))));
-        System.out.println(gasStationDto.getPriceReportDtos());
-        // true - User.equals() works
-//        System.out.println(new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369).equals(new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369)));
-        // true - ArrayList.equals() works
-//        System.out.println(new ArrayList<String>(Arrays.asList("ciao", "test")).equals(new ArrayList<String>(Arrays.asList("ciao", "test"))));
-        // true - PriceReportDto.equals() works
-//        System.out.println(new PriceReportDto(-568,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,2.76,-1.0,-1.0).equals(new PriceReportDto(-568,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,2.76,-1.0,-1.0)));
-        // TODO: uncomment this assertion
-//        assert gasStationDto.getPriceReportDtos().equals(new ArrayList<PriceReportDto>(Arrays.asList(new PriceReportDto(-568,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,2.76,-1.0,-1.0),new PriceReportDto(125,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),87348.58894,-999999.999999,3.14,3.14),new PriceReportDto(597,new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369),3.14,-1.0,-1.0,87348.58894))));
-
-        gasStationDto.setReportUser(-103);
-        assert gasStationDto.getReportUser().equals(-103);
+        gasStationDto.setReportUser(383);
+        assert gasStationDto.getReportUser().equals(383);
 
         gasStationDto.setReportTimestamp("test_string");
         assert gasStationDto.getReportTimestamp().equals("test_string");
 
-        gasStationDto.setHasMethane(false);
-        assert gasStationDto.getHasMethane() == false;
+        gasStationDto.setHasMethane(true);
+        assert gasStationDto.getHasMethane() == true;
 
-        gasStationDto.setMethanePrice(87348.58894);
-        assert gasStationDto.getMethanePrice() == 87348.58894;
-
-        gasStationDto.setCarSharing("PoliTo");
-        assert gasStationDto.getCarSharing().equals("PoliTo");
+        gasStationDto.setCarSharing("§tr1n9 w/ @ w3|rD cHaRacter");
+        assert gasStationDto.getCarSharing().equals("§tr1n9 w/ @ w3|rD cHaRacter");
 
     }
 
@@ -193,11 +154,11 @@ public class GetterSetterTests {
     public void testGasStation() {
         GasStation gasStation = new GasStation();
 
-        gasStation.setGasStationId(-501);
-        assert gasStation.getGasStationId().equals(-501);
+        gasStation.setGasStationId(-362);
+        assert gasStation.getGasStationId().equals(-362);
 
-        gasStation.setGasStationName("test_string");
-        assert gasStation.getGasStationName().equals("test_string");
+        gasStation.setGasStationName("string with a space");
+        assert gasStation.getGasStationName().equals("string with a space");
 
         gasStation.setGasStationAddress("string with a space");
         assert gasStation.getGasStationAddress().equals("string with a space");
@@ -205,53 +166,41 @@ public class GetterSetterTests {
         gasStation.setReportDependability(87348.58894);
         assert gasStation.getReportDependability() == 87348.58894;
 
-        gasStation.setReportUser(735);
-        assert gasStation.getReportUser().equals(735);
+        gasStation.setReportUser(-4);
+        assert gasStation.getReportUser().equals(-4);
 
-        gasStation.setReportTimestamp("PoliTo");
-        assert gasStation.getReportTimestamp().equals("PoliTo");
+        gasStation.setReportTimestamp("string with a space");
+        assert gasStation.getReportTimestamp().equals("string with a space");
 
-        gasStation.setHasDiesel(false);
-        assert gasStation.getHasDiesel() == false;
+        gasStation.setHasDiesel(true);
+        assert gasStation.getHasDiesel() == true;
 
         gasStation.setHasSuper(true);
         assert gasStation.getHasSuper() == true;
 
-        gasStation.setHasSuperPlus(false);
-        assert gasStation.getHasSuperPlus() == false;
+        gasStation.setHasSuperPlus(true);
+        assert gasStation.getHasSuperPlus() == true;
 
-        gasStation.setHasGas(true);
-        assert gasStation.getHasGas() == true;
+        gasStation.setHasGas(false);
+        assert gasStation.getHasGas() == false;
 
-        gasStation.setLat(-999999.999999);
-        assert gasStation.getLat() == -999999.999999;
+        gasStation.setHasPremiumDiesel(false);
+        assert gasStation.getHasPremiumDiesel() == false;
 
-        gasStation.setLon(-1.0);
-        assert gasStation.getLon() == -1.0;
+        gasStation.setLat(3.14);
+        assert gasStation.getLat() == 3.14;
 
-        gasStation.setDieselPrice(-999999.999999);
-        assert gasStation.getDieselPrice() == -999999.999999;
+        gasStation.setLon(2.76);
+        assert gasStation.getLon() == 2.76;
 
-        gasStation.setSuperPrice(2.76);
-        assert gasStation.getSuperPrice() == 2.76;
-
-        gasStation.setSuperPlusPrice(-1.0);
-        assert gasStation.getSuperPlusPrice() == -1.0;
-
-        gasStation.setGasPrice(-999999.999999);
-        assert gasStation.getGasPrice() == -999999.999999;
-
-        gasStation.setUser(new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369));
-        assert gasStation.getUser().equals(new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369));
+        gasStation.setUser(new User("PoliTo", "string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", -262));
+        assert gasStation.getUser().equals(new User("PoliTo", "string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", -262));
 
         gasStation.setHasMethane(true);
         assert gasStation.getHasMethane() == true;
 
-        gasStation.setMethanePrice(3.14);
-        assert gasStation.getMethanePrice() == 3.14;
-
-        gasStation.setCarSharing("§tr1n9 w/ @ w3|rD cHaRacter");
-        assert gasStation.getCarSharing().equals("§tr1n9 w/ @ w3|rD cHaRacter");
+        gasStation.setCarSharing("test_string");
+        assert gasStation.getCarSharing().equals("test_string");
 
     }
 
@@ -259,20 +208,20 @@ public class GetterSetterTests {
     public void testUser() {
         User user = new User();
 
-        user.setUserId(874);
-        assert user.getUserId().equals(874);
+        user.setUserId(-685);
+        assert user.getUserId().equals(-685);
 
-        user.setUserName("string with a space");
-        assert user.getUserName().equals("string with a space");
+        user.setUserName("§tr1n9 w/ @ w3|rD cHaRacter");
+        assert user.getUserName().equals("§tr1n9 w/ @ w3|rD cHaRacter");
 
         user.setPassword("PoliTo");
         assert user.getPassword().equals("PoliTo");
 
-        user.setEmail("string with a space");
-        assert user.getEmail().equals("string with a space");
+        user.setEmail("test_string");
+        assert user.getEmail().equals("test_string");
 
-        user.setReputation(87);
-        assert user.getReputation().equals(87);
+        user.setReputation(-327);
+        assert user.getReputation().equals(-327);
 
         user.setAdmin(true);
         assert user.getAdmin().equals(true);
@@ -283,8 +232,8 @@ public class GetterSetterTests {
     public void testPriceReport() {
         PriceReport priceReport = new PriceReport();
 
-        priceReport.setUser(new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369));
-        assert priceReport.getUser().equals(new User("string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", "string with a space", 369));
+        priceReport.setUser(new User("PoliTo", "string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", -262));
+        assert priceReport.getUser().equals(new User("PoliTo", "string with a space", "§tr1n9 w/ @ w3|rD cHaRacter", -262));
 
         priceReport.setDieselPrice(87348.58894);
         assert priceReport.getDieselPrice() == 87348.58894;
@@ -292,14 +241,14 @@ public class GetterSetterTests {
         priceReport.setSuperPrice(87348.58894);
         assert priceReport.getSuperPrice() == 87348.58894;
 
-        priceReport.setSuperPlusPrice(3.14);
-        assert priceReport.getSuperPlusPrice() == 3.14;
+        priceReport.setSuperPlusPrice(-1.0);
+        assert priceReport.getSuperPlusPrice() == -1.0;
 
-        priceReport.setGasPrice(3.14);
-        assert priceReport.getGasPrice() == 3.14;
+        priceReport.setGasPrice(87348.58894);
+        assert priceReport.getGasPrice() == 87348.58894;
 
-        priceReport.setPriceReportId(-153);
-        assert priceReport.getPriceReportId().equals(-153);
+        priceReport.setPriceReportId(820);
+        assert priceReport.getPriceReportId().equals(820);
 
     }
 }
