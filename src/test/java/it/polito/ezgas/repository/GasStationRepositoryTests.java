@@ -162,16 +162,18 @@ public class GasStationRepositoryTests {
 		GS3 = new GasStation("Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0, 1.753, 0, -1, null, 0);
 		GS3.setGasStationId(3);
 	}
-	
-	@Test
-	public void test_findById() {
-		//existing id
-		GasStation gasStation = gasStationRepository.findById(GS1id);
-		assertTrue(gasStation.equals(GS1));
-		//nonExisting id
-		gasStation = gasStationRepository.findById(1000);
-		assertNull(gasStation);
-	}
+
+	// the findById method is replaced by the standard JpaRepository.findOne method
+	// leaving this test here for future reference
+//	@Test
+//	public void test_findById() {
+//		//existing id
+//		GasStation gasStation = gasStationRepository.findById(GS1id);
+//		assertTrue(gasStation.equals(GS1));
+//		//nonExisting id
+//		gasStation = gasStationRepository.findById(1000);
+//		assertNull(gasStation);
+//	}
 	
 	@Test
 	public void test_findByCarSharing() {
@@ -293,24 +295,24 @@ public class GasStationRepositoryTests {
 		assertTrue(gs.getHasMethane());
 		assertTrue(gs.getMethanePrice() == 0.986);
 		
-		assertTrue(gasStationRepository.findById(GS1.getGasStationId()).getDieselPrice() == 1.524 );
-		assertTrue(gasStationRepository.findById(GS1.getGasStationId()).getHasMethane());
-		assertTrue(gasStationRepository.findById(GS1.getGasStationId()).getMethanePrice() == 0.986);
+		assertTrue(gasStationRepository.findOne(GS1.getGasStationId()).getDieselPrice() == 1.524 );
+		assertTrue(gasStationRepository.findOne(GS1.getGasStationId()).getHasMethane());
+		assertTrue(gasStationRepository.findOne(GS1.getGasStationId()).getMethanePrice() == 0.986);
 	}
 	
 	@Test
 	public void test_save_notExisting() {
 		GasStation gs = gasStationRepository.save(GS3);
 		
-		assertTrue(gasStationRepository.findById(GS3.getGasStationId()).equals(GS3));
+		assertTrue(gasStationRepository.findOne(GS3.getGasStationId()).equals(GS3));
 	}
 	
 	 @Test
     public void test_delete_existing() {
         //id exists -> deleted
-		assertTrue(gasStationRepository.findById(GS1.getGasStationId()).equals(GS1));
+		assertTrue(gasStationRepository.findOne(GS1.getGasStationId()).equals(GS1));
     	gasStationRepository.delete(GS1.getGasStationId());
-    	assertNull(gasStationRepository.findById(GS1.getGasStationId()));
+    	assertNull(gasStationRepository.findOne(GS1.getGasStationId()));
     }
     
     @Test
