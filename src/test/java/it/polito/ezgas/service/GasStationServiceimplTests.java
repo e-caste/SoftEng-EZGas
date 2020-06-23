@@ -535,7 +535,7 @@ public class GasStationServiceimplTests {
         try {
             gasStationService.getGasStationsWithoutCoordinates("NotAValidGasType", "bah");
             fail("Expected InvalidGastTypeException");
-        } catch (InvalidGasTypeException e) {
+        } catch (InvalidGasTypeException | InvalidCarSharingException e) {
             assertEquals(e.getMessage(), "Invalid Gasoline Type");
         }
 	}
