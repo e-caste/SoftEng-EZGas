@@ -507,9 +507,9 @@ public class GasStationServiceimplTests {
 	public void test_getGasStationsWithCoordinates_invalidGasType() throws GPSDataException {
 		 //GasolineType does not exist -> throw exception
         try {
-            gasStationService.getGasStationsWithCoordinates(45, 45, "NotAValidGasType", "bah");
+            gasStationService.getGasStationsWithCoordinates(45, 45, radius, "NotAValidGasType", "bah");
             fail("Expected InvalidGastTypeException");
-        } catch (InvalidGasTypeException e) {
+        } catch (InvalidGasTypeException | InvalidCarSharingException e) {
             assertEquals(e.getMessage(), "Invalid Gasoline Type");
         }
 	}
