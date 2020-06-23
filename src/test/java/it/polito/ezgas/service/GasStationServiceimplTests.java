@@ -515,8 +515,8 @@ public class GasStationServiceimplTests {
 	}
 	
 	@Test
-	public void test_getGasStationsWithCoordinates_existing() throws InvalidGasTypeException, GPSDataException {
-		List<GasStationDto> gsDtos = gasStationService.getGasStationsWithCoordinates(45.048903, 7.659812, "Diesel", "bah");
+	public void test_getGasStationsWithCoordinates_existing() throws InvalidGasTypeException, GPSDataException, InvalidCarSharingException {
+		List<GasStationDto> gsDtos = gasStationService.getGasStationsWithCoordinates(45.048903, 7.659812, radius, "Diesel", "bah");
 				
 		assertEquals(1, gsDtos.size());
 		assertTrue(GS1Dto.equals(gsDtos.get(0)));
