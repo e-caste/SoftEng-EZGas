@@ -41,7 +41,7 @@ public class GasStationServiceimpl implements GasStationService {
 
 	@Override
 	public GasStationDto getGasStationById(Integer gasStationId) throws InvalidGasStationException {
-		GasStation gasStation = gasStationRepository.findOne(gasStationId);
+		GasStation gasStation = gasStationRepository.findById(gasStationId);
 
 		if (gasStation == null) {
 			throw new InvalidGasStationException("GasStation not found");
@@ -91,7 +91,7 @@ public class GasStationServiceimpl implements GasStationService {
 		String currentTimeStamp = new SimpleDateFormat("MM-dd-YYYY").format(new Date(System.currentTimeMillis()));
 		gasStationDto.setReportTimestamp(currentTimeStamp);
 
-		GasStation gasStation = gasStationRepository.findOne(gasStationDto.getGasStationId());
+		GasStation gasStation = gasStationRepository.findById(gasStationDto.getGasStationId());
 
 		if(gasStation != null) {
 			gasStation.setGasStationId(gasStationDto.getGasStationId());
@@ -161,7 +161,7 @@ public class GasStationServiceimpl implements GasStationService {
 
 	@Override
 	public Boolean deleteGasStation(Integer gasStationId) throws InvalidGasStationException {
-		GasStation gasStation = gasStationRepository.findOne(gasStationId);
+		GasStation gasStation = gasStationRepository.findById(gasStationId);
 
 		if(gasStation == null) {
 			throw new InvalidGasStationException("GasStation not found");
@@ -331,7 +331,7 @@ public class GasStationServiceimpl implements GasStationService {
 
 	@Override
 	public void setReport(Integer gasStationId, Double dieselPrice, Double superPrice, Double superPlusPrice, Double gasPrice, Double methanePrice, Double premiumDieselPrice, Integer userId) throws InvalidGasStationException, PriceException, InvalidUserException {
-		GasStation gasStation = gasStationRepository.findOne(gasStationId);
+		GasStation gasStation = gasStationRepository.findById(gasStationId);
 
 		if (gasStation == null)
 			throw new InvalidGasStationException("Gas Station not found");
@@ -363,7 +363,7 @@ public class GasStationServiceimpl implements GasStationService {
 			gasStation.setPremiumDieselPrice(premiumDieselPrice);
 		}
 
-		User user = userRepository.findOne(userId);
+		User user = userRepository.findById(userId);
 		if (user == null){
 			throw new InvalidUserException("User not found");
 		} else {

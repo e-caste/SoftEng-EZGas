@@ -11,4 +11,8 @@ import java.util.List;
 public interface GasStationRepository extends JpaRepository<GasStation,Integer> {
 
     List<GasStation> findByCarSharing(String carSharing);
+
+    @Query("SELECT gs FROM GasStation gs WHERE gs.gasStationId = ?1")
+    GasStation findById(Integer Id);
+
 }
