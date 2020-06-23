@@ -289,15 +289,15 @@ public class GasStationRepositoryTests {
 		GS1.setMethanePrice(0.986);
 		
 		GasStation gs = gasStationRepository.save(GS1);
-		
-		assertTrue(gs.getGasStationId() == GS1.getGasStationId());
-		assertTrue(gs.getDieselPrice() == 1.524 );
+
+		assertSame(gs.getGasStationId(), GS1.getGasStationId());
+		assertEquals(1.524, gs.getDieselPrice(), 0.0);
 		assertTrue(gs.getHasMethane());
-		assertTrue(gs.getMethanePrice() == 0.986);
-		
-		assertTrue(gasStationRepository.findOne(GS1.getGasStationId()).getDieselPrice() == 1.524 );
+		assertEquals(0.986, gs.getMethanePrice(), 0.0);
+
+		assertEquals(1.524, gasStationRepository.findOne(GS1.getGasStationId()).getDieselPrice(), 0.0);
 		assertTrue(gasStationRepository.findOne(GS1.getGasStationId()).getHasMethane());
-		assertTrue(gasStationRepository.findOne(GS1.getGasStationId()).getMethanePrice() == 0.986);
+		assertEquals(0.986, gasStationRepository.findOne(GS1.getGasStationId()).getMethanePrice(), 0.0);
 	}
 	
 	@Test
