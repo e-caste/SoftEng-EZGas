@@ -661,7 +661,7 @@ public class GasStationServiceimplTests {
 	@Test
 	public void test_setReport_invalidUser() throws PriceException, InvalidGasStationException {
 		try {
-			gasStationService.setReport(GS1.getGasStationId(), GS1.getDieselPrice(), GS1.getSuperPrice(), GS1.getSuperPlusPrice(), GS1.getGasPrice(), GS1.getMethanePrice(), 1000);
+			gasStationService.setReport(GS1.getGasStationId(), GS1.getDieselPrice(), GS1.getSuperPrice(), GS1.getSuperPlusPrice(), GS1.getGasPrice(), GS1.getMethanePrice(), GS1.getPremiumDieselPrice(), 1000);
 			fail("Expected InvalidUserException");
 		}catch(InvalidUserException e){
 			assertEquals("User not found", e.getMessage());
