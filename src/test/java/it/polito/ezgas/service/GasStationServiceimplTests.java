@@ -541,7 +541,7 @@ public class GasStationServiceimplTests {
 	}
 	
 	@Test
-	public void test_getGasStationsWithoutCoordinates_existing() throws InvalidGasTypeException {
+	public void test_getGasStationsWithoutCoordinates_existing() throws InvalidGasTypeException, InvalidCarSharingException {
 		List<GasStationDto> gsDtos = new ArrayList<>();
 		
 		gsDtos = gasStationService.getGasStationsWithoutCoordinates("Diesel", "null");
