@@ -608,7 +608,6 @@ public class GasStationServiceimplTests {
 	
 	@Test
 	public void test_saveGasStation_nullPriceReportDtos() throws GPSDataException {
-		GS1Dto.setPriceReportDtos(null);
 		try {
 			gasStationService.saveGasStation(GS1Dto);
 			fail("Expected PriceException for null PriceReportDtos");
