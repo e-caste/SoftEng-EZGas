@@ -141,12 +141,12 @@ public class GasStationRepositoryTests {
 		GS1.setHasMethane(false);
 		GS1.setHasSuper(true);
 		GS1.setHasSuperPlus(false);
-		GS1.setMethanePrice(0);
+		GS1.setMethanePrice(0.0);
 		GS1.setReportDependability(0);
 		GS1.setReportTimestamp(null);
 		GS1.setReportUser(-1);
 		GS1.setSuperPrice(1.864);
-		GS1.setSuperPlusPrice(0);
+		GS1.setSuperPlusPrice(0.0);
 		GS1.setGasStationId(GS1id);
 		GS1.setLat(45.048903);
 		GS1.setLon(7.659812);
