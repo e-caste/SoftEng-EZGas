@@ -53,9 +53,9 @@ public class GasStationServiceimplTests {
     static String sqlSelectAllGSs = "SELECT * FROM GAS_STATION";
     static String sqlSelectGSbyCarSharing = "SELECT * FROM GAS_STATION WHERE CAR_SHARING='bah';";
     static String sqlSelectGSbyGasType = "SELECT * FROM GAS_STATION WHERE HAS_DIESEL=TRUE;";
-    
-    static String sqlDropGSTable = "DROP TABLE IF EXISTS GAS_STATION";
-    static String sqlCreateGSTable = "CREATE TABLE GAS_STATION " +
+
+	static String sqlDropGSTable = "DROP TABLE IF EXISTS GAS_STATION";
+	static String sqlCreateGSTable = "CREATE TABLE GAS_STATION " +
 										"(gas_station_id INTEGER AUTO_INCREMENT PRIMARY KEY, " +
 										"car_sharing VARCHAR(255), " +
 										"diesel_price DOUBLE, " +
@@ -67,25 +67,26 @@ public class GasStationServiceimplTests {
 										"has_methane BOOLEAN, " +
 										"has_super BOOLEAN, " +
 										"has_super_plus BOOLEAN, " +
+										"has_premium_diesel BOOLEAN, " +
 										"lat DOUBLE, " +
 										"lon DOUBLE, " +
-										"methane_price DOUBLE, " + 
+										"methane_price DOUBLE, " +
 										"report_dependability DOUBLE, " +
 										"report_timestamp VARCHAR(255), " +
 										"report_user INTEGER, " +
 										"super_price DOUBLE, " +
 										"super_plus_price DOUBLE, " +
-										"user_id INTEGER)";           
-                                      
-                                       
-                                       
-                                       
-    
-    static List<String> sqlInsertGSs = Arrays.asList(
-																			//id|car|dies_pr|gas_pr|gas_station_address|station_name|has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|r_dep|time|r_user|s_pr|s_p_pr|user_id
-											"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, '05-24-2020', -1, 1.864, 0, NULL)",
-            								"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  '05-23-2020', -1, 1.854, 0, NULL)"
+										"premium_diesel_price DOUBLE, " +
+										"user_id INTEGER)";
 
+
+
+
+
+	static List<String> sqlInsertGSs = Arrays.asList(
+																			//id|car|dies_pr|gas_pr|gas_station_address|station_name|has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|r_dep|time|r_user|s_pr|s_p_pr|user_id
+			"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, NULL, -1, 1.864, 0, 1.43, NULL)",
+			"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  NULL, -1, 1.854, 0, 0, NULL)"
     );
 	
 	private GasStationServiceimpl gasStationServiceimpl = new GasStationServiceimpl();
