@@ -641,7 +641,7 @@ public class GasStationServiceimplTests {
 	@Test
 	public void test_setReport_invalidPrice() throws InvalidGasStationException, InvalidUserException {
 		try {
-			gasStationService.setReport(GS1.getGasStationId(), GS1.getDieselPrice(), -1, GS1.getSuperPlusPrice(), GS1.getGasPrice(), GS1.getMethanePrice(), 1);
+			gasStationService.setReport(GS1.getGasStationId(), GS1.getDieselPrice(), -1.0, GS1.getSuperPlusPrice(), GS1.getGasPrice(), GS1.getMethanePrice(), GS1.getPremiumDieselPrice(), 1);
 			fail("Expected PriceException");
 		}catch(PriceException e){
 			assertEquals("Wrong Price", e.getMessage());
