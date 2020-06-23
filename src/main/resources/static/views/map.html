@@ -13,7 +13,7 @@
 }
 </style>
 <script src="js/app/jquery-1.9.1.js"></script>
-<script src="js/app/jquery-ui.js"></script>     
+<script src="js/app/jquery-ui.js"></script>
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
 <script src="js/app/session.js"></script>
 <script src="js/app/map.js"></script>
@@ -29,7 +29,7 @@
 
 <body id="ezgas" ng-app="demo" onload="initOSMap()">
 	<script src="js/app/session.js"></script>
-	
+
 	<img src="img/ezgas.png" alt="ezgas" class="center" />
 	<div class="head">
 		<h4 id="name" class="centered-element"></h4>
@@ -41,7 +41,7 @@
 		Profile</button>
 	<div style="clear:both;"></div>
 	<div id="map"></div>
-	
+
 
 	<script>
 		showName('name');
@@ -80,7 +80,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div hidden class="row">
 						<div class="form-group col-md-12">
 							<label class="col-md-2 control-lable" for="lat">addr</label>
@@ -217,15 +217,15 @@
 							<!--*****************************-->
 							<td><span ng-bind="{{g.premiumDieselPrice==null ? NA : g.premiumDieselPrice}}"></span></td>
 							<!--*****************************-->
-							<td><span ng-bind="{{g.carSharing==null ? NA : g.carSharing}}"></span></td>
+							<td><span ng-bind="g.carSharing"></span></td>
 							<td><span ng-bind="g.reportTimestamp"></span></td>
                               <td><span ng-bind="{{g.reportDependability==0?NA:g.reportDependability}}"></span></td>
 							<td id="btr"><button type="buttonreport"
 									ng-click="selectGasStationForReport(g.gasStationId)"
 									class="btn btn-danger custom-width edited">New Report</button></td>
-							<td id="btu" ><button id="buttonthumbsup_{{$index}}"  type="button" 
+							<td id="btu" ><button id="buttonthumbsup_{{$index}}"  type="button"
 									class="{{g.reportUser==-1 ? 'disabledthumb' : 'enabledthumb' }}"
-									ng-click="signalRightPrice(g.gasStationId, $parent.$index, $index)"  
+									ng-click="signalRightPrice(g.gasStationId, $parent.$index, $index)"
 									ng-disabled="{{g.reportUser==-1 ? true : false}}">
 									<img src="img/thumbup_ezgas2.png" />
 								</button></td>
@@ -238,7 +238,7 @@
 						</tr>
 					</tbody>
 					<tfoot>
-					
+
 					<td></td>
 					<td></td>
 					<td><button type="buttonreport"
