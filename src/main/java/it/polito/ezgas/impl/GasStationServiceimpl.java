@@ -37,7 +37,7 @@ public class GasStationServiceimpl implements GasStationService {
 	UserRepository userRepository;
 
 
-	List<String> GasolineTypes = Arrays.asList("Diesel", "Super", "SuperPlus", "LPG", "Methane");
+	List<String> GasolineTypes = Arrays.asList("Diesel", "Super", "SuperPlus", "LPG", "Methane", "PremiumDiesel");
 
 	@Override
 	public GasStationDto getGasStationById(Integer gasStationId) throws InvalidGasStationException {
@@ -110,6 +110,7 @@ public class GasStationServiceimpl implements GasStationService {
 			gasStation.setLon(gasStationDto.getLon());
 			
 			if (gasStationDto.getHasDiesel()) {
+
 				gasStation.setDieselPrice(gasStationDto.getDieselPrice());
 			}
 			
@@ -210,7 +211,12 @@ public class GasStationServiceimpl implements GasStationService {
 						gasStationsDto.add(GasStationConverter.convertEntityToDto(gs));
 					}
 				break;
-					// TODO: 12/06/2020  add case premiumDiesel
+				case "PremiumDiesel":
+					if (gs.getHasPremiumDiesel()) {
+						gasStationsDto.add(GasStationConverter.convertEntityToDto(gs));
+					}
+				break;
+
 			}
 		}
 		return gasStationsDto;
@@ -344,25 +350,6 @@ public class GasStationServiceimpl implements GasStationService {
 			throw new PriceException("Wrong Price");
 		}
 
-		if(gasStation.getHasDiesel()){
-			gasStation.setDieselPrice(dieselPrice);
-		}
-		if(gasStation.getHasSuper()){
-			gasStation.setSuperPrice(superPrice);
-		}
-		if(gasStation.getHasSuperPlus()){
-			gasStation.setSuperPlusPrice(superPlusPrice);
-		}
-		if(gasStation.getHasGas()){
-			gasStation.setGasPrice(gasPrice);
-		}
-		if(gasStation.getHasMethane()){
-			gasStation.setMethanePrice(methanePrice);
-		}
-		if(gasStation.getHasPremiumDiesel()){
-			gasStation.setPremiumDieselPrice(premiumDieselPrice);
-		}
-
 		User user = userRepository.findById(userId);
 		if (user == null){
 			throw new InvalidUserException("User not found");
@@ -370,6 +357,10 @@ public class GasStationServiceimpl implements GasStationService {
 			gasStation.setReportUser(userId);
 			gasStation.setUser(user);
 		}
+
+
+
+
 		;
 
 
@@ -385,7 +376,27 @@ public class GasStationServiceimpl implements GasStationService {
 			gasStation.setReportTimestamp(newTimeStamp);
 			double repDependability = reportDependability(oldTimeStamp,newTimeStamp,user.getReputation());
 			gasStation.setReportDependability(repDependability);
-			//TODO create report dto and attach it to the GS (in GS the priceReport doesn't exist)
+
+			if(gasStation.getHasDiesel()){
+				gasStation.setDieselPrice(dieselPrice);
+			}
+			if(gasStation.getHasSuper()){
+				gasStation.setSuperPrice(superPrice);
+			}
+			if(gasStation.getHasSuperPlus()){
+				gasStation.setSuperPlusPrice(superPlusPrice);
+			}
+			if(gasStation.getHasGas()){
+				gasStation.setGasPrice(gasPrice);
+			}
+			if(gasStation.getHasMethane()){
+				gasStation.setMethanePrice(methanePrice);
+			}
+			if(gasStation.getHasPremiumDiesel()){
+				gasStation.setPremiumDieselPrice(premiumDieselPrice);
+			}
+
+
 		}
 
 
