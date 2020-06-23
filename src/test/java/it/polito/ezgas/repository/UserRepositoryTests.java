@@ -174,11 +174,11 @@ public class UserRepositoryTests {
     @Test
     public void testFindById() {
         // id exists in database -> return User object
-        User user = userRepository.findById(existingUserId);
+        User user = userRepository.findOne(existingUserId);
         assertTrue(user.equals(existingUser));
 
         // id doesn't exist in database -> return null
-        user = userRepository.findById(nonExistingUserId);
+        user = userRepository.findOne(nonExistingUserId);
         assertNull(user);
     }
 
