@@ -74,7 +74,7 @@ public class GasStationServiceimplTests {
 										"premium_diesel_price DOUBLE, " +
 										"user_id INTEGER)";
 
-
+	static int radius = 5;  // kilometers
 
 
 
@@ -474,8 +474,6 @@ public class GasStationServiceimplTests {
 	
 	@Test
 	public void test_getGasStationsWithCoordinates_invalidGPS() throws InvalidGasTypeException {
-		int radius = 5;  // kilometers
-
 		try {
 			gasStationService.getGasStationsWithCoordinates(91, 45, radius, "Diesel", "bah");
 			fail("Expected GPSDataException");
