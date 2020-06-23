@@ -699,7 +699,8 @@ public class GasStationServiceimplTests {
 													rs.getBoolean("has_super"),
 													rs.getBoolean("has_super_plus"),
 													rs.getBoolean("has_gas"), 
-													rs.getBoolean("has_methane"),   
+													rs.getBoolean("has_methane"),
+													rs.getBoolean("has_premium_diesel"),
 													rs.getString("car_sharing"), 
 													rs.getDouble("lat"), 
 													rs.getDouble("lon"),                 
@@ -708,6 +709,7 @@ public class GasStationServiceimplTests {
 													rs.getDouble("super_plus_price"),
 													rs.getDouble("gas_price"),
 													rs.getDouble("methane_price"),
+													rs.getDouble("premium_diesel_price"),
 													rs.getInt("report_user"),
 													rs.getString("report_timestamp"),
 													rs.getDouble("report_dependability")            
