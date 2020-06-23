@@ -28,7 +28,8 @@ public class GasStationConverterTests {
             hasSuper = true,
             hasSuperPlus = true,
             hasGas = true,
-            hasMethane = true;
+            hasMethane = true,
+            hasPremiumDiesel = true;
     double lat = 45.06248474121094,
            lon = 7.662814140319824,
            reportDependability = 3.33,
@@ -36,7 +37,8 @@ public class GasStationConverterTests {
            superPrice = 1.12,
            superPlusPrice = 1.18,
            gasPrice = 1.43,
-           methanePrice = 1.12;
+           methanePrice = 1.12,
+           premiumDieselPrice = 1.43;
 
     @Before
     public void setUp() {
@@ -48,6 +50,7 @@ public class GasStationConverterTests {
                 hasSuperPlus,
                 hasGas,
                 hasMethane,
+                hasPremiumDiesel,
                 carSharing,
                 lat,
                 lon,
@@ -56,6 +59,7 @@ public class GasStationConverterTests {
                 superPlusPrice,
                 gasPrice,
                 methanePrice,
+                premiumDieselPrice,
                 reportUser,
                 reportTimestamp,
                 reportDependability
@@ -79,6 +83,7 @@ public class GasStationConverterTests {
                 hasSuperPlus,
                 hasGas,
                 hasMethane,
+                hasPremiumDiesel,
                 carSharing,
                 lat,
                 lon,
@@ -87,6 +92,7 @@ public class GasStationConverterTests {
                 superPlusPrice,
                 gasPrice,
                 methanePrice,
+                premiumDieselPrice,
                 reportUser,
                 reportTimestamp,
                 reportDependability
