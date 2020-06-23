@@ -12,6 +12,7 @@ import java.util.*;
 
 import javax.annotation.PostConstruct;
 
+import exception.*;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -21,12 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import exception.GPSDataException;
-import exception.InvalidGasStationException;
-import exception.InvalidGasTypeException;
-import exception.InvalidUserException;
-import exception.PriceException;
 
 import static org.junit.Assert.*;
 
@@ -479,31 +474,33 @@ public class GasStationServiceimplTests {
 	
 	@Test
 	public void test_getGasStationsWithCoordinates_invalidGPS() throws InvalidGasTypeException {
+		int radius = 5;  // kilometers
+
 		try {
-			gasStationService.getGasStationsWithCoordinates(91, 45, "Diesel", "bah");
+			gasStationService.getGasStationsWithCoordinates(91, 45, radius, "Diesel", "bah");
 			fail("Expected GPSDataException");
-		} catch (GPSDataException e) {
+		} catch (GPSDataException | InvalidCarSharingException e) {
 			assertEquals(e.getMessage(), "Invalid GPS Data");
 		}
 		
 		try {
-			gasStationService.getGasStationsWithCoordinates(-91, 45, "Diesel", "bah");
+			gasStationService.getGasStationsWithCoordinates(-91, 45, radius, "Diesel", "bah");
 			fail("Expected GPSDataException");
-		} catch (GPSDataException e) {
+		} catch (GPSDataException | InvalidCarSharingException e) {
 			assertEquals(e.getMessage(), "Invalid GPS Data");
 		}
 		
 		try {
-			gasStationService.getGasStationsWithCoordinates(45, 181, "Diesel", "bah");
+			gasStationService.getGasStationsWithCoordinates(45, 181, radius, "Diesel", "bah");
 			fail("Expected GPSDataException");
-		} catch (GPSDataException e) {
+		} catch (GPSDataException | InvalidCarSharingException e) {
 			assertEquals(e.getMessage(), "Invalid GPS Data");
 		}
 		
 		try {
-			gasStationService.getGasStationsWithCoordinates(45, -181, "Diesel", "bah");
+			gasStationService.getGasStationsWithCoordinates(45, -181, radius, "Diesel", "bah");
 			fail("Expected GPSDataException");
-		} catch (GPSDataException e) {
+		} catch (GPSDataException | InvalidCarSharingException e) {
 			assertEquals(e.getMessage(), "Invalid GPS Data");
 		}
 	}
