@@ -675,7 +675,7 @@ public class GasStationServiceimplTests {
 		Double oldSuperPrice = GS1.getSuperPrice();
 		Double oldGasPrice = GS1.getGasPrice();
 		
-		gasStationService.setReport(GS1.getGasStationId(), ++oldDieselPrice, ++oldSuperPrice, GS1.getSuperPlusPrice(), ++oldGasPrice, GS1.getMethanePrice(), 1);
+		gasStationService.setReport(GS1.getGasStationId(), ++oldDieselPrice, ++oldSuperPrice, GS1.getSuperPlusPrice(), ++oldGasPrice, GS1.getMethanePrice(), GS1.getPremiumDieselPrice(), 1);
 		assertEquals(oldDieselPrice, gasStationService.getGasStationById(GS1.getGasStationId()).getDieselPrice(), 0);
 		assertEquals(oldSuperPrice, gasStationService.getGasStationById(GS1.getGasStationId()).getSuperPrice(), 0);
 		assertEquals(oldGasPrice, gasStationService.getGasStationById(GS1.getGasStationId()).getGasPrice(), 0);
