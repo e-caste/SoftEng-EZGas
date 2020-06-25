@@ -70,11 +70,10 @@ public class GasStationRepositoryTests {
 										"user_id INTEGER)";           
     
     static List<String> sqlInsertGSs = Arrays.asList(
-																			//id|car|dies_pr|gas_pr|gas_station_address|station_name|has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|r_dep|time|r_user|s_pr|s_p_pr|user_id
-											"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, NULL, -1, 1.864, 0, 1.43, NULL)",
-            								"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  NULL, -1, 1.854, 0, 0, NULL)"
-
-    );
+										//id|car|dies_pr|gas_pr|gas_station_address|station_name|has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|r_dep|time|r_user|s_pr|s_p_pr|user_id
+		"INSERT INTO GAS_STATION VALUES (1, 'Car2Go', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, NULL, -1, 1.864, 0, 1.555, NULL)",
+		"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  NULL, -1, 1.854, 0, 0, NULL)"
+);
     
 	Integer GS1id;
 	private String GS1Name, GS1carSharing;
@@ -133,7 +132,7 @@ public class GasStationRepositoryTests {
 		GS1 = new GasStation();
 		GS1id = 1;
 		GS1Name = "Esso";
-		GS1carSharing = "bah";
+		GS1carSharing = "Car2Go";
 		GS1.setDieselPrice(1.375);
 		GS1.setGasPrice(1.753);
 		GS1.setGasStationAddress("via Olanda, 12, Torino");
@@ -150,17 +149,20 @@ public class GasStationRepositoryTests {
 		GS1.setReportUser(-1);
 		GS1.setSuperPrice(1.864);
 		GS1.setSuperPlusPrice(0.0);
-		GS1.setPremiumDieselPrice(1.43);
+		GS1.setPremiumDieselPrice(1.555);
 		GS1.setGasStationId(GS1id);
 		GS1.setLat(45.048903);
 		GS1.setLon(7.659812);
+		GS1.setReportTimestamp(null); //"05-24-2020"
 		GS1.setCarSharing(GS1carSharing);
 		//GS1Dto = GasStationConverter.convertEntityToDto(GS1);
 		gasStationRepository.save(GS1);
-		
-		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, true, "bah", 45.048903, 7.659812, 1.375, 1.864, 0.0, 1.753, 0.0, 1.43, -1, null, 0);
+
+		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, true, "Car2Go", 45.048903, 7.659812, 1.375, 1.864, null, 1.753, null, 1.555, -1, null, 0);
+		//GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, false, "IShare", 45.0, 7.0, 1.375, 1.864, null, 1.753, null, null, -1, "05-25-2020", 0);
 		GS3 = new GasStation("Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0, 1.753, 0, -1, null, 0);
 		GS3.setGasStationId(3);
+	
 	}
 
 	// the findById method is replaced by the standard JpaRepository.findOne method
