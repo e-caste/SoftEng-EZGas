@@ -167,12 +167,12 @@ public class GasStationServiceimplTests {
 		GS1.setGasStationId(GS1id);
 		GS1.setLat(45.048903);
 		GS1.setLon(7.659812);
-		GS1.setReportTimestamp(null); //"05-24-2020"
+		GS1.setReportTimestamp("05-24-2020"); //"05-24-2020"
 		GS1.setCarSharing(GS1carSharing);
 		//GS1Dto = GasStationConverter.convertEntityToDto(GS1);
 		gasStationRepository.save(GS1);
 
-		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, true, "Car2Go", 45.048903, 7.659812, 1.375, 1.864, null, 1.753, null, 1.555, -1, null, 0);
+		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, true, "Car2Go", 45.048903, 7.659812, 1.375, 1.864, null, 1.753, null, 1.555, -1, "05-24-2020", 0);
 		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, false, "IShare", 45.0, 7.0, 1.375, 1.864, null, 1.753, null, null, -1, "05-25-2020", 0);
 	}
 
