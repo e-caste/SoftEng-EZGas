@@ -48,7 +48,7 @@ public class GasStationServiceimpl implements GasStationService {
 		}
 		return GasStationConverter.convertEntityToDto(gasStation);
 	}
-	
+
 	public double reportDependability(String lastTimeStamp, String newTimeStamp, int userTrustLevel){
 		double dependability=0;
 		double difference;
@@ -83,7 +83,7 @@ public class GasStationServiceimpl implements GasStationService {
 	@Override
 	public GasStationDto saveGasStation(GasStationDto gasStationDto) throws PriceException, GPSDataException {
 		GasStationDto gsDTo = null;
-		
+
 		if(gasStationDto.getLat() > 90 || gasStationDto.getLat() <= -90 || gasStationDto.getLon() > 180 || gasStationDto.getLon() <= -180) {
 			throw new GPSDataException("Invalid GPS Data");
 		}
@@ -108,24 +108,24 @@ public class GasStationServiceimpl implements GasStationService {
 			}
 			gasStation.setLat(gasStationDto.getLat());
 			gasStation.setLon(gasStationDto.getLon());
-			
+
 			if (gasStationDto.getHasDiesel()) {
 
 				gasStation.setDieselPrice(gasStationDto.getDieselPrice());
 			}
-			
+
 			if (gasStationDto.getHasSuper()) {
 				gasStation.setSuperPrice(gasStationDto.getSuperPrice());
 			}
-			
+
 			if (gasStationDto.getHasSuperPlus()) {
 				gasStation.setSuperPlusPrice(gasStationDto.getSuperPlusPrice());
 			}
-			
+
 			if (gasStationDto.getHasGas()) {
 				gasStation.setGasPrice(gasStationDto.getGasPrice());
 			}
-			
+
 			if (gasStationDto.getHasMethane()) {
 				gasStation.setMethanePrice(gasStationDto.getMethanePrice());
 			}
@@ -174,8 +174,8 @@ public class GasStationServiceimpl implements GasStationService {
 		}
 		return true;
 	}
-	
-	
+
+
 
 	@Override
 	public List<GasStationDto> getGasStationsByGasolineType(String gasolineType) throws InvalidGasTypeException {
@@ -351,30 +351,24 @@ public class GasStationServiceimpl implements GasStationService {
 		}
 
 		User user = userRepository.findById(userId);
-		if (user == null){
+		if (user == null)
 			throw new InvalidUserException("User not found");
-		} else {
-			gasStation.setReportUser(userId);
-			gasStation.setUser(user);
-		}
-
-
-
-
-		;
-
 
 		String oldTimeStamp = gasStation.getReportTimestamp();
-		String newTimeStamp = new SimpleDateFormat("MM-dd-YYYY").format(new Date(System.currentTimeMillis()));
+		String newTimeStamp = new SimpleDateFormat("MM-dd-yyyy").format(new Date(System.currentTimeMillis()));
 		LocalDate lastDate = LocalDate.parse(oldTimeStamp,DateTimeFormatter.ofPattern("MM-dd-yyyy"));
 		LocalDate newDate = LocalDate.parse(newTimeStamp,DateTimeFormatter.ofPattern("MM-dd-yyyy"));
 		long lastDay = TimeUnit.MILLISECONDS.toDays(Timestamp.valueOf(lastDate.atTime(LocalTime.MIDNIGHT)).getTime());
 		long toDay = TimeUnit.MILLISECONDS.toDays(Timestamp.valueOf(newDate.atTime(LocalTime.MIDNIGHT)).getTime());
 
-
-		if((user.getReputation()>gasStation.getUser().getReputation()) || ((user.getReputation()<=gasStation.getUser().getReputation()) && (toDay-lastDay)>4)){
+		if((gasStation.getUser() == null) ||
+				(user.getReputation() >= gasStation.getUser().getReputation()) ||
+				((user.getReputation() < gasStation.getUser().getReputation()) && (toDay-lastDay)>4)){
 			gasStation.setReportTimestamp(newTimeStamp);
-			double repDependability = reportDependability(oldTimeStamp,newTimeStamp,user.getReputation());
+			gasStation.setReportUser(userId);
+			gasStation.setUser(user);
+
+			double repDependability = reportDependability(oldTimeStamp, newTimeStamp, user.getReputation());
 			gasStation.setReportDependability(repDependability);
 
 			if(gasStation.getHasDiesel()){
@@ -395,11 +389,7 @@ public class GasStationServiceimpl implements GasStationService {
 			if(gasStation.getHasPremiumDiesel()){
 				gasStation.setPremiumDieselPrice(premiumDieselPrice);
 			}
-
-
 		}
-
-
 
 		gasStationRepository.save(gasStation);
 	}
