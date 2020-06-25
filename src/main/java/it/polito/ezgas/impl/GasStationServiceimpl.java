@@ -346,7 +346,8 @@ public class GasStationServiceimpl implements GasStationService {
 				(superPrice < 0 && gasStation.getHasSuper()) ||
 				(superPlusPrice < 0 && gasStation.getHasSuperPlus()) ||
 				(gasPrice < 0 && gasStation.getHasGas()) ||
-				(methanePrice < 0 && gasStation.getHasMethane())) {
+				(methanePrice < 0 && gasStation.getHasMethane()) ||
+				(premiumDieselPrice < 0 && gasStation.getHasPremiumDiesel())) {
 			throw new PriceException("Wrong Price");
 		}
 
