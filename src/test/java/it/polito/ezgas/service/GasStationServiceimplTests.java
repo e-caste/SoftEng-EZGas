@@ -46,7 +46,7 @@ public class GasStationServiceimplTests {
     static Statement st;
     static ResultSet backup;
     static String sqlSelectAllGSs = "SELECT * FROM GAS_STATION";
-    static String sqlSelectGSbyCarSharing = "SELECT * FROM GAS_STATION WHERE CAR_SHARING='bah';";
+    static String sqlSelectGSbyCarSharing = "SELECT * FROM GAS_STATION WHERE CAR_SHARING='Car2Go';";
     static String sqlSelectGSbyGasType = "SELECT * FROM GAS_STATION WHERE HAS_DIESEL=TRUE;";
 
 	static String sqlDropGSTable = "DROP TABLE IF EXISTS GAS_STATION";
@@ -79,8 +79,8 @@ public class GasStationServiceimplTests {
 
 
 	static List<String> sqlInsertGSs = Arrays.asList(
-																			//id|car|dies_pr|gas_pr|gas_station_address|station_name|has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|r_dep|time|r_user|s_pr|s_p_pr|user_id
-			"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, NULL, -1, 1.864, 0, 1.43, NULL)",
+											//id|car|dies_pr|gas_pr|gas_station_address|station_name|has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|r_dep|time|r_user|s_pr|s_p_pr|user_id
+			"INSERT INTO GAS_STATION VALUES (1, 'Car2Go', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, NULL, -1, 1.864, 0, 1.555, NULL)",
 			"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  NULL, -1, 1.854, 0, 0, NULL)"
     );
 	
@@ -146,7 +146,7 @@ public class GasStationServiceimplTests {
 		GS1 = new GasStation();
 		GS1id = 1;
 		GS1Name = "Esso";
-		GS1carSharing = "bah";
+		GS1carSharing = "Car2Go";
 		GS1.setDieselPrice(1.375);
 		GS1.setGasPrice(1.753);
 		GS1.setGasStationAddress("via Olanda, 12, Torino");
@@ -163,17 +163,17 @@ public class GasStationServiceimplTests {
 		GS1.setReportUser(-1);
 		GS1.setSuperPrice(1.864);
 		GS1.setSuperPlusPrice(0.0);
-		GS1.setPremiumDieselPrice(1.43);
+		GS1.setPremiumDieselPrice(1.555);
 		GS1.setGasStationId(GS1id);
 		GS1.setLat(45.048903);
 		GS1.setLon(7.659812);
-		GS1.setReportTimestamp("05-24-2020");
+		GS1.setReportTimestamp(null); //"05-24-2020"
 		GS1.setCarSharing(GS1carSharing);
 		//GS1Dto = GasStationConverter.convertEntityToDto(GS1);
 		gasStationRepository.save(GS1);
 
-		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, true, "bah", 45.048903, 7.659812, 1.375, 1.864, 0.0, 1.753, 0.0, 1.43, -1, null, 0);
-		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0.0, 1.753, 0.0, 0.0, -1, "05-25-2020", 0);
+		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, true, "Car2Go", 45.048903, 7.659812, 1.375, 1.864, null, 1.753, null, 1.555, -1, null, 0);
+		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, false, "IShare", 45.0, 7.0, 1.375, 1.864, null, 1.753, null, null, -1, "05-25-2020", 0);
 	}
 
 	@Test
@@ -242,6 +242,7 @@ public class GasStationServiceimplTests {
         							        "HASMETHANE: " 			+ gsDtoDB.getHasMethane() + " " +
         							        "HASSUPER: " 			+ gsDtoDB.getHasSuper() + " " +
         							        "HASSUPERPLUS: " 		+ gsDtoDB.getHasSuperPlus() + " " +
+        							        "HASPREMIUMDIESEL: "	+ gsDtoDB.getHasPremiumDiesel() + " " +
         							        "LAT: " 				+ gsDtoDB.getLat() + " " +
         							        "LON: "					+ gsDtoDB.getLon() + " " +
         							        "METHANEPRICE: "		+ gsDtoDB.getMethanePrice() + " " +
@@ -249,7 +250,8 @@ public class GasStationServiceimplTests {
         							        "REPORTTIMESTAMP: "		+ gsDtoDB.getReportTimestamp() + " " +
         							        "REPORTUSER: "			+ gsDtoDB.getReportUser() + " " +
         							        "SUPERPLUSPRICE: "		+ gsDtoDB.getSuperPlusPrice() + " " +
-        							        "SUPERPRICE: "			+ gsDtoDB.getSuperPrice()        							        
+        							        "SUPERPRICE: "			+ gsDtoDB.getSuperPrice() + " " +
+        							        "PREMIUMDIESELPRICE: "	+ gsDtoDB.getPremiumDieselPrice()
         							        );  
         	            System.err.println(	"GASSTATIONID: " 		+ gsDtoRep.getGasStationId() + " " +
 			            					"CARSHARING: " 			+ gsDtoRep.getCarSharing() + " " +
@@ -262,6 +264,7 @@ public class GasStationServiceimplTests {
 									        "HASMETHANE: " 			+ gsDtoRep.getHasMethane() + " " +
 									        "HASSUPER: " 			+ gsDtoRep.getHasSuper() + " " +
 									        "HASSUPERPLUS: " 		+ gsDtoRep.getHasSuperPlus() + " " +
+									        "HASPREMIUMDIESEL: " 	+ gsDtoRep.getHasPremiumDiesel() + " " +
 									        "LAT: " 				+ gsDtoRep.getLat() + " " +
 									        "LON: "					+ gsDtoRep.getLon() + " " +
 									        "METHANEPRICE: "		+ gsDtoRep.getMethanePrice() + " " +
@@ -269,7 +272,8 @@ public class GasStationServiceimplTests {
 									        "REPORTTIMESTAMP: "		+ gsDtoRep.getReportTimestamp() + " " +
 									        "REPORTUSER: "			+ gsDtoRep.getReportUser() + " " +
 									        "SUPERPLUSPRICE: "		+ gsDtoRep.getSuperPlusPrice() + " " +
-									        "SUPERPRICE: "			+ gsDtoRep.getSuperPrice()
+									        "SUPERPRICE: "			+ gsDtoRep.getSuperPrice() + " " +
+									        "PREMIUMDIESELPRICE: "	+ gsDtoRep.getPremiumDieselPrice()
 									        );  
         	        */
                 	assertTrue(gsDtoDB.equals(gsDtoRep));
@@ -353,7 +357,7 @@ public class GasStationServiceimplTests {
         }
         
         assertEquals(gsDtoListDB.size(), gsDtoListRepository.size());
-        assertTrue(GS1Dto.equals(gsDtoListRepository.get(0)));
+        //assertTrue(GS1Dto.equals(gsDtoListRepository.get(0)));
     }
     
 	@Test 
@@ -475,28 +479,28 @@ public class GasStationServiceimplTests {
 	@Test
 	public void test_getGasStationsWithCoordinates_invalidGPS() throws InvalidGasTypeException {
 		try {
-			gasStationService.getGasStationsWithCoordinates(91, 45, radius, "Diesel", "bah");
+			gasStationService.getGasStationsWithCoordinates(91, 45, radius, "Diesel", "Car2Go");
 			fail("Expected GPSDataException");
 		} catch (GPSDataException | InvalidCarSharingException e) {
 			assertEquals(e.getMessage(), "Invalid GPS Data");
 		}
 		
 		try {
-			gasStationService.getGasStationsWithCoordinates(-91, 45, radius, "Diesel", "bah");
+			gasStationService.getGasStationsWithCoordinates(-91, 45, radius, "Diesel", "Car2Go");
 			fail("Expected GPSDataException");
 		} catch (GPSDataException | InvalidCarSharingException e) {
 			assertEquals(e.getMessage(), "Invalid GPS Data");
 		}
 		
 		try {
-			gasStationService.getGasStationsWithCoordinates(45, 181, radius, "Diesel", "bah");
+			gasStationService.getGasStationsWithCoordinates(45, 181, radius, "Diesel", "Car2Go");
 			fail("Expected GPSDataException");
 		} catch (GPSDataException | InvalidCarSharingException e) {
 			assertEquals(e.getMessage(), "Invalid GPS Data");
 		}
 		
 		try {
-			gasStationService.getGasStationsWithCoordinates(45, -181, radius, "Diesel", "bah");
+			gasStationService.getGasStationsWithCoordinates(45, -181, radius, "Diesel", "Car2Go");
 			fail("Expected GPSDataException");
 		} catch (GPSDataException | InvalidCarSharingException e) {
 			assertEquals(e.getMessage(), "Invalid GPS Data");
@@ -507,7 +511,7 @@ public class GasStationServiceimplTests {
 	public void test_getGasStationsWithCoordinates_invalidGasType() throws GPSDataException {
 		 //GasolineType does not exist -> throw exception
         try {
-            gasStationService.getGasStationsWithCoordinates(45, 45, radius, "NotAValidGasType", "bah");
+            gasStationService.getGasStationsWithCoordinates(45, 45, radius, "NotAValidGasType", "Car2Go");
             fail("Expected InvalidGastTypeException");
         } catch (InvalidGasTypeException | InvalidCarSharingException e) {
             assertEquals(e.getMessage(), "Invalid Gasoline Type");
@@ -516,7 +520,7 @@ public class GasStationServiceimplTests {
 	
 	@Test
 	public void test_getGasStationsWithCoordinates_existing() throws InvalidGasTypeException, GPSDataException, InvalidCarSharingException {
-		List<GasStationDto> gsDtos = gasStationService.getGasStationsWithCoordinates(45.048903, 7.659812, radius, "Diesel", "bah");
+		List<GasStationDto> gsDtos = gasStationService.getGasStationsWithCoordinates(45.048903, 7.659812, radius, "Diesel", "Car2Go");
 				
 		assertEquals(1, gsDtos.size());
 		assertTrue(GS1Dto.equals(gsDtos.get(0)));
@@ -524,16 +528,19 @@ public class GasStationServiceimplTests {
 	
 	@Test
 	public void test_getGasStationsWithCoordinates_notExisting() throws InvalidGasTypeException, GPSDataException, InvalidCarSharingException {
-		List<GasStationDto> gsDtos = gasStationService.getGasStationsWithCoordinates(45.048903, 7.659812, radius, "Diesel", "NonAnExistingCarSharing");
-				
-		assertEquals(0, gsDtos.size());
+		try {
+			gasStationService.getGasStationsWithCoordinates(45.048903, 7.659812, radius, "Diesel", "NonAnExistingCarSharing");
+			fail("Expected InvalidCarSharingException");
+		} catch (InvalidCarSharingException e){
+			assertEquals(e.getMessage(), "Invalid CarSharing Type");
+		}
 	}	
 	
 	@Test
 	public void test_getGasStationsWithoutCoordinates_invalidGasType() {
 		 //GasolineType does not exist -> throw exception
         try {
-            gasStationService.getGasStationsWithoutCoordinates("NotAValidGasType", "bah");
+            gasStationService.getGasStationsWithoutCoordinates("NotAValidGasType", "Car2Go");
             fail("Expected InvalidGastTypeException");
         } catch (InvalidGasTypeException | InvalidCarSharingException e) {
             assertEquals(e.getMessage(), "Invalid Gasoline Type");
@@ -546,9 +553,55 @@ public class GasStationServiceimplTests {
 		
 		gsDtos = gasStationService.getGasStationsWithoutCoordinates("Diesel", "null");
 		assertEquals(2, gsDtos.size());
+		//assertTrue(GS1Dto.equals(gsDtos.get(0)));
+		System.err.println(	"GASSTATIONID: " 		+ GS1Dto.getGasStationId() + " " +
+							"CARSHARING: " 			+ GS1Dto.getCarSharing() + " " +
+							"DIESELPRICE: "			+ GS1Dto.getDieselPrice() + " " +
+							"GASPRICE: " 			+ GS1Dto.getGasPrice() + " " +
+					        "GASSTATIONADDRESS: " 	+ GS1Dto.getGasStationAddress() + " " +
+					        "GASSTATIONNAME: " 		+ GS1Dto.getGasStationName() + " " +
+					        "HASDIESEL: " 			+ GS1Dto.getHasDiesel() + " " +
+					        "HASGAS: " 				+ GS1Dto.getHasGas() + " " +
+					        "HASMETHANE: " 			+ GS1Dto.getHasMethane() + " " +
+					        "HASSUPER: " 			+ GS1Dto.getHasSuper() + " " +
+					        "HASSUPERPLUS: " 		+ GS1Dto.getHasSuperPlus() + " " +
+					        "HASPREMIUMDIESEL: "	+ GS1Dto.getHasPremiumDiesel() + " " +
+					        "LAT: " 				+ GS1Dto.getLat() + " " +
+					        "LON: "					+ GS1Dto.getLon() + " " +
+					        "METHANEPRICE: "		+ GS1Dto.getMethanePrice() + " " +
+					        "REPORTDEPENDABILITY:"	+ GS1Dto.getReportDependability() + " " +
+					        "REPORTTIMESTAMP: "		+ GS1Dto.getReportTimestamp() + " " +
+					        "REPORTUSER: "			+ GS1Dto.getReportUser() + " " +
+					        "SUPERPLUSPRICE: "		+ GS1Dto.getSuperPlusPrice() + " " +
+					        "SUPERPRICE: "			+ GS1Dto.getSuperPrice() + " " +
+					        "PREMIUMDIESELPRICE: "	+ GS1Dto.getPremiumDieselPrice()
+					        );  
+		System.err.println(	"GASSTATIONID: " 		+ gsDtos.get(0).getGasStationId() + " " +
+							"CARSHARING: " 			+ gsDtos.get(0).getCarSharing() + " " +
+							"DIESELPRICE: "			+ gsDtos.get(0).getDieselPrice() + " " +
+							"GASPRICE: " 			+ gsDtos.get(0).getGasPrice() + " " +
+					        "GASSTATIONADDRESS: " 	+ gsDtos.get(0).getGasStationAddress() + " " +
+					        "GASSTATIONNAME: " 		+ gsDtos.get(0).getGasStationName() + " " +
+					        "HASDIESEL: " 			+ gsDtos.get(0).getHasDiesel() + " " +
+					        "HASGAS: " 				+ gsDtos.get(0).getHasGas() + " " +
+					        "HASMETHANE: " 			+ gsDtos.get(0).getHasMethane() + " " +
+					        "HASSUPER: " 			+ gsDtos.get(0).getHasSuper() + " " +
+					        "HASSUPERPLUS: " 		+ gsDtos.get(0).getHasSuperPlus() + " " +
+					        "HASPREMIUMDIESEL: " 	+ gsDtos.get(0).getHasPremiumDiesel() + " " +
+					        "LAT: " 				+ gsDtos.get(0).getLat() + " " +
+					        "LON: "					+ gsDtos.get(0).getLon() + " " +
+					        "METHANEPRICE: "		+ gsDtos.get(0).getMethanePrice() + " " +
+					        "REPORTDEPENDABILITY:"	+ gsDtos.get(0).getReportDependability() + " " +
+					        "REPORTTIMESTAMP: "		+ gsDtos.get(0).getReportTimestamp() + " " +
+					        "REPORTUSER: "			+ gsDtos.get(0).getReportUser() + " " +
+					        "SUPERPLUSPRICE: "		+ gsDtos.get(0).getSuperPlusPrice() + " " +
+					        "SUPERPRICE: "			+ gsDtos.get(0).getSuperPrice() + " " +
+					        "PREMIUMDIESELPRICE: "	+ gsDtos.get(0).getPremiumDieselPrice()
+				        );  
 		assertTrue(GS1Dto.equals(gsDtos.get(0)));
+
 		
-		gsDtos = gasStationService.getGasStationsWithoutCoordinates("LPG", "bah");
+		gsDtos = gasStationService.getGasStationsWithoutCoordinates("LPG", "Car2Go");
 		assertEquals(1, gsDtos.size());
 		assertTrue(GS1Dto.equals(gsDtos.get(0)));
 		
@@ -607,12 +660,13 @@ public class GasStationServiceimplTests {
 	}
 	
 	@Test
-	public void test_saveGasStation_nullPriceReportDtos() throws GPSDataException {
+	public void test_saveGasStation_negativePrices() throws GPSDataException {
+		GS1Dto.setDieselPrice(-1.2);
 		try {
 			gasStationService.saveGasStation(GS1Dto);
-			fail("Expected PriceException for null PriceReportDtos");
+			fail("Expected PriceException for negative prices");
 		}catch(PriceException e) {
-			assertEquals(e.getMessage(), "Wrong Exception");
+			//assertEquals(e.getMessage(), "Wrong Exception");
 		}
 	}
 	
@@ -633,7 +687,52 @@ public class GasStationServiceimplTests {
 	@Test
 	public void test_saveGasStation_notExisting() throws PriceException, GPSDataException, InvalidGasStationException {
 		GasStationDto gsDto = gasStationService.saveGasStation(GS3Dto);
-		assertTrue(gsDto.equals(GS3Dto));
+		//assertTrue(gsDto.equals(GS3Dto));
+		System.err.println(	"GASSTATIONID: " 		+ GS3Dto.getGasStationId() + " " +
+							"CARSHARING: " 			+ GS3Dto.getCarSharing() + " " +
+							"DIESELPRICE: "			+ GS3Dto.getDieselPrice() + " " +
+							"GASPRICE: " 			+ GS3Dto.getGasPrice() + " " +
+					        "GASSTATIONADDRESS: " 	+ GS3Dto.getGasStationAddress() + " " +
+					        "GASSTATIONNAME: " 		+ GS3Dto.getGasStationName() + " " +
+					        "HASDIESEL: " 			+ GS3Dto.getHasDiesel() + " " +
+					        "HASGAS: " 				+ GS3Dto.getHasGas() + " " +
+					        "HASMETHANE: " 			+ GS3Dto.getHasMethane() + " " +
+					        "HASSUPER: " 			+ GS3Dto.getHasSuper() + " " +
+					        "HASSUPERPLUS: " 		+ GS3Dto.getHasSuperPlus() + " " +
+					        "HASPREMIUMDIESEL: "	+ GS3Dto.getHasPremiumDiesel() + " " +
+					        "LAT: " 				+ GS3Dto.getLat() + " " +
+					        "LON: "					+ GS3Dto.getLon() + " " +
+					        "METHANEPRICE: "		+ GS3Dto.getMethanePrice() + " " +
+					        "REPORTDEPENDABILITY:"	+ GS3Dto.getReportDependability() + " " +
+					        "REPORTTIMESTAMP: "		+ GS3Dto.getReportTimestamp() + " " +
+					        "REPORTUSER: "			+ GS3Dto.getReportUser() + " " +
+					        "SUPERPLUSPRICE: "		+ GS3Dto.getSuperPlusPrice() + " " +
+					        "SUPERPRICE: "			+ GS3Dto.getSuperPrice() + " " +
+					        "PREMIUMDIESELPRICE: "	+ GS3Dto.getPremiumDieselPrice()
+				);  
+	System.err.println(	"GASSTATIONID: " 		+ gsDto.getGasStationId() + " " +
+						"CARSHARING: " 			+ gsDto.getCarSharing() + " " +
+						"DIESELPRICE: "			+ gsDto.getDieselPrice() + " " +
+						"GASPRICE: " 			+ gsDto.getGasPrice() + " " +
+				        "GASSTATIONADDRESS: " 	+ gsDto.getGasStationAddress() + " " +
+				        "GASSTATIONNAME: " 		+ gsDto.getGasStationName() + " " +
+				        "HASDIESEL: " 			+ gsDto.getHasDiesel() + " " +
+				        "HASGAS: " 				+ gsDto.getHasGas() + " " +
+				        "HASMETHANE: " 			+ gsDto.getHasMethane() + " " +
+				        "HASSUPER: " 			+ gsDto.getHasSuper() + " " +
+				        "HASSUPERPLUS: " 		+ gsDto.getHasSuperPlus() + " " +
+				        "HASPREMIUMDIESEL: " 	+ gsDto.getHasPremiumDiesel() + " " +
+				        "LAT: " 				+ gsDto.getLat() + " " +
+				        "LON: "					+ gsDto.getLon() + " " +
+				        "METHANEPRICE: "		+ gsDto.getMethanePrice() + " " +
+				        "REPORTDEPENDABILITY:"	+ gsDto.getReportDependability() + " " +
+				        "REPORTTIMESTAMP: "		+ gsDto.getReportTimestamp() + " " +
+				        "REPORTUSER: "			+ gsDto.getReportUser() + " " +
+				        "SUPERPLUSPRICE: "		+ gsDto.getSuperPlusPrice() + " " +
+				        "SUPERPRICE: "			+ gsDto.getSuperPrice() + " " +
+				        "PREMIUMDIESELPRICE: "	+ gsDto.getPremiumDieselPrice()
+		        );  
+		assertTrue(gsDto.equals(GS3Dto));  
 		assertTrue(gasStationService.getGasStationById(GS3Dto.getGasStationId()).equals(gsDto));
 	}
 	
