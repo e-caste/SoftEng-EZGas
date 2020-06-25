@@ -110,26 +110,43 @@ public class GasStationServiceimpl implements GasStationService {
 			gasStation.setLon(gasStationDto.getLon());
 
 			if (gasStationDto.getHasDiesel()) {
-
+				if (gasStationDto.getDieselPrice()<0){
+					throw new PriceException("Invalid price");
+				}
 				gasStation.setDieselPrice(gasStationDto.getDieselPrice());
 			}
 
 			if (gasStationDto.getHasSuper()) {
+				if (gasStationDto.getSuperPrice()<0){
+					throw new PriceException("Invalid price");
+				}
 				gasStation.setSuperPrice(gasStationDto.getSuperPrice());
 			}
 
 			if (gasStationDto.getHasSuperPlus()) {
+				if (gasStationDto.getSuperPlusPrice()<0){
+					throw new PriceException("Invalid price");
+				}
 				gasStation.setSuperPlusPrice(gasStationDto.getSuperPlusPrice());
 			}
 
 			if (gasStationDto.getHasGas()) {
+				if (gasStationDto.getGasPrice()<0){
+					throw new PriceException("Invalid price");
+				}
 				gasStation.setGasPrice(gasStationDto.getGasPrice());
 			}
 
 			if (gasStationDto.getHasMethane()) {
+				if (gasStationDto.getMethanePrice()<0){
+					throw new PriceException("Invalid price");
+				}
 				gasStation.setMethanePrice(gasStationDto.getMethanePrice());
 			}
 			if(gasStationDto.getHasPremiumDiesel()){
+				if (gasStationDto.getPremiumDieselPrice()<0){
+					throw new PriceException("Invalid price");
+				}
 				gasStation.setPremiumDieselPrice(gasStationDto.getPremiumDieselPrice());
 			}
 
