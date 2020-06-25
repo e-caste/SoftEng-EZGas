@@ -41,7 +41,7 @@ public class GasStationRepositoryTests {
     static Statement st;
     static ResultSet backup;
     static String sqlSelectAllGSs = "SELECT * FROM GAS_STATION";
-    static String sqlSelectGSbyCarSharing = "SELECT * FROM GAS_STATION WHERE CAR_SHARING='bah';";
+    static String sqlSelectGSbyCarSharing = "SELECT * FROM GAS_STATION WHERE CAR_SHARING='Car2Go';";
     static String sqlSelectGSbyGasType = "SELECT * FROM GAS_STATION WHERE HAS_DIESEL=TRUE;";
     
     static String sqlDropGSTable = "DROP TABLE IF EXISTS GAS_STATION";
@@ -180,7 +180,7 @@ public class GasStationRepositoryTests {
 	@Test
 	public void test_findByCarSharing() {
 		//existing CarSharing
-		List<GasStation> gasStation = gasStationRepository.findByCarSharing("bah");
+		List<GasStation> gasStation = gasStationRepository.findByCarSharing("Car2Go");
 		assertEquals(1, gasStation.size());
 		assertTrue(gasStation.get(0).equals(GS1));
 		//existing CarSharing
