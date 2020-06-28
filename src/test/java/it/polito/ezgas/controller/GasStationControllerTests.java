@@ -2,14 +2,11 @@ package it.polito.ezgas.controller;
 
 import it.polito.ezgas.BootEZGasApplication;
 import it.polito.ezgas.converter.GasStationConverter;
-import it.polito.ezgas.converter.UserConverter;
 import it.polito.ezgas.dto.GasStationDto;
-import it.polito.ezgas.dto.UserDto;
+import it.polito.ezgas.dto.PriceReportDto;
 import it.polito.ezgas.entity.GasStation;
-import it.polito.ezgas.entity.User;
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -17,13 +14,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.PostConstruct;
-import javax.validation.constraints.Null;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
@@ -114,7 +108,6 @@ public class GasStationControllerTests {
 
     }
 
-
     @PostConstruct
     @BeforeClass  // run only once
     public static void setUpDatabase() throws SQLException {
@@ -128,7 +121,7 @@ public class GasStationControllerTests {
         db.close();
     }
 
-    private String convertDtoToJSON(GasStationDto gasStationDto) {
+    private String convertGasStationDtoToJSON(GasStationDto gasStationDto) {
         String JSON = "{" +
                 "\"gasStationName\":\"" + gasStationDto.getGasStationName() + "\"," +
                 "\"gasStationAddress\":\"" + gasStationDto.getGasStationAddress() + "\"," +
@@ -164,10 +157,24 @@ public class GasStationControllerTests {
         return JSON;
     }
 
+    private String convertPriceReportDtoToJSON(PriceReportDto priceReportDto) {
+        String JSON = "{" +
+                "\"gasStationId\":" + priceReportDto.getGasStationId() + "," +
+                "\"dieselPrice\":" + priceReportDto.getDieselPrice() + "," +
+                "\"superPrice\":" + priceReportDto.getSuperPrice() + "," +
+                "\"superPlusPrice\":" + priceReportDto.getSuperPlusPrice() + "," +
+                "\"gasPrice\":" + priceReportDto.getGasPrice() + "," +
+                "\"methanePrice\":" + priceReportDto.getMethanePrice() + "," +
+                "\"premiumDieselPrice\":" + priceReportDto.getPremiumDieselPrice() + "," +
+                "\"userId\":" + priceReportDto.getUserId() +
+                "}";
+        System.out.println(JSON);
+        return JSON;
+    }
+
     private void separateTestsGraphically() {
         System.err.println("-----------------------------------------------------------------------------------------");
     }
-
 
     @Test
     public void test_getGasStationById() throws Exception {
@@ -207,7 +214,7 @@ public class GasStationControllerTests {
         GS10dto = GasStationConverter.convertEntityToDto(GS10_nonExisting);
         mockMvc.perform(post(apiPrefix + SAVE_GASSTATION)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(convertDtoToJSON(GS10dto))
+                    .content(convertGasStationDtoToJSON(GS10dto))
                     .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -221,15 +228,12 @@ public class GasStationControllerTests {
         GS10dto = GasStationConverter.convertEntityToDto(GS10_nonExisting);
         mockMvc.perform(post(apiPrefix + SAVE_GASSTATION)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(convertDtoToJSON(GS10dto))
+                .content(convertGasStationDtoToJSON(GS10dto))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
 
     }
-
-
-
 
     @Test
     public void test_deleteGasStation() throws Exception {
@@ -253,8 +257,6 @@ public class GasStationControllerTests {
 
     }
 
-
-
     @Test
     public void test_getGasStationsByGasolineType() throws Exception {
 
@@ -265,10 +267,6 @@ public class GasStationControllerTests {
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andDo(print());
     }
-
-
-
-
 
     @Test
     public void test_getGasStationsByProximity() throws Exception {
@@ -292,8 +290,6 @@ public class GasStationControllerTests {
                 .andExpect(jsonPath("$", hasSize(0)))
                 .andDo(print());
     }
-
-
 
     @Test
     public void test_getGasStationsWithCoordinates() throws Exception {
@@ -332,24 +328,25 @@ public class GasStationControllerTests {
                 .andDo(print());
     }
 
-
-
-
-
-
     @Test
     public void test_setGasStationReport() throws Exception {
-        mockMvc.perform(post(apiPrefix + SET_GASSTATION_REPORT.replace("{gasStationId}",String.valueOf(GS1_id))
-                            .replace("{dieselPrice}","1.452").replace("{superPrice}","1.764")
-                            .replace("{superPlusPrice}", "0.0").replace("{gasPrice}","1.812")
-                            .replace("{methanePrice}", "0.0").replace("{premiumDieselPrice}","0.0")
-                            .replace("{userId}", "1")
-                            )
+        PriceReportDto validPriceReportDto = new PriceReportDto(
+                1,
+                1.1,
+                1.2,
+                1.3,
+                1.4,
+                1.5,
+                1.6,
+                1
+        );
 
+        mockMvc.perform(post(apiPrefix + SET_GASSTATION_REPORT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(convertPriceReportDtoToJSON(validPriceReportDto))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
-
     }
 
 }
