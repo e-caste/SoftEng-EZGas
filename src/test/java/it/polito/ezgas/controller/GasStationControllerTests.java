@@ -64,6 +64,7 @@ public class GasStationControllerTests {
             "has_methane BOOLEAN, " +
             "has_super BOOLEAN, " +
             "has_super_plus BOOLEAN, " +
+            "has_premium_diesel BOOLEAN, " +
             "lat DOUBLE, " +
             "lon DOUBLE, " +
             "methane_price DOUBLE, " +
@@ -72,13 +73,14 @@ public class GasStationControllerTests {
             "report_user INTEGER, " +
             "super_price DOUBLE, " +
             "super_plus_price DOUBLE, " +
+            "premium_diesel_price DOUBLE, " +
             "user_id INTEGER)";
 
 
     static List<String> sqlInsertGSs = Arrays.asList(
-            //id|car|dies_pr|gas_pr|gas_station_address|station_name|                                 has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|  r_dep|time|               r_user|s_pr|s_p_pr|user_id
-            "INSERT INTO GAS_STATION VALUES (1, 'Enjoy', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE,  TRUE,  FALSE, 45.048903, 7.659812, 0,  		0, '05-24-2020', -1,  1.864, 0,    NULL)",
-            "INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE,  FALSE,  FALSE, 45.048903, 7.659812, 0, 		0,  '05-23-2020', -1, 0, 0,    NULL)"
+            //id|car|dies_pr|gas_pr|gas_station_address|station_name|                                 has_die|has_g|has_met|has_s|has_s_p| has_p_d|	lat	|	lon		|met_pr|  r_dep|time|               r_user|s_pr|s_p_pr| p_d_pr|user_id
+            "INSERT INTO GAS_STATION VALUES (1, 'Enjoy', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE,  TRUE,  FALSE,FALSE, 45.048903, 7.659812, 0.0,  		0, '05-24-2020', -1,  1.864, 0.0,  0.0, NULL)",
+            "INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE,  FALSE,  FALSE,FALSE, 45.048903, 7.659812, 0.0, 		0,  '05-23-2020', -1, 0.0, 0.0, 0.0,   NULL)"
 
     );
     static String apiPrefix = "/gasstation";
@@ -86,17 +88,18 @@ public class GasStationControllerTests {
     private GasStationDto GS1dto, GS10dto;
     Integer GS1_id, GS10_id;
 
+    static int radius = 5;  // kilometers
 
     @Before
     public void setUp() throws SQLException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         //Gas station with existing id in the database
-        GS1_existing = new GasStation("Esso", "via Olanda, 12, Torino", true, true, false, true, false, "Enjoy", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, -1, "05-24-2020", 0);
+        GS1_existing = new GasStation("Esso", "via Olanda, 12, Torino", true, true, false, true, false, false, "Enjoy", 45.048903, 7.659812, 1.375, 1.864, 0.0, 1.753, 0.0,0.0, -1, "05-24-2020", 0);
         GS1_id = 1;
         GS1_existing.setGasStationId(GS1_id);
         GS1dto = GasStationConverter.convertEntityToDto(GS1_existing);
 
-        GS10_nonExisting = new GasStation("Repsol", "via Olanda, 12, Torino", true, false, false, false, false, "Enjoy", 45.048903, 7.659812, 1.375, 0, 0, 0, 0, -1, "05-26-2020", 0);
+        GS10_nonExisting = new GasStation("Repsol", "via Olanda, 12, Torino", true, false, false, false, false, false,"Enjoy", 45.048903, 7.659812, 1.375, 0.0, 0.0, 0.0, 0.0, 0.0,-1, "05-26-2020", 0);
         GS10_id = 10;
         GS10_nonExisting.setGasStationId(GS10_id);
         GS10dto = GasStationConverter.convertEntityToDto(GS10_nonExisting);
@@ -134,6 +137,8 @@ public class GasStationControllerTests {
                 "\"hasSuperPlus\":" + gasStationDto.getHasSuperPlus() + "," +
                 "\"hasGas\":" + gasStationDto.getHasGas() + "," +
                 "\"hasMethane\":" + gasStationDto.getHasMethane() + "," +
+                "\"hasPremiumDiesel\":" + gasStationDto.getHasPremiumDiesel() + "," +
+
                 "\"carSharing\":\"" + gasStationDto.getCarSharing() + "\"," +
                 "\"lat\":" + gasStationDto.getLat() + "," +
                 "\"lon\":" + gasStationDto.getLon() + "," +
@@ -142,6 +147,7 @@ public class GasStationControllerTests {
                 "\"superPlusPrice\":" + gasStationDto.getSuperPlusPrice() + "," +
                 "\"gasPrice\":" + gasStationDto.getGasPrice() + "," +
                 "\"methanePrice\":" + gasStationDto.getMethanePrice() + "," +
+                "\"premiumDieselPrice\":" + gasStationDto.getPremiumDieselPrice() + "," +
                 "\"reportUser\":" + gasStationDto.getReportUser() + "," +
                 "\"userDto\":" + gasStationDto.getUserDto() + "," +
                 "\"reportTimestamp\":\"" + gasStationDto.getReportTimestamp() + "\"," +
@@ -278,7 +284,8 @@ public class GasStationControllerTests {
         separateTestsGraphically();
         //test with invalid values for latitude and longitude
         mockMvc.perform(get(apiPrefix + GET_GASSTATIONS_BY_PROXIMITY.replace("{myLat}","-91")
-                .replace("{myLon}","45"))
+                .replace("{myLon}","45")
+                .replace("{myRadius}","5"))
                 .accept(MediaType.APPLICATION_JSON)
                 .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"05-24-2020\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
                 .andExpect(status().isOk())
@@ -292,6 +299,7 @@ public class GasStationControllerTests {
     public void test_getGasStationsWithCoordinates() throws Exception {
         mockMvc.perform(get(apiPrefix + GET_GASSTATIONS_WITH_COORDINATES.replace("{myLat}","45.048903")
                 .replace("{myLon}","7.659812")
+                .replace("{myRadius}", "5")
                 .replace("{gasolineType}","Super").replace("{carSharing}","Enjoy"))
                 .accept(MediaType.APPLICATION_JSON)
                 .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"05-24-2020\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
@@ -303,6 +311,7 @@ public class GasStationControllerTests {
         //invalid car sharing
         mockMvc.perform(get(apiPrefix + GET_GASSTATIONS_WITH_COORDINATES.replace("{myLat}","45.048903")
                 .replace("{myLon}","7.659812")
+                .replace("{myRadius}", "5")
                 .replace("{gasolineType}","Super").replace("{carSharing}","boh"))
                 .accept(MediaType.APPLICATION_JSON)
                 .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"05-24-2020\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
@@ -314,6 +323,7 @@ public class GasStationControllerTests {
    //invalid coordinates
         mockMvc.perform(get(apiPrefix + GET_GASSTATIONS_WITH_COORDINATES.replace("{myLat}","91")
                 .replace("{myLon}","45")
+                .replace("{myRadius}", "5")
                 .replace("{gasolineType}","Super").replace("{carSharing}","Enjoy"))
                 .accept(MediaType.APPLICATION_JSON)
                 .content("[{\"gasStationId\":1,\"gasStationName\":\"Esso\",\"gasStationAddress\":\"via Olanda, 12, Torino\",\"hasDiesel\":true,\"hasSuper\":true,\"hasSuperPlus\":false,\"hasGas\":true,\"hasMethane\":false,\"carSharing\":\"Enjoy\",\"lat\":45.048903,\"lon\":7.659812,\"dieselPrice\":1.375,\"superPrice\":1.846,\"superPlusPrice\":0.0,\"gasPrice\":1.753,\"methanePrice\":0.0,\"reportUser\":-1,\"userDto\":null,\"reportTimestamp\":\"05-24-2020\",\"reportDependability\":0,\"priceReportDtos\":[]}]"))
@@ -331,8 +341,11 @@ public class GasStationControllerTests {
     public void test_setGasStationReport() throws Exception {
         mockMvc.perform(post(apiPrefix + SET_GASSTATION_REPORT.replace("{gasStationId}",String.valueOf(GS1_id))
                             .replace("{dieselPrice}","1.452").replace("{superPrice}","1.764")
-                            .replace("{superPlusPrice}", "0").replace("{gasPrice}","1.812")
-                            .replace("{methanePrice}", "0").replace("{userId}", "1"))
+                            .replace("{superPlusPrice}", "0.0").replace("{gasPrice}","1.812")
+                            .replace("{methanePrice}", "0.0").replace("{premiumDieselPrice}","0.0")
+                            .replace("{userId}", "1")
+                            )
+
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
