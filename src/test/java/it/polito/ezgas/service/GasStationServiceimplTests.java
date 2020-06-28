@@ -157,12 +157,12 @@ public class GasStationServiceimplTests {
 		GS1.setHasSuper(true);
 		GS1.setHasSuperPlus(false);
 		GS1.setHasPremiumDiesel(true);
-		GS1.setMethanePrice(0.0);
+		GS1.setMethanePrice(null);
 		GS1.setReportDependability(0);
 		GS1.setReportTimestamp(null);
 		GS1.setReportUser(-1);
 		GS1.setSuperPrice(1.864);
-		GS1.setSuperPlusPrice(0.0);
+		GS1.setSuperPlusPrice(null);
 		GS1.setPremiumDieselPrice(1.555);
 		GS1.setGasStationId(GS1id);
 		GS1.setLat(45.048903);
@@ -172,8 +172,8 @@ public class GasStationServiceimplTests {
 		//GS1Dto = GasStationConverter.convertEntityToDto(GS1);
 		gasStationRepository.save(GS1);
 
-		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, true, "Car2Go", 45.048903, 7.659812, 1.375, 1.864, null, 1.753, null, 1.555, -1, "05-24-2020", 0);
-		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, false, "IShare", 45.0, 7.0, 1.375, 1.864, null, 1.753, null, null, -1, "05-25-2020", 0);
+		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, true, "Car2Go", 45.048903, 7.659812, 1.375, 1.864, 0.0, 1.753, null, 1.555, -1, "05-24-2020", 0);
+		GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0.0, 1.753, null, null, -1, "05-25-2020", 0);
 	}
 
 	@Test
@@ -597,8 +597,9 @@ public class GasStationServiceimplTests {
 					        "SUPERPLUSPRICE: "		+ gsDtos.get(0).getSuperPlusPrice() + " " +
 					        "SUPERPRICE: "			+ gsDtos.get(0).getSuperPrice() + " " +
 					        "PREMIUMDIESELPRICE: "	+ gsDtos.get(0).getPremiumDieselPrice()
-				        );  
-		assertTrue(GS1Dto.equals(gsDtos.get(0)));
+				        );
+		GasStationDto other = gsDtos.get(0);
+		assertTrue(GS1Dto.equals(other));
 
 		
 		gsDtos = gasStationService.getGasStationsWithoutCoordinates("LPG", "Car2Go");
@@ -606,8 +607,7 @@ public class GasStationServiceimplTests {
 		assertTrue(GS1Dto.equals(gsDtos.get(0)));
 		
 		gsDtos = gasStationService.getGasStationsWithoutCoordinates("Super", "Enjoy");
-		assertEquals(1, gsDtos.size());
-		assertEquals("Eni", gsDtos.get(0).getGasStationName());
+		assertEquals(0, gsDtos.size());
 	}
 	
 	@Test
