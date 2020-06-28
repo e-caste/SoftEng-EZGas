@@ -96,22 +96,49 @@ public class GasStation implements Serializable {
 	}
 
 	public boolean equals(GasStation other) {
+		boolean test1 = (this.hasDiesel == other.getHasDiesel());
+		if(test1){
+			if(this.hasDiesel)
+				test1 = this.dieselPrice.equals(other.getDieselPrice());
+		}
+		boolean test2 = (this.hasPremiumDiesel == other.getHasPremiumDiesel());
+		if(test2){
+			if(this.hasPremiumDiesel)
+				test2 = this.premiumDieselPrice.equals(other.getPremiumDieselPrice());
+		}
+		boolean test3 = (this.hasGas == other.getHasGas());
+		if(test3){
+			if(this.hasGas)
+				test3 = this.gasPrice.equals(other.getGasPrice());
+		}
+		boolean test4 = (this.hasMethane == other.getHasMethane());
+		if(test4){
+			if(this.hasMethane)
+				test4 = this.methanePrice.equals(other.getMethanePrice());
+		}
+		boolean test5 = (this.hasSuper == other.getHasSuper());
+		if(test5){
+			if(this.hasSuper)
+				test5 = this.superPrice.equals(other.getSuperPrice());
+		}
+		boolean test6 = (this.hasSuperPlus == other.getHasSuperPlus());
+		if(test6){
+			if(this.hasSuperPlus)
+				test6 = this.superPlusPrice.equals(other.getSuperPlusPrice());
+		}
+
 		return this.gasStationName.equals(other.getGasStationName()) &&
 				this.gasStationAddress.equals(other.getGasStationAddress()) &&
 				(this.carSharing == null || this.carSharing.equals(other.getCarSharing())) &&
-				this.hasDiesel == other.getHasDiesel() &&
-				this.hasPremiumDiesel == other.getHasPremiumDiesel() &&
-				this.hasGas == other.getHasGas() &&
-				this.hasMethane == other.getHasMethane() &&
-				this.hasSuper == other.getHasSuper() &&
+				test1 &&
+				test2 &&
+				test3 &&
+				test4 &&
+				test5 &&
+				test6 &&
 				this.lat == other.getLat() &&
 				this.lon == other.getLon() &&
-				this.dieselPrice.equals(other.getDieselPrice()) &&
-				this.premiumDieselPrice.equals(other.getPremiumDieselPrice()) &&
-				this.superPrice.equals(other.getSuperPrice()) &&
-				this.superPlusPrice.equals(other.getSuperPlusPrice()) &&
-				this.gasPrice.equals(other.getGasPrice()) &&
-				this.methanePrice.equals(other.getMethanePrice()) &&
+
 				(this.reportUser == null || this.reportUser.equals(other.getReportUser())) &&
 //				this.user.equals(other.getUser()) &&
 				(this.reportTimestamp == null || this.reportTimestamp.equals(other.getReportTimestamp())) &&
