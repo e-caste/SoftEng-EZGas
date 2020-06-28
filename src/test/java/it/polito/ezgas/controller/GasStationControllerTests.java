@@ -350,6 +350,16 @@ public class GasStationControllerTests {
                 1.6,
                 1
         );
+        PriceReportDto invalidGasStationIdPriceReportDto = new PriceReportDto(
+                1000,
+                1.1,
+                1.2,
+                1.3,
+                1.4,
+                1.5,
+                1.6,
+                1
+        );
 
         // priceReportDto is valid
         mockMvc.perform(post(apiPrefix + SET_GASSTATION_REPORT)
@@ -361,14 +371,24 @@ public class GasStationControllerTests {
         separateTestsGraphically();
 
         // priceReportDto has invalid (negative) price
+        // TODO: check how to determine this generates an error
         mockMvc.perform(post(apiPrefix + SET_GASSTATION_REPORT)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(convertPriceReportDtoToJSON(invalidPricePriceReportDto))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
+        separateTestsGraphically();
 
         // priceReportDto has non-existing gasStationId
+        // TODO: check how to determine this generates an error
+        mockMvc.perform(post(apiPrefix + SET_GASSTATION_REPORT)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(convertPriceReportDtoToJSON(invalidGasStationIdPriceReportDto))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+        separateTestsGraphically();
 
         // priceReportDto has non-existing userId
     }
