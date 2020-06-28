@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 
+import it.polito.ezgas.entity.GasStation;
 import it.polito.ezgas.entity.User;
 
 public class GasStationDto {
@@ -36,9 +37,6 @@ public class GasStationDto {
     String reportTimestamp;
     double reportDependability;
 
-
- 
-	
 	/*
 	public GasStationDto(Integer gasStationId, String gasStationName, String gasStationAddress, 
 			boolean hasDiesel, boolean hasSuper, boolean hasSuperPlus, boolean hasGas, boolean hasMethane, String carSharing, 

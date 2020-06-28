@@ -100,17 +100,18 @@ public class GasStation implements Serializable {
 				this.gasStationAddress.equals(other.getGasStationAddress()) &&
 				(this.carSharing == null || this.carSharing.equals(other.getCarSharing())) &&
 				this.hasDiesel == other.getHasDiesel() &&
+				this.hasPremiumDiesel == other.getHasPremiumDiesel() &&
 				this.hasGas == other.getHasGas() &&
 				this.hasMethane == other.getHasMethane() &&
 				this.hasSuper == other.getHasSuper() &&
-				this.hasSuperPlus == other.getHasSuperPlus() &&
 				this.lat == other.getLat() &&
 				this.lon == other.getLon() &&
-				this.dieselPrice == other.getDieselPrice() &&
-				this.superPrice == other.getSuperPrice() &&
-				this.superPlusPrice == other.getSuperPlusPrice() &&
-				this.gasPrice == other.getGasPrice() &&
-				this.methanePrice == other.getMethanePrice() &&
+				this.dieselPrice.equals(other.getDieselPrice()) &&
+				this.premiumDieselPrice.equals(other.getPremiumDieselPrice()) &&
+				this.superPrice.equals(other.getSuperPrice()) &&
+				this.superPlusPrice.equals(other.getSuperPlusPrice()) &&
+				this.gasPrice.equals(other.getGasPrice()) &&
+				this.methanePrice.equals(other.getMethanePrice()) &&
 				(this.reportUser == null || this.reportUser.equals(other.getReportUser())) &&
 //				this.user.equals(other.getUser()) &&
 				(this.reportTimestamp == null || this.reportTimestamp.equals(other.getReportTimestamp())) &&
