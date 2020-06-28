@@ -354,18 +354,45 @@ public class GasStationServiceimpl implements GasStationService {
 
 	@Override
 	public void setReport(Integer gasStationId, Double dieselPrice, Double superPrice, Double superPlusPrice, Double gasPrice, Double methanePrice, Double premiumDieselPrice, Integer userId) throws InvalidGasStationException, PriceException, InvalidUserException {
-		GasStation gasStation = gasStationRepository.findById(gasStationId);
+		GasStation gasStation = gasStationRepository.findOne(gasStationId);
 
 		if (gasStation == null)
 			throw new InvalidGasStationException("Gas Station not found");
 
-		if ((dieselPrice < 0 && gasStation.getHasDiesel()) ||
-				(superPrice < 0 && gasStation.getHasSuper()) ||
-				(superPlusPrice < 0 && gasStation.getHasSuperPlus()) ||
-				(gasPrice < 0 && gasStation.getHasGas()) ||
-				(methanePrice < 0 && gasStation.getHasMethane()) ||
-				(premiumDieselPrice < 0 && gasStation.getHasPremiumDiesel())) {
-			throw new PriceException("Wrong Price");
+		if(gasStation.getHasDiesel()){
+			if(dieselPrice < 0){
+				throw new PriceException("Wrong Price");
+			}
+		}
+
+		if(gasStation.getHasSuper()){
+			if(superPrice < 0){
+				throw new PriceException("Wrong Price");
+			}
+		}
+
+		if(gasStation.getHasSuperPlus()){
+			if(superPlusPrice < 0){
+				throw new PriceException("Wrong Price");
+			}
+		}
+
+		if(gasStation.getHasGas()){
+			if(gasPrice < 0){
+				throw new PriceException("Wrong Price");
+			}
+		}
+
+		if(gasStation.getHasMethane()){
+			if(methanePrice < 0){
+				throw new PriceException("Wrong Price");
+			}
+		}
+
+		if(gasStation.getHasPremiumDiesel()){
+			if(premiumDieselPrice < 0){
+				throw new PriceException("Wrong Price");
+			}
 		}
 
 		User user = userRepository.findById(userId);
