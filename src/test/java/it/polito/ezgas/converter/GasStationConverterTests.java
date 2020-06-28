@@ -108,13 +108,15 @@ public class GasStationConverterTests {
 
     @Test
     public void testConvertEntityToDto() {
-        assertTrue(gasStationDtoAllFuels.equals(GasStationConverter.convertEntityToDto(gasStationAllFuels)));
+        GasStationDto gsDtos = GasStationConverter.convertEntityToDto(gasStationAllFuels);
+        assertTrue(gasStationDtoAllFuels.equals(gsDtos));
         assertTrue(gasStationDto.equals(GasStationConverter.convertEntityToDto(gasStation)));
     }
 
     @Test
     public void testConvertDtoToEntity() {
-        assertTrue(gasStationAllFuels.equals(GasStationConverter.convertDtoToEntity(gasStationDtoAllFuels)));
+        GasStation gs = GasStationConverter.convertDtoToEntity(gasStationDtoAllFuels);
+        assertTrue(gasStationAllFuels.equals(gs));
         assertTrue(gasStation.equals(GasStationConverter.convertDtoToEntity(gasStationDto)));
     }
 }
