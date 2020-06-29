@@ -145,7 +145,7 @@ public class GasStationControllerTests {
                 "\"userDto\":" + gasStationDto.getUserDto() + "," +
                 "\"reportTimestamp\":\"" + gasStationDto.getReportTimestamp() + "\"," +
                 "\"reportDependability\":" + gasStationDto.getReportDependability() + ",";
-                // TODO: we are currently not using the list of priceReportDtos, and anyway it is not JSON-serializable
+                // we are currently not using the list of priceReportDtos, and anyway it is not JSON-serializable
 //                "\"priceReportDtos\":\"" + gasStationDto.getPriceReportDtos() + "\",";
 
         if (gasStationDto.getGasStationId() != null) {

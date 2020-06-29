@@ -226,7 +226,6 @@ public class UserRepositoryTests {
         incompleteUser.setUserId(incompleteUserId);
         userRepository.save(incompleteUser);
         // this below fails because the null value of the password doesn't have an equals() method
-        // TODO: verify where the checks that username, password, email, reputation are not null should happen - GUI, Service..?
         //assertTrue(incompleteUser.equals(selectById(incompleteUserId)));
     }
 
@@ -242,7 +241,7 @@ public class UserRepositoryTests {
 
         // id doesn't exist -> fail
         try {
-            userRepository.delete(nonExistingUserId);  // throws hidden exception  // TODO: implement try catch in UserService
+            userRepository.delete(nonExistingUserId);  // throws hidden exception
         } catch (EmptyResultDataAccessException e) {
             assertEquals(e.getMessage(), "No class it.polito.ezgas.entity.User entity with id 3 exists!");
         }

@@ -142,7 +142,6 @@ public class GasStationDto {
 				this.lon == other.getLon() &&
 
 				(this.reportUser == null || this.reportUser.equals(other.getReportUser())) &&
-//				this.user.equals(other.getUser()) &&
 				(this.reportTimestamp == null || this.reportTimestamp.equals(other.getReportTimestamp())) &&
 				this.reportDependability == other.getReportDependability();
 	}
