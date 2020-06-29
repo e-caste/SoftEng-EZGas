@@ -155,10 +155,10 @@ sunday are closed
 | C = Estimated cost, in euro (here use 1 person hour cost = 30 euro) | 7755€ |
 | Estimated calendar time, in calendar weeks (Assume team of 4 people, 8 hours per day, 5 days per week ) | 1.6 |               
 
-in order to get the LOC we have used the following commands:
-backend+frontend: git ls-files src | xargs wc -l (total lines of code)
-frontend:  git ls-files src/main/resources | xargs wc -l 
-effective LOC = total LOC - frontend LOC
+In order to get the LOC we have used the following commands:  
+- backend+frontend: `git ls-files src | xargs wc -l` (total lines of code)  
+- frontend: `git ls-files src/main/resources | xargs wc -l`  
+- effective LOC = total LOC - frontend LOC
 
 # Estimate by activity decomposition
 
