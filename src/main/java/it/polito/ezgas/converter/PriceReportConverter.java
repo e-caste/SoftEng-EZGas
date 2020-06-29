@@ -36,7 +36,7 @@ public class PriceReportConverter {
 	
 	public PriceReport convertDtoToEntity(PriceReportDto pr) {
 		PriceReport prEntity = new PriceReport();
-		prEntity.setUser(userRepository.findOne(pr.getUserId()));
+		prEntity.setUser(userRepository.findById(pr.getUserId()));
 		//PriceReport Repository??
 		//missing setGSid in entity
 		prEntity.setDieselPrice(pr.getDieselPrice());
