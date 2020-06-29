@@ -260,7 +260,7 @@ public class UserControllerTests {
                 .andDo(print());
         separateTestsGraphically();
 
-        // user doesn't exist -> return 0 // TODO check if default value
+        // user doesn't exist -> return 0
         mockMvc.perform(post(apiPrefix + INCREASE_REPUTATION.replace("{userId}", String.valueOf(nonExistingUserId)))
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -288,7 +288,7 @@ public class UserControllerTests {
                 .andDo(print());
         separateTestsGraphically();
 
-        // user doesn't exist -> return 0 // TODO check if default value
+        // user doesn't exist -> return 0
         mockMvc.perform(post(apiPrefix + DECREASE_REPUTATION.replace("{userId}", String.valueOf(nonExistingUserId)))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -298,8 +298,6 @@ public class UserControllerTests {
 
     @Test
     public void testLogin() throws Exception {
-        // TODO: add checks for jsonPath
-        // TODO: fix "Did not find handler method for [/user/login]" -> always get 200 OK with no response body
         // login existing admin user
         mockMvc.perform(post(apiPrefix + LOGIN)
                         .contentType(MediaType.APPLICATION_JSON)

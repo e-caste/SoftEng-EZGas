@@ -286,7 +286,6 @@ public class GasStationServiceimpl implements GasStationService {
 		sLat = Math.toRadians(sLat);
 		eLat = Math.toRadians(eLat);
 
-		// TODO: rename these variables with descriptive names
 		double a = Math.pow(Math.sin(dLat/2),2) + Math.cos(eLat) * Math.cos(sLat) * Math.pow(Math.sin(dLon/2),2);
 		double c = 2 * Math.asin(Math.sqrt(a));
 
