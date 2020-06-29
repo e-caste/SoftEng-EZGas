@@ -372,6 +372,7 @@ public class GasStationControllerTests {
         );
 
         // priceReportDto is valid
+        System.out.println("\nExpected message: none");
         mockMvc.perform(post(apiPrefix + SET_GASSTATION_REPORT)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(convertPriceReportDtoToJSON(validPriceReportDto))
@@ -380,8 +381,10 @@ public class GasStationControllerTests {
                 .andDo(print());
         separateTestsGraphically();
 
+        // the following tests can only check if they receive a response, since the GasStationController.setReport method returns void
+        // to check if they're working correctly, simply inspect the output and check that the printed exception message corresponds to the right test case
         // priceReportDto has invalid (negative) price
-        // TODO: check how to determine this generates an error
+        System.out.println("\nExpected message: Wrong price");
         mockMvc.perform(post(apiPrefix + SET_GASSTATION_REPORT)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(convertPriceReportDtoToJSON(invalidPricePriceReportDto))
@@ -391,7 +394,7 @@ public class GasStationControllerTests {
         separateTestsGraphically();
 
         // priceReportDto has non-existing gasStationId
-        // TODO: check how to determine this generates an error
+        System.out.println("\nExpected message: Gas Station not found");
         mockMvc.perform(post(apiPrefix + SET_GASSTATION_REPORT)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(convertPriceReportDtoToJSON(invalidGasStationIdPriceReportDto))
@@ -401,7 +404,7 @@ public class GasStationControllerTests {
         separateTestsGraphically();
 
         // priceReportDto has non-existing userId
-        // TODO: check how to determine this generates an error
+        System.out.println("\nExpected message: User not found");
         mockMvc.perform(post(apiPrefix + SET_GASSTATION_REPORT)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(convertPriceReportDtoToJSON(invalidUserIdPriceReportDto))
