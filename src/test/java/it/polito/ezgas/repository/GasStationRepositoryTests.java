@@ -330,7 +330,7 @@ public class GasStationRepositoryTests {
     }
     
     @Test
-    public void test_findOne() {
+    public void test_findById() {
     	//existing id
     	assertTrue(gasStationRepository.findById(GS1.getGasStationId()).equals(GS1));
     	
