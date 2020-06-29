@@ -299,24 +299,24 @@ public class GasStationRepositoryTests {
 		assertTrue(gs.getHasMethane());
 		assertEquals(0.986, gs.getMethanePrice(), 0.0);
 
-		assertEquals(1.524, gasStationRepository.findOne(GS1.getGasStationId()).getDieselPrice(), 0.0);
-		assertTrue(gasStationRepository.findOne(GS1.getGasStationId()).getHasMethane());
-		assertEquals(0.986, gasStationRepository.findOne(GS1.getGasStationId()).getMethanePrice(), 0.0);
+		assertEquals(1.524, gasStationRepository.findById(GS1.getGasStationId()).getDieselPrice(), 0.0);
+		assertTrue(gasStationRepository.findById(GS1.getGasStationId()).getHasMethane());
+		assertEquals(0.986, gasStationRepository.findById(GS1.getGasStationId()).getMethanePrice(), 0.0);
 	}
 	
 	@Test
 	public void test_save_notExisting() {
 		GasStation gs = gasStationRepository.save(GS3);
 		
-		assertTrue(gasStationRepository.findOne(GS3.getGasStationId()).equals(GS3));
+		assertTrue(gasStationRepository.findById(GS3.getGasStationId()).equals(GS3));
 	}
 	
 	 @Test
     public void test_delete_existing() {
         //id exists -> deleted
-		assertTrue(gasStationRepository.findOne(GS1.getGasStationId()).equals(GS1));
+		assertTrue(gasStationRepository.findById(GS1.getGasStationId()).equals(GS1));
     	gasStationRepository.delete(GS1.getGasStationId());
-    	assertNull(gasStationRepository.findOne(GS1.getGasStationId()));
+    	assertNull(gasStationRepository.findById(GS1.getGasStationId()));
     }
     
     @Test
@@ -332,10 +332,10 @@ public class GasStationRepositoryTests {
     @Test
     public void test_findOne() {
     	//existing id
-    	assertTrue(gasStationRepository.findOne(GS1.getGasStationId()).equals(GS1));
+    	assertTrue(gasStationRepository.findById(GS1.getGasStationId()).equals(GS1));
     	
     	//id does not exist -> throw exception
-        assertNull(gasStationRepository.findOne(1000));
+        assertNull(gasStationRepository.findById(1000));
     }
     
 }
