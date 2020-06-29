@@ -54,45 +54,6 @@ We have estimated the EZGas, GasStation, GuestUser and Update classes to be long
 |Git Maven | 10 |
 
 
-# Estimations based on the actual efforts computed
-
-# Estimate by product decomposition
-
-
-
-###
-
-|             | Estimate                        |             
-| ----------- | ------------------------------- |  
-| NC =  Estimated number of classes to be developed   | 36 |             
-|  A = Estimated average size per class, in LOC       |235 |
-| S = Estimated size of project, in LOC (= NC * A) | 8444 |
-| E = Estimated effort, in person hours (here use productivity 10 LOC per person hour)  | 258.5 |   
-| C = Estimated cost, in euro (here use 1 person hour cost = 30 euro) | 7755€ |
-| Estimated calendar time, in calendar weeks (Assume team of 4 people, 8 hours per day, 5 days per week ) | 1.6 |               
-
-in order to get the LOC we have used the following commands:
-backend+frontend: git ls-files src | xargs wc -l (total lines of code)
-frontend:  git ls-files src/main/resources | xargs wc -l 
-effective LOC = total LOC - frontend LOC
-
-# Estimate by activity decomposition
-
-###
-
-|         Activity name    | Estimated effort (person hours)   |             
-| ----------- | ------------------------------- |
-|Requirement Engineering |36 |
-|Design |44 |
-|Coding |70 |
-|Unit Testing |32|
-|Integration Testing |45 |
-|Acceptance Testing |7 |
-|Management |13 |
-|Git Maven | 11.5 |
-
-
-
 ###
 
 Gantt chart
@@ -176,3 +137,42 @@ sunday are closed
 
 @enduml
 ```
+
+# Estimations based on the actual efforts computed
+
+# Estimate by product decomposition
+
+
+
+###
+
+|             | Estimate                        |             
+| ----------- | ------------------------------- |  
+| NC =  Estimated number of classes to be developed   | 36 |             
+|  A = Estimated average size per class, in LOC       |235 |
+| S = Estimated size of project, in LOC (= NC * A) | 8444 |
+| E = Estimated effort, in person hours (here use productivity 10 LOC per person hour)  | 258.5 |   
+| C = Estimated cost, in euro (here use 1 person hour cost = 30 euro) | 7755€ |
+| Estimated calendar time, in calendar weeks (Assume team of 4 people, 8 hours per day, 5 days per week ) | 1.6 |               
+
+in order to get the LOC we have used the following commands:
+backend+frontend: git ls-files src | xargs wc -l (total lines of code)
+frontend:  git ls-files src/main/resources | xargs wc -l 
+effective LOC = total LOC - frontend LOC
+
+# Estimate by activity decomposition
+
+###
+
+|         Activity name    | Estimated effort (person hours)   |             
+| ----------- | ------------------------------- |
+|Requirement Engineering |36 |
+|Design |44 |
+|Coding |70 |
+|Unit Testing |32|
+|Integration Testing |45 |
+|Acceptance Testing |7 |
+|Management |13 |
+|Git Maven | 11.5 |
+
+
