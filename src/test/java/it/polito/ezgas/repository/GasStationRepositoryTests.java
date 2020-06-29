@@ -164,18 +164,6 @@ public class GasStationRepositoryTests {
 		GS3.setGasStationId(3);
 	
 	}
-
-	// the findById method is replaced by the standard JpaRepository.findOne method
-	// leaving this test here for future reference
-//	@Test
-//	public void test_findById() {
-//		//existing id
-//		GasStation gasStation = gasStationRepository.findById(GS1id);
-//		assertTrue(gasStation.equals(GS1));
-//		//nonExisting id
-//		gasStation = gasStationRepository.findById(1000);
-//		assertNull(gasStation);
-//	}
 	
 	@Test
 	public void test_findByCarSharing() {
@@ -191,9 +179,7 @@ public class GasStationRepositoryTests {
 		gasStation = gasStationRepository.findByCarSharing("NonExistingCarSharing");
 		assertEquals(0, gasStation.size());
 	}
-	
-	//TODO findone
-	
+		
 	@Test
 	public void test_findAll() throws SQLException {
 		List<GasStation> gsListDB = new ArrayList<>();
