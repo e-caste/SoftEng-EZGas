@@ -51,7 +51,7 @@ We have estimated the EZGas, GasStation, GuestUser and Update classes to be long
 |Integration Testing |16 |
 |Acceptance Testing |16 |
 |Management |50 |
-|Git Maven | |
+|Git Maven | 10 |
 
 
 # Estimations based on the actual efforts computed
