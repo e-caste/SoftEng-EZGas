@@ -354,7 +354,7 @@ public class GasStationServiceimpl implements GasStationService {
 
 	@Override
 	public void setReport(Integer gasStationId, Double dieselPrice, Double superPrice, Double superPlusPrice, Double gasPrice, Double methanePrice, Double premiumDieselPrice, Integer userId) throws InvalidGasStationException, PriceException, InvalidUserException {
-		GasStation gasStation = gasStationRepository.findOne(gasStationId);
+		GasStation gasStation = gasStationRepository.findById(gasStationId);
 
 		if (gasStation == null)
 			throw new InvalidGasStationException("Gas Station not found");
