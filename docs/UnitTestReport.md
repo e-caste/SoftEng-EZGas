@@ -128,10 +128,6 @@ This can be easily increased by tweaking the Python script used to generate the 
 |       | lon > 180 |
 |       | lon < 180 |
 
-
-
-
-
 **Boundaries**:
 
 | Criteria | Boundary values |
@@ -167,55 +163,6 @@ This can be easily increased by tweaking the Python script used to generate the 
 ||lat < -95||||
 |||lon > 180|||
 |||lon < 180|||
-
-
-### **Class *class_name* - method *name***
-
-
-
-**Criteria for method *name*:**
-	
-
- - 
- - 
-
-
-
-
-
-**Predicates for method *name*:**
-
-| Criteria | Predicate |
-| -------- | --------- |
-|          |           |
-|          |           |
-|          |           |
-|          |           |
-
-
-
-
-
-**Boundaries**:
-
-| Criteria | Boundary values |
-| -------- | --------------- |
-|          |                 |
-|          |                 |
-
-
-
-**Combination of predicates**:
-
-
-| Criteria 1 | Criteria 2 | ... | Valid / Invalid | Description of the test case | JUnit test case |
-|-------|-------|-------|-------|-------|-------|
-|||||||
-|||||||
-|||||||
-|||||||
-|||||||
-
 
 # White Box Unit Tests
 
