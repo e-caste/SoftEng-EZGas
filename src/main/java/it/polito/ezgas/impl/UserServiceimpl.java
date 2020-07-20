@@ -28,6 +28,7 @@ public class UserServiceimpl implements UserService {
 	@Override
 	public UserDto getUserById(Integer userId) throws InvalidUserException {
 		User user = userRepository.findById(userId);
+
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
@@ -37,6 +38,7 @@ public class UserServiceimpl implements UserService {
 	@Override
 	public UserDto saveUser(UserDto userDto) {
 		User user = userRepository.findById(userDto.getUserId());
+
 		UserDto uDto = null;
 
 		// update existing user
@@ -74,6 +76,7 @@ public class UserServiceimpl implements UserService {
 	@Override
 	public Boolean deleteUser(Integer userId) throws InvalidUserException {
 		User user = userRepository.findById(userId);
+
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
@@ -104,6 +107,7 @@ public class UserServiceimpl implements UserService {
 	@Override
 	public Integer increaseUserReputation(Integer userId) throws InvalidUserException {
 		User user = userRepository.findById(userId);
+
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}
@@ -122,6 +126,7 @@ public class UserServiceimpl implements UserService {
 	@Override
 	public Integer decreaseUserReputation(Integer userId) throws InvalidUserException {
 		User user = userRepository.findById(userId);
+
 		if(user == null){
 			throw new InvalidUserException("User not found");
 		}

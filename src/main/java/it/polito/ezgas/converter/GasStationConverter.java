@@ -33,6 +33,10 @@ public class GasStationConverter {
             gsDTO.setHasMethane(gs.getHasMethane());
             gsDTO.setMethanePrice(gs.getMethanePrice());
         }
+        if(gs.getHasPremiumDiesel()){
+            gsDTO.setHasPremiumDiesel(gs.getHasPremiumDiesel());
+            gsDTO.setPremiumDieselPrice(gs.getPremiumDieselPrice());
+        }
         gsDTO.setCarSharing(gs.getCarSharing());
         gsDTO.setLat(gs.getLat());
         gsDTO.setLon(gs.getLon());
@@ -72,6 +76,10 @@ public class GasStationConverter {
         if(gsDTO.getHasMethane()){
             gs.setHasMethane(gsDTO.getHasMethane());
             gs.setMethanePrice(gsDTO.getMethanePrice());
+        }
+        if(gsDTO.getHasPremiumDiesel()){
+            gs.setHasPremiumDiesel(gsDTO.getHasPremiumDiesel());
+            gs.setPremiumDieselPrice(gsDTO.getPremiumDieselPrice());
         }
         gs.setCarSharing(gsDTO.getCarSharing());
         gs.setLat(gsDTO.getLat());

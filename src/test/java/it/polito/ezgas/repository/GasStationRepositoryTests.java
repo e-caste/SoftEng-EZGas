@@ -41,7 +41,7 @@ public class GasStationRepositoryTests {
     static Statement st;
     static ResultSet backup;
     static String sqlSelectAllGSs = "SELECT * FROM GAS_STATION";
-    static String sqlSelectGSbyCarSharing = "SELECT * FROM GAS_STATION WHERE CAR_SHARING='bah';";
+    static String sqlSelectGSbyCarSharing = "SELECT * FROM GAS_STATION WHERE CAR_SHARING='Car2Go';";
     static String sqlSelectGSbyGasType = "SELECT * FROM GAS_STATION WHERE HAS_DIESEL=TRUE;";
     
     static String sqlDropGSTable = "DROP TABLE IF EXISTS GAS_STATION";
@@ -57,6 +57,7 @@ public class GasStationRepositoryTests {
 										"has_methane BOOLEAN, " +
 										"has_super BOOLEAN, " +
 										"has_super_plus BOOLEAN, " +
+										"has_premium_diesel BOOLEAN, " +
 										"lat DOUBLE, " +
 										"lon DOUBLE, " +
 										"methane_price DOUBLE, " + 
@@ -65,14 +66,14 @@ public class GasStationRepositoryTests {
 										"report_user INTEGER, " +
 										"super_price DOUBLE, " +
 										"super_plus_price DOUBLE, " +
+										"premium_diesel_price DOUBLE, " +
 										"user_id INTEGER)";           
     
     static List<String> sqlInsertGSs = Arrays.asList(
-																			//id|car|dies_pr|gas_pr|gas_station_address|station_name|has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|r_dep|time|r_user|s_pr|s_p_pr|user_id
-											"INSERT INTO GAS_STATION VALUES (1, 'bah', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, NULL, -1, 1.864, 0, NULL)",
-            								"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  NULL, -1, 1.854, 0, NULL)"
-
-    );
+										//id|car|dies_pr|gas_pr|gas_station_address|station_name|has_die|has_g|has_met|has_s|has_s_p|	lat	|	lon		|met_pr|r_dep|time|r_user|s_pr|s_p_pr|user_id
+		"INSERT INTO GAS_STATION VALUES (1, 'Car2Go', 1.375, 1.753, 'via Olanda, 12, Torino', 'Esso',  TRUE, TRUE, FALSE, TRUE, TRUE, FALSE, 45.048903, 7.659812, 0,  		0, NULL, -1, 1.864, 0, 1.555, NULL)",
+		"INSERT INTO GAS_STATION VALUES (2, 'Enjoy', 1.431, 1.658, 'via Spagna, 32, Torino', 'Eni', TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, 45.048903, 7.659812, 0, 		0,  NULL, -1, 1.854, 0, 0, NULL)"
+);
     
 	Integer GS1id;
 	private String GS1Name, GS1carSharing;
@@ -131,7 +132,7 @@ public class GasStationRepositoryTests {
 		GS1 = new GasStation();
 		GS1id = 1;
 		GS1Name = "Esso";
-		GS1carSharing = "bah";
+		GS1carSharing = "Car2Go";
 		GS1.setDieselPrice(1.375);
 		GS1.setGasPrice(1.753);
 		GS1.setGasStationAddress("via Olanda, 12, Torino");
@@ -141,38 +142,33 @@ public class GasStationRepositoryTests {
 		GS1.setHasMethane(false);
 		GS1.setHasSuper(true);
 		GS1.setHasSuperPlus(false);
-		GS1.setMethanePrice(0);
+		GS1.setHasPremiumDiesel(true);
+		GS1.setMethanePrice(0.0);
 		GS1.setReportDependability(0);
 		GS1.setReportTimestamp(null);
 		GS1.setReportUser(-1);
 		GS1.setSuperPrice(1.864);
-		GS1.setSuperPlusPrice(0);
+		GS1.setSuperPlusPrice(0.0);
+		GS1.setPremiumDieselPrice(1.555);
 		GS1.setGasStationId(GS1id);
 		GS1.setLat(45.048903);
 		GS1.setLon(7.659812);
+		GS1.setReportTimestamp(null); //"05-24-2020"
 		GS1.setCarSharing(GS1carSharing);
 		//GS1Dto = GasStationConverter.convertEntityToDto(GS1);
 		gasStationRepository.save(GS1);
-		
-		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, "bah", 45.048903, 7.659812, 1.375, 1.864, 0, 1.753, 0, -1, null, 0);
-		GS3 = new GasStation("Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0, 1.753, 0, -1, null, 0);
+
+		GS1Dto = new GasStationDto(1, "Esso", "via Olanda, 12, Torino", true, true, false, true, false, true, "Car2Go", 45.048903, 7.659812, 1.375, 1.864, null, 1.753, null, 1.555, -1, null, 0);
+		//GS3Dto = new GasStationDto(3, "Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, false, "IShare", 45.0, 7.0, 1.375, 1.864, null, 1.753, null, null, -1, "05-25-2020", 0);
+		GS3 = new GasStation("Repsol", "via Portogallo, 43, Torino", true, true, false, true, false, false, "IShare", 45.0, 7.0, 1.375, 1.864, 0.0, 1.753, 0.0, 0.0,  -1, null, 0);
 		GS3.setGasStationId(3);
-	}
 	
-	@Test
-	public void test_findById() {
-		//existing id
-		GasStation gasStation = gasStationRepository.findById(GS1id);
-		assertTrue(gasStation.equals(GS1));
-		//nonExisting id
-		gasStation = gasStationRepository.findById(1000);
-		assertNull(gasStation);
 	}
 	
 	@Test
 	public void test_findByCarSharing() {
 		//existing CarSharing
-		List<GasStation> gasStation = gasStationRepository.findByCarSharing("bah");
+		List<GasStation> gasStation = gasStationRepository.findByCarSharing("Car2Go");
 		assertEquals(1, gasStation.size());
 		assertTrue(gasStation.get(0).equals(GS1));
 		//existing CarSharing
@@ -183,9 +179,7 @@ public class GasStationRepositoryTests {
 		gasStation = gasStationRepository.findByCarSharing("NonExistingCarSharing");
 		assertEquals(0, gasStation.size());
 	}
-	
-	//TODO findone
-	
+		
 	@Test
 	public void test_findAll() throws SQLException {
 		List<GasStation> gsListDB = new ArrayList<>();
@@ -198,7 +192,8 @@ public class GasStationRepositoryTests {
 													rs.getBoolean("has_super"),
 													rs.getBoolean("has_super_plus"),
 													rs.getBoolean("has_gas"), 
-													rs.getBoolean("has_methane"),   
+													rs.getBoolean("has_methane"),
+													rs.getBoolean("has_premium_diesel"),
 													rs.getString("car_sharing"), 
 													rs.getDouble("lat"), 
 													rs.getDouble("lon"),                 
@@ -207,6 +202,7 @@ public class GasStationRepositoryTests {
 													rs.getDouble("super_plus_price"),
 													rs.getDouble("gas_price"),
 													rs.getDouble("methane_price"),
+													rs.getDouble("premium_diesel_price"),
 													rs.getInt("report_user"),
 													rs.getString("report_timestamp"),
 													rs.getDouble("report_dependability")            
@@ -283,15 +279,15 @@ public class GasStationRepositoryTests {
 		GS1.setMethanePrice(0.986);
 		
 		GasStation gs = gasStationRepository.save(GS1);
-		
-		assertTrue(gs.getGasStationId() == GS1.getGasStationId());
-		assertTrue(gs.getDieselPrice() == 1.524 );
+
+		assertSame(gs.getGasStationId(), GS1.getGasStationId());
+		assertEquals(1.524, gs.getDieselPrice(), 0.0);
 		assertTrue(gs.getHasMethane());
-		assertTrue(gs.getMethanePrice() == 0.986);
-		
-		assertTrue(gasStationRepository.findById(GS1.getGasStationId()).getDieselPrice() == 1.524 );
+		assertEquals(0.986, gs.getMethanePrice(), 0.0);
+
+		assertEquals(1.524, gasStationRepository.findById(GS1.getGasStationId()).getDieselPrice(), 0.0);
 		assertTrue(gasStationRepository.findById(GS1.getGasStationId()).getHasMethane());
-		assertTrue(gasStationRepository.findById(GS1.getGasStationId()).getMethanePrice() == 0.986);
+		assertEquals(0.986, gasStationRepository.findById(GS1.getGasStationId()).getMethanePrice(), 0.0);
 	}
 	
 	@Test
@@ -320,12 +316,12 @@ public class GasStationRepositoryTests {
     }
     
     @Test
-    public void test_findOne() {
+    public void test_findById() {
     	//existing id
-    	assertTrue(gasStationRepository.findOne(GS1.getGasStationId()).equals(GS1));
+    	assertTrue(gasStationRepository.findById(GS1.getGasStationId()).equals(GS1));
     	
     	//id does not exist -> throw exception
-        assertNull(gasStationRepository.findOne(1000));
+        assertNull(gasStationRepository.findById(1000));
     }
     
 }

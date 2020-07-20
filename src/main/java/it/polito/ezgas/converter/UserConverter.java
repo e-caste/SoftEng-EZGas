@@ -26,7 +26,11 @@ public class UserConverter {
 		user.setEmail(userDto.getEmail());
 		user.setPassword(userDto.getPassword());
 		user.setAdmin(userDto.getAdmin());
-		user.setReputation(userDto.getReputation());
+		if (userDto.getReputation() == null) {
+			user.setReputation(0);
+		} else {
+			user.setReputation(userDto.getReputation());
+		}
 		user.setUserName(userDto.getUserName());
 		return user;
 	}

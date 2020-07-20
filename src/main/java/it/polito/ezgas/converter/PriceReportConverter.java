@@ -2,7 +2,8 @@ package it.polito.ezgas.converter;
 
 import it.polito.ezgas.dto.PriceReportDto;
 import it.polito.ezgas.entity.PriceReport;
-
+import it.polito.ezgas.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class PriceReportConverter {
@@ -10,30 +11,41 @@ public class PriceReportConverter {
 	public PriceReportConverter() {
 		
 	}
-		
+
+	@Autowired
+	UserRepository userRepository;
+
+
 
 	public PriceReportDto convertEntityToDto(PriceReport pr) {
 		PriceReportDto pdto = new PriceReportDto();
-		pdto.setUser(pr.getUser());
-		pdto.setPriceReportId(pr.getPriceReportId());
+		pdto.setUserId(pr.getUser().getUserId());
+		//missing getGasStationid in price report entity
+		//pdto.setGasStationId(pr.getGasStationId());
 		pdto.setDieselPrice(pr.getDieselPrice());
 		pdto.setGasPrice(pr.getGasPrice());
 		pdto.setSuperPlusPrice(pr.getSuperPlusPrice());
 		pdto.setSuperPrice(pr.getSuperPrice());
-				
+		//missing getMethanePrice
+		//pdto.setMethanePrice(pr.getMethanePrice());
+		//missing getPremiumDieselPrice in entity
+		//pdto.setPremiumDieselPrice(pr.getPremiumDieselPrice());
 		return pdto;
 		
 	}
 	
 	public PriceReport convertDtoToEntity(PriceReportDto pr) {
-		PriceReport pr_entity = new PriceReport();
-		pr_entity.setUser(pr.getUser());
-		pr_entity.setPriceReportId(pr.getPriceReportId());
-		pr_entity.setDieselPrice(pr.getDieselPrice());
-		pr_entity.setGasPrice(pr.getGasPrice());
-		pr_entity.setSuperPlusPrice(pr.getSuperPrice());
-		pr_entity.setSuperPrice(pr.getSuperPrice());
-		return pr_entity;
+		PriceReport prEntity = new PriceReport();
+		prEntity.setUser(userRepository.findById(pr.getUserId()));
+		//PriceReport Repository??
+		//missing setGSid in entity
+		prEntity.setDieselPrice(pr.getDieselPrice());
+		prEntity.setGasPrice(pr.getGasPrice());
+		prEntity.setSuperPlusPrice(pr.getSuperPrice());
+		prEntity.setSuperPrice(pr.getSuperPrice());
+		//missing setPremiumDieselPrice in entity
+
+		return prEntity;
 		
 	}
 }

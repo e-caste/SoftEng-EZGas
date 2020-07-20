@@ -3,9 +3,9 @@
 
 Authors: Enrico Castelli s280124, Augusto Maria Guerriero s278018, Francesca Ponzetta s276535, Monica Rungi s276979
 
-Date: 19/05/2020
+Date: 29/06/2020
 
-Version: 2
+Version: 3
 
 
 # Contents
@@ -238,14 +238,6 @@ The Java interfaces are already defined (see file ServicePackage.zip) and the lo
 Contains Service classes that implement the Service Interfaces in the Service package.
 
 
-
-
-
-
-
-
-
-
 # Low level design
 
 ```plantuml
@@ -311,6 +303,8 @@ scale 1/3
              - methanePrice: Double
             __
             == Getters and Setters ==
+            ==
+            + equals(GaStation): Boolean
             }
             
             class PriceReport {
@@ -325,8 +319,6 @@ scale 1/3
              
             __
             == Getters and Setters ==
-            ==
-                + equals(GaStation): Boolean
             }
     
             GasStation  -- "0..1" PriceReport
@@ -339,13 +331,16 @@ scale 1/3
     package "it.polito.ezgas.service" {
        interface "GasStationService" as GSS {
        == Getters ==
+           + getGasStationById(Integer): GasStationDto
+           + getAllGasStations: List<GasStationDto>
            + getGasStationsByGasolineType(String): List<GasStationDto>
            + getGasStationsByProximity(double, double): List<GasStationDto> 
-           + getGasStationsWithCoordinates(double, double, String, String): List<GasStationDto> 
+           + getGasStationsByProximity(double, double, int): List<GasStationDto>
+           + getGasStationsWithCoordinates(double, double, int, String, String): List<GasStationDto> 
            + getGasStationsWithoutCoordinates(String, String): List<GasStationDto>
            + getGasStationsByCarSharing(String): List<GasStationDto> 
        == Setter ==
-           + setReport(Integer, double, double, double, double, double, Integer): void
+           + setReport(Integer, double, double, double, double, double, double, Integer): void
        == Save ==
            + saveGasStation(GasStationDto): GasStationDto
        == Delete ==
@@ -355,6 +350,7 @@ scale 1/3
        interface "UserService" as US {
         == Getter ==
             + getUserById(Integer): UserDto
+            + getAllUsers(): List<UserDto>
         == Save ==
             + saveUser(): UserDto
         == Delete ==
@@ -413,18 +409,17 @@ scale 1/3
         == Getters ==
             + getGasStationById(Integer): GasStationDto 
             + getAllGasStations(): List<GasStationDto>
-            + deleteGasStationById(): Boolean
             + getGasStationsByGasolineType(String): List<GasStationDto>
-            + getGasStationsByProximity(Double, Double): List<GasStationDto>
+            + getGasStationsByProximity(Double, Double, Integer): List<GasStationDto>
             + getGasStationsByCarSharing(): List<GasStationDto>
-            + getGasStationsWithCoordinates(Double, Double): List<GasStationDto>
-            + getGasStationsWithoutCoordinates(): List<GasStationDto>
+            + getGasStationsWithCoordinates(Double, Double, Integer, String, String): List<GasStationDto>
         == Setters ==
-            + setGasStationReport(Integer): void
+            + setGasStationReport(PriceReportDto): void
         == Save ==
             + saveGasStation(GasStationDto): void
         == Delete ==
             + deleteUser(Integer): void
+            + deleteGasStation(Integer): Boolean
         }
         
         class UserController {
@@ -478,6 +473,10 @@ scale 1/3
          - admin {TRUE/FALSE}
         __
         == Getters and Setters ==
+        ==
+         + toString(): String
+         + equals(UserDto): boolean
+         + equalsIgnoreUserId(UserDto): boolean
         }
 
         class GasStationDto {
@@ -503,21 +502,25 @@ scale 1/3
          ~ hasMethane: Boolean
         ..
          ~ dieselPrice: Double
+         ~ premiumDieselPrice: Double
          ~ superPrice: Double
          ~ superPlusPrice: Double
          ~ gasPrice: Double
          ~ methanePrice: Double
         __
         == Getters and Setters ==
+        ==
+         +equals(GasStationDto): boolean
         }
         
         class PriceReportDto {
-         ~ priceReportId: Integer
-         ~ user: User
+         ~ gasStationId: Integer
+         ~ userId: Integer
          ..Types of Fuel..
          ~ dieselPrice: Double
          ~ superPrice: Double
          ~ superPlusPrice: Double
+         ~ premiumDieselPrice: Double
          ~ gasPrice: Double
          ~ methanePrice: Double
         
@@ -534,6 +537,8 @@ scale 1/3
          ~ admin {TRUE/FALSE}
         __
         == Getters and Setters ==
+        ==
+         +equals(LoginDto): boolean
         }
 
         class IdPw {
@@ -596,10 +601,24 @@ scale 1/3
 # Test package
 ```plantuml
 @startuml
+skinparam backgroundcolor #FAEBDA
+skinparam package {
+BackgroundColor #FAEBDA-FFA563
+ArrowColor #26424F
+BorderColor #26424F
+}
+skinparam class {
+BackgroundColor #FAEBDA/FFA563
+ArrowColor #26424F
+BorderColor #26424F
+}
+scale 1/3
+
 package "it.polito.ezgas.test" {
         class EZGasApplicationTests {
             + contextLoads
         }
+package service{
         class GasStationServiceimplTests {
             + setUpDatabase
             + tearDown
@@ -609,6 +628,8 @@ package "it.polito.ezgas.test" {
             + test_GetAllGasStations
             + test_DeleteGasStation_existing
             + test_DeleteGasStation_notExisting
+            + test_getGasStationsByGasolineType_InvalidGasType
+            + test_getGasStationsByGasolineType_validGasType
             + test_distance_nearest
             + test_distance_near
             + test_distance_far
@@ -619,10 +640,39 @@ package "it.polito.ezgas.test" {
             + test_reportDependability_sameDay_worstUser
             + test_reportDependability_obsolescent_worstUser
             + test_getGasStationsByProximity_invalidGPS
+            + test_getGasStationsWithCoordinates_invalidGasType
+            + test_getGasStationsWithCoordinates_existing
+            + test_getGasStationsWithCoordinates_notExisting
+            + test_getGasStationsWithoutCoordinates_invalidGasType
+            + test_getGasStationsWithoutCoordinates_existing
             + test_saveGasStation_invalidGPS
-            + test_getGasStationByCarSharing
+            + test_saveGasStation_negativePrices
+            + test_saveGasStation_existing
+            + test_saveGasStation_notExisting
+            + test_setReport_invalidPrice
+            + test_setReport_invalidGasStation
+            + test_setReport_invalidUser
+            + test_setReport
+            + test_getGasStationByCarSharing_existing
+            + test_getGasStationByCarSharing_notExisting
            
         }
+
+        class UserServiceimplTests {
+                    + setUpDatabase
+                    + setUp
+                    + tearDown
+                    + testGetUserById
+                    + testSaveUser
+                    + testGetAllUsers
+                    + testDeleteUser
+                    + testLogin
+                    + testIncreaseUserReputation
+                    + testDecreaseUserReputation
+                            
+                }
+}
+package nodepencies{
         class GetterSetterTests {
             + testPriceReportDto
             + testIdPw
@@ -633,7 +683,9 @@ package "it.polito.ezgas.test" {
             + testUser
             + testPriceReport
         }
+}
 
+package converter{
         class UserConverterTests {
            + setUp
            + testConvertEntityToDto
@@ -641,33 +693,111 @@ package "it.polito.ezgas.test" {
            + testConvertEntityToLoginDto
         }
 
-        class UserServiceimplTests {
-            + setUpDatabase
-            + setUp
-            + tearDown
-            + testGetUserById
-            + testSaveUser
-            + testGetAllUsers
-            + testDeleteUser
-            + testLogin
-            + testIncreaseUserReputation
-            + testDecreaseUserReputation
-                    
-        }
+        
         class GasStationConverterTests {
            + setUp
            + testConvertEntityToDto
            + testConvertDtoToEntity
         }
+}
 
          class H2TestProfileJPAConfig {
            + dataSource(void): DataSource
         }
 
-     
+package controllertests{
+        class TestController {
+            + getResponseFromRequest
+            + getJsonFromResponse
+            + getMapper
+            + test0GetUserById
+            + test1GetAllUsers
+            + test2SaveUser
+            + test6DeleteUser
+            + test3IncreaseUserReputation
+            + test4DecreaseUserReputation
+            + test5Login
+            + test6GetGasStationById
+            + test7GetAllGasStations
+            + test8SaveGasStation
+            + test9DeleteGasStation
+            + test10GetGasStationsByGasolineType
+            + test11GetGasStationsByProximity
+            + test12GetGasStationsWithCoordinates
+            + test13SetGasStationReport
+        }
+}
+        package GUITests{
+            class TestUseCase1
+            class TestUseCase2
+            class TestUseCase3
+            class TestUseCase4
+            class TestUseCase5
+            class TestUseCase6
+            class TestUseCase7
+            class TestUseCase8
+            class TestUseCase10
+        }
+        
+        package Repository{
+            class GasStationRepositoryTests{
+                + setUpDatabase
+                + tearDown
+                + setUp
+                + test_findByCarSharing
+                + test_findAll
+                + test_save_existing
+                + test_save_notExisting
+                + test_delete_existing
+                + test_delete_notExisting
+                + test_findById
+            }
+            class UserRepositoryTests{
+                            + setUpDatabase
+                            + tearDown
+                            + setUp
+                            + selectAll
+                            + selectById
+                            + testFindById
+                            + testFindByEmail
+                            + testFindAll
+                            + testSave
+                            + testDelete
+                        }
+        }
+    package controller {
+        class GasStationControllerTests{
+            + setUpDatabase
+            + tearDown
+            + convertGasStationDtoToJSON
+            + convertPriceReportDtoToJSON
+            + separateTestsGraphically
+            + test_getGasStationById
+            + test_getAllGasStations
+            + test_saveGasStation
+            + test_deleteGasStation
+            + test_getGasStationsByGasolineType
+            + test_getGasStationsByProximity
+            + test_getGasStationsWithCoordinates
+            + test_setGasStationReport
+        }
+        class UserControllerTests{
+            + setUp
+            + setUpDatabase
+            + tearDown
+            + separateTestsGraphically
+            + convertDtoToJSON
+            + testGetUserById
+            + testGetAllUsers
+            + testSaveUser
+            + testDeleteUser
+            + testIncreaseUserReputation
+            + testDecreaseUserReputation
+            + testLogin
+        }
 
-    }
 
+}
 
 @enduml
 ```

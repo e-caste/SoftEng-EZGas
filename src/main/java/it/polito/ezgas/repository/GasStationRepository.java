@@ -10,9 +10,9 @@ import java.util.List;
 @Repository
 public interface GasStationRepository extends JpaRepository<GasStation,Integer> {
 
-	@Query("SELECT gs FROM GasStation gs WHERE gs.gasStationId = ?1")
-	GasStation findById(Integer Id);
+    List<GasStation> findByCarSharing(String carSharing);
 
-    @Query("SELECT gs FROM GasStation gs WHERE gs.carSharing = :carSharing")
-    List<GasStation> findByCarSharing(@Param("carSharing") String carSharing);
+    @Query("SELECT gs FROM GasStation gs WHERE gs.gasStationId = ?1")
+    GasStation findById(Integer Id);
+
 }
